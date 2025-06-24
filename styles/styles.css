@@ -1,0 +1,154 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fffde8;
+    color: #2c3d27;
+}
+
+/* NAV STYLE */
+nav {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    position: static;
+    background-color: #f6ffd7;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: fit-content;
+    text-decoration: none;
+}
+
+nav ul li {
+    height: fit-content;
+}
+
+.navText {
+    text-decoration: none;
+    background: none;
+    color: #2c3d27;
+    font-size: 1.1em;
+}
+
+.navText:hover {
+    background-color: #f8f095;
+}
+
+#navLogo {
+    width: 250px;
+    background: none;
+    background-color: transparent;
+    margin: 20px auto;
+}
+
+#login {
+    background-color: #f8f095;
+    padding: 15px 20px 15px 20px;
+}
+
+#login:hover {
+    background-color: #e0d35b;
+}
+
+.navLogo {
+    text-align: center;
+    justify-content: left;
+}
+
+.navLinks {
+    text-align: center;
+    justify-content: right;
+    columns: 5;
+    column-gap: 10px;
+    flex-grow: 1;
+    column-width: calc(60%/5);
+    padding-top: 3.5rem;
+    padding-left: calc(20%);
+}
+
+.navLinks li a {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* HEADER STYLE */
+header {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f095;
+}
+
+/* MAIN SECTION */
+
+main {
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+    padding: 0;
+}
+
+#whatisFreeIdeas {
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+}
+
+#whatisFreeIdeas h2 {
+    text-align: center;
+    background-color: rgb(214, 233, 144);
+}
+
+#whatisFreeIdeas #lastIdeas {
+    text-align: center;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: max-content max-content max-content max-content max-content;
+    background-color: #61db94;
+}
+
+#whatisFreeIdeas #lastIdeas .ideaBox {
+    width: 200px;
+    height: 250px;
+    margin: 10px;
+    background-color: #f8f095;
+    border-radius: 10px;
+}
+
+#whatisFreeIdeas #lastIdeas .ideaBox .ideaImage {
+    height: 100px;
+    width: 60px;
+
+    margin: 0;
+    padding: 0;
+}
+
+#whatisFreeIdeas #lastIdeas .ideaBox .ideaTitle {
+    font-size: 25px;
+    padding-top: 30px;
+}
+
+#whatisFreeIdeas #lastIdeas .ideaBox .ideaAuthor {
+    font-size: 15px;
+    padding-top: 10px;
+}
+
+#whatisFreeIdeas #description {
+    text-align: justify;
+    align-items: center;
+    padding: 30px;
+    font-size: 1.2em;
+    background-color: #c7f55b;
+}
