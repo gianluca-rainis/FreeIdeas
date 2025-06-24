@@ -16,8 +16,10 @@ nav {
     height: fit-content;
     width: 100%;
     display: flex;
-    position: static;
     background-color: #f6ffd7;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 nav ul {
@@ -48,7 +50,7 @@ nav ul li {
     width: 250px;
     background: none;
     background-color: transparent;
-    margin: 20px auto;
+    margin: 0;
 }
 
 #login {
@@ -72,7 +74,7 @@ nav ul li {
     column-gap: 10px;
     flex-grow: 1;
     column-width: calc(60%/5);
-    padding-top: 3.5rem;
+    padding-top: 2.5rem;
     padding-left: calc(20%);
 }
 
@@ -89,6 +91,7 @@ header {
     justify-content: center;
     align-items: center;
     background-color: #f8f095;
+    padding: 20px 0 20px 0;
 }
 
 /* MAIN SECTION */
@@ -100,47 +103,59 @@ main {
     padding: 0;
 }
 
+/* WHAT IS FREE IDEAS SECTION */
 #whatisFreeIdeas {
     width: 100%;
     height: fit-content;
     align-items: center;
+    background-color: rgb(214, 233, 144);
 }
 
 #whatisFreeIdeas h2 {
     text-align: center;
-    background-color: rgb(214, 233, 144);
+    padding: 20px 0 20px 0;
 }
 
 #whatisFreeIdeas #lastIdeas {
     text-align: center;
     list-style-type: none;
-    display: grid;
-    grid-template-columns: max-content max-content max-content max-content max-content;
-    background-color: #61db94;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    gap: 0;
 }
 
-#whatisFreeIdeas #lastIdeas .ideaBox {
-    width: 200px;
-    height: 250px;
+.ideaBox {
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
     margin: 10px;
     background-color: #f8f095;
     border-radius: 10px;
+    flex: 0 0 auto;
 }
 
-#whatisFreeIdeas #lastIdeas .ideaBox .ideaImage {
-    height: 100px;
-    width: 60px;
-
-    margin: 0;
+.ideaBox .ideaImage {
+    height: 170px;
+    width: 140px;
+    object-fit: contain;
+    display: block;
+    background-color: #f0f0f0;
+    margin: 0 auto;
     padding: 0;
 }
 
-#whatisFreeIdeas #lastIdeas .ideaBox .ideaTitle {
+.ideaBox .ideaTitle {
     font-size: 25px;
     padding-top: 30px;
 }
 
-#whatisFreeIdeas #lastIdeas .ideaBox .ideaAuthor {
+.ideaBox .ideaAuthor {
     font-size: 15px;
     padding-top: 10px;
 }
@@ -148,7 +163,127 @@ main {
 #whatisFreeIdeas #description {
     text-align: justify;
     align-items: center;
-    padding: 30px;
+    padding: 20px 20px 20px 80px;
     font-size: 1.2em;
-    background-color: #c7f55b;
+}
+
+/* HELP OTHER PEOPLE SECTION */
+#helpIdeas {
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+    background-color: rgb(173, 212, 32);
+}
+
+#helpIdeas h2 {
+    text-align: center;
+    padding: 20px 0 20px 0;
+}
+
+#helpIdeas #lastHelp {
+    text-align: center;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    gap: 0;
+}
+
+.ideaBox {
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f8f095;
+    border-radius: 10px;
+    flex: 0 0 auto;
+}
+
+.ideaBox .ideaImage {
+    height: 170px;
+    width: 140px;
+    object-fit: contain;
+    display: block;
+    background-color: #f0f0f0;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.ideaBox .ideaTitle {
+    font-size: 25px;
+    padding-top: 30px;
+}
+
+.ideaBox .ideaAuthor {
+    font-size: 15px;
+    padding-top: 10px;
+}
+
+#helpIdeas #description {
+    text-align: justify;
+    align-items: center;
+    padding: 20px 20px 20px 80px;
+    font-size: 1.2em;
+}
+
+/* FOOTER STYLE */
+footer {
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    background-color: #f6ffd7;
+    padding: 20px 0 20px 0;
+}
+
+footer ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+    justify-content: right;
+    align-items: center;
+    padding: 0;
+    padding-right: 30px;
+}
+
+footer ul li a {
+    color: #2c3d27;
+}
+
+#githubLogo {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px;
+}
+
+.footerTextSection {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.footerText {
+    display: flex;
+    justify-content: right;
+    columns: 2;
+    column-gap: 30px;
+    flex-grow: 1;
+    margin-right: calc(5%);
+    margin-left: calc(10%);
+}
+
+#footerLogo {
+    width: 250px;
+    background: none;
+    background-color: transparent;
+}
+
+#footerLogoA {
+    margin: 0;
+    justify-content: left;
 }
