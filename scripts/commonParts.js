@@ -9,7 +9,7 @@ function loadNav() {
                 <li><a href="./index.html"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
             </ul>
             <ul class="navLinks">
-                <li><a href="" class="navText">Search an Idea</a></li>
+                <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
                 <li><a href="" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText">Ask help for an Idea</a></li>
                 <li><a href="" class="navText">Random Idea</a></li>

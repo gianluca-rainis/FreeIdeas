@@ -294,7 +294,7 @@ footer ul li a {
 }
 
 /* OTHER PAGES STYLES */
-/* PRIVACY POLICY AND TERMS AND CONDITIONS */
+/* FOOTER PAGES */
 .footerpage {
     width: 100%;
     height: fit-content;
@@ -354,3 +354,5 @@ footer ul li a {
     font-size: 1em;
     color: #2c3d27;
 }
+
+/* SEARCH PAGE */
