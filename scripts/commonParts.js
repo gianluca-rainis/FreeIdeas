@@ -28,7 +28,7 @@ function loadFooter() {
                 <li><a href="./license.html">License</a></li>
                 <li><a href="./contacts.html">Contact Us</a></li>
                 <li><a href="./about.html">About Us</a></li>
-                <li><a href=""><img src="./images/github.png" id="githubLogo"></a></li>
+                <li><a href="https://github.com/rainis-gianluca/FreeIdeas.git"><img src="./images/github.png" id="githubLogo"></a></li>
             </ul>
             <hr>
             <section class="footerTextSection">
