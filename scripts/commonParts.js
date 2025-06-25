@@ -1,6 +1,6 @@
 const nav = document.getElementById("nav");
 const footer = document.getElementById("footer");
-const metadata = document.getElementById('metaDataCommon');
+const metadata = document.head;
 
 function loadNav() {
     if (nav) {
@@ -49,7 +49,7 @@ function loadMetadata() {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Free Ideas</title>
-            <link rel="icon" href="./images/FreeIdeas.svg" type="image/x-icon">
+            <link rel="icon" href="./images/FreeIdeas.svg" type="image/x-ico" />
             <link href="./styles/styles.css" rel="stylesheet">
         `;
     }
