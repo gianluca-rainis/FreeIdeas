@@ -13,21 +13,24 @@ function loadNav() {
                 <li><a href="" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText">Ask help for an Idea</a></li>
                 <li><a href="" class="navText">Random Idea</a></li>
-                <li><a class="navText" id="login">Login</a></li>
+                <li id="userImageLi"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></li>
             </ul>
             <div id="loginArea">
                 <h2>Sign In</h2>
                 <p>Don't have an account? <a id="signUp">Register!</a></p>
-                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" required>
-                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" required>
-                <button type="button" id="toggle-password-visibility">
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                    </svg>
-                </button>
-                <p><a id="forgotPassword">Forgot your password?</a></p>
-                <button type="submit" id="sendLoginButton">Sign In</button>
+                <form action="./login.php" method="POST">
+                    <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                    <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
+                
+                    <button type="button" id="toggle-password-visibility">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                        </svg>
+                    </button>
+                    <p><a id="forgotPassword">Forgot your password?</a></p>
+                    <button type="submit" id="sendLoginButton">Sign In</button>
+                </form>
             </div>
         `;
     }
@@ -74,9 +77,17 @@ loadNav();
 loadFooter();
 
 // LOGIN GESTOR
-const loginButton = document.getElementById("login");
+const loginButton = document.getElementById("userImage");
 const loginArea = document.getElementById("loginArea");
 let isLoginArea = true;
+
+loginButton.addEventListener("mouseover", () => {
+    loginButton.src = "./images/userHover.png";
+});
+
+loginButton.addEventListener("mouseout", () => {
+    loginButton.src = "./images/user.png";
+});
 
 loginButton.addEventListener("click", () => {
     if (loginArea.style.display == "none" || !loginArea.style.display) {
@@ -118,34 +129,38 @@ function signUpGestor() {
         if (isLoginArea) {
             loginArea.innerHTML = `<h2>Create your account</h2>
             <p>Already have an account? <a id="signUp">Sign In!</a></p>
-            <input type="text" id="firstName" spellcheck="false" placeholder="First Name" required>
-            <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" required>
-            <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" required>
-            <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" required>
-            <button type="button" id="toggle-password-visibility">
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                    <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                </svg>
-            </button>
-            <p>By singing up you agree to our <a href="./termsOfUse.html">Terms of Use</a> and <a href="./privacyPolicy.html">Privacy Policy</a></p>
-            <button type="submit" id="sendLoginButton">Create Account</button>`;
+            <form action="./signUp.php" method="POST">
+                <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" required>
+                <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" required>
+                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
+                <button type="button" id="toggle-password-visibility">
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                    </svg>
+                </button>
+                <p>By singing up you agree to our <a href="./termsOfUse.html">Terms of Use</a> and <a href="./privacyPolicy.html">Privacy Policy</a></p>
+                <button type="submit" id="sendLoginButton">Create Account</button>
+            </form>`;
 
             isLoginArea = false;
             document.getElementById("toggle-password-visibility").style.top = "216px";
         } else {
             loginArea.innerHTML = `<h2>Sign In</h2>
             <p>Don't have an account? <a id="signUp">Register!</a></p>
-            <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" required>
-            <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" required>
-            <button type="button" id="toggle-password-visibility">
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                    <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                </svg>
-            </button>
-            <p><a id="forgotPassword">Forgot your password?</a></p>
-            <button type="submit" id="sendLoginButton">Sign In</button>`;
+            <form action="./login.php" method="POST">
+                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
+                <button type="button" id="toggle-password-visibility">
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                    </svg>
+                </button>
+                <p><a id="forgotPassword">Forgot your password?</a></p>
+                <button type="submit" id="sendLoginButton">Sign In</button>
+            </form>`;
 
             isLoginArea = true;
         }
@@ -161,12 +176,12 @@ function getDataForLogin() {
     const password = document.getElementById("passwordAreaLogin").value;
 
     if (isLoginArea) {
-        console.log(email+"  "+password);
+        // console.log(email+"  "+password);
     } else {
         const firstName = document.getElementById("firstName").value;
         const lastName = document.getElementById("lastName").value;
         
-        console.log(email+"  "+password+"  "+firstName+"  "+lastName);
+        // console.log(email+"  "+password+"  "+firstName+"  "+lastName);
     }
 }
 

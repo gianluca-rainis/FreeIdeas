@@ -53,16 +53,6 @@ nav ul li {
     margin: 0;
 }
 
-#login {
-    background-color: #f8f095;
-    padding: 15px 20px 15px 20px;
-}
-
-#login:hover {
-    background-color: #e0d35b;
-    cursor: pointer;
-}
-
 .navLogo {
     text-align: center;
     justify-content: left;
@@ -75,13 +65,35 @@ nav ul li {
     column-gap: 10px;
     flex-grow: 1;
     column-width: calc(60%/5);
-    padding-top: 2.5rem;
     padding-left: calc(20%);
+}
+
+.navLinks li {
+    padding-top: 2.5rem;
+}
+
+#userImageLi {
+    padding-top: 1.4rem;
 }
 
 .navLinks li a {
     padding: 10px;
     border-radius: 10px;
+}
+
+#userImage {
+    width: 37px;
+    height: 37px;
+}
+
+#userImage:hover {
+    cursor: pointer;
+}
+
+#userName {
+    padding-top: 3px;
+    color: #5cad43;
+    cursor: default;
 }
 
 /* HEADER STYLE */
