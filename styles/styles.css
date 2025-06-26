@@ -207,39 +207,9 @@ main {
     gap: 0;
 }
 
-.ideaBox {
-    width: fit-content;
-    height: fit-content;
-    padding: 20px;
-    margin: 10px;
-    background-color: #f8f095;
-    border-radius: 10px;
-    flex: 0 0 auto;
-}
-
 .ideaLink {
     text-decoration: none;
     color: #2c3d27;
-}
-
-.ideaBox .ideaImage {
-    height: 170px;
-    width: 140px;
-    object-fit: contain;
-    display: block;
-    background-color: #f0f0f0;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.ideaBox .ideaTitle {
-    font-size: 25px;
-    padding-top: 30px;
-}
-
-.ideaBox .ideaAuthor {
-    font-size: 15px;
-    padding-top: 10px;
 }
 
 #helpIdeas #description {
@@ -442,4 +412,109 @@ footer ul li a {
 
 #forgotPassword:hover {
     color: rgb(109, 255, 12);
+}
+
+/* SEARCH PAGE */
+
+#searchPage header {
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+}
+
+#searchPage main {
+    margin-top: 7rem;
+}
+
+#search {
+    padding: 10px 30px 10px 5px;
+    margin-right: 50px;
+    border-radius: 5px;
+    border: 1px solid #2c3d27;
+}
+
+#searchSendButton {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    background: none;
+    position: fixed;
+    left: 28.5rem;
+    cursor: pointer;
+}
+
+#searchSendButton img {
+    width: 20px;
+    height: 20px;
+}
+
+.filterBlock {
+    display: grid;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: left;
+    margin-left: 20px;
+}
+
+#allFilters {
+    display: flex;
+    list-style-type: none;
+}
+
+.labelInfoSearch {
+    padding-bottom: 5px;
+    font-size: medium;
+}
+
+.filterSearch {
+    padding: 5px 10px 5px 10px;
+}
+
+#lastIdeasSrc {
+    text-align: center;
+    align-items: center;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    white-space: nowrap;
+    gap: 0;
+}
+
+.ideaLinkSrc {
+    text-decoration: none;
+    color: #2c3d27;
+}
+
+.ideaBoxScr {
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f8f095;
+    border-radius: 10px;
+    flex: 0 0 auto;
+}
+
+.ideaImageSrc {
+    height: 170px;
+    width: 238px;
+    object-fit: contain;
+    display: block;
+    background-color: #f0f0f0;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.ideaTitleSrc {
+    font-size: 25px;
+    padding-top: 30px;
+}
+
+.ideaAuthorSrc {
+    font-size: 15px;
+    padding-top: 10px;
 }

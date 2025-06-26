@@ -12,18 +12,136 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
         <div id="metaDataCommon"></div>
     </head>
 
-    <body>
+    <body id="searchPage">
         <nav id="nav"></nav>
 
+        <header>
+            <input type="search" placeholder="Search" id="search">
+            <button type="submit" id="searchSendButton"><img src="./images/search.png"></button>
+
+            <ul id="allFilters">
+                <li class="filterBlock">
+                    <label class="labelInfoSearch">Type of project:</label>
+                    <select id="typeFilter" class="filterSearch">
+                        <option selected>All</option>
+                        <option>Technological Innovation</option>
+                        <option>Environmental Sustainability</option>
+                        <option>Education & Learning</option>
+                        <option>Business & Startups</option>
+                        <option>Art & Design</option>
+                        <option>Social & Community</option>
+                        <option>Health & Wellness</option>
+                        <option>Travel & Experiences</option>
+                        <option>Games & Entertainment</option>
+                    </select>
+                </li>
+
+                <li class="filterBlock">
+                    <label class="labelInfoSearch">Creativity Type:</label>
+                    <select id="creativityTypeFilter" class="filterSearch">
+                        <option selected>All</option>
+                        <option>Practical and actionable</option>
+                        <option>Abstract or conceptual</option>
+                        <option>Thought-provoking</option>
+                        <option>Visionary or futuristic</option>
+                        <option>Humorous or satirical</option>
+                    </select>
+                </li>
+
+                <li class="filterBlock">
+                    <label class="labelInfoSearch">Order by:</label>
+                    <select id="orderBy" class="filterSearch">
+                        <option selected>All</option>
+                        <option>Most voted</option>
+                        <option>Newest</option>
+                        <option>Most discussed</option>
+                    </select>
+                </li>
+            </ul>
+        </header>
+
         <main>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan ornare sodales. Suspendisse potenti. Pellentesque placerat tortor tincidunt elit fermentum, vel vehicula ante malesuada. Sed nec diam tincidunt ligula eleifend egestas sit amet non massa. In lectus purus, malesuada a euismod et, laoreet vel metus. Aliquam consectetur ipsum enim. Ut augue est, tempor sed neque in, fringilla gravida urna. Vestibulum pulvinar in odio condimentum elementum. Aliquam pharetra dolor bibendum, volutpat quam eu, rhoncus eros. Duis a ultricies mi. Curabitur cursus tincidunt efficitur. Suspendisse maximus eget lacus sed cursus. Morbi ipsum sem, efficitur eu massa feugiat, congue imperdiet neque. Mauris sodales vulputate tincidunt.
+            <ul id="lastIdeasSrc">
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+                
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
 
-            Quisque nibh lorem, molestie ut auctor posuere, faucibus ornare orci. Nulla auctor sodales lacus sit amet iaculis. Donec placerat lacus vel tempus viverra. Duis ultricies venenatis mi, sed euismod nunc ultrices a. Aliquam non urna cursus, varius ex vel, posuere nunc. Sed porttitor dictum iaculis. Ut quis odio at mauris vehicula iaculis. Nam in dictum diam, quis egestas velit. Duis aliquam ante at magna posuere dictum.
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
 
-            Proin gravida lorem quis mollis varius. Praesent risus leo, mollis eget ante et, aliquam sodales diam. Integer ipsum est, scelerisque ac libero id, iaculis sodales dolor. Sed semper, enim vitae hendrerit sagittis, magna nisi scelerisque lacus, sed finibus arcu mi at diam. Cras tempus posuere ante, at lobortis eros ultricies quis. Maecenas porta sem hendrerit venenatis imperdiet. Cras vel lacinia turpis. Praesent vitae orci commodo, interdum nisi nec, maximus nulla. Ut vel risus dictum, accumsan leo vitae, posuere magna. Donec fermentum mi quis turpis finibus, vel luctus justo luctus. Maecenas mattis enim sit amet pellentesque pulvinar. Proin dignissim, elit et rutrum egestas, elit nulla cursus velit, eu ultricies arcu nulla ut ex. Proin convallis justo libero, nec mollis nunc finibus a. Phasellus semper mi ac dui commodo, tristique commodo urna luctus.
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
 
-            Integer consectetur, lectus sit amet interdum facilisis, nunc ante posuere est, sit amet elementum libero erat ut quam. Nulla et aliquam justo, eget fringilla justo. Aliquam blandit arcu in eros condimentum blandit. Maecenas tincidunt magna a sem feugiat, egestas eleifend quam laoreet. Donec hendrerit quam nunc, vel laoreet dui pulvinar eget. Suspendisse porta tincidunt odio. Integer sit amet condimentum purus. Mauris a posuere augue, vitae euismod massa. Cras dignissim ullamcorper maximus. Mauris scelerisque, sapien non placerat sollicitudin, metus elit gravida elit, efficitur efficitur lacus mauris vel sem. Etiam cursus quam ac faucibus sagittis.
-            </p>
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+
+                <a href="" class="ideaLinkSrc">
+                    <li class="ideaBoxScr">
+                        <img src="" alt="Idea Image" class="ideaImageSrc">
+                        <p class="ideaTitleSrc">Title</p>
+                        <p class="ideaAuthorSrc">Author</p>
+                    </li>
+                </a>
+            </ul>
         </main>
 
         <footer id="footer"></footer>
