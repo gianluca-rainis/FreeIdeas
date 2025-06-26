@@ -7,6 +7,19 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 -->
 
 <?php
+    header("Content-Type: application/json");
+
+    $host = "localhost";
+    $user = "root";
+    $password = "<OMITTED>"; // CHANGE BEFORE RUN
+    $dbname = "freeideas";
+
+    $conn = new mysqli($host, $user, $password, $dbname);
+
+    if ($conn->connect_error) {
+        exit;
+    }
+
     $email = $password = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,7 +27,27 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
         $password = getInput($_POST["password"]);
     }
 
-    echo $email+" "+$password;
+    $stmt = $conn->prepare("SELECT id, password FROM accounts WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['userid'] = $user['id'];
+            $_SESSION['username'] = $user['name'];
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "error" => "Password errata"]);
+        }
+    } else {
+        echo json_encode(["success" => false, "error" => "Utente non trovato"]);
+    }
+
+    $stmt->close();
+    $conn->close();
 
     function getInput($data) {
         $data = trim($data);

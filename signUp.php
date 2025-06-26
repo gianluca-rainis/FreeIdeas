@@ -7,6 +7,19 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 -->
 
 <?php
+    header("Content-Type: application/json");
+
+    $host = "localhost";
+    $user = "root";
+    $password = "VfcggamlNN10"; // CHANGE BEFORE RUN
+    $dbname = "freeideas";
+
+    $conn = new mysqli($host, $user, $password, $dbname);
+
+    if ($conn->connect_error) {
+        exit;
+    }
+
     $firstName = $lastName = $email = $password = "";
     $error = false;
     $errorLog = "";
@@ -19,12 +32,24 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = true;
-
-        $errorLog = "Invalid email format";
+        exit;
     }
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO accounts (email, password, name, surname) VALUES (?, ?, ?, ?)";
+    $state = $conn->prepare($sql);
+
+    if (!$state) {
+        exit;
+    }
+
+    $state->bind_param("ssss", $email, $password, $firstName, $lastName);
+
+    $state->execute();
     
-    echo $firstName+" "+$lastName+" "+$email+" "+$password;
+    $state->close();
+    $conn->close();
 
     function getInput($data) {
         $data = trim($data);
