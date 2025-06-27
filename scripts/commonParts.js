@@ -18,7 +18,7 @@ function loadNav() {
             <div id="loginArea">
                 <h2>Sign In</h2>
                 <p>Don't have an account? <a id="signUp">Register!</a></p>
-                <form action="./login.php" method="POST" id="loginCreateAccountForm">
+                <form action="./api/login.php" method="POST" id="loginCreateAccountForm">
                     <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
                     <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
                 
@@ -129,7 +129,7 @@ function signUpGestor() {
         if (isLoginArea) {
             loginArea.innerHTML = `<h2>Create your account</h2>
             <p>Already have an account? <a id="signUp">Sign In!</a></p>
-            <form action="./signUp.php" method="POST" id="loginCreateAccountForm">
+            <form action="./api/signUp.php" method="POST" id="loginCreateAccountForm">
                 <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" required>
                 <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" required>
                 <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
@@ -149,7 +149,7 @@ function signUpGestor() {
         } else {
             loginArea.innerHTML = `<h2>Sign In</h2>
             <p>Don't have an account? <a id="signUp">Register!</a></p>
-            <form action="./login.php" method="POST" id="loginCreateAccountForm">
+            <form action="./api/login.php" method="POST" id="loginCreateAccountForm">
                 <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
                 <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
                 <button type="button" id="toggle-password-visibility">

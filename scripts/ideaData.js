@@ -48,14 +48,17 @@ const commentAtTheComment = document.querySelectorAll("underComments"); // The c
 // The id of the page to load
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.html?id=123">)
 const id = paramsURL.get("id"); // The id of the page to load
+
+let error = false; // Error variable to print only the most specific error
+
 main(id);
 
 async function main(id) {
     if (id && id > 0) {
         const SQLdata = await getDataFromDatabase(id);
-        
+
         if (SQLdata) {
-            printError(418);
+            loadData(SQLdata);
         }
         else {
             printError(404);
@@ -74,16 +77,34 @@ async function getDataFromDatabase(id) {
         return data;
     } catch (error) {
         printError(421);
+
+        return null;
     }
 }
 
 function printError(errorCode) {
-    mainIdea.innerHTML = `
-        <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
-        <div style="padding-top: calc(5%);"></div>
-        <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
-        <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-        <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-        <div style="padding-top: calc(6%);"></div>
-    `;
+    if (!error) {
+        mainIdea.innerHTML = `
+            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
+            <div style="padding-top: calc(5%);"></div>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
+            <div style="padding-top: calc(6%);"></div>
+        `;
+
+        error = true;
+    }
+}
+
+function loadData(SQLdata) {
+    ideaTitle.innerHTML = SQLdata.title;
+    mainIdeaImageBg.style.backgroundImage = SQLdata.ideaimage;
+    authorAccount.innerHTML = SQLdata.accountName;
+    authorAccount.href = ""; // To change later
+    mainDescription.innerHTML = SQLdata.description;
+
+    /* for (let i = 0; i < SQLdata.length; i++) {
+        
+    } */
 }

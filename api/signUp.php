@@ -9,16 +9,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 <?php
     header("Content-Type: application/json");
 
-    $host = "localhost";
-    $user = "root";
-    $password = "VfcggamlNN10"; // CHANGE BEFORE RUN
-    $dbname = "freeideas";
-
-    $conn = new mysqli($host, $user, $password, $dbname);
-
-    if ($conn->connect_error) {
-        exit;
-    }
+    include("./db_connection.php");
 
     $firstName = $lastName = $email = $password = "";
     $error = false;

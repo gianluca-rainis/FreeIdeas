@@ -70,15 +70,15 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 
 ### Comments and help
 ```SQL
-+---------------------------------------------+
-|                   comments                  |
-+---------------------------------------------+
-| id | authorid | data | description | ideaid |
-+----+----------+------+-------------+--------+
-|    |          |      |             |        |
-|    |          |      |             |        |
-|    |          |      |             |        |
-+----+----------+------+-------------+--------+
++---------------------------------------------+----------------+
+|                           comments                           |
++---------------------------------------------+----------------+
+| id | authorid | data | description | ideaid | superCommentid |
++----+----------+------+-------------+--------+----------------+
+|    |          |      |             |        |                |
+|    |          |      |             |        |                |
+|    |          |      |             |        |                |
++----+----------+------+-------------+--------+----------------+
 ```
 
 ## Database Types
@@ -122,13 +122,20 @@ mysql> describe authorupdates;
 +-------------+----------------+------+-----+---------+----------------+
 
 mysql> describe comments;  
-+-------------+----------------+------+-----+---------+----------------+
-| Field       | Type           | Null | Key | Default | Extra          |
-+-------------+----------------+------+-----+---------+----------------+
-| id          | int            | NO   | PRI | NULL    | auto_increment |
-| authorid    | int            | NO   | MUL | NULL    |                |
-| data        | date           | NO   |     | NULL    |                |
-| description | varchar(10000) | NO   |     | NULL    |                |
-| ideaid      | int            | NO   | MUL | NULL    |                |
-+-------------+----------------+------+-----+---------+----------------+
++----------------+----------------+------+-----+---------+----------------+
+| Field          | Type           | Null | Key | Default | Extra          |
++----------------+----------------+------+-----+---------+----------------+
+| id             | int            | NO   | PRI | NULL    | auto_increment |
+| authorid       | int            | NO   | MUL | NULL    |                |
+| data           | date           | NO   |     | NULL    |                |
+| description    | varchar(10000) | NO   |     | NULL    |                |
+| ideaid         | int            | NO   | MUL | NULL    |                |
+| superCommentid | int            | YES  | MUL | NULL    |                |
++----------------+----------------+------+-----+---------+----------------+
+```
+
+## Database interrogation
+### In ./api/data.php
+```SQL
+SELECT ideas.*, accounts.name AS accountName, authorupdates.title AS updateTitle, authorupdates.updtimage AS updateImage, authorupdates.description AS updateDescription, authorupdates.data AS updateData, comments.authorid AS commentAuthor, comments.data AS commentData, comments.description AS commentDescription, comments.superCommentid FROM ideas JOIN accounts ON ideas.authorid=accounts.id JOIN authorupdates ON ideas.id=authorupdates.ideaid JOIN comments ON ideas.id=comments.ideaid WHERE ideas.id=?;
 ```
