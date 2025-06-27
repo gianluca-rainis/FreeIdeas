@@ -10,7 +10,7 @@ function loadNav() {
             </ul>
             <ul class="navLinks">
                 <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
-                <li><a href="" class="navText">Publish an Idea</a></li>
+                <li><a href="./ideaVoid.html" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText">Ask help for an Idea</a></li>
                 <li><a href="" class="navText">Random Idea</a></li>
                 <li id="userImageLi"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></li>
