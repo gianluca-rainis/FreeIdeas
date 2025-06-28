@@ -603,30 +603,6 @@ footer ul li a {
     margin-bottom: 20px;
 }
 
-/* team */
-#teamName {
-    font-size: 30px;
-    padding-top: 10px;
-}
-
-#teamSection {
-    background-color: rgb(203, 255, 220);
-}
-
-#teamMembers {
-    margin-bottom: 10px;
-}
-
-.nameTeamMember {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    font-size: 20px;
-}
-
-.linkAccount {
-    color: rgb(255, 130, 130);
-}
-
 /* download */
 #downloadSection {
     background-color: #ffdeb3;

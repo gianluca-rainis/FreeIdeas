@@ -10,29 +10,49 @@
 
     $id = $_GET['id'];
 
-    $sql = "SELECT ideas.*, accounts.name AS accountName, authorupdates.title AS updateTitle, authorupdates.updtimage AS updateImage, authorupdates.description AS updateDescription, authorupdates.data AS updateData, comments.authorid AS commentAuthor, comments.data AS commentData, comments.description AS commentDescription, comments.superCommentid FROM ideas JOIN accounts ON ideas.authorid=accounts.id JOIN authorupdates ON ideas.id=authorupdates.ideaid JOIN comments ON ideas.id=comments.ideaid WHERE ideas.id=?;"; 
-    // SELECT ideas.*, accounts.name AS accountName, authorupdates.title AS updateTitle, authorupdates.updtimage AS updateImage, authorupdates.description AS updateDescription, authorupdates.data AS updateData, comments.authorid AS commentAuthor, comments.data AS commentData, comments.description AS commentDescription, comments.superCommentid FROM ideas JOIN accounts ON ideas.authorid=accounts.id JOIN authorupdates ON ideas.id=authorupdates.ideaid JOIN comments ON ideas.id=comments.ideaid WHERE ideas.id=?;
-    $state = $conn->prepare($sql);
+    $return = [];
 
-    if (!$state) {
-        echo null;
-        exit;
+    function getDataFromDatabase($conn, $id, $query) {
+        // SELECT ideas.*, accounts.username AS accountName, authorupdates.title AS updateTitle, authorupdates.updtimage AS updateImage, authorupdates.description AS updateDescription, authorupdates.data AS updateData, comments.authorid AS commentAuthor, comments.data AS commentData, comments.description AS commentDescription, comments.superCommentid FROM ideas JOIN accounts ON ideas.authorid=accounts.id JOIN authorupdates ON ideas.id=authorupdates.ideaid JOIN comments ON ideas.id=comments.ideaid WHERE ideas.id=?;
+        $state = $conn->prepare($query);
+
+        if (!$state) {
+            return null;
+        }
+
+        $state->bind_param("s", $id);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            if (isset($row['ideaimage'])) {
+                $row['ideaimage'] = base64_encode($row['ideaimage']);
+            }
+            elseif (isset($row['updtimage'])) {
+                $row['updtimage'] = base64_encode($row['updtimage']);
+            }
+            elseif (isset($row['userimage'])) {
+                $row['userimage'] = base64_encode($row['userimage']);
+            }
+
+            $data[] = $row;
+        }
+
+        $state->close();
+
+        return $data;
     }
 
-    $state->bind_param("s", $id);
+    $return['idea'] = getDataFromDatabase($conn, $id, "SELECT ideas.*, accounts.username AS accountName FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;");
+    $return['info'] = getDataFromDatabase($conn, $id, "SELECT * FROM additionalinfo WHERE ideaid=?;"); // Return the info with image
+    $return['log'] = getDataFromDatabase($conn, $id, "SELECT * FROM authorupdates WHERE ideaid=?;"); // Logs
+    $return['comment'] = getDataFromDatabase($conn, $id, "SELECT comments.*, accounts.username, accounts.userimage FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;"); // Comments
 
-    $state->execute();
-    $result = $state->get_result();
-
-    if ($data = $result->fetch_assoc()) {
-        echo json_encode($data);
-    }
-    else {
-        echo null;
-        exit;
-    }
-
-    $state->close();
+    echo json_encode($return);
+    
     $conn->close();
 
     exit;
