@@ -161,5 +161,11 @@ mysql> describe comments;
 ## Database interrogation
 ### In ./api/data.php
 ```SQL
-SELECT ideas.*, accounts.name AS accountName, authorupdates.title AS updateTitle, authorupdates.updtimage AS updateImage, authorupdates.description AS updateDescription, authorupdates.data AS updateData, comments.authorid AS commentAuthor, comments.data AS commentData, comments.description AS commentDescription, comments.superCommentid FROM ideas JOIN accounts ON ideas.authorid=accounts.id JOIN authorupdates ON ideas.id=authorupdates.ideaid JOIN comments ON ideas.id=comments.ideaid WHERE ideas.id=?;
+SELECT ideas.*, accounts.username AS accountName FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;
+
+SELECT * FROM additionalinfo WHERE ideaid=?;
+
+SELECT * FROM authorupdates WHERE ideaid=?;
+
+SELECT comments.*, accounts.username, accounts.userimage FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;
 ```
