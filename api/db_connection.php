@@ -1,7 +1,7 @@
 <?php
     $host = "localhost";
     $user = "root";
-    $password = "<OMITTED>"; // CHANGE BEFORE RUN
+    $password = "VfcggamlNN10"; // CHANGE BEFORE RUN
     $dbname = "freeideas";
 
     $conn = new mysqli($host, $user, $password, $dbname);

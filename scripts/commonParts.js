@@ -119,8 +119,27 @@ function togglePasswordVisibility() {
 }
 
 function toggleSendLoginButton() {
-    document.getElementById("sendLoginButton").addEventListener("click", () => {
-        getDataForLogin();
+    document.getElementById("loginCreateAccountForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        try {
+            const formData = new FormData(this);
+            const response = await fetch(document.getElementById("loginCreateAccountForm").action, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data) {
+                window.location.href = "./index.html";
+            }
+            else {
+                printError(404);
+            }
+        } catch (error) {
+            printError(421);
+        }
     });
 }
 
@@ -132,6 +151,7 @@ function signUpGestor() {
             <form action="./api/signUp.php" method="POST" id="loginCreateAccountForm">
                 <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" required>
                 <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" required>
+                <input type="text" id="userNameSignIn" spellcheck="false" placeholder="Username" name="userName" required>
                 <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
                 <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
                 <button type="button" id="toggle-password-visibility">
@@ -145,7 +165,7 @@ function signUpGestor() {
             </form>`;
 
             isLoginArea = false;
-            document.getElementById("toggle-password-visibility").style.top = "216px";
+            document.getElementById("toggle-password-visibility").style.top = "256px";
         } else {
             loginArea.innerHTML = `<h2>Sign In</h2>
             <p>Don't have an account? <a id="signUp">Register!</a></p>
@@ -174,3 +194,61 @@ function signUpGestor() {
 togglePasswordVisibility();
 toggleSendLoginButton();
 signUpGestor();
+
+/* LOGIN GESTOR */
+
+let error = false; // Error variable to print only the most specific error
+let tempBoolControl = false;
+
+ldAccountData();
+
+async function ldAccountData() {
+    const SQLdata = await getDataFromDatabase();
+
+    if (SQLdata) {
+        loadData(SQLdata);
+    }
+}
+
+async function getDataFromDatabase() {
+    try {
+        const res = await fetch(`./api/getSessionData.php?data=account`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+function printError(errorCode) {
+    if (!error) {
+        document.querySelector("main").innerHTML = `
+            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
+            <div style="padding-top: calc(5%);"></div>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
+            <div style="padding-top: calc(6%);"></div>
+        `;
+
+        document.querySelector("main").style.textAlign = "center";
+        
+        document.querySelector("header").innerHTML = "";
+        document.querySelector("header").style.visibility = "hidden";
+
+        error = true;
+    }
+}
+
+function loadData(SQLdata) {
+    try {
+        userImage.src = SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png";
+        userName.innerHTML = SQLdata['username'];
+    } catch (error) {
+        printError(404);
+    }
+}
