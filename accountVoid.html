@@ -1,0 +1,48 @@
+<!--
+Author: Gianluca Rainis
+This project is licensed under the MIT License.
+You can find the license in the LICENSE file in the root directory of this project.
+Project: Free Ideas
+Free Ideas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
+-->
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <head>
+        <div id="metaDataCommon"></div>
+    </head>
+
+    <body id="accountBody">
+        <nav id="nav"></nav>
+
+        <main id="accountMain">
+            <aside id="accountAsideInfo">
+                <img id="modifyAccountInfo" src="./images/modify.svg">
+                <h1 id="userNameAccount"></h1>
+                <img id="userImageAccount" src="">
+                <h2 id="userNameSurnameAccount"></h2>
+                <h3 id="emailAccount"></h3>
+                <p id="descriptionAccount"></p>
+            </aside>
+
+            <section id="mainAccountSectionInfo">
+                <div id="navBarForAccountSaved">
+                    <ul>
+                        <li id="savedAccount"><img src="./images/saved.svg"> Saved</li>
+                        <li id="liketAccount"><img src="./images/liked.svg"> Liked</li>
+                        <li id="dislikedAccount"><img src="./images/disliked.svg"> Disliked</li>
+                    </ul>
+                </div>
+                
+                <div id="mainDivDinamicContent">
+                    <p><script>document.getElementById("mainDivDinamicContent").innerHTML = ("NONE ".repeat(10000))</script></p>
+                </div>
+            </section>
+        </main>
+
+        <footer id="footer"></footer>
+
+        <script src="./scripts/commonParts.js" defer></script>
+        <script src="./scripts/accountData.js" defer></script>
+    </body>
+</html>

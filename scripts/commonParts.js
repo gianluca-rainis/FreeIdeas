@@ -81,14 +81,6 @@ const loginButton = document.getElementById("userImage");
 const loginArea = document.getElementById("loginArea");
 let isLoginArea = true;
 
-loginButton.addEventListener("mouseover", () => {
-    loginButton.src = "./images/userHover.png";
-});
-
-loginButton.addEventListener("mouseout", () => {
-    loginButton.src = "./images/user.png";
-});
-
 loginButton.addEventListener("click", () => {
     if (loginArea.style.display == "none" || !loginArea.style.display) {
         loginArea.style.display = "block";
@@ -246,8 +238,28 @@ function printError(errorCode) {
 
 function loadData(SQLdata) {
     try {
-        userImage.src = SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png";
-        userName.innerHTML = SQLdata['username'];
+        loginButton.src = SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png";
+        document.getElementById("userName").innerHTML = SQLdata['username'];
+
+        loginArea.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
+            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png"}" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+            <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
+            <button type="submit" id="sendAccountButton">Account</button>
+            <button type="submit" id="sendLogoutButton">Log Out</button>`;
+
+        document.getElementById("sendAccountButton").addEventListener("click", () => {
+            window.location.href = "./accountVoid.html";
+        });
+
+        document.getElementById("sendLogoutButton").addEventListener("click", () => {
+            try {
+                fetch("./api/logout.php");
+            } catch (error) {
+                printError(421);
+            }
+
+            window.location.href = "./index.html";
+        });
     } catch (error) {
         printError(404);
     }

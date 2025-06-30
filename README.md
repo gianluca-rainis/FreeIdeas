@@ -42,6 +42,19 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 +----+-------+----------+------+---------+-----------+-------------+----------+
 ```
 
+```SQL
+CREATE TABLE accounts (
+    id int NOT NULL AUTO_INCREMENT,
+    email varchar(255) NOT NULL,
+    name varchar(255) NOT NULL,
+    surname varchar(255) NOT NULL,
+    userimage mediumblob,
+    description varchar(1000),
+    username varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+```
+
 ### Ideas
 ```SQL
 +-----------------------------------------------------------------------+
@@ -53,6 +66,20 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 |    |          |       |      |           |             |              |
 |    |          |       |      |           |             |              |
 +----+----------+-------+------+-----------+-------------+--------------+
+```
+
+```SQL
+CREATE TABLE ideas (
+    id int NOT NULL AUTO_INCREMENT,
+    authorid int NOT NULL,
+    title varchar(255) NOT NULL,
+    data date NOT NULL,
+    ideaimage mediumblob,
+    description varchar(10000) NOT NULL,
+    downloadlink varchar(5000),
+    PRIMARY KEY (id),
+    FOREIGN KEY (authorid) REFERENCES accounts(id)
+);
 ```
 
 ### Additional info
@@ -68,6 +95,18 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 +----+-------+-----------+-------------+--------+
 ```
 
+```SQL
+CREATE TABLE additionalinfo (
+    id int NOT NULL AUTO_INCREMENT,
+    title varchar(255) NOT NULL,
+    updtimage mediumblob NOT NULL,
+    description varchar(10000) NOT NULL,
+    ideaid int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ideaid) REFERENCES ideas(id)
+);
+```
+
 ### Author Updates
 ```SQL
 +------------------------------------------+
@@ -79,6 +118,18 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 |    |       |             |        |      |
 |    |       |             |        |      |
 +----+-------+-------------+--------+------+
+```
+
+```SQL
+CREATE TABLE authorupdates (
+    id int NOT NULL AUTO_INCREMENT,
+    title varchar(255) NOT NULL,
+    description varchar(10000),
+    ideaid int NOT NULL,
+    data date NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ideaid) REFERENCES ideas(id)
+);
 ```
 
 ### Comments and help
@@ -94,6 +145,21 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 +----+----------+------+-------------+--------+----------------+
 ```
 
+```SQL
+CREATE TABLE comments (
+    id int NOT NULL AUTO_INCREMENT,
+    authorid int NOT NULL,
+    data date NOT NULL,
+    description varchar(10000) NOT NULL,
+    ideaid int NOT NULL,
+    superCommentid int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (authorid) REFERENCES accounts(id),
+    FOREIGN KEY (ideaid) REFERENCES ideas(id),
+    FOREIGN KEY (superCommentid) REFERENCES comments(id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -106,7 +172,7 @@ mysql> describe accounts;
 | name        | varchar(255)   | NO   |     | NULL    |                |
 | surname     | varchar(255)   | NO   |     | NULL    |                |
 | userimage   | mediumblob     | YES  |     | NULL    |                |
-| description | varchar(10000) | YES  |     | NULL    |                |
+| description | varchar(1000)  | YES  |     | NULL    |                |
 | username    | varchar(255)   | NO   |     | NULL    |                |
 +-------------+----------------+------+-----+---------+----------------+
 
