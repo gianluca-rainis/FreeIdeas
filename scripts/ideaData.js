@@ -44,8 +44,7 @@ let commentAtTheComment = document.querySelectorAll(".underComments"); // The co
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.html?id=123">)
 const id = paramsURL.get("idea"); // The id of the page to load
 
-let error = false; // Error variable to print only the most specific error
-let tempBoolControl = false;
+let error2 = false; // Error variable to print only the most specific error
 
 main(id);
 
@@ -79,7 +78,7 @@ async function getDataFromDatabase(id) {
 }
 
 function printError(errorCode) {
-    if (!error) {
+    if (!error2) {
         mainIdea.innerHTML = `
             <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
             <div style="padding-top: calc(5%);"></div>
@@ -89,7 +88,7 @@ function printError(errorCode) {
             <div style="padding-top: calc(6%);"></div>
         `;
 
-        error = true;
+        error2 = true;
     }
 }
 
@@ -236,6 +235,7 @@ function loadData(SQLdata) {
             // replyAtTheCommentButton[replyAtTheCommentButton-length-1]; // FOR LATER, WHEN REPLY GESTOR
         });
     } catch (error) {
+    console.log(SQLdata);
         printError(404);
     }
 }

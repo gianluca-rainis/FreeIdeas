@@ -127,7 +127,11 @@ function toggleSendLoginButton() {
                 window.location.href = "./index.html";
             }
             else {
-                printError(404);
+                if (loginArea.innerHTML.includes("Create your account")) {
+                    printError(404);
+                } else {
+                    alert("Email or password are wrong");
+                }
             }
         } catch (error) {
             printError(421);
