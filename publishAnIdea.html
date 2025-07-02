@@ -1,0 +1,110 @@
+<!--
+Author: Gianluca Rainis
+This project is licensed under the MIT License.
+You can find the license in the LICENSE file in the root directory of this project.
+Project: Free Ideas
+Free Ideas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
+-->
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <head>
+        <div id="metaDataCommon"></div>
+    </head>
+
+    <body>
+        <nav id="nav"></nav>
+
+        <main id="newIdeaMain">
+            <div id="ideaImageAsBackground"> <!-- MAIN INFO - TITLE AND AUTHOR -->
+                <input type="text" id="title" placeholder="Title" maxlength="255" required>
+                <h2 id="author"><a id="mainAuthorAccount">Author</a></h2>
+            </div>
+
+            <label>Backgrount image: </label><input type="file" id="mainImage" accept="image/*" required>
+
+            <div id="newinfoForFilters">
+                <label class="labelInfoSearch">Type of project:</label>
+                <select id="typeFilter" class="filterSearch" required>
+                    <option selected>None</option>
+                    <option>Technological Innovation</option>
+                    <option>Environmental Sustainability</option>
+                    <option>Education & Learning</option>
+                    <option>Business & Startups</option>
+                    <option>Art & Design</option>
+                    <option>Social & Community</option>
+                    <option>Health & Wellness</option>
+                    <option>Travel & Experiences</option>
+                    <option>Games & Entertainment</option>
+                </select>
+
+                <label class="labelInfoSearch">Creativity Type:</label>
+                <select id="creativityTypeFilter" class="filterSearch" required>
+                    <option selected>None</option>
+                    <option>Practical and actionable</option>
+                    <option>Abstract or conceptual</option>
+                    <option>Thought-provoking</option>
+                    <option>Visionary or futuristic</option>
+                    <option>Humorous or satirical</option>
+                </select>
+
+                <label class="labelInfoSearch">Project status:</label>
+                <select id="orderByStatus" class="filterSearch" required>
+                    <option selected>None</option>
+                    <option>Finished</option>
+                    <option>Work in progress</option>
+                    <option>Need help</option>
+                </select>
+            </div>
+
+            <textarea type="text" id="description" placeholder="Description" maxlength="10000" required></textarea> <!-- MAIN INFO - DESCRIPTION -->
+
+            <section id="additionalInfo">
+                <h3 class="subtitles">Additional Information</h3>
+                <img src="./images/add.svg" id="addAdditionalInfo">
+                <ul id="imagesInfo"> <!-- SECOND INFO - IMAGE + INFO -->
+                    <!-- <li class="imageInfoLi">
+                        <div></div>
+                        <img src="./images/delete.svg" class="deleteAdditionalInfo">
+                        
+                        <div>
+                            <img class="preview" src="./images/voidImage.jpg">
+                            <input type="file" class="imageInfo" accept="image/*">
+                        </div>
+
+                        <div style="display: flex;flex-direction: column;align-items: center;">
+                            <textarea type="text" class="titleImageInfo" placeholder="Title" maxlength="255"></textarea>
+                            <textarea type="text" class="imageInfoDescription" placeholder="Info" maxlength="10000"></textarea>
+                        </div>
+                    </li> -->
+                </ul>
+            </section>
+
+            <section id="downloadSection">
+                <h3 class="subtitles">Download</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
+                <input type="url" id="buttonlink" placeholder="Link to download data" maxlength="5000" required>
+            </section>
+
+            <section id="devLogsSection">
+                <h3 class="subtitles">Author's Log</h3> <!-- THIRD INFO - DEV LOGS ( ADD AFTER PUBLISHED ) -->
+                <img src="./images/add.svg" id="addLog">
+                <ul id="logsList">
+                    <!-- <li class="log">
+                        <img src="./images/delete.svg" class="deleteLog">
+                        <div class="logTitleAndData">
+                            <textarea class="logTitle" placeholder="Title" maxlength="255" required></textarea>
+                            <div class="data">yyyy-mm-gg</div>
+                        </div>
+
+                        <textarea class="logInfo" placeholder="Description" maxlength="10000" required></textarea>
+                    </li> -->
+                </ul>
+            </section>
+        </main>
+
+        <footer id="footer"></footer>
+
+        <script src="./scripts/commonParts.js" defer></script>
+        <script src="./scripts/publishanIdea.js" defer></script>
+    </body>
+</html>

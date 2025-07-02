@@ -160,6 +160,33 @@ CREATE TABLE comments (
 );
 ```
 
+### Labels of a project
+```SQL
++------------------------------------------------------------+
+|                         idealabels                         |
++------------------------------------------------------------+
+| id | ideaid | type | creativity | status | likes | dislike |
++----+--------+------+------------+--------+-------+---------+
+|    |        |      |            |        |       |         |
+|    |        |      |            |        |       |         |
+|    |        |      |            |        |       |         |
++----+--------+------+------------+--------+-------+---------+
+```
+
+```SQL
+CREATE TABLE idealabels (
+    id int NOT NULL AUTO_INCREMENT,
+    ideaid int NOT NULL,
+    type varchar(500) NOT NULL,
+    creativity varchar(500) NOT NULL,
+    status varchar(500) NOT NULL,
+    likes int NOT NULL,
+    dislike int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ideaid) REFERENCES ideas(id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -222,6 +249,19 @@ mysql> describe comments;
 | ideaid         | int            | NO   | MUL | NULL    |                |
 | superCommentid | int            | YES  | MUL | NULL    |                |
 +----------------+----------------+------+-----+---------+----------------+
+
+mysql> describe idealabels;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int          | NO   | PRI | NULL    | auto_increment |
+| ideaid     | int          | NO   | MUL | NULL    |                |
+| type       | varchar(500) | NO   |     | NULL    |                |
+| creativity | varchar(500) | NO   |     | NULL    |                |
+| status     | varchar(500) | NO   |     | NULL    |                |
+| likes      | int          | NO   |     | NULL    |                |
+| dislike    | int          | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
 ```
 
 ## Database interrogation

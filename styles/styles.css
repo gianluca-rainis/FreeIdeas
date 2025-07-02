@@ -451,25 +451,10 @@ footer ul li a {
 }
 
 #search {
-    padding: 10px 30px 10px 5px;
+    padding: 10px 5px 10px 5px;
     margin-right: 50px;
     border-radius: 5px;
     border: 1px solid #2c3d27;
-}
-
-#searchSendButton {
-    width: 30px;
-    height: 30px;
-    border: 0;
-    background: none;
-    position: fixed;
-    left: 23rem;
-    cursor: pointer;
-}
-
-#searchSendButton img {
-    width: 20px;
-    height: 20px;
 }
 
 .filterBlock {
@@ -922,4 +907,186 @@ footer ul li a {
 #accountBody #footer {
     position: relative;
     z-index: 100;
+}
+
+/* NEW IDEAS STYLES */
+#newIdeaMain {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* main block */
+#newIdeaMain #ideaImageAsBackground {
+    background-image: url("../images/voidImage.jpg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+#newIdeaMain #title {
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+    background-color: #ebffa4;
+    font-size: 100px;
+    opacity: 80%;
+    border-radius: 10px;
+}
+
+#newIdeaMain #author {
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+    background-color: #b6ffa4;
+    opacity: 70%;
+    font-size: 50px;
+    border-radius: 10px;
+}
+
+#newIdeaMain #mainAuthorAccount {
+    text-decoration: underline;
+    color: rgb(255, 130, 130);
+}
+
+#newIdeaMain #description {
+    margin-top: 40px;
+    font-size: large;
+    text-align: justify;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 90%;
+    resize: vertical;
+    height: 80px;
+}
+
+#newinfoForFilters {
+    margin-top: 30px;
+}
+
+/* image info */
+#newIdeaMain #imagesInfo {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#newIdeaMain #additionalInfo {
+    align-items: center;
+    justify-content: center;
+    background-color: #f3ffc9;
+    margin-top: 10px;
+    padding-top: 20px;
+    margin-bottom: 10px;
+}
+
+#newIdeaMain #addAdditionalInfo, #newIdeaMain #addLog {
+    width: 30px;
+    cursor: pointer;
+}
+
+#newIdeaMain .deleteAdditionalInfo, #newIdeaMain .deleteLog {
+    width: 30px;
+    cursor: pointer;
+    margin-left: 90%;
+}
+
+#newIdeaMain #imagesInfo .imageInfoLi {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3ffc9;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#newIdeaMain #imagesInfo .preview {
+    max-width: 40rem;
+    max-height: 15rem;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+#newIdeaMain #imagesInfo .imageInfo {
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+#newIdeaMain #imagesInfo .titleImageInfo, #newIdeaMain .logTitle {
+    font-size: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 30%;
+    resize: none;
+}
+
+#newIdeaMain #imagesInfo .imageInfoDescription, #newIdeaMain .logInfo {
+    margin-top: 40px;
+    font-size: large;
+    text-align: justify;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 90%;
+    resize: vertical;
+    height: 80px;
+}
+
+/* download */
+#newIdeaMain .subtitles {
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#newIdeaMain #buttonlink {
+    margin-bottom: 20px;
+    width: 80%;
+    height: 40px;
+}
+
+/* dev logs */
+#newIdeaMain #devLogsSection {
+    background-color: #f8f095;
+}
+
+#newIdeaMain #logsList {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 30px;
+}
+
+#newIdeaMain .log {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#newIdeaMain .logTitleAndData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+#newIdeaMain .logTitle {
+    font-size: 20px;
+}
+
+#newIdeaMain .data {
+    margin-left: 30px;
+    color: grey;
+}
+
+#newIdeaMain .logInfo {
+    margin-bottom: 20px;
+    text-align: justify;
+    margin-left: 30px;
+    margin-right: 30px;
 }

@@ -10,7 +10,7 @@ function loadNav() {
             </ul>
             <ul class="navLinks">
                 <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
-                <li><a href="./ideaVoid.html" class="navText">Publish an Idea</a></li>
+                <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText">Ask help for an Idea</a></li>
                 <li><a href="" class="navText">Random Idea</a></li>
                 <li id="userImageLi"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></li>
@@ -52,8 +52,7 @@ function loadFooter() {
                 <a href="./index.html" id="footerLogoA"><img src="./images/FreeIdeas.svg" id="footerLogo"></a>
 
                 <ul class="footerText">
-                    <li>Author: Gianluca Rainis ( __grdev on summer.hackclub.com )</li>
-                    <li>This site was created for the Summer of Making 2025</li>
+                    <li>Copyright &copy; 2025 Gianluca Rainis</li>
                 </ul>
             </section>
         `;
@@ -233,8 +232,10 @@ function printError(errorCode) {
 
         document.querySelector("main").style.textAlign = "center";
         
-        document.querySelector("header").innerHTML = "";
-        document.querySelector("header").style.visibility = "hidden";
+        if (document.querySelector("header")) {
+            document.querySelector("header").innerHTML = "";
+            document.querySelector("header").style.visibility = "hidden";
+        }
 
         error = true;
     }

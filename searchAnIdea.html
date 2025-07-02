@@ -17,7 +17,6 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 
         <header>
             <input type="search" placeholder="Search" id="search">
-            <button type="submit" id="searchSendButton"><img src="./images/search.png"></button>
 
             <ul id="allFilters">
                 <li class="filterBlock">
@@ -50,7 +49,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 
                 <li class="filterBlock">
                     <label class="labelInfoSearch">Project status:</label>
-                    <select id="orderBy" class="filterSearch">
+                    <select id="orderByStatus" class="filterSearch">
                         <option selected>All</option>
                         <option>Finished</option>
                         <option>Work in progress</option>
@@ -60,7 +59,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 
                 <li class="filterBlock">
                     <label class="labelInfoSearch">Order by:</label>
-                    <select id="orderBy" class="filterSearch">
+                    <select id="orderByPeople" class="filterSearch">
                         <option selected>All</option>
                         <option>Most voted</option>
                         <option>Newest</option>
@@ -79,83 +78,12 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
                         <p class="ideaAuthorSrc">Author</p>
                     </li>
                 </a>
-                
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
-
-                <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
-                        <img src="" alt="Idea Image" class="ideaImageSrc">
-                        <p class="ideaTitleSrc">Title</p>
-                        <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a>
             </ul>
         </main>
 
         <footer id="footer"></footer>
 
         <script src="./scripts/commonParts.js" defer></script>
+        <script src="./scripts/searchIdea.js" defer></script>
     </body>
 </html>
