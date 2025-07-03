@@ -24,8 +24,8 @@
                 $_SESSION['account']['surname'] = $row['surname'];
 
                 if (isset($row['userimage'])) {
-                    $row['userimage'] = base64_encode($row['userimage']);
-                    $_SESSION['account']['userimage'] = 'data:image/png;base64,' . $row['userimage'];
+                    $row['userimage'] = ($row['userimage']);
+                    $_SESSION['account']['userimage'] = $row['userimage'];
                 }
                 else {
                     $_SESSION['account']['userimage'] = null;
@@ -74,7 +74,7 @@
         $_SESSION['account']['surname'] = $row['surname'];
 
         if (isset($row['userimage'])) {
-            $row['userimage'] = base64_encode($row['userimage']);
+            $row['userimage'] = ($row['userimage']);
         }
 
         $_SESSION['account']['userimage'] = $row['userimage'];

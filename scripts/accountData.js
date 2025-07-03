@@ -13,7 +13,7 @@ async function changeDataAccount() {
 
             <div id="newDataSetAccount">
                 <label>Username</label><input type="text" id="newuserNameAccount" maxlength="255" required>
-                <label>Image</label><input type="file" id="newuserImageAccount" accept="image/png">
+                <label>Image</label><input type="file" id="newuserImageAccount" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
                 <label>Name</label><input type="text" id="newuserAccountName" maxlength="255" required>
                 <label>Surname</label><input type="text" id="newuserSurnameAccount" maxlength="255" required>
                 <label>Email</label><input type="email" id="newemailAccount" maxlength="255" required>

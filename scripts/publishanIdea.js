@@ -1,7 +1,15 @@
 const main = document.getElementById("newIdeaMain");
+const newIdeaForm = document.getElementById("newIdeaForm");
+const saveNewIdea = document.getElementById("saveNewIdea");
+const cancelNewIdea = document.getElementById("cancelNewIdea");
 
 const title = document.getElementById("title");
 const author = document.getElementById("mainAuthorAccount");
+let authorid = null;
+
+const date = new Date();
+const currentdate = `${date.getFullYear()}-${(date.getMonth()+1).toString().length==2?(date.getMonth()+1):"0"+(date.getMonth()+1).toString()}-${date.getDate().toString().length==2?date.getDate():"0"+date.getDate().toString()}`;
+
 const description = document.getElementById("description");
 const mainImage = document.getElementById("ideaImageAsBackground");
 const getMainImage = document.getElementById("mainImage");
@@ -37,22 +45,22 @@ function updateQuerySelectorAll() {
     logData = document.querySelectorAll(".data");
     logInfo = document.querySelectorAll(".logInfo");
     deleteLog = document.querySelectorAll(".deleteLog");
-}
 
-for (let i = 0; i < fileImage.length; i++) {
-    fileImage[i].addEventListener("change", () => {
-        const file = fileImage[i].files[0];
+    for (let i = 0; i < fileImage.length; i++) {
+        fileImage[i].addEventListener("change", () => {
+            const file = fileImage[i].files[0];
 
-        if (file) {
-            const reader = new FileReader();
+            if (file) {
+                const reader = new FileReader();
 
-            reader.onload = function (e) {
-                imagePreview[i].src = e.target.result;
+                reader.onload = function (e) {
+                    imagePreview[i].src = e.target.result;
+                }
+
+                reader.readAsDataURL(file);
             }
-
-            reader.readAsDataURL(file);
-        }
-    });
+        });
+    }
 }
 
 getMainImage.addEventListener("change", () => {
@@ -78,7 +86,7 @@ addAdditionalInfo.addEventListener("click", () => {
         
         <div>
             <img class="preview" src="./images/voidImage.jpg">
-            <input type="file" class="imageInfo" accept="image/*" required>
+            <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
         </div>
 
         <div style="display: flex;flex-direction: column;align-items: center;">
@@ -102,13 +110,11 @@ addLog.addEventListener("click", () => {
     const newLi = document.createElement("li");
     newLi.classList.add("log");
 
-    const date = new Date();
-
     newLi.innerHTML += `
         <img src="./images/delete.svg" class="deleteLog">
         <div class="logTitleAndData">
             <textarea class="logTitle" placeholder="Title" maxlength="255" required></textarea>
-            <div class="data">${date.getFullYear()}-${(date.getMonth()+1).toString().length==2?(date.getMonth()+1):"0"+(date.getMonth()+1).toString()}-${date.getDate().toString().length==2?date.getDate():"0"+date.getDate().toString()}</div>
+            <div class="data">${currentdate}</div>
         </div>
 
         <textarea class="logInfo" placeholder="Description" maxlength="10000" required></textarea>
@@ -125,6 +131,87 @@ logsList.addEventListener("click", (event) => {
     }
 });
 
+cancelNewIdea.addEventListener("click", () => {
+    window.location.href = "./publishAnIdea.html";
+});
+
+newIdeaForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+        const formData = new FormData();
+        formData.append("title", title.value);
+        formData.append("author", authorid);
+        formData.append("data", currentdate);
+        formData.append("description", description.value);
+        formData.append("mainImage", getMainImage.files[0]);
+
+        formData.append("type", typeProject.value);
+        formData.append("creativity", creativityType.value);
+        formData.append("status", statusProject.value);
+
+        const tempTitles = [];
+        const tempDescriptions = [];
+        for (let i = 0; i < fileImage.length; i++) {
+            if (fileImage[i].files[0]) {
+                formData.append("additionalInfoImages[]", fileImage[i].files[0]);
+            }
+            else {
+                throw new Error("ERROR_IMAGE_FILE");                
+            }
+
+            tempTitles.push(titleSupplemImfo[i].value);
+            tempDescriptions.push(descriptionSupplemImfo[i].value);
+        }
+
+        const additionalInfoJson = {
+            "titles":tempTitles,
+            "descriptions":tempDescriptions
+        };
+        
+        formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
+
+        formData.append("link", buttonlink.value);
+
+        const temp2Dates = [];
+        const temp2Titles = [];
+        const temp2Descriptions = [];
+        for (let i = 0; i < logTitle.length; i++) {
+            temp2Dates.push(logData[i].innerHTML);
+            temp2Titles.push(logTitle[i].value);
+            temp2Descriptions.push(logInfo[i].value);
+        }
+
+        const logJson = {
+            "dates":temp2Dates,
+            "titles":temp2Titles,
+            "descriptions":temp2Descriptions
+        };
+
+        formData.append("logs", JSON.stringify(logJson));
+
+        /* for (const [key, value] of formData) {
+           console.log(`${key}: ${value}\n`);
+        } */
+
+        const response = await fetch(newIdeaForm.action, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            window.location.href = "./index.html";
+        }
+        else {
+            throw new Error("ERROR_IN_PHP");
+        }
+    } catch (error) {
+        console.error(error);
+        printError(421);
+    }
+});
 
 /* LOGIN GESTOR */
 error = false; // Error variable to print only the most specific error
@@ -171,6 +258,7 @@ async function getDataFromDatabase2() {
 function loadData2(SQLdata) {
     try {
         author.innerHTML = SQLdata['username'];
+        authorid = SQLdata['id'];
     } catch (error) {
         printError(404);
     }

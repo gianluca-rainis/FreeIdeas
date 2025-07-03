@@ -26,7 +26,11 @@
     }
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $image = file_get_contents($_FILES['image']['tmp_name']);
+        $image = $_FILES['image'];
+
+        if ($image) {
+            $image = getConvertedImage($image);
+        }
     }
 
     if ($image !== null) {
@@ -69,7 +73,7 @@
     $_SESSION['account']['surname'] = $lastName;
 
     if ($image) {
-        $_SESSION['account']['userimage'] = 'data:image/png;base64,' . base64_encode($image);
+        $_SESSION['account']['userimage'] = $image;
     }
     else {
         $_SESSION['account']['userimage'] = null;
@@ -86,6 +90,47 @@
         $data = htmlspecialchars($data);
 
         return $data;
+    }
+
+    function getConvertedImage($image) {
+        $return = "";
+
+        if ($image && file_exists($image['tmp_name'])) {
+            switch (exif_imagetype($image['tmp_name'])) {
+                case IMAGETYPE_PNG:
+                    $return = 'data:image/png;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+
+                case IMAGETYPE_GIF:
+                    $return = 'data:image/gif;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+
+                case IMAGETYPE_JPEG:
+                    $return = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+
+                case IMAGETYPE_ICO:
+                    $return = 'data:image/x-icon;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+
+                case IMAGETYPE_WEBP:
+                    $return = 'data:image/webp;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+
+                case IMAGETYPE_BMP:
+                    $return = 'data:image/bmp;base64,' . base64_encode(file_get_contents($image['tmp_name']));
+                    break;
+                
+                default:
+                    $return = null;
+                    break;
+            }
+        }
+        else {
+            $return = null;
+        }
+
+        return $return;
     }
 
     exit;

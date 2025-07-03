@@ -50,10 +50,10 @@ main(id);
 
 async function main(id) {
     if (id && id > 0) {
-        const SQLdata = await getDataFromDatabase(id);
+        const SQLdata = await getDataFromDatabase2(id);
 
         if (SQLdata) {
-            loadData(SQLdata);
+            loadData2(SQLdata);
         }
         else {
             printError(404);
@@ -64,7 +64,7 @@ async function main(id) {
     }
 }
 
-async function getDataFromDatabase(id) {
+async function getDataFromDatabase2(id) {
     try {
         const res = await fetch(`./api/data.php?id=${id}`);
         const data = await res.json();
@@ -92,10 +92,11 @@ function printError(errorCode) {
     }
 }
 
-function loadData(SQLdata) {
+function loadData2(SQLdata) {
     try {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
-        mainIdeaImageBg.style.backgroundImage = SQLdata['idea'][0].ideaimage;
+        console.log(SQLdata['idea'][0].ideaimage);
+        mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
         authorAccount.innerHTML = SQLdata['idea'][0].accountName;
         authorAccount.href = ""; // To change later
         mainDescription.innerHTML = SQLdata['idea'][0].description;
@@ -135,7 +136,7 @@ function loadData(SQLdata) {
                 }
 
                 additionalInfoWithImageTitle[additionalInfoWithImageTitle.length-1].innerHTML = row.title;
-                additionalInfoWithImageImage[additionalInfoWithImageImage.length-1].src = `data:image/jpeg;base64,${row.updtimage}`;
+                additionalInfoWithImageImage[additionalInfoWithImageImage.length-1].src = `${row.updtimage}`;
                 additionalInfoWithImageDescription[additionalInfoWithImageDescription.length-1].innerHTML = row.description;
             });
         }
@@ -245,7 +246,7 @@ function loadData(SQLdata) {
                     tempBoolControl = false;
                 }
 
-                writerImage[writerImage.length-1].src = row.userimage!==null?`data:image/jpeg;base64,${row.userimage}`:"./images/user.png";
+                writerImage[writerImage.length-1].src = row.userimage!==null?`${row.userimage}`:"./images/user.png";
                 writerUserName[writerUserName.length-1].innerHTML = (row.username+":");
                 dataComment[dataComment.length-1].innerHTML = row.data;
                 commentText[commentText.length-1].innerHTML = row.description;
@@ -256,7 +257,7 @@ function loadData(SQLdata) {
             commentsListUl.innerHTML = `<li class="comment"><p class="replyComment">Write the first comment!</p></li>`;
         }
     } catch (error) {
-    console.log(SQLdata);
+    console.log(error);
         printError(404);
     }
 }

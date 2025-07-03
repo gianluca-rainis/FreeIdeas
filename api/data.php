@@ -28,16 +28,6 @@
         $data = [];
 
         while ($row = $result->fetch_assoc()) {
-            if (isset($row['ideaimage'])) {
-                $row['ideaimage'] = base64_encode($row['ideaimage']);
-            }
-            elseif (isset($row['updtimage'])) {
-                $row['updtimage'] = base64_encode($row['updtimage']);
-            }
-            elseif (isset($row['userimage'])) {
-                $row['userimage'] = base64_encode($row['userimage']);
-            }
-
             $data[] = $row;
         }
 

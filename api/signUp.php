@@ -67,7 +67,7 @@
 
             if (isset($row['userimage'])) {
                 $row['userimage'] = base64_encode($row['userimage']);
-                $_SESSION['account']['userimage'] = 'data:image/png;base64,' . $row['userimage'];
+                $_SESSION['account']['userimage'] = $row['userimage'];
             }
             else {
                 $_SESSION['account']['userimage'] = null;
