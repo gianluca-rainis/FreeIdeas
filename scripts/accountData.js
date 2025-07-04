@@ -1,4 +1,4 @@
-async function changeDataAccount() {    
+async function changeDataAccount() {
     document.getElementById("modifyAccountInfo").addEventListener("click", () => {
         let username = document.getElementById("userNameAccount").innerHTML;
         let name = document.getElementById("userNameSurnameAccount").innerHTML.split(' ')[0];
@@ -29,11 +29,17 @@ async function changeDataAccount() {
 
         document.getElementById("saveAccountInfo").addEventListener("click", async () => {
             username = document.getElementById("newuserNameAccount").value;
-            name = document.getElementById("newuserNameAccount").value;
+            name = document.getElementById("newuserAccountName").value;
             surname = document.getElementById("newuserSurnameAccount").value;
             email = document.getElementById("newemailAccount").value;
             description = document.getElementById("newdescriptionAccount").value;
-            image = document.getElementById("newuserImageAccount").files[0]!=null?document.getElementById("newuserImageAccount").files[0]:image;
+
+            if (document.getElementById("newuserImageAccount").files[0] != null) {
+                image = document.getElementById("newuserImageAccount").files[0];
+            }
+            else {
+                image = null;
+            }
             
             const data = new FormData();
             data.append('username', username);
@@ -41,7 +47,10 @@ async function changeDataAccount() {
             data.append('surname', surname);
             data.append('email', email);
             data.append('description', description);
-            data.append('image', image);
+            
+            if (image) {
+                data.append('image', image);
+            }
 
             async function sendData(data) {
                 try {
@@ -81,7 +90,6 @@ async function changeDataAccount() {
 }
 
 changeDataAccount();
-
 
 /* DINAMIC PART */
 error = false; // Error variable to print only the most specific error

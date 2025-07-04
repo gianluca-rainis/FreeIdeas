@@ -1,0 +1,52 @@
+<?php
+    header("Content-Type: application/json");
+
+    include("./db_connection.php");
+
+    session_start();
+
+    $authorid = $data = $description = $ideaid = $superCommentid = "";
+    
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $authorid = getInput($_POST["authorid"]);
+        $data = getInput($_POST["data"]);
+        $description = getInput($_POST["description"]);
+        $ideaid = getInput($_POST["ideaid"]);
+        $superCommentid = getInput($_POST["superCommentid"]);
+    }
+
+    if ($superCommentid === "") {
+        $superCommentid = null;
+    }
+    
+    $sql = "INSERT INTO comments (authorid, data, description, ideaid, superCommentid) VALUES (?, ?, ?, ?, ?);";
+    $state = $conn->prepare($sql);
+
+    if (!$state) {
+        echo json_encode(["success"=>false, "error"=>"database_connection"]);
+        exit;
+    }
+
+    $state->bind_param("issii", $authorid, $data, $description, $ideaid, $superCommentid);
+    
+    if (!$state->execute()) {
+        echo json_encode(["success"=>false, "error"=>"execution_command"]);
+        exit;
+    }
+
+    $state->close();
+    $conn->close();
+
+    echo json_encode(["success"=>true]);
+
+    function getInput($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+
+        return $data;
+    }
+
+    exit;
+?>

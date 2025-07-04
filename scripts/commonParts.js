@@ -126,7 +126,7 @@ function toggleSendLoginButton() {
                 window.location.href = "./index.html";
             }
             else {
-                if (loginArea.innerHTML.includes("Create your account")) {
+                if (!isLoginArea) {
                     printError(404);
                 } else {
                     alert("Email or password are wrong");
@@ -134,6 +134,40 @@ function toggleSendLoginButton() {
             }
         } catch (error) {
             printError(421);
+        }
+    });
+}
+
+async function toggleForgotPassword() {
+    document.getElementById("forgotPassword").addEventListener("click", async () => {
+        const email = document.getElementById("emailAreaLogin").value;
+        
+        if (email && email.includes("@") && email.includes(".")) {
+            try {
+                const formData = new FormData();
+                formData.append("email", email);
+
+                const response = await fetch("./api/forgotPassword.php", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data) {
+                    alert("Sended email to: "+email);
+                }
+                else {
+                    printError(421);
+                }
+            } catch (error) {
+                console.log(error);
+                printError(421);
+            }
+        } else {
+            document.getElementById("emailAreaLogin").focus();
+
+            alert("Insert a valid email");
         }
     });
 }
@@ -178,6 +212,8 @@ function signUpGestor() {
             </form>`;
 
             isLoginArea = true;
+
+            toggleForgotPassword();
         }
 
         signUpGestor();
@@ -186,6 +222,7 @@ function signUpGestor() {
     });
 }
 
+toggleForgotPassword();
 togglePasswordVisibility();
 toggleSendLoginButton();
 signUpGestor();

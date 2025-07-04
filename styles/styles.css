@@ -740,12 +740,24 @@ footer ul li a {
     margin-right: 50px;
 }
 
-.replyComment {
+.replyComment, #saveComment, #deleteComment {
     text-align: left;
     text-decoration: underline;
     font-style: italic;
     color: grey;
     padding-top: 5px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+#saveComment, #deleteComment {
+    margin: 10px;
+}
+
+#newCommentText {
+    width: 50%;
+    height: 15rem;
+    resize: none;
 }
 
 .underComments {

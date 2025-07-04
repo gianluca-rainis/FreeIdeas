@@ -62,6 +62,7 @@
 
     if (!$state->execute()) {
         echo json_encode(["success"=>false, "error"=>"execution_command"]);
+        exit;
     }
 
     $state->close();
@@ -74,9 +75,6 @@
 
     if ($image) {
         $_SESSION['account']['userimage'] = $image;
-    }
-    else {
-        $_SESSION['account']['userimage'] = null;
     }
 
     $_SESSION['account']['description'] = $description;
