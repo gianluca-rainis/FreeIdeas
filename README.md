@@ -165,15 +165,15 @@ CREATE TABLE comments (
 
 ### Labels of a project
 ```SQL
-+------------------------------------------------------------+
-|                         idealabels                         |
-+------------------------------------------------------------+
-| id | ideaid | type | creativity | status | likes | dislike |
-+----+--------+------+------------+--------+-------+---------+
-|    |        |      |            |        |       |         |
-|    |        |      |            |        |       |         |
-|    |        |      |            |        |       |         |
-+----+--------+------+------------+--------+-------+---------+
++--------------------------------------------------------------------+
+|                             idealabels                             |
++--------------------------------------------------------------------+
+| id | ideaid | type | creativity | status | saves | likes | dislike |
++----+--------+------+------------+--------+-------+-------+---------+
+|    |        |      |            |        |       |       |         |
+|    |        |      |            |        |       |       |         |
+|    |        |      |            |        |       |       |         |
++----+--------+------+------------+--------+-------+-------+---------+
 ```
 
 ```SQL
@@ -183,9 +183,37 @@ CREATE TABLE idealabels (
     type varchar(500) NOT NULL,
     creativity varchar(500) NOT NULL,
     status varchar(500) NOT NULL,
+    saves int NOT NULL,
     likes int NOT NULL,
     dislike int NOT NULL,
     PRIMARY KEY (id),
+    FOREIGN KEY (ideaid) REFERENCES ideas(id)
+);
+```
+
+### Account additional data about ideas
+```SQL
++---------------------------------------------------+
+|                  accountideadata                  |
++---------------------------------------------------+
+| id | accountid | ideaid | saved | dislike | liked |
++----+-----------+--------+-------+---------+-------+
+|    |           |        |       |         |       |
+|    |           |        |       |         |       |
+|    |           |        |       |         |       |
++----+-----------+--------+-------+---------+-------+
+```
+
+```SQL
+CREATE TABLE accountideadata (
+    id int NOT NULL AUTO_INCREMENT,
+    accountid int NOT NULL,
+    ideaid int NOT NULL,
+    saved int,
+    dislike int,
+    liked int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (accountid) REFERENCES accounts(id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id)
 );
 ```
@@ -262,9 +290,22 @@ mysql> describe idealabels;
 | type       | varchar(500) | NO   |     | NULL    |                |
 | creativity | varchar(500) | NO   |     | NULL    |                |
 | status     | varchar(500) | NO   |     | NULL    |                |
+| saves      | int          | NO   |     | NULL    |                |
 | likes      | int          | NO   |     | NULL    |                |
 | dislike    | int          | NO   |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
+
+mysql> describe accountideadata;          
++-----------+------+------+-----+---------+----------------+
+| Field     | Type | Null | Key | Default | Extra          |
++-----------+------+------+-----+---------+----------------+
+| id        | int  | NO   | PRI | NULL    | auto_increment |
+| accountid | int  | NO   | MUL | NULL    |                |
+| ideaid    | int  | NO   | MUL | NULL    |                |
+| saved     | int  | YES  |     | NULL    |                |
+| dislike   | int  | YES  |     | NULL    |                |
+| liked     | int  | YES  |     | NULL    |                |
++-----------+------+------+-----+---------+----------------+
 ```
 
 ## Database interrogation

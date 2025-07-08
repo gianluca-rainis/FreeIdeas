@@ -9,6 +9,16 @@ const ideaAuthor = document.getElementById("author"); // Idea main author
 const authorAccount = document.getElementById("mainAuthorAccount"); // Idea main author link to account
 const mainDescription = document.getElementById("description"); // Description
 
+const savedIdeaButton = document.getElementById("savedIdea");
+const likedIdeaButton = document.getElementById("likedIdea");
+const dislikedIdeaButton = document.getElementById("dislikedIdea");
+const savedIdeaImg = document.getElementById("savedIdeaImg");
+const likedIdeaImg = document.getElementById("likedIdeaImg");
+const dislikedIdeaImg = document.getElementById("dislikedIdeaImg");
+const savedNumber = document.getElementById("savedNumber");
+const likedNumber = document.getElementById("likedNumber");
+const dislikedNumber = document.getElementById("dislikedNumber");
+
 const additionalInfoWithImagesUl = document.getElementById("imagesInfo"); // The ul with the additional info with images
 let additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
 let additionalInfoWithImageImage = document.querySelectorAll(".imageInfo"); // The image
@@ -48,7 +58,9 @@ const paramsURL = new URLSearchParams(window.location.search); // The params pas
 const id = paramsURL.get("idea"); // The id of the page to load
 
 let error2 = false; // Error variable to print only the most specific error
+let existCurrentAccountIdeaData = false;
 
+// LOAD DATA FROM DATABASE
 main(id);
 
 async function main(id) {
@@ -85,6 +97,8 @@ async function getDataFromDatabase2(id) {
 
         return data;
     } catch (error) {
+        console.log(error);
+
         printError(421);
 
         return null;
@@ -125,8 +139,28 @@ function loadData2(SQLdata) {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
         mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
         authorAccount.innerHTML = SQLdata['idea'][0].accountName;
-        authorAccount.href = ""; // ==================================================================== To change later - author public page
+        authorAccount.href = `./accountVoid.html?account=${SQLdata['idea'][0].accountId}`;
         mainDescription.innerHTML = SQLdata['idea'][0].description;
+
+        savedNumber.innerHTML = SQLdata['idealabels'][0].saves;
+        likedNumber.innerHTML = SQLdata['idealabels'][0].likes;
+        dislikedNumber.innerHTML = SQLdata['idealabels'][0].dislike;
+
+        if (SQLdata['accountdata'][0]) {
+            if (SQLdata['accountdata'][0].saved == 1) {
+                savedIdeaImg.src = "./images/savedIdea.svg";
+            }
+
+            if (SQLdata['accountdata'][0].liked == 1) {
+                likedIdeaImg.src = "./images/likedIdea.svg";
+            }
+
+            if (SQLdata['accountdata'][0].dislike == 1) {
+                dislikedIdeaImg.src = "./images/dislikedIdea.svg";
+            }
+
+            existCurrentAccountIdeaData = true;
+        }
 
         if (SQLdata['idea'][0].downloadlink) { // Download link
             buttonLink.href = SQLdata['idea'][0].downloadlink;
@@ -364,6 +398,7 @@ function loadData2(SQLdata) {
                         const result = await sendData(data);
 
                         if (!result) {
+                            console.error("ERROR_SAVING_COMMENT");
                             printError(421);
                         }
                         else {
@@ -385,7 +420,141 @@ function loadData2(SQLdata) {
             });
         }
     } catch (error) {
-    console.log(error);
+        console.log(error);
         printError(404);
     }
 }
+
+// Like, save, dislike gestors
+async function toggleSavedLikedDislikedAccountIdeaData() {
+    let tempSrc = savedIdeaImg.src;
+    let saved = false;
+    let liked = false;
+    let disliked = false;
+
+    if (tempSrc.includes("/images/savedIdea.svg")) {
+        saved = true;
+    }
+
+    tempSrc = likedIdeaImg.src;
+
+    if (tempSrc.includes("/images/likedIdea.svg")) {
+        liked = true;
+    }
+
+    tempSrc = dislikedIdeaImg.src;
+
+    if (tempSrc.includes("/images/dislikedIdea.svg")) {
+        disliked = true;
+    }
+
+    if (liked && disliked) {
+        console.error("LIKE_AND_DISLIKE_AT_THE_SAME_TIME");
+        printError(421);
+    }
+    else {
+        const formData = new FormData();
+        formData.append("ideaid", id);
+        formData.append("saved", saved?"1":"0");
+        formData.append("dislike", disliked?"1":"0");
+        formData.append("liked", liked?"1":"0");
+        formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
+
+        try {
+            const res = await fetch(`./api/saveAccountIdeaData.php`, {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (!data['success']) {
+                throw new Error("");
+            }
+        } catch (error) {
+            console.log(error);
+            printError(421);
+        }
+    }
+
+    existCurrentAccountIdeaData = true;
+}
+
+savedIdeaButton.addEventListener("click", async () => {
+    const sessionData = await isLoggedIn();
+
+    if (sessionData) {
+        const currentSrc = savedIdeaImg.src;
+
+        if (currentSrc.includes("/images/saved.svg")) {
+            savedIdeaImg.src = "./images/savedIdea.svg";
+            savedNumber.innerHTML = parseInt(savedNumber.innerHTML)+1;
+        }
+        else if (currentSrc.includes("/images/savedIdea.svg")) {
+            savedIdeaImg.src = "./images/saved.svg";
+            savedNumber.innerHTML = parseInt(savedNumber.innerHTML)-1;
+        }
+
+        toggleSavedLikedDislikedAccountIdeaData();
+    }
+    else {
+        alert("You need to login before vote a project!");
+    }
+});
+
+likedIdeaButton.addEventListener("click", async () => {
+    const sessionData = await isLoggedIn();
+
+    if (sessionData) {
+        const currentSrc = likedIdeaImg.src;
+        const dislikeSrc = dislikedIdeaImg.src;
+
+        if (currentSrc.includes("/images/liked.svg")) {
+            likedIdeaImg.src = "./images/likedIdea.svg";
+            likedNumber.innerHTML = parseInt(likedNumber.innerHTML)+1;
+
+            if (dislikeSrc.includes("/images/dislikedIdea.svg")) { // Can't be like and dislike at the same time
+                dislikedIdeaImg.src = "./images/disliked.svg";
+                dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)-1;
+            }
+        }
+        else if (currentSrc.includes("/images/likedIdea.svg")) {
+            likedIdeaImg.src = "./images/liked.svg";
+            likedNumber.innerHTML = parseInt(likedNumber.innerHTML)-1;
+        }
+
+        toggleSavedLikedDislikedAccountIdeaData();
+    }
+    else {
+        alert("You need to login before vote a project!");
+    }
+});
+
+dislikedIdeaButton.addEventListener("click", async () => {
+    const sessionData = await isLoggedIn();
+
+    if (sessionData) {
+        const currentSrc = dislikedIdeaImg.src;
+        const likedSrc = likedIdeaImg.src;
+
+        if (currentSrc.includes("/images/disliked.svg")) {
+            dislikedIdeaImg.src = "./images/dislikedIdea.svg";
+            dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)+1;
+
+            if (likedSrc.includes("/images/likedIdea.svg")) { // Can't be like and dislike at the same time
+                likedIdeaImg.src = "./images/liked.svg";
+                likedNumber.innerHTML = parseInt(likedNumber.innerHTML)-1;
+            }
+        }
+        else if (currentSrc.includes("/images/dislikedIdea.svg")) {
+            dislikedIdeaImg.src = "./images/disliked.svg";
+            dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)-1;
+        }
+
+        toggleSavedLikedDislikedAccountIdeaData();
+    }
+    else {
+        alert("You need to login before vote a project!");
+    }
+});

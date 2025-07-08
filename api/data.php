@@ -3,6 +3,8 @@
 
     include("./db_connection.php");
 
+    session_start();
+
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
         echo null;
         exit;
@@ -36,10 +38,42 @@
         return $data;
     }
 
-    $return['idea'] = getDataFromDatabase($conn, $id, "SELECT ideas.*, accounts.username AS accountName FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;");
+    function getDataFromDatabaseWithAccountInfo($conn, $id, $query) {
+        if (!isset($_SESSION['account']['id'])) {
+            return [null];
+        }
+        else {
+            $accountId = $_SESSION['account']['id'];
+        }
+        
+        $state = $conn->prepare($query);
+
+        if (!$state) {
+            return null;
+        }
+
+        $state->bind_param("si", $id, $accountId);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $state->close();
+
+        return $data;
+    }
+
+    $return['idea'] = getDataFromDatabase($conn, $id, "SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;");
     $return['info'] = getDataFromDatabase($conn, $id, "SELECT * FROM additionalinfo WHERE ideaid=?;"); // Return the info with image
     $return['log'] = getDataFromDatabase($conn, $id, "SELECT * FROM authorupdates WHERE ideaid=?;"); // Logs
     $return['comment'] = getDataFromDatabase($conn, $id, "SELECT comments.*, accounts.username, accounts.userimage FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;"); // Comments
+    $return['idealabels'] = getDataFromDatabase($conn, $id, "SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;"); // Labels
+    $return['accountdata'] = getDataFromDatabaseWithAccountInfo($conn, $id, "SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;"); // Labels
 
     echo json_encode($return);
     

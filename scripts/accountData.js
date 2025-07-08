@@ -1,3 +1,7 @@
+// The id of the page to load
+const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./accountVoid.html?account=123">)
+const id = paramsURL.get("account"); // The id of the page to load
+
 async function changeDataAccount() {
     document.getElementById("modifyAccountInfo").addEventListener("click", () => {
         let username = document.getElementById("userNameAccount").innerHTML;
@@ -89,13 +93,18 @@ async function changeDataAccount() {
     });
 }
 
-changeDataAccount();
+if (!id) {
+    changeDataAccount();
+    ldAccountData2();
+}
+else {
+    document.getElementById("modifyAccountInfo").style.display = "none";
+    ldOtherAccountData();
+}
 
 /* DINAMIC PART */
 error = false; // Error variable to print only the most specific error
 tempBoolControl = false;
-
-ldAccountData2();
 
 async function ldAccountData2() {
     const SQLdata = await getDataFromDatabase2();
@@ -153,5 +162,35 @@ function loadData2(SQLdata) {
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
     } catch (error) {
         printError(404);
+    }
+}
+
+async function ldOtherAccountData() {
+    const SQLdata = await getOtherAccountDataFromDatabase();
+    
+    if (SQLdata) {
+        loadData2(SQLdata);
+    }
+    else {
+        printError(421);
+    }
+}
+
+async function getOtherAccountDataFromDatabase() {
+    try {
+        const formData = new FormData();
+        formData.append("id", id);
+
+        const res = await fetch(`./api/getAccountData.php`, {
+            credentials: "include",
+            method: "POST",
+            body: formData
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
     }
 }

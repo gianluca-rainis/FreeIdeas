@@ -100,8 +100,8 @@
         // Send idealabels
         $zero = 0;
 
-        $stmt = $conn->prepare("INSERT INTO idealabels (ideaid, type, creativity, status, likes, dislike) VALUES (?, ?, ?, ?, ?, ?);");
-        $stmt->bind_param("isssii", $ideaId, $type, $creativity, $status, $zero, $zero);
+        $stmt = $conn->prepare("INSERT INTO idealabels (ideaid, type, creativity, status, saves, likes, dislike) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        $stmt->bind_param("isssiii", $ideaId, $type, $creativity, $status, $zero, $zero, $zero);
         $stmt->execute();
 
         $stmt->close();

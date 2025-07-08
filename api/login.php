@@ -24,7 +24,6 @@
                 $_SESSION['account']['surname'] = $row['surname'];
 
                 if (isset($row['userimage'])) {
-                    $row['userimage'] = ($row['userimage']);
                     $_SESSION['account']['userimage'] = $row['userimage'];
                 }
                 else {
@@ -72,11 +71,6 @@
         $_SESSION['account']['email'] = $row['email'];
         $_SESSION['account']['name'] = $row['name'];
         $_SESSION['account']['surname'] = $row['surname'];
-
-        if (isset($row['userimage'])) {
-            $row['userimage'] = ($row['userimage']);
-        }
-
         $_SESSION['account']['userimage'] = $row['userimage'];
         $_SESSION['account']['description'] = $row['description'];
         $_SESSION['account']['username'] = $row['username'];

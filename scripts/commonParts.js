@@ -11,8 +11,8 @@ function loadNav() {
             <ul class="navLinks">
                 <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
                 <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
-                <li><a href="" class="navText">Ask help for an Idea</a></li>
-                <li><a href="" class="navText">Random Idea</a></li>
+                <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
+                <li id="themeImageLi"><img src="./images/sun-dark.svg" id="toggle-light-dark-theme"></li>
                 <li id="userImageLi"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></li>
             </ul>
             <div id="loginArea">
@@ -74,6 +74,87 @@ function loadMetadata() {
 loadMetadata();
 loadNav();
 loadFooter();
+
+// LIGHT DARK THEME
+const lightDarkThemeButton = document.getElementById("toggle-light-dark-theme");
+loadCurrentTheme();
+
+lightDarkThemeButton.addEventListener("click", () =>{
+    const currentSrc = lightDarkThemeButton.src;
+
+    if (currentSrc.includes("/images/sun-dark.svg")) {
+        toggleLightDarkThemeOnSessionData(false);
+    }
+    else if (currentSrc.includes("/images/sun-light.svg")) {
+        toggleLightDarkThemeOnSessionData(true);
+    }
+
+    loadCurrentTheme();
+});
+
+async function toggleLightDarkThemeOnSessionData(isLight) {
+    const theme = isLight?"light":"dark";
+    
+    try {
+        await fetch(`./api/toggleLightDarkTheme.php?theme=${theme}`);
+    } catch (error) {
+        console.error("ERROR_TOGGLE_THEME: "+error);
+    }
+}
+
+async function getSessionDataFromDatabaseTheme() {
+    try {
+        const res = await fetch(`./api/getSessionData.php?data=theme`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+async function loadCurrentTheme() {
+    const theme = await getSessionDataFromDatabaseTheme();
+
+    if (theme) {
+        if (theme == "light") { // ========================================== TO FINISH LATHER ==========================================
+            lightDarkThemeButton.src = "./images/sun-dark.svg";
+        } else {
+            lightDarkThemeButton.src = "./images/sun-light.svg";
+        }
+    }
+    else {
+        toggleLightDarkThemeOnSessionData(true);
+        loadCurrentTheme();
+    }
+}
+
+// RANDOM IDEA BUTTON
+const randomLink = document.getElementById("randomIdeaA");
+setRandomLinkForRandomIdea();
+
+async function getRandomIdeaId() {
+    try {
+        const res = await fetch(`./api/getRandomIdeaId.php`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+async function setRandomLinkForRandomIdea() {
+    const randomIdForRandomLink = await getRandomIdeaId();
+
+    randomLink.href = `./ideaVoid.html?idea=${randomIdForRandomLink['id']}`;
+}
 
 // LOGIN GESTOR
 const loginButton = document.getElementById("userImage");

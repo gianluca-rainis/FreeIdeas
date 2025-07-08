@@ -18,6 +18,7 @@ nav {
     height: fit-content;
     width: 100%;
     display: flex;
+    align-items: center;
     background-color: #f6ffd7;
     position: sticky;
     top: 0;
@@ -48,47 +49,49 @@ nav ul li {
     background-color: #f8f095;
 }
 
+.navLogo {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: left;
+}
+
 #navLogo {
+    display: flex;
+    align-items: center;
     width: 250px;
     background: none;
     background-color: transparent;
     margin: 0;
 }
 
-.navLogo {
-    text-align: center;
-    justify-content: left;
-}
-
 .navLinks {
+    display: flex;
     text-align: center;
-    justify-content: right;
-    columns: 5;
-    column-gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
     flex-grow: 1;
-    column-width: calc(60%/5);
-    padding-left: calc(20%);
+    gap: 20px;
+    padding-right: 3rem;
 }
 
 .navLinks li {
-    padding-top: 2.5rem;
+    align-items: center;
 }
 
 #userImageLi {
-    padding-top: 1.4rem;
+    margin-left: 2rem;
 }
 
 .navLinks li a {
     padding: 10px;
     border-radius: 10px;
+    align-items: center;
 }
 
 #userImage {
     width: 37px;
     height: 37px;
-}
-
-#userImage:hover {
     cursor: pointer;
 }
 
@@ -96,6 +99,19 @@ nav ul li {
     padding-top: 3px;
     color: #5cad43;
     cursor: default;
+}
+
+#themeImageLi {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+}
+
+#toggle-light-dark-theme {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
 /* HEADER STYLE */
@@ -347,7 +363,7 @@ footer ul li a {
     background-color: #fffff0;
     right: 0;
     z-index: 10;
-    top: 104px;
+    top: 100px;
     padding: 10px 30px 20px 20px;
     align-items: center;
     text-align: center;
@@ -538,6 +554,9 @@ footer ul li a {
 /* main block */
 #ideaMain #ideaImageAsBackground {
     background-image: url("../images/voidImage.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -575,6 +594,47 @@ footer ul li a {
     text-align: justify;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+#ideaLikeSaveSection {
+    width: 100%;
+    right: 0;
+    display: flex;
+    position: static;
+    height: fit-content;
+    background-color: #f8f095;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#ideaLikeSaveSection ul {
+    list-style-type: none;
+    height: fit-content;
+    display: flex;
+    margin: 10px;
+}
+
+#ideaLikeSaveSection ul li {
+    margin: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    font-size: large;
+    cursor: pointer;
+}
+
+#ideaLikeSaveSection ul li:hover {
+    background-color: #c4bb8d;
+    border: none;
+    border-radius: 5px;
+}
+
+#ideaLikeSaveSection ul li img {
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 /* image info */
@@ -952,6 +1012,7 @@ footer ul li a {
     background-image: url("../images/voidImage.jpg");
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
