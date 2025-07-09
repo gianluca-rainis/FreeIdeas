@@ -558,3 +558,26 @@ dislikedIdeaButton.addEventListener("click", async () => {
         alert("You need to login before vote a project!");
     }
 });
+
+// Modify page if author part
+const modifyButton = document.getElementById("modifyOldIdea");
+
+modifyOldPageIfAuthorLoggedIn();
+
+async function modifyOldPageIfAuthorLoggedIn() {
+    try {
+        const SQLdata = await getDataFromDatabase2(id);
+        const sessionData = await isLoggedIn();
+
+        if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
+            modifyButton.addEventListener("click", () => {
+                window.location.href = `./publishAnIdea.html?idea=${id}`;
+            });
+        }
+        else {
+            modifyButton.style.display = "none";
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}

@@ -35,6 +35,10 @@ let logData = document.querySelectorAll(".data");
 let logInfo = document.querySelectorAll(".logInfo");
 let deleteLog = document.querySelectorAll(".deleteLog");
 
+// The id of the page to load
+const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.html?id=123">)
+const id = paramsURL.get("idea"); // The id of the page to load
+
 function updateQuerySelectorAll() {
     fileImage = document.querySelectorAll(".imageInfo");
     imagePreview = document.querySelectorAll(".preview");
@@ -135,83 +139,85 @@ cancelNewIdea.addEventListener("click", () => {
     window.location.href = "./publishAnIdea.html";
 });
 
-newIdeaForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+if (!id) {
+    newIdeaForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    try {
-        const formData = new FormData();
-        formData.append("title", title.value);
-        formData.append("author", authorid);
-        formData.append("data", currentdate);
-        formData.append("description", description.value);
-        formData.append("mainImage", getMainImage.files[0]);
+        try {
+            const formData = new FormData();
+            formData.append("title", title.value);
+            formData.append("author", authorid);
+            formData.append("data", currentdate);
+            formData.append("description", description.value);
+            formData.append("mainImage", getMainImage.files[0]);
 
-        formData.append("type", typeProject.value);
-        formData.append("creativity", creativityType.value);
-        formData.append("status", statusProject.value);
+            formData.append("type", typeProject.value);
+            formData.append("creativity", creativityType.value);
+            formData.append("status", statusProject.value);
 
-        const tempTitles = [];
-        const tempDescriptions = [];
-        for (let i = 0; i < fileImage.length; i++) {
-            if (fileImage[i].files[0]) {
-                formData.append("additionalInfoImages[]", fileImage[i].files[0]);
+            const tempTitles = [];
+            const tempDescriptions = [];
+            for (let i = 0; i < fileImage.length; i++) {
+                if (fileImage[i].files[0]) {
+                    formData.append("additionalInfoImages[]", fileImage[i].files[0]);
+                }
+                else {
+                    throw new Error("ERROR_IMAGE_FILE");
+                }
+
+                tempTitles.push(titleSupplemImfo[i].value);
+                tempDescriptions.push(descriptionSupplemImfo[i].value);
+            }
+
+            const additionalInfoJson = {
+                "titles": tempTitles,
+                "descriptions": tempDescriptions
+            };
+            
+            formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
+
+            formData.append("link", buttonlink.value);
+
+            const temp2Dates = [];
+            const temp2Titles = [];
+            const temp2Descriptions = [];
+            for (let i = 0; i < logTitle.length; i++) {
+                temp2Dates.push(logData[i].innerHTML);
+                temp2Titles.push(logTitle[i].value);
+                temp2Descriptions.push(logInfo[i].value);
+            }
+
+            const logJson = {
+                "dates": temp2Dates,
+                "titles": temp2Titles,
+                "descriptions": temp2Descriptions
+            };
+
+            formData.append("logs", JSON.stringify(logJson));
+
+            /* for (const [key, value] of formData) {
+                console.log(`${key}: ${value}\n`);
+            } */
+
+            const response = await fetch(newIdeaForm.action, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data) {
+                window.location.href = `./index.html`;
             }
             else {
-                throw new Error("ERROR_IMAGE_FILE");                
+                throw new Error("ERROR_IN_PHP");
             }
-
-            tempTitles.push(titleSupplemImfo[i].value);
-            tempDescriptions.push(descriptionSupplemImfo[i].value);
+        } catch (error) {
+            console.error(error);
+            printError(421);
         }
-
-        const additionalInfoJson = {
-            "titles":tempTitles,
-            "descriptions":tempDescriptions
-        };
-        
-        formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
-
-        formData.append("link", buttonlink.value);
-
-        const temp2Dates = [];
-        const temp2Titles = [];
-        const temp2Descriptions = [];
-        for (let i = 0; i < logTitle.length; i++) {
-            temp2Dates.push(logData[i].innerHTML);
-            temp2Titles.push(logTitle[i].value);
-            temp2Descriptions.push(logInfo[i].value);
-        }
-
-        const logJson = {
-            "dates":temp2Dates,
-            "titles":temp2Titles,
-            "descriptions":temp2Descriptions
-        };
-
-        formData.append("logs", JSON.stringify(logJson));
-
-        /* for (const [key, value] of formData) {
-           console.log(`${key}: ${value}\n`);
-        } */
-
-        const response = await fetch(newIdeaForm.action, {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data) {
-            window.location.href = "./index.html";
-        }
-        else {
-            throw new Error("ERROR_IN_PHP");
-        }
-    } catch (error) {
-        console.error(error);
-        printError(421);
-    }
-});
+    });
+}
 
 /* LOGIN GESTOR */
 error = false; // Error variable to print only the most specific error
@@ -220,7 +226,7 @@ tempBoolControl = false;
 ldAccountData2();
 
 async function ldAccountData2() {
-    const SQLdata = await getDataFromDatabase2();
+    const SQLdata = await getSessionDataFromDatabase2();
 
     if (SQLdata) {
         loadData2(SQLdata);
@@ -241,7 +247,7 @@ async function ldAccountData2() {
     }
 }
 
-async function getDataFromDatabase2() {
+async function getSessionDataFromDatabase2() {
     try {
         const res = await fetch(`./api/getSessionData.php?data=account`, {
             credentials: "include"
@@ -261,5 +267,187 @@ function loadData2(SQLdata) {
         authorid = SQLdata['id'];
     } catch (error) {
         printError(404);
+    }
+}
+
+// Modify an existing idea features
+if (id) {
+    modifyOldPageIfAuthorLoggedIn();
+}
+
+async function modifyOldPageIfAuthorLoggedIn() {
+    try {
+        const SQLdata = await getDataFromDatabase2(id);
+        const sessionData = await getSessionDataFromDatabase2();
+
+        if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
+            title.value = SQLdata['idea'][0].title;
+            description.value = SQLdata['idea'][0].description;
+            mainImage.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
+            getMainImage.removeAttribute("required");
+
+            buttonlink.value = SQLdata['idea'][0].downloadlink;
+
+            typeProject.value = SQLdata['idealabels'][0].type;
+            creativityType.value = SQLdata['idealabels'][0].creativity;
+            statusProject.value = SQLdata['idealabels'][0].status;
+
+            saveNewIdea.value = "Update";
+
+            SQLdata['info'].forEach(info => {
+                const newLi = document.createElement("li");
+                newLi.classList.add("imageInfoLi");
+                newLi.innerHTML += `
+                    <div></div>
+                    <img src="./images/delete.svg" class="deleteAdditionalInfo">
+                    
+                    <div>
+                        <img class="preview" src="${info.updtimage}">
+                        <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
+                    </div>
+
+                    <div style="display: flex;flex-direction: column;align-items: center;">
+                        <textarea type="text" class="titleImageInfo" placeholder="Title" maxlength="255" required>${info.title}</textarea>
+                        <textarea type="text" class="imageInfoDescription" placeholder="Info" maxlength="10000" required>${info.description}</textarea>
+                    </div>
+                `;
+
+                imagesInfo.appendChild(newLi);
+
+                updateQuerySelectorAll();
+            });
+
+            SQLdata['log'].forEach(log => {
+                const newLi = document.createElement("li");
+                newLi.classList.add("log");
+
+                newLi.innerHTML += `
+                    <img src="./images/delete.svg" class="deleteLog">
+                    <div class="logTitleAndData">
+                        <textarea class="logTitle" placeholder="Title" maxlength="255" required>${log.title}</textarea>
+                        <div class="data">${log.data}</div>
+                    </div>
+
+                    <textarea class="logInfo" placeholder="Description" maxlength="10000" required>${log.description}</textarea>
+                `;
+
+                logsList.appendChild(newLi);
+
+                updateQuerySelectorAll();
+            });
+
+            // SUBMIT OVERRIDE
+            newIdeaForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                updateQuerySelectorAll();
+
+                try {
+                    const formData = new FormData();
+                    formData.append("ideaid", id);
+                    formData.append("title", title.value);
+                    formData.append("author", sessionData['id']);
+                    formData.append("data", currentdate);
+                    formData.append("description", description.value);
+
+                    if (getMainImage.files[0]) {
+                        formData.append("mainImageFile", getMainImage.files[0]);
+                    } else {
+                        formData.append("mainImageData", SQLdata['idea'][0].ideaimage);
+                    }
+
+                    formData.append("type", typeProject.value);
+                    formData.append("creativity", creativityType.value);
+                    formData.append("status", statusProject.value);
+
+                    const tempTitles = [];
+                    const tempDescriptions = [];
+                    const tempTypeOfFile = [];
+                    for (let i = 0; i < fileImage.length; i++) {
+                        if (fileImage[i].files[0]) {
+                            formData.append("additionalInfoImagesFile[]", fileImage[i].files[0]);
+                            tempTypeOfFile.push("file");
+                        }
+                        else {
+                            formData.append("additionalInfoImagesData[]", SQLdata['info'][i].updtimage);
+                            tempTypeOfFile.push("data");
+                        }
+
+                        tempTitles.push(titleSupplemImfo[i].value);
+                        tempDescriptions.push(descriptionSupplemImfo[i].value);
+                    }
+
+                    const additionalInfoJson = {
+                        "titles": tempTitles,
+                        "descriptions": tempDescriptions,
+                        "types": tempTypeOfFile
+                    };
+                    
+                    formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
+
+                    formData.append("link", buttonlink.value);
+
+                    const temp2Dates = [];
+                    const temp2Titles = [];
+                    const temp2Descriptions = [];
+                    for (let i = 0; i < logTitle.length; i++) {
+                        temp2Dates.push(logData[i].innerHTML);
+                        temp2Titles.push(logTitle[i].value);
+                        temp2Descriptions.push(logInfo[i].value);
+                    }
+
+                    const logJson = {
+                        "dates": temp2Dates,
+                        "titles": temp2Titles,
+                        "descriptions": temp2Descriptions
+                    };
+
+                    formData.append("logs", JSON.stringify(logJson));
+
+                    /* for (const [key, value] of formData) {
+                        console.log(`${key}: ${value}\n`);
+                    } */
+
+                    const response = await fetch(`./api/updateOldIdea.php`, {
+                        credentials: "include",
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data) {
+                        if (data['success']) {
+                            window.location.href = `./ideaVoid.html?idea=${id}`;
+                        } else {
+                            throw new Error(data['error']);
+                        }
+                    }
+                    else {
+                        throw new Error("ERROR_IN_PHP");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    printError(421);
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getDataFromDatabase2(id) {
+    try {
+        const res = await fetch(`./api/data.php?id=${id}`);
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        console.log(error);
+
+        printError(421);
+
+        return null;
     }
 }

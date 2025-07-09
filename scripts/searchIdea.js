@@ -90,7 +90,7 @@ function loadData2(result) {
         });
     } else if (result['format'] == "double") {
         result['data']['data'].forEach(accountData => {
-            addChildToList(`./`, accountData['username'], `${accountData['email']}<br>${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
+            addChildToList(`./accountVoid.html?account=${accountData['id']}`, accountData['username'], `${accountData['email']}<br>${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
         });
 
         result['subdata']['data'].forEach(ideaData => {

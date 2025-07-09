@@ -1,6 +1,7 @@
 // The id of the page to load
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./accountVoid.html?account=123">)
 const id = paramsURL.get("account"); // The id of the page to load
+let SQLdataGlobal = null;
 
 async function changeDataAccount() {
     document.getElementById("modifyAccountInfo").addEventListener("click", () => {
@@ -107,8 +108,33 @@ error = false; // Error variable to print only the most specific error
 tempBoolControl = false;
 
 async function ldAccountData2() {
-    const SQLdata = await getDataFromDatabase2();
+    const SQLdata = await getSessionDataFromDatabase2();
 
+    if (SQLdata) {
+        ldOtherAccountData(SQLdata['id']);
+    }
+    else {
+        printError(421);
+    }
+}
+
+async function getSessionDataFromDatabase2() {
+    try {
+        const res = await fetch(`./api/getSessionData.php?data=account`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+async function ldOtherAccountData(accountid=id) {
+    const SQLdata = await getOtherAccountDataFromDatabase(accountid);
+    
     if (SQLdata) {
         loadData2(SQLdata);
     }
@@ -117,10 +143,15 @@ async function ldAccountData2() {
     }
 }
 
-async function getDataFromDatabase2() {
+async function getOtherAccountDataFromDatabase(accountid) {
     try {
-        const res = await fetch(`./api/getSessionData.php?data=account`, {
-            credentials: "include"
+        const formData = new FormData();
+        formData.append("id", accountid);
+
+        const res = await fetch(`./api/getAccountData.php`, {
+            credentials: "include",
+            method: "POST",
+            body: formData
         });
 
         const data = await res.json();
@@ -154,43 +185,63 @@ function printError(errorCode) {
 }
 
 function loadData2(SQLdata) {
+    SQLdataGlobal = SQLdata;
+
     try {
         document.getElementById("userNameAccount").innerHTML = `${SQLdata['username']}`;
         document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png"}`;
         document.getElementById("userNameSurnameAccount").innerHTML = `${SQLdata['name']} ${SQLdata['surname']}`;
         document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
+
+        document.getElementById("mainDivDinamicContent").innerHTML = "";
+        
+        SQLdata['saved'].forEach(element => {
+            document.getElementById("mainDivDinamicContent").innerHTML += `
+            <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+                <li class="ideaBoxScr">
+                    <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
+                    <p class="ideaTitleSrc">${element['title']}</p>
+                    <p class="ideaAuthorSrc">${element['username']}</p>
+                </li>
+            </a>`;
+        });
+
     } catch (error) {
         printError(404);
     }
 }
 
-async function ldOtherAccountData() {
-    const SQLdata = await getOtherAccountDataFromDatabase();
-    
-    if (SQLdata) {
-        loadData2(SQLdata);
-    }
-    else {
-        printError(421);
-    }
-}
+// Toggle content Saved / Published
+const savedAccountButton = document.getElementById("savedAccount");
+const publishedAccountButton = document.getElementById("publishedAccount");
 
-async function getOtherAccountDataFromDatabase() {
-    try {
-        const formData = new FormData();
-        formData.append("id", id);
+savedAccountButton.addEventListener("click", async () => {
+    document.getElementById("mainDivDinamicContent").innerHTML = "";
 
-        const res = await fetch(`./api/getAccountData.php`, {
-            credentials: "include",
-            method: "POST",
-            body: formData
-        });
+    SQLdataGlobal['saved'].forEach(element => {
+        document.getElementById("mainDivDinamicContent").innerHTML += `
+        <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+            <li class="ideaBoxScr">
+                <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
+                <p class="ideaTitleSrc">${element['title']}</p>
+                <p class="ideaAuthorSrc">${element['username']}</p>
+            </li>
+        </a>`;
+    });
+});
 
-        const data = await res.json();
+publishedAccountButton.addEventListener("click", async () => {
+    document.getElementById("mainDivDinamicContent").innerHTML = "";
 
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
+    SQLdataGlobal['published'].forEach(element => {
+        document.getElementById("mainDivDinamicContent").innerHTML += `
+        <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+            <li class="ideaBoxScr">
+                <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
+                <p class="ideaTitleSrc">${element['title']}</p>
+                <p class="ideaAuthorSrc">${element['username']}</p>
+            </li>
+        </a>`;
+    });
+});
