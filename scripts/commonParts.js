@@ -79,14 +79,14 @@ loadFooter();
 const lightDarkThemeButton = document.getElementById("toggle-light-dark-theme");
 loadCurrentTheme();
 
-lightDarkThemeButton.addEventListener("click", () =>{
+lightDarkThemeButton.addEventListener("click", async () =>{
     const currentSrc = lightDarkThemeButton.src;
 
     if (currentSrc.includes("/images/sun-dark.svg")) {
-        toggleLightDarkThemeOnSessionData(false);
+        await toggleLightDarkThemeOnSessionData(false);
     }
     else if (currentSrc.includes("/images/sun-light.svg")) {
-        toggleLightDarkThemeOnSessionData(true);
+        await toggleLightDarkThemeOnSessionData(true);
     }
 
     loadCurrentTheme();
@@ -127,8 +127,8 @@ async function loadCurrentTheme() {
         }
     }
     else {
-        toggleLightDarkThemeOnSessionData(true);
-        loadCurrentTheme();
+        await toggleLightDarkThemeOnSessionData(true);
+        setTimeout(loadCurrentTheme, 1000);
     }
 }
 

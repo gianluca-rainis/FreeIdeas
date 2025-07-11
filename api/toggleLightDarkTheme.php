@@ -6,6 +6,7 @@
     session_start();
 
     if (!isset($_GET['theme'])) {
+        echo json_encode(null);
         exit;
     }
 
@@ -17,5 +18,6 @@
         $_SESSION['theme'] = "dark";
     }
     
+    echo json_encode(['success'=>true]);
     exit;
 ?>
