@@ -25,6 +25,27 @@ nav {
     z-index: 1000;
 }
 
+nav #pcNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #f6ffd7;
+}
+
+nav #mobileNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: 0;
+    width: 0;
+    display: flex;
+    align-items: center;
+    background-color: #f6ffd7;
+    content-visibility: hidden;
+}
+
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -79,7 +100,7 @@ nav ul li {
     align-items: center;
 }
 
-#userImageLi {
+#Mobile {
     margin-left: 2rem;
 }
 
@@ -101,6 +122,12 @@ nav ul li {
     cursor: default;
 }
 
+#menuMobile {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+}
+
 #themeImageLi {
     justify-content: center;
     align-items: center;
@@ -108,10 +135,128 @@ nav ul li {
     width: fit-content;
 }
 
-#toggle-light-dark-theme {
+.toggle-light-dark-theme {
     width: 30px;
     height: 30px;
     cursor: pointer;
+}
+
+/* HIDDEN MOBILE MENU AREA */
+#mobileMenuHidden {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    background-color: #fffff0;
+    z-index: 10;
+    top: 100px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: calc(100%);
+}
+
+/* links for mobile */
+#mobileNavLinks {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 10px;
+    width: calc(100%);
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+#mobileNavLinks li {
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #2c3d27;
+    width: calc(100%);
+}
+
+#themeImageLiMobile {
+    width: fit-content;
+    border-bottom: none !important;
+}
+
+#mobileNavLinks li a {
+    padding: 10px;
+    display: block;
+    text-align: left;
+    align-items: center;
+    width: calc(100%);
+}
+
+#mobileNavLinks .navText {
+    text-decoration: none;
+    background: none;
+    color: #2c3d27;
+    font-size: 2rem;
+}
+
+#mobileNavLinks .navText:hover {
+    background-color: #f8f095;
+}
+
+/* login area mobile */
+#mobileMenuHidden #loginAreaMobile {
+    display: contents;
+    align-items: center;
+    text-align: center;
+    border-radius: 9px;
+    width: 20rem;
+}
+
+#mobileMenuHidden #loginAreaMobile h2 {
+    text-align: center;
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #7ddf60;
+}
+
+#mobileMenuHidden #loginAreaMobile p {
+    font-size: large;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+#signUpMobile {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+}
+
+#signUpMobile:hover {
+    color: rgb(109, 255, 12);
+}
+
+#emailAreaLoginMobile, #passwordAreaLoginMobile, #firstNameMobile, #lastNameMobile, #userNameSignInMobile, #sendLoginButtonMobile, #sendLogoutButtonMobile, #sendAccountButtonMobile {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+}
+
+#toggle-password-visibility-mobile {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 391px;
+    right: 36px;
+}
+
+#sendLoginButtonMobile, #sendAccountButtonMobile, #sendLogoutButtonMobile {
+    background-color: rgb(162, 241, 110);
+    cursor: pointer;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 /* HEADER STYLE */
@@ -1199,4 +1344,164 @@ footer ul li a {
     text-align: justify;
     margin-left: 30px;
     margin-right: 30px;
+}
+
+/* MEDIA QUERIES */
+/* WIDTH */
+@media screen and (min-width: 850px) and (max-width: 1200px) {
+    .navLinks {
+        font-size: small;
+    }
+}
+
+@media screen and (min-width: 760px) and (max-width: 850px) {
+    .navLinks {
+        font-size: x-small;
+    }
+
+    #footer ul li {
+        font-size: 13px;
+    }
+
+    #githubLogo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* index */
+    #whatisFreeIdeas #description, #helpIdeas #description {
+        padding: 20px 20px 20px 20px;
+    }
+}
+
+@media screen and (min-width: 470px) and (max-width: 760px) {
+    #pcNavBarGhost {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    #mobileNavBarGhost {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    .navLinks {
+        padding-right: 2rem;
+    }
+
+    #footer ul {
+        padding-right: 10px;
+    }
+
+    #footer ul li {
+        font-size: 12px;
+    }
+
+    #githubLogo {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* index */
+    #whatisFreeIdeas #description, #helpIdeas #description {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    #whatisFreeIdeas h2, #helpIdeas h2 {
+        font-size: 20px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    #pcNavBarGhost {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    #mobileNavBarGhost {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    .navLinks {
+        padding-right: 2rem;
+    }
+
+    #navLogo {
+        width: 150px;
+    }
+
+    #mobileMenuHidden {
+        top: 60px;
+    }
+
+    #footer ul {
+        padding-right: 4px;
+        padding-left: 4px;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+
+    #footer ul li {
+        font-size: 10px;
+    }
+
+    #githubLogo {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    #footerLogo {
+        width: 150px;
+    }
+
+    /* index */
+    #whatisFreeIdeas #description, #helpIdeas #description {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    #whatisFreeIdeas h2, #helpIdeas h2 {
+        font-size: 20px;
+    }
+
+    header h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+}
+
+/* HEIGHT */
+@media screen and (max-height: 785px) {
+    #mobileMenuHidden .navText {
+        font-size: 1.2rem;
+    }
+
+    #loginAreaMobile h2 {
+        font-size: 20px !important;
+    }
+
+    #loginAreaMobile h3 {
+        font-size: 15px;
+    }
+
+    #emailAreaLoginMobile, #passwordAreaLoginMobile, #firstNameMobile, #lastNameMobile, #userNameSignInMobile, #sendLoginButtonMobile, #sendLogoutButtonMobile, #sendAccountButtonMobile {
+        height: 30px;
+        font-size: medium;
+    }
+
+    #toggle-password-visibility-mobile {
+        top: 320px;
+    }
 }
