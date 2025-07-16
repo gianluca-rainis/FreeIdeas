@@ -600,6 +600,9 @@ footer ul li a {
 }
 
 /* SEARCH PAGE */
+#searchPage {
+    background-color: rgb(214, 233, 144);
+}
 
 #searchPage header {
     width: 100%;
@@ -614,7 +617,7 @@ footer ul li a {
 #search {
     padding: 10px 5px 10px 5px;
     margin-right: 50px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #2c3d27;
 }
 
@@ -638,6 +641,7 @@ footer ul li a {
 
 .filterSearch {
     padding: 5px 10px 5px 10px;
+    border-radius: 10px;
 }
 
 #lastIdeasSrc {
@@ -652,6 +656,7 @@ footer ul li a {
     overflow: hidden;
     white-space: nowrap;
     gap: 0;
+    justify-content: space-around;
 }
 
 .ideaLinkSrc {
@@ -687,6 +692,80 @@ footer ul li a {
 .ideaAuthorSrc {
     font-size: 15px;
     padding-top: 10px;
+}
+
+#compactFilters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    background-color: transparent;
+    border-radius: 10px;
+    color: #2c3d27;
+    font-size: 1.1em;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#compactFilters:hover {
+    background-color: #7ddf60;
+}
+
+#compactFilters img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+#compactFiltersHidden {
+    position: fixed;
+    top: 200px;
+    background-color: #ebffa4;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#compactFiltersHidden ul {
+    list-style-type: none;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hiddenTypeFilterText {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.hiddenTypeFilterText:hover {
+    background-color: #7bd85f;
+}
+
+#compactFiltersHidden ul li img {
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+}
+
+#typeHiddenUl, #creativityHiddenUl, #statusHiddenUl, #orderByHiddenUl {
+    list-style-type: none;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.typeHiddenLi, .creativityHiddenLi, .statusHiddenLi, .orderHiddenLi {
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.typeHiddenLi:hover, .creativityHiddenLi:hover, .statusHiddenLi:hover, .orderHiddenLi:hover {
+    background-color: #b3e403;
 }
 
 /* IDEAS STYLES */
@@ -1348,13 +1427,48 @@ footer ul li a {
 
 /* MEDIA QUERIES */
 /* WIDTH */
-@media screen and (min-width: 850px) and (max-width: 1200px) {
-    .navLinks {
-        font-size: small;
+@media screen and (min-width: 1200px) and (max-width: 1500px) {
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto auto auto auto;
     }
 }
 
-@media screen and (min-width: 760px) and (max-width: 850px) {
+@media screen and (min-width: 1100px) and (max-width: 1200px) {
+    .navLinks {
+        font-size: small;
+    }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto auto auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1100px) {
+    .navLinks {
+        font-size: small;
+    }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto auto auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+
+    #searchPage #search {
+        width: 30%;
+    }
+}
+
+@media screen and (min-width: 760px) and (max-width: 900px) {
     .navLinks {
         font-size: x-small;
     }
@@ -1372,9 +1486,22 @@ footer ul li a {
     #whatisFreeIdeas #description, #helpIdeas #description {
         padding: 20px 20px 20px 20px;
     }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+
+    #searchPage #search {
+        width: 30%;
+    }
 }
 
-@media screen and (min-width: 470px) and (max-width: 760px) {
+@media screen and (min-width: 600px) and (max-width: 760px) {
     #pcNavBarGhost {
         content-visibility: hidden !important;
         width: 0 !important;
@@ -1417,6 +1544,84 @@ footer ul li a {
 
     header h1 {
         font-size: 24px;
+    }
+
+    /* footer pages */
+    .footerpage .logo {
+        width: 400px;
+    }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+}
+
+@media screen and (min-width: 470px) and (max-width: 600px) {
+    #pcNavBarGhost {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    #mobileNavBarGhost {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    .navLinks {
+        padding-right: 2rem;
+    }
+
+    #footer ul {
+        padding-right: 10px;
+    }
+
+    #footer ul li {
+        font-size: 12px;
+    }
+
+    #githubLogo {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* index */
+    #whatisFreeIdeas #description, #helpIdeas #description {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    #whatisFreeIdeas h2, #helpIdeas h2 {
+        font-size: 20px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    /* footer pages */
+    .footerpage .logo {
+        width: 400px;
+    }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+
+    #compactFiltersHidden {
+        top: 190px;
     }
 }
 
@@ -1479,6 +1684,29 @@ footer ul li a {
     header h1 {
         font-size: 22px;
         text-align: center;
+    }
+
+    /* footer pages */
+    .footerpage .logo {
+        width: 300px;
+    }
+
+    /* search an idea */
+    #lastIdeasSrc {
+        grid-template-columns: auto;
+    }
+
+    #searchPage header {
+        position: absolute;
+    }
+
+    #searchPage #search {
+        width: 30%;
+        margin: 0;
+    }
+
+    #compactFiltersHidden {
+        top: 150px;
     }
 }
 

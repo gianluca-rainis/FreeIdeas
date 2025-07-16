@@ -47,7 +47,7 @@ function loadNav() {
                 <ul id="mobileNavLinks">
                     <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
                     <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
-                    <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
+                    <li><a href="" class="navText" id="randomIdeaAMobile">Random Idea</a></li>
                 </ul>
 
                 <div id="loginAreaMobile">
@@ -177,6 +177,7 @@ async function loadCurrentTheme() {
 
 // RANDOM IDEA BUTTON
 const randomLink = document.getElementById("randomIdeaA");
+const randomLinkMobile = document.getElementById("randomIdeaAMobile");
 setRandomLinkForRandomIdea();
 
 async function getRandomIdeaId() {
@@ -197,6 +198,7 @@ async function setRandomLinkForRandomIdea() {
     const randomIdForRandomLink = await getRandomIdeaId();
 
     randomLink.href = `./ideaVoid.html?idea=${randomIdForRandomLink['id']}`;
+    randomLinkMobile.href = `./ideaVoid.html?idea=${randomIdForRandomLink['id']}`;
 }
 
 // LOGIN GESTOR
