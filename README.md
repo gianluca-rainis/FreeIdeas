@@ -307,15 +307,3 @@ mysql> describe accountideadata;
 | liked     | int  | YES  |     | NULL    |                |
 +-----------+------+------+-----+---------+----------------+
 ```
-
-## Database interrogation
-### In ./api/data.php
-```SQL
-SELECT ideas.*, accounts.username AS accountName FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;
-
-SELECT * FROM additionalinfo WHERE ideaid=?;
-
-SELECT * FROM authorupdates WHERE ideaid=?;
-
-SELECT comments.*, accounts.username, accounts.userimage FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;
-```
