@@ -51,6 +51,7 @@ let writerUserName = document.querySelectorAll(".writerUserName"); // The userna
 let dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
 let commentText = document.querySelectorAll(".commentText"); // The p with the comment text
 let replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
+let deleteCommentButton = document.querySelectorAll(".deleteComment"); // Delete a comment if you have writed id
 let commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment - IT CONTAIN EVERYTHING SINCE THE comment Li
 
 // The id of the page to load
@@ -134,7 +135,7 @@ function printError(errorCode) {
     }
 }
 
-function loadData2(SQLdata) {
+async function loadData2(SQLdata) {
     try {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
         mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
@@ -243,6 +244,8 @@ function loadData2(SQLdata) {
         }
         
         if (SQLdata['comment'].length != 0) {
+            const sessionData = await isLoggedIn();
+
             SQLdata['comment'].forEach(row => {
                 if (row.superCommentid === null) {
                     commentsListUl.innerHTML += `<li class="comment">
@@ -256,6 +259,7 @@ function loadData2(SQLdata) {
                             </div>
                             <p class="commentText">${row.description}</p>
                             <p class="replyComment">Reply</p>
+                            ${sessionData?(row.authorid==sessionData['id']?`<p class="deleteComment">Delete</p>`:""):""}
 
                             <ul class="underComments" data-id="${row.id}">
                                 
@@ -276,6 +280,7 @@ function loadData2(SQLdata) {
                                 </div>
                                 <p class="commentText">${row.description}</p>
                                 <p class="replyComment">Reply</p>
+                                ${sessionData?(row.authorid==sessionData['id']?'<p class="deleteComment">Delete</p>':""):""}
 
                                 <ul class="underComments" data-id="${row.id}">
                                     
@@ -293,6 +298,7 @@ function loadData2(SQLdata) {
                 dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
                 commentText = document.querySelectorAll(".commentText"); // The p with the comment text
                 replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
+                deleteCommentButton = document.querySelectorAll(".deleteComment");
                 commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment
             });
 
@@ -313,6 +319,7 @@ function loadData2(SQLdata) {
         dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
         commentText = document.querySelectorAll(".commentText"); // The p with the comment text
         replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
+        deleteCommentButton = document.querySelectorAll(".deleteComment");
         commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment
 
         // Reply comment gestor
@@ -371,51 +378,107 @@ function loadData2(SQLdata) {
                     }
                     
                     document.getElementById("saveComment").addEventListener("click", async () => {
-                        const data = new FormData();
-                        
-                        data.append('authorid', sessionData['id']);
-                        data.append('data', currentdate);
-                        data.append('description', document.getElementById("newCommentText").value);
-                        data.append('ideaid', id);
-                        data.append('superCommentid', superCommentId);
-
-                        async function sendData(data) {
-                            try {
-                                const res = await fetch(`./api/saveNewComment.php`, {
-                                    credentials: "include",
-                                    method: 'POST',
-                                    body: data
-                                });
-
-                                const resp = await res.json();
-
-                                return resp;
-                            } catch (error) {
-                                return null;
+                        try {
+                            if (document.getElementById("newCommentText").value == "") {
+                                alert("The comment can't be void!");
+                                throw new Error("ERR_VOID_COMMENT");
                             }
-                        }
 
-                        const result = await sendData(data);
+                            const data = new FormData();
+                            
+                            data.append('authorid', sessionData['id']);
+                            data.append('data', currentdate);
+                            data.append('description', document.getElementById("newCommentText").value);
+                            data.append('ideaid', id);
+                            data.append('superCommentid', superCommentId);
 
-                        if (!result) {
-                            console.error("ERROR_SAVING_COMMENT");
-                            printError(421);
-                        }
-                        else {
-                            if (result['success']) {
-                                window.location.href = `./ideaVoid.html?idea=${id}`;
+                            async function sendData(data) {
+                                try {
+                                    const res = await fetch(`./api/saveNewComment.php`, {
+                                        credentials: "include",
+                                        method: 'POST',
+                                        body: data
+                                    });
+
+                                    const resp = await res.json();
+
+                                    return resp;
+                                } catch (error) {
+                                    return null;
+                                }
+                            }
+
+                            const result = await sendData(data);
+
+                            if (!result) {
+                                console.error("ERROR_SAVING_COMMENT");
+                                printError(421);
                             }
                             else {
-                                printError(result['error']);
+                                if (result['success']) {
+                                    window.location.href = `./ideaVoid.html?idea=${id}`;
+                                }
+                                else {
+                                    printError(result['error']);
+                                }
                             }
+                        } catch (error) {
+                            console.error(error);
                         }
                     });
 
                     document.getElementById("deleteComment").addEventListener("click", () => {
                         comment[commentReplyIndex].innerHTML = oldCommentContent;
+
+                        comment[commentReplyIndex].querySelector(".replyComment").addEventListener("click", async () => {
+                            replyAtTheCommentButton[commentReplyIndex].click();
+                        });
                     });
                 } else {
                     alert("You must log in before writing a comment.");
+                }
+            });
+        }
+
+        // Delete comment gestor
+        for (let commentDeleteIndex = 0; commentDeleteIndex < deleteCommentButton.length; commentDeleteIndex++) {
+            deleteCommentButton[commentDeleteIndex].addEventListener("click", async () => {
+                const commentToDelete = deleteCommentButton[commentDeleteIndex].closest("li");
+                const commentToDeleteId = commentToDelete.querySelector(".underComments").dataset.id;
+
+                if (confirm("Are you sure you want to delete the comment?\nThis will also delete all subcomments.")) {
+                    const data = new FormData();
+                            
+                    data.append('id', commentToDeleteId);
+
+                    async function sendData(data) {
+                        try {
+                            const res = await fetch(`./api/deleteComment.php`, {
+                                credentials: "include",
+                                method: 'POST',
+                                body: data
+                            });
+
+                            const resp = await res.json();
+
+                            return resp;
+                        } catch (error) {
+                            return null;
+                        }
+                    }
+
+                    const result = await sendData(data);
+
+                    if (result) {
+                        if (result["success"]) {
+                            window.location.href = `./ideaVoid.html?idea=${id}`;
+                        } else {
+                            console.error(result['error']);
+                        }
+                    }
+                    else {
+                        console.error("FATAL_ERROR_IN_PHP");
+                    }
                 }
             });
         }

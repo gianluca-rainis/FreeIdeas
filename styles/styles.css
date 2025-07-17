@@ -1030,7 +1030,7 @@ footer ul li a {
     margin-right: 50px;
 }
 
-.replyComment, #saveComment, #deleteComment {
+.replyComment, .deleteComment, #saveComment, #deleteComment {
     text-align: left;
     text-decoration: underline;
     font-style: italic;
@@ -1053,6 +1053,7 @@ footer ul li a {
 .underComments {
     margin-left: 20px;
     list-style-image: url("../images/commentTag.svg");
+    border-left: 1px solid #2c3d27;
 }
 
 /* ACCOUNT PAGE */
@@ -1299,6 +1300,16 @@ footer ul li a {
 
 #newinfoForFilters {
     margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    text-align: center;
+}
+
+#newIdeaMain .filterSearch {
+    width: 60%;
+    justify-self: center;
+    font-size: 15px;
 }
 
 /* image info */
@@ -1432,6 +1443,11 @@ footer ul li a {
     #lastIdeasSrc {
         grid-template-columns: auto auto auto auto;
     }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+    }
 }
 
 @media screen and (min-width: 1100px) and (max-width: 1200px) {
@@ -1446,6 +1462,16 @@ footer ul li a {
 
     #searchPage header {
         position: absolute;
+    }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        width: 35rem;
     }
 }
 
@@ -1465,6 +1491,33 @@ footer ul li a {
 
     #searchPage #search {
         width: 30%;
+    }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+    }
+
+    #newIdeaMain .filterSearch {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    #newIdeaMain .preview {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    #newIdeaMain .imageInfo {
+        width: 250px;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        max-width: 50%;
     }
 }
 
@@ -1498,6 +1551,45 @@ footer ul li a {
 
     #searchPage #search {
         width: 30%;
+    }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+    }
+
+    #newIdeaMain .filterSearch {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    #newIdeaMain .imageInfoLi {
+        grid-template-columns: 1fr !important;
+    }
+
+    #newIdeaMain .preview {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    #newIdeaMain .imageInfo {
+        width: 250px;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        max-width: 50%;
+    }
+
+    #ideaMain .imageInfoDescription {
+        margin-right: 5px;
+    }
+
+    #ideaMain .underComments {
+        margin-left: 10px;
     }
 }
 
@@ -1558,6 +1650,53 @@ footer ul li a {
 
     #searchPage header {
         position: absolute;
+    }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+    }
+
+    #newIdeaMain .filterSearch {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    #newIdeaMain .imageInfoLi {
+        grid-template-columns: 1fr !important;
+    }
+
+    #newIdeaMain .preview {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    #newIdeaMain .imageInfo {
+        width: 250px;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        max-width: 50%;
+    }
+
+    #ideaMain .titleImageInfo {
+        font-size: 30px;
+    }
+
+    #ideaMain .imageInfoDescription {
+        margin-right: 5px;
+    }
+
+    #ideaMain .comment {
+        margin-left: 25px;
+    }
+
+    #ideaMain .underComments {
+        margin-left: 0;
     }
 }
 
@@ -1622,6 +1761,69 @@ footer ul li a {
 
     #compactFiltersHidden {
         top: 190px;
+    }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+        font-size: 60px;
+    }
+
+    #newIdeaMain #author {
+        font-size: 40px;
+    }
+
+    #newIdeaMain #description {
+        width: 75%;
+    }
+
+    #newIdeaMain .filterSearch {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    #newIdeaMain .imageInfoLi {
+        grid-template-columns: 1fr !important;
+    }
+
+    #newIdeaMain .deleteAdditionalInfo {
+        margin-bottom: 15px;
+    }
+
+    #newIdeaMain .imageInfoDescription {
+        width: 80% !important;
+    }
+
+    #newIdeaMain .preview {
+        max-width: 26rem !important;
+        max-height: 11rem !important;
+        margin: 0 !important;
+    }
+
+    #newIdeaMain .imageInfo {
+        width: 250px;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        max-width: 50%;
+    }
+
+    #ideaMain .titleImageInfo {
+        font-size: 30px;
+    }
+
+    #ideaMain .imageInfoDescription {
+        margin-right: 5px;
+    }
+
+    #ideaMain .comment {
+        margin-left: 20px;
+    }
+
+    #ideaMain .underComments {
+        margin-left: 0;
     }
 }
 
@@ -1708,7 +1910,99 @@ footer ul li a {
     #compactFiltersHidden {
         top: 150px;
     }
+
+    /* publish an idea */
+    #newIdeaMain #title {
+        width: 80%;
+        font-size: 60px;
+    }
+
+    #newIdeaMain #author {
+        font-size: 40px;
+    }
+
+    #newIdeaMain #description {
+        width: 75%;
+    }
+
+    #newIdeaMain .filterSearch {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    #newIdeaMain .imageInfoLi {
+        grid-template-columns: 1fr !important;
+    }
+
+    #newIdeaMain .deleteAdditionalInfo {
+        margin-bottom: 15px;
+        margin-left: 80%;
+    }
+
+    #newIdeaMain .imageInfoDescription {
+        width: 80% !important;
+    }
+
+    #newIdeaMain .preview {
+        max-width: 90% !important;
+        max-height: 10rem !important;
+        margin: 0 !important;
+    }
+
+    #newIdeaMain .titleImageInfo {
+        font-size: 20px !important;
+    }
+
+    #newIdeaMain .imageInfo {
+        width: 250px;
+    }
+
+    #newIdeaMain .logInfo {
+        margin: 0;
+        justify-self: center;
+    }
+
+    /* idea page */
+    #ideaMain .imageInfo {
+        max-width: 50%;
+    }
+
+    #ideaMain #title {
+        font-size: 80px;
+    }
+
+    #ideaMain #mainAuthorAccount {
+        font-size: 35px;
+    }
+
+    #ideaMain #description {
+        font-size: medium;
+    }
+
+    #ideaMain .titleImageInfo {
+        font-size: 25px;
+    }
+
+    #ideaMain .imageInfoDescription {
+        margin-right: 5px;
+        font-size: 15px;
+    }
+
+    #ideaMain #commentsList {
+        margin-left: 5px;
+    }
+
+    #ideaMain .comment {
+        margin-left: 15px;
+    }
+
+    #ideaMain .underComments {
+        margin-left: 0;
+    }
 }
+
+/* DON'T WORKS WITH WIDTH < 300PX */
 
 /* HEIGHT */
 @media screen and (max-height: 785px) {
