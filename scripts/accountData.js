@@ -207,6 +207,15 @@ function loadData2(SQLdata) {
             </a>`;
         });
 
+        if (SQLdataGlobal['saved'].length == 0) {
+            document.getElementById("mainDivDinamicContent").innerHTML += `
+            <a class="ideaLinkSrc">
+                <li class="ideaBoxScr">
+                    <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
+                    <p class="ideaTitleSrc">This user haven't saved any idea yet.</p>
+                </li>
+            </a>`;
+        }
     } catch (error) {
         printError(404);
     }
@@ -229,6 +238,16 @@ savedAccountButton.addEventListener("click", async () => {
             </li>
         </a>`;
     });
+
+    if (SQLdataGlobal['saved'].length == 0) {
+        document.getElementById("mainDivDinamicContent").innerHTML += `
+        <a class="ideaLinkSrc">
+            <li class="ideaBoxScr">
+                <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
+                <p class="ideaTitleSrc">This user haven't saved any idea yet.</p>
+            </li>
+        </a>`;
+    }
 });
 
 publishedAccountButton.addEventListener("click", async () => {
@@ -244,4 +263,14 @@ publishedAccountButton.addEventListener("click", async () => {
             </li>
         </a>`;
     });
+
+    if (SQLdataGlobal['published'].length == 0) {
+        document.getElementById("mainDivDinamicContent").innerHTML += `
+        <a class="ideaLinkSrc">
+            <li class="ideaBoxScr">
+                <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
+                <p class="ideaTitleSrc">This user haven't published any idea yet.</p>
+            </li>
+        </a>`;
+    }
 });

@@ -662,6 +662,7 @@ footer ul li a {
 .ideaLinkSrc {
     text-decoration: none;
     color: #2c3d27;
+    justify-self: center;
 }
 
 .ideaBoxScr {
@@ -1073,13 +1074,14 @@ footer ul li a {
     align-items: center;
     justify-content: center;
     text-align: center;
-    overflow-x: hidden;
+    overflow: hidden !important;
 
     position: sticky;
     top: 100px;
     align-self: flex-start;
     max-height: calc(100vh - 20px);
     overflow-y: auto;
+    padding-block-end: 80%;
 }
 
 #userNameAccount {
@@ -1092,14 +1094,15 @@ footer ul li a {
     height: 30px;
     position: absolute;
     margin-top: 20px;
-    margin-left: 160px;
+    left: 0;
+    margin-left: 90%;
     cursor: pointer;
 }
 
 /* MODIFY INFO PART */
 #newDataSetAccount {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     justify-content: center;
     align-items: center;
     margin-right: 20px;
@@ -1115,17 +1118,20 @@ footer ul li a {
 }
 
 #saveAccountInfo {
-    margin-left: 120px;
+    margin-left: 73%;
 }
 
 #cancelAccountInfo {
-    margin-left: 170px;
+    margin-left: 85%;
 }
 
 #newuserNameAccount, #newuserImageAccount, #newuserAccountName, #newuserSurnameAccount, #newemailAccount, #newdescriptionAccount {
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 300px;
+    width: 100%;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
 }
 
 #newdescriptionAccount {
@@ -1173,7 +1179,8 @@ footer ul li a {
     width: 100%;
     right: 0;
     display: flex;
-    position: static;
+    position: sticky;
+    top: 100px;
     height: fit-content;
     background-color: #f8f095;
     align-items: center;
@@ -1448,6 +1455,11 @@ footer ul li a {
     #newIdeaMain #title {
         width: 80%;
     }
+
+    /* account page */
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media screen and (min-width: 1100px) and (max-width: 1200px) {
@@ -1472,6 +1484,15 @@ footer ul li a {
     /* idea page */
     #ideaMain .imageInfo {
         width: 35rem;
+    }
+
+    /* account page */
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
     }
 }
 
@@ -1518,6 +1539,25 @@ footer ul li a {
     /* idea page */
     #ideaMain .imageInfo {
         max-width: 50%;
+    }
+
+    /* account page */
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
+    }
+
+    #accountMain #newDataSetAccount {
+        grid-template-columns: 1fr;
+        margin-right: 0;
+        justify-items: center;
+    }
+
+    #newuserNameAccount, #newuserImageAccount, #newuserAccountName, #newuserSurnameAccount, #newemailAccount, #newdescriptionAccount {
+        width: 90%;
     }
 }
 
@@ -1590,6 +1630,19 @@ footer ul li a {
 
     #ideaMain .underComments {
         margin-left: 10px;
+    }
+
+    /* account page */
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr;
+    }
+
+    #accountMain #accountAsideInfo {
+        width: 40%;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
     }
 }
 
@@ -1697,6 +1750,33 @@ footer ul li a {
 
     #ideaMain .underComments {
         margin-left: 0;
+    }
+
+    /* account page */
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr;
+    }
+
+    #accountMain #accountAsideInfo {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    #accountMain #userNameSurnameAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #emailAccount {
+        font-size: 16px;
+    }
+
+    #accountMain #descriptionAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
     }
 }
 
@@ -1824,6 +1904,40 @@ footer ul li a {
 
     #ideaMain .underComments {
         margin-left: 0;
+    }
+
+    /* account page */
+    #accountMain {
+        display: block;
+    }
+
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr;
+    }
+
+    #accountMain #accountAsideInfo {
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        padding-block-end: 0;
+    }
+
+    #accountMain #userNameSurnameAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #emailAccount {
+        font-size: 16px;
+    }
+
+    #accountMain #descriptionAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
     }
 }
 
@@ -1999,6 +2113,45 @@ footer ul li a {
 
     #ideaMain .underComments {
         margin-left: 0;
+    }
+
+    /* account page */
+    #accountMain {
+        display: block;
+    }
+
+    #accountMain #mainDivDinamicContent {
+        grid-template-columns: 1fr;
+        margin: 0;
+    }
+
+    #accountMain #accountAsideInfo {
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        padding-block-end: 0;
+    }
+
+    #accountMain #navBarForAccountSaved {
+        top: 60px;
+    }
+
+    #accountMain #userNameSurnameAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #emailAccount {
+        font-size: 16px;
+    }
+
+    #accountMain #descriptionAccount {
+        font-size: 15px;
+    }
+
+    #accountMain #modifyAccountInfo {
+        margin-left: 80%;
     }
 }
 
