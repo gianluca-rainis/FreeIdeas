@@ -13,10 +13,6 @@
         echo json_encode($_SESSION['account']);
         exit;
     }
-    else if ($id == 'theme') {
-        echo json_encode($_SESSION['theme']);
-        exit;
-    }
     else {
         echo json_encode(null);
         exit;

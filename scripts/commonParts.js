@@ -115,109 +115,66 @@ loadFooter();
 
 // LIGHT DARK THEME
 const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme");
-let themeIsLight = true;
+let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
+
+window.location.pathname.includes("/about.html")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
+
+let themeIsLight = true; // Main bool for theme control
 loadCurrentTheme();
 
 lightDarkThemeButton.forEach(button => {
-    button.addEventListener("click", async () =>{
+    button.addEventListener("click", () =>{
         const currentSrc = button.src;
 
         if (currentSrc.includes("/images/sun-dark.svg")) {
-            await toggleLightDarkThemeOnSessionData(false);
+            themeIsLight = false;
         }
         else if (currentSrc.includes("/images/sun-light.svg")) {
-            await toggleLightDarkThemeOnSessionData(true);
+            themeIsLight = true;
         }
+
+        localStorage.setItem("themeIsLight", themeIsLight);
 
         loadCurrentTheme();
     });
 });
 
-async function toggleLightDarkThemeOnSessionData(isLight) {
-    const theme = isLight?"light":"dark";
-    
-    try {
-        fetch(`./api/toggleLightDarkTheme.php?theme=${theme}`);
-    } catch (error) {
-        console.error("ERROR_TOGGLE_THEME: "+error);
+function loadCurrentTheme() {
+    if (localStorage.getItem("themeIsLight")) {
+        themeIsLight = localStorage.getItem("themeIsLight")==="true"?true:false;
     }
-}
 
-async function getSessionDataFromDatabaseTheme() {
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=theme`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
-async function loadCurrentTheme() {
-    const theme = await getSessionDataFromDatabaseTheme();
-
-    if (theme) {
-        if (theme == "light") {
+    if (themeIsLight) {
+        if (themeIsLight) {
             lightDarkThemeButton.forEach(button => {
                 button.src = "./images/sun-dark.svg";
-                loadLightTheme();
-            });
-        } else {
-            lightDarkThemeButton.forEach(button => {
-                button.src = "./images/sun-light.svg";
-                loadDarkTheme();
+                document.documentElement.setAttribute("data-theme", "light");
             });
         }
     }
     else {
-        try {
-            const themeLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-            await toggleLightDarkThemeOnSessionData(themeLight);
-            loadCurrentTheme();
-        } catch (error) {
-            console.error(error);
-            printError(508);
-            return;
-        }
+        lightDarkThemeButton.forEach(button => {
+            button.src = "./images/sun-light.svg";
+            document.documentElement.setAttribute("data-theme", "dark");
+        });
     }
+
+    logos.forEach(logo => {
+        logo.src = `./images/FreeIdeas${themeIsLight?"":"_Pro"}.svg`;
+    });
+
+    toggleThemeInAllFiles();
 }
 
 // Variables used by the load theme functions
-let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
-window.location.pathname.includes("/about.html")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
 
-window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', async event => {
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', event => {
     const newColorScheme = event.matches?true:false;
 
-    await toggleLightDarkThemeOnSessionData(newColorScheme);
+    themeIsLight = newColorScheme;
+    localStorage.setItem("themeIsLight", themeIsLight);
     loadCurrentTheme();
 });
-
-function loadLightTheme() {
-    themeIsLight = true;
-    document.documentElement.setAttribute("data-theme", "light");
-
-    logos.forEach(logo => {
-        logo.src = "./images/FreeIdeas.svg";
-    });
-
-    toggleThemeInAllFiles();
-}
-
-function loadDarkTheme() {
-    themeIsLight = false;
-    document.documentElement.setAttribute("data-theme", "dark");
-
-    logos.forEach(logo => {
-        logo.src = "./images/FreeIdeas_Pro.svg";
-    });
-
-    toggleThemeInAllFiles();
-}
 
 function toggleThemeInAllFiles() {
     document.getElementById("mobileNavBarGhost").querySelector("#menuMobile").src = `./images/menu${themeIsLight?"":"_Pro"}.svg`;
