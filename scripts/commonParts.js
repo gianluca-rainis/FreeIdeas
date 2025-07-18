@@ -102,7 +102,14 @@ function loadMetadata() {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Free Ideas</title>
+            
             <meta name="Free Ideas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.">
+            <meta property="og:title" content="FreeIdeas">
+            <meta property="og:description" content="Free Ideas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.">
+            <meta property="og:image" content="./images/freeideasPreview.png">
+            <meta property="og:url" content="https://www.freeideas.duckdns.org/">
+            <meta property="og:type" content="website">
+
             <link rel="icon" href="./images/FreeIdeas.svg" type="image/x-ico" />
             <link href="./styles/styles.css" rel="stylesheet">
         `;
