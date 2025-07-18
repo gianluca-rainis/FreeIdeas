@@ -14,7 +14,7 @@ function loadNav() {
                 <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
                 <li id="themeImageLi"><img src="./images/sun-dark.svg" class="toggle-light-dark-theme"></li>
-                <li id="userImageLi"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></li>
+                <li id="userImageLi"><img src="./images/user.svg" id="userImage"><p id="userName">Login</p></li>
             </ul>
             <div id="loginArea">
                 <h2>Sign In</h2>
@@ -69,7 +69,7 @@ function loadNav() {
                 </div>
             </div>
         </div>
-        `; // <div id="userImageLiMobile"><img src="./images/user.png" id="userImage"><p id="userName">Login</p></div>
+        `; // <div id="userImageLiMobile"><img src="./images/user.svg" id="userImage"><p id="userName">Login</p></div>
     }
 }
 
@@ -115,17 +115,18 @@ loadFooter();
 
 // LIGHT DARK THEME
 const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme");
+let themeIsLight = true;
 loadCurrentTheme();
 
 lightDarkThemeButton.forEach(button => {
-    button.addEventListener("click", () =>{
+    button.addEventListener("click", async () =>{
         const currentSrc = button.src;
 
         if (currentSrc.includes("/images/sun-dark.svg")) {
-            toggleLightDarkThemeOnSessionData(false);
+            await toggleLightDarkThemeOnSessionData(false);
         }
         else if (currentSrc.includes("/images/sun-light.svg")) {
-            toggleLightDarkThemeOnSessionData(true);
+            await toggleLightDarkThemeOnSessionData(true);
         }
 
         loadCurrentTheme();
@@ -160,19 +161,82 @@ async function loadCurrentTheme() {
     const theme = await getSessionDataFromDatabaseTheme();
 
     if (theme) {
-        if (theme == "light") { // ========================================== TO FINISH LATHER ==========================================
+        if (theme == "light") {
             lightDarkThemeButton.forEach(button => {
                 button.src = "./images/sun-dark.svg";
+                loadLightTheme();
             });
         } else {
             lightDarkThemeButton.forEach(button => {
                 button.src = "./images/sun-light.svg";
+                loadDarkTheme();
             });
         }
     }
     else {
-        toggleLightDarkThemeOnSessionData(true);
-        setTimeout(loadCurrentTheme, 1000);
+        try {
+            const themeLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+            await toggleLightDarkThemeOnSessionData(themeLight);
+            loadCurrentTheme();
+        } catch (error) {
+            console.error(error);
+            printError(508);
+            return;
+        }
+    }
+}
+
+// Variables used by the load theme functions
+let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
+window.location.pathname.includes("/about.html")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
+
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', async event => {
+    const newColorScheme = event.matches?true:false;
+
+    await toggleLightDarkThemeOnSessionData(newColorScheme);
+    loadCurrentTheme();
+});
+
+function loadLightTheme() {
+    themeIsLight = true;
+    document.documentElement.setAttribute("data-theme", "light");
+
+    logos.forEach(logo => {
+        logo.src = "./images/FreeIdeas.svg";
+    });
+
+    toggleThemeInAllFiles();
+}
+
+function loadDarkTheme() {
+    themeIsLight = false;
+    document.documentElement.setAttribute("data-theme", "dark");
+
+    logos.forEach(logo => {
+        logo.src = "./images/FreeIdeas_Pro.svg";
+    });
+
+    toggleThemeInAllFiles();
+}
+
+function toggleThemeInAllFiles() {
+    document.getElementById("mobileNavBarGhost").querySelector("#menuMobile").src = `./images/menu${themeIsLight?"":"_Pro"}.svg`;
+    document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+
+    if (window.location.href.includes("/publishAnIdea.html")) {
+        document.getElementById("addAdditionalInfo").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
+        document.getElementById("addLog").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
+        document.getElementById("cancelNewIdea").src = `./images/delete${themeIsLight?"":"_Pro"}.svg`;
+    }
+
+    if (window.location.href.includes("/accountVoid.html")) {
+        document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
+        document.getElementById("publishedAccount").children.item(0).src = `./images/publish${themeIsLight?"":"_Pro"}.svg`;
+        document.getElementById("savedAccount").children.item(0).src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
+    }
+
+    if (window.location.href.includes("/ideaVoid.html")) {
+        document.getElementById("modifyOldIdea").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
     }
 }
 
@@ -407,18 +471,18 @@ function printError(errorCode) {
 
 function loadData(SQLdata) {
     try {
-        loginButton.src = SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png";
+        loginButton.src = SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("userName").innerHTML = SQLdata['username'];
 
         loginArea.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
-            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png"}" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
             <button type="submit" id="sendAccountButton">Account</button>
             <button type="submit" id="sendLogoutButton">Log Out</button>`;
 
         loginAreaMobile.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
             <div style="align-items: center;">
-                <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png"}" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             </div>
             <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
             <div style="align-items: center;">

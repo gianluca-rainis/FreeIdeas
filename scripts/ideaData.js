@@ -98,7 +98,7 @@ async function getDataFromDatabase2(id) {
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         printError(421);
 
@@ -149,15 +149,24 @@ async function loadData2(SQLdata) {
 
         if (SQLdata['accountdata'][0]) {
             if (SQLdata['accountdata'][0].saved == 1) {
-                savedIdeaImg.src = "./images/savedIdea.svg";
+                savedIdeaImg.src = `./images/savedIdea${themeIsLight?"":"_Pro"}.svg`;
+            }
+            else {
+                savedIdeaImg.src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
             }
 
             if (SQLdata['accountdata'][0].liked == 1) {
-                likedIdeaImg.src = "./images/likedIdea.svg";
+                likedIdeaImg.src = `./images/likedIdea${themeIsLight?"":"_Pro"}.svg`;
+            }
+            else {
+                likedIdeaImg.src = `./images/liked${themeIsLight?"":"_Pro"}.svg`;
             }
 
             if (SQLdata['accountdata'][0].dislike == 1) {
-                dislikedIdeaImg.src = "./images/dislikedIdea.svg";
+                dislikedIdeaImg.src = `./images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`;
+            }
+            else {
+                dislikedIdeaImg.src = `./images/disliked${themeIsLight?"":"_Pro"}.svg`;
             }
 
             existCurrentAccountIdeaData = true;
@@ -250,8 +259,8 @@ async function loadData2(SQLdata) {
                 if (row.superCommentid === null) {
                     commentsListUl.innerHTML += `<li class="comment">
                             <div class="userInfo">
-                                <a href="" class="writerPage">
-                                    <img src="${row.userimage!=null?row.userimage:"./images/user.png"}" class="writerImg">
+                                <a href="./accountVoid.html?account=${row.authorid}" class="writerPage">
+                                    <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${row.username}:</div>
                                 </a>
 
@@ -271,8 +280,8 @@ async function loadData2(SQLdata) {
                         if (element.dataset.id == row.superCommentid) {
                             element.innerHTML += `<li class="comment">
                                 <div class="userInfo">
-                                    <a href="" class="writerPage">
-                                        <img src="${row.userimage!=null?row.userimage:"./images/user.png"}" class="writerImg">
+                                    <a href="./accountVoid.html?account=${row.authorid}" class="writerPage">
+                                        <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                         <div class="writerUserName">${row.username}:</div>
                                     </a>
 
@@ -334,8 +343,8 @@ async function loadData2(SQLdata) {
                     if (comment[commentReplyIndex].dataset.value == "rootComment") {
                         comment[commentReplyIndex].innerHTML = `
                             <div class="userInfo">
-                                <a href="" class="writerPage">
-                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:"./images/user.png"}" class="writerImg">
+                                <a href="./accountVoid.html?account=${sessionData['authorid']}" class="writerPage">
+                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${sessionData['username']}:</div>
                                 </a>
 
@@ -355,8 +364,8 @@ async function loadData2(SQLdata) {
                         comment[commentReplyIndex].querySelector(".underComments").innerHTML += `
                         <li class="comment">
                             <div class="userInfo">
-                                <a href="" class="writerPage">
-                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:"./images/user.png"}" class="writerImg">
+                                <a href="./accountVoid.html?account=${sessionData['authorid']}" class="writerPage">
+                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${sessionData['username']}:</div>
                                 </a>
 
@@ -482,8 +491,10 @@ async function loadData2(SQLdata) {
                 }
             });
         }
+
+        toggleThemeGestorIdeaData();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         printError(404);
     }
 }
@@ -495,19 +506,19 @@ async function toggleSavedLikedDislikedAccountIdeaData() {
     let liked = false;
     let disliked = false;
 
-    if (tempSrc.includes("/images/savedIdea.svg")) {
+    if (tempSrc.includes(`/images/savedIdea${themeIsLight?"":"_Pro"}.svg`)) {
         saved = true;
     }
 
     tempSrc = likedIdeaImg.src;
 
-    if (tempSrc.includes("/images/likedIdea.svg")) {
+    if (tempSrc.includes(`/images/likedIdea${themeIsLight?"":"_Pro"}.svg`)) {
         liked = true;
     }
 
     tempSrc = dislikedIdeaImg.src;
 
-    if (tempSrc.includes("/images/dislikedIdea.svg")) {
+    if (tempSrc.includes(`/images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`)) {
         disliked = true;
     }
 
@@ -536,7 +547,7 @@ async function toggleSavedLikedDislikedAccountIdeaData() {
                 throw new Error("");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             printError(421);
         }
     }
@@ -550,12 +561,12 @@ savedIdeaButton.addEventListener("click", async () => {
     if (sessionData) {
         const currentSrc = savedIdeaImg.src;
 
-        if (currentSrc.includes("/images/saved.svg")) {
-            savedIdeaImg.src = "./images/savedIdea.svg";
+        if (currentSrc.includes(`/images/saved${themeIsLight?"":"_Pro"}.svg`)) {
+            savedIdeaImg.src = `./images/savedIdea${themeIsLight?"":"_Pro"}.svg`;
             savedNumber.innerHTML = parseInt(savedNumber.innerHTML)+1;
         }
-        else if (currentSrc.includes("/images/savedIdea.svg")) {
-            savedIdeaImg.src = "./images/saved.svg";
+        else if (currentSrc.includes(`/images/savedIdea${themeIsLight?"":"_Pro"}.svg`)) {
+            savedIdeaImg.src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
             savedNumber.innerHTML = parseInt(savedNumber.innerHTML)-1;
         }
 
@@ -573,17 +584,17 @@ likedIdeaButton.addEventListener("click", async () => {
         const currentSrc = likedIdeaImg.src;
         const dislikeSrc = dislikedIdeaImg.src;
 
-        if (currentSrc.includes("/images/liked.svg")) {
-            likedIdeaImg.src = "./images/likedIdea.svg";
+        if (currentSrc.includes(`/images/liked${themeIsLight?"":"_Pro"}.svg`)) {
+            likedIdeaImg.src = `./images/likedIdea${themeIsLight?"":"_Pro"}.svg`;
             likedNumber.innerHTML = parseInt(likedNumber.innerHTML)+1;
 
-            if (dislikeSrc.includes("/images/dislikedIdea.svg")) { // Can't be like and dislike at the same time
-                dislikedIdeaImg.src = "./images/disliked.svg";
+            if (dislikeSrc.includes(`/images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`)) { // Can't be like and dislike at the same time
+                dislikedIdeaImg.src = `./images/disliked${themeIsLight?"":"_Pro"}.svg`;
                 dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)-1;
             }
         }
-        else if (currentSrc.includes("/images/likedIdea.svg")) {
-            likedIdeaImg.src = "./images/liked.svg";
+        else if (currentSrc.includes(`/images/likedIdea${themeIsLight?"":"_Pro"}.svg`)) {
+            likedIdeaImg.src = `./images/liked${themeIsLight?"":"_Pro"}.svg`;
             likedNumber.innerHTML = parseInt(likedNumber.innerHTML)-1;
         }
 
@@ -601,17 +612,17 @@ dislikedIdeaButton.addEventListener("click", async () => {
         const currentSrc = dislikedIdeaImg.src;
         const likedSrc = likedIdeaImg.src;
 
-        if (currentSrc.includes("/images/disliked.svg")) {
-            dislikedIdeaImg.src = "./images/dislikedIdea.svg";
+        if (currentSrc.includes(`/images/disliked${themeIsLight?"":"_Pro"}.svg`)) {
+            dislikedIdeaImg.src = `./images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`;
             dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)+1;
 
-            if (likedSrc.includes("/images/likedIdea.svg")) { // Can't be like and dislike at the same time
-                likedIdeaImg.src = "./images/liked.svg";
+            if (likedSrc.includes(`/images/likedIdea${themeIsLight?"":"_Pro"}.svg`)) { // Can't be like and dislike at the same time
+                likedIdeaImg.src = `./images/liked${themeIsLight?"":"_Pro"}.svg`;
                 likedNumber.innerHTML = parseInt(likedNumber.innerHTML)-1;
             }
         }
-        else if (currentSrc.includes("/images/dislikedIdea.svg")) {
-            dislikedIdeaImg.src = "./images/disliked.svg";
+        else if (currentSrc.includes(`/images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`)) {
+            dislikedIdeaImg.src = `./images/disliked${themeIsLight?"":"_Pro"}.svg`;
             dislikedNumber.innerHTML = parseInt(dislikedNumber.innerHTML)-1;
         }
 
@@ -643,4 +654,41 @@ async function modifyOldPageIfAuthorLoggedIn() {
     } catch (error) {
         console.error(error);
     }
+}
+
+/* Toggle theme */
+function toggleThemeGestorIdeaData() {
+    new MutationObserver(() => {
+        const currentSrc = savedIdeaImg.src;
+
+        if (currentSrc.includes("savedIdea")) {
+            savedIdeaImg.src = `./images/savedIdea${themeIsLight?"":"_Pro"}.svg`;
+        }
+        else {
+            savedIdeaImg.src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
+        }
+
+        if (likedIdeaImg.src.includes("likedIdea")) {
+            likedIdeaImg.src = `./images/likedIdea${themeIsLight?"":"_Pro"}.svg`;
+        }
+        else {
+            likedIdeaImg.src = `./images/liked${themeIsLight?"":"_Pro"}.svg`;
+        }
+
+        if (dislikedIdeaImg.src.includes("dislikedIdea")) {
+            dislikedIdeaImg.src = `./images/dislikedIdea${themeIsLight?"":"_Pro"}.svg`;
+        }
+        else {
+            dislikedIdeaImg.src = `./images/disliked${themeIsLight?"":"_Pro"}.svg`;
+        }
+
+        writerImage.forEach(writer => {
+            if (writer.src.includes("/images/user")) {
+                writer.src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+            }
+        });
+    }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+    });
 }

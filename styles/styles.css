@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+:root {
+  color-scheme: light dark;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #fffde8;
@@ -1049,6 +1053,8 @@ footer ul li a {
     width: 50%;
     height: 15rem;
     resize: none;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 .underComments {
@@ -1303,6 +1309,9 @@ footer ul li a {
     width: 90%;
     resize: vertical;
     height: 80px;
+    border-radius: 10px;
+    padding: 5px;
+    border: 0;
 }
 
 #newinfoForFilters {
@@ -1375,6 +1384,10 @@ footer ul li a {
     margin-bottom: 10px;
     width: 30%;
     resize: none;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
+    text-align: center;
 }
 
 #newIdeaMain #imagesInfo .imageInfoDescription, #newIdeaMain .logInfo {
@@ -1386,6 +1399,9 @@ footer ul li a {
     width: 90%;
     resize: vertical;
     height: 80px;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
 }
 
 /* download */
@@ -1399,6 +1415,9 @@ footer ul li a {
     margin-bottom: 20px;
     width: 80%;
     height: 40px;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
 }
 
 /* dev logs */
@@ -1644,6 +1663,10 @@ footer ul li a {
     #accountMain #modifyAccountInfo {
         margin-left: 80%;
     }
+
+    #newCommentText {
+        width: 70%;
+    }
 }
 
 @media screen and (min-width: 600px) and (max-width: 760px) {
@@ -1777,6 +1800,10 @@ footer ul li a {
 
     #accountMain #modifyAccountInfo {
         margin-left: 80%;
+    }
+
+    #newCommentText {
+        width: 80%;
     }
 }
 
@@ -1938,6 +1965,14 @@ footer ul li a {
 
     #accountMain #modifyAccountInfo {
         margin-left: 80%;
+    }
+
+    #accountAsideInfo {
+        border-right: 0 !important;
+    }
+
+    #newCommentText {
+        width: 90%;
     }
 }
 
@@ -2153,6 +2188,14 @@ footer ul li a {
     #accountMain #modifyAccountInfo {
         margin-left: 80%;
     }
+
+    #accountAsideInfo {
+        border-right: 0 !important;
+    }
+
+    #newCommentText {
+        width: 90%;
+    }
 }
 
 /* DON'T WORKS WITH WIDTH < 300PX */
@@ -2178,5 +2221,341 @@ footer ul li a {
 
     #toggle-password-visibility-mobile {
         top: 320px;
+    }
+}
+
+/* COLOR THEME (LIGHT - DARK) */
+:root[data-theme="dark"] {
+    body {
+        background-color: #000000;
+        color: #cba95c;
+    }
+
+    nav {
+        background-color: #000000;
+    }
+
+    nav #pcNavBarGhost {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    nav #mobileNavBarGhost {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    .navText {
+        color: #cba95c;
+    }
+    
+    .navText:hover {
+        background-color: #5c4e2e;
+    }
+
+    #userName {
+        color: #cba95c;
+    }
+
+    #mobileMenuHidden {
+        background-color: #000000;
+    }
+
+    #mobileNavLinks li {
+        border-bottom: 1px solid #cba95c;
+    }
+
+    #mobileNavLinks .navText {
+        color: #cba95c;
+    }
+
+    #mobileNavLinks .navText:hover {
+        background-color: #5c4e2e;
+    }
+
+    #mobileMenuHidden #loginAreaMobile h2 {
+        color: #cba95c;
+    }
+
+    #signUpMobile {
+        cursor: pointer;
+        color: #ffdd8d;
+    }
+
+    #signUpMobile:hover {
+        color: #5c4e2e;
+    }
+
+    #emailAreaLoginMobile, #passwordAreaLoginMobile, #firstNameMobile, #lastNameMobile, #userNameSignInMobile {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
+    }
+
+    #sendLoginButtonMobile, #sendLogoutButtonMobile, #sendAccountButtonMobile {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    #emailAreaLoginMobile::placeholder, #passwordAreaLoginMobile::placeholder, #firstNameMobile::placeholder, #lastNameMobile::placeholder, #userNameSignInMobile::placeholder {
+        color: #cba95c;
+    }
+
+    header {
+        background-color: #272727;
+    }
+
+    #whatisFreeIdeas {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    .ideaBox {
+        background-color: #5c4e2e;
+    }
+
+    .ideaBox .ideaImage {
+        background-color: #5c4e2e;
+    }
+
+    #helpIdeas {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    .ideaLink {
+        color: #cba95c;
+    }
+
+    footer {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    footer ul li a {
+        color: #cba95c;
+    }
+
+    #footer hr {
+        height: 1px;
+        color: #5c4e2e;
+        background-color: #5c4e2e;
+        border: none;
+    }
+
+    .footerpage {
+        background-color: #000000;
+    }
+
+    .footerpage h1, .footerpage h3, .footerpage h4, .footerpage p, .footerpage ul li {
+        color: #cba95c;
+    }
+
+    .footerpage a:link, .footerpage a:visited {
+        color: #5c4e2e;
+    }
+
+    #loginArea {
+        background-color: #272727;
+        border: 1px solid #cba95c;
+    }
+
+    #loginArea h2 {
+        color: #cba95c;
+    }
+
+    #signUp {
+        color: #ffdd8d;
+    }
+
+    #signUp:hover {
+        color: #5c4e2e;
+    }
+
+    #emailAreaLogin, #passwordAreaLogin, #firstName, #lastName, #userNameSignIn {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
+    }
+
+    #emailAreaLogin::placeholder, #passwordAreaLogin::placeholder, #firstName::placeholder, #lastName::placeholder, #userNameSignIn::placeholder {
+        color: #cba95c;
+    }
+
+    #sendLoginButton {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    #forgotPassword {
+        color: #ffdd8d;
+    }
+
+    #forgotPassword:hover {
+        color: #5c4e2e;
+    }
+
+    #sendAccountButton, #sendLogoutButton {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    #searchPage {
+        background-color: #000000;
+    }
+
+    #search {
+        border: 1px solid #5c4e2e;
+    }
+
+    .ideaLinkSrc {
+        color: #cba95c;
+    }
+
+    .ideaBoxScr {
+        background-color: #5c4e2e;
+    }
+
+    .ideaImageSrc {
+        background-color: #5c4e2e;
+    }
+
+    #compactFilters {
+        color: #cba95c;
+    }
+
+    #compactFilters:hover {
+        background-color: #5c4e2e;
+    }
+
+    #compactFiltersHidden {
+        background-color: #272727;
+        border: 1px solid #5c4e2e;
+    }
+
+    .hiddenTypeFilterText:hover {
+        background-color: #5c4e2e;
+    }
+
+    .typeHiddenLi[data-selected="true"], .creativityHiddenLi[data-selected="true"], .statusHiddenLi[data-selected="true"], .orderHiddenLi[data-selected="true"] {
+        background-color: #5c4e2e !important;
+    }
+
+    .typeHiddenLi:hover, .creativityHiddenLi:hover, .statusHiddenLi:hover, .orderHiddenLi:hover {
+        background-color: #5c4e2e;
+    }
+
+    #ideaMain #title {
+        background-color: #272727;
+    }
+
+    #ideaMain #author {
+        background-color: #36352c;
+    }
+
+    #ideaMain #mainAuthorAccount {
+        color: #cba95c;
+    }
+
+    #ideaLikeSaveSection {
+        background-color: #272727;
+    }
+
+    #ideaLikeSaveSection ul li:hover {
+        background-color: #36352c;
+    }
+
+    #imagesInfo .imageInfoLi {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    #downloadSection {
+        background-color: #272727;
+    }
+
+    #downloadButton {
+        background-color: #ffdd8d;
+    }
+
+    #downloadButton:active {
+        background-color: #5c4e2e;
+    }
+
+    #devLogsSection {
+        background-color: #000000;
+    }
+
+    .log {
+        border-top: 1px solid #cba95c;
+    }
+
+    #commentSection {
+        background-color: #272727;
+    }
+
+    .writerPage {
+        color: #cba95c;
+    }
+
+    .writerUserName {
+        color: #cba95c;
+    }
+
+    .underComments {
+        border-left: 1px solid #5c4e2e;
+    }
+
+    #accountAsideInfo {
+        background-color: #272727;
+        border-right: 1px solid #cba95c;
+    }
+
+    #mainAccountSectionInfo {
+        background-color: #000000;
+    }
+
+    #navBarForAccountSaved {
+        background-color: #272727;
+    }
+
+    #navBarForAccountSaved ul li:hover {
+        background-color: #5c4e2e;
+    }
+
+    #newIdeaMain #title, #newIdeaMain #title::placeholder {
+        background-color: #272727;
+        color: #cba95c;
+    }
+
+    #newIdeaMain #author {
+        background-color: #272727;
+    }
+
+    #newIdeaMain #mainAuthorAccount {
+        color: #cba95c;
+    }
+
+    #newIdeaMain #additionalInfo {
+        background-color: #000000;
+    }
+
+    #newIdeaMain #imagesInfo .imageInfoLi {
+        background-color: #000000;
+    }
+
+    #newIdeaMain #devLogsSection {
+        background-color: #000000;
+    }
+
+    #commentsList {
+        list-style-image: url("../images/commentTag_Pro.svg");
+    }
+
+    .underComments {
+        list-style-image: url("../images/commentTag_Pro.svg");
     }
 }

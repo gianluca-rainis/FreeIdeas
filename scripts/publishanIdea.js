@@ -86,7 +86,7 @@ addAdditionalInfo.addEventListener("click", () => {
     newLi.classList.add("imageInfoLi");
     newLi.innerHTML += `
         <div></div>
-        <img src="./images/delete.svg" class="deleteAdditionalInfo">
+        <img src="./images/delete${themeIsLight?"":"_Pro"}.svg" class="deleteAdditionalInfo">
         
         <div>
             <img class="preview" src="./images/voidImage.jpg">
@@ -115,7 +115,7 @@ addLog.addEventListener("click", () => {
     newLi.classList.add("log");
 
     newLi.innerHTML += `
-        <img src="./images/delete.svg" class="deleteLog">
+        <img src="./images/delete${themeIsLight?"":"_Pro"}.svg" class="deleteLog">
         <div class="logTitleAndData">
             <textarea class="logTitle" placeholder="Title" maxlength="255" required></textarea>
             <div class="data">${currentdate}</div>
@@ -299,7 +299,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
                 newLi.classList.add("imageInfoLi");
                 newLi.innerHTML += `
                     <div></div>
-                    <img src="./images/delete.svg" class="deleteAdditionalInfo">
+                    <img src="./images/delete${themeIsLight?"":"_Pro"}.svg" class="deleteAdditionalInfo">
                     
                     <div>
                         <img class="preview" src="${info.updtimage}">
@@ -322,7 +322,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
                 newLi.classList.add("log");
 
                 newLi.innerHTML += `
-                    <img src="./images/delete.svg" class="deleteLog">
+                    <img src="./images/delete${themeIsLight?"":"_Pro"}.svg" class="deleteLog">
                     <div class="logTitleAndData">
                         <textarea class="logTitle" placeholder="Title" maxlength="255" required>${log.title}</textarea>
                         <div class="data">${log.data}</div>

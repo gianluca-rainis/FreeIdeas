@@ -424,7 +424,7 @@ function toggleWindowSize2() {
             document.getElementById("allFilters").innerHTML = `
             <li class="filterBlock">
                 <div id="compactFilters" data-type="1">
-                    <img src="./images/filters.svg">
+                    <img id="compactFiltersImg" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
                     <span>Filters</span>
                 </div>
             </li>
@@ -475,6 +475,8 @@ function toggleWindowSize2() {
                 </ul>
             </div>`;
 
+            document.getElementById("compactFiltersImg").src = `./images/filters${themeIsLight?"":"_Pro"}.svg`;
+
             updateFiltersIfExists();
         }
     }
@@ -485,7 +487,7 @@ function toggleWindowSize2() {
             document.getElementById("allFilters").innerHTML = `
             <li class="filterBlock">
                 <div id="compactFilters" data-type="2">
-                    <img src="./images/filters.svg">
+                    <img id="compactFiltersImg" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
                     <span>Filters</span>
                 </div>
             </li>
@@ -534,6 +536,8 @@ function toggleWindowSize2() {
                 </ul>
             </div>`;
 
+            document.getElementById("compactFiltersImg").src = `./images/filters${themeIsLight?"":"_Pro"}.svg`;
+
             updateFiltersIfExists();
         }
     }
@@ -546,3 +550,14 @@ function toggleWindowSize2() {
 }
 
 toggleWindowSize2();
+
+/* Toggle theme */
+new MutationObserver(() => {
+    if (document.getElementById("compactFiltersImg")) {
+        const compactFiltersImg = document.getElementById("compactFiltersImg");
+        compactFiltersImg.src = `./images/filters${themeIsLight?"":"_Pro"}.svg`;
+    }
+}).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+});

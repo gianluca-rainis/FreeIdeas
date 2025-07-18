@@ -13,8 +13,8 @@ async function changeDataAccount() {
         let image = document.getElementById("userImageAccount").src;
 
         document.getElementById("accountAsideInfo").innerHTML = `
-            <img id="saveAccountInfo" src="./images/save.svg">
-            <img id="cancelAccountInfo" src="./images/delete.svg">
+            <img id="saveAccountInfo" src="./images/save${themeIsLight?"":"_Pro"}.svg">
+            <img id="cancelAccountInfo" src="./images/delete${themeIsLight?"":"_Pro"}.svg">
 
             <div id="newDataSetAccount">
                 <label>Username</label><input type="text" id="newuserNameAccount" maxlength="255" required>
@@ -189,7 +189,7 @@ function loadData2(SQLdata) {
 
     try {
         document.getElementById("userNameAccount").innerHTML = `${SQLdata['username']}`;
-        document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:"./images/user.png"}`;
+        document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}`;
         document.getElementById("userNameSurnameAccount").innerHTML = `${SQLdata['name']} ${SQLdata['surname']}`;
         document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
@@ -273,4 +273,13 @@ publishedAccountButton.addEventListener("click", async () => {
             </li>
         </a>`;
     }
+});
+
+new MutationObserver(() => {
+    if (document.getElementById("userImageAccount").src.includes("/images/user")) {
+        document.getElementById("userImageAccount").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+    }
+}).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
 });
