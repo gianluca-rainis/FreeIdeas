@@ -1,6 +1,5 @@
 const nav = document.getElementById("nav");
 const footer = document.getElementById("footer");
-const metadata = document.head;
 
 function loadNav() {
     if (nav) {
@@ -96,22 +95,6 @@ function loadFooter() {
     }
 }
 
-function loadMetadata() {
-    if (metadata) {
-        metadata.innerHTML = `
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Free Ideas</title>
-            
-            <meta name="description" content="Free Ideas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-
-            <link rel="icon" href="./images/FreeIdeas.svg" type="image/x-ico" />
-            <link href="./styles/styles.css" rel="stylesheet" />
-        `;
-    }
-}
-
-loadMetadata();
 loadNav();
 loadFooter();
 
