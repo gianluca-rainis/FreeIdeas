@@ -372,20 +372,20 @@ function loadData2(result) {
 
     if (result['format'] == "mono") {
         result['data'].forEach(ideaData => {
-            addChildToList(`./ideaVoid.html?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
+            addChildToList(`./ideaVoid.php?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
         });
     } else if (result['format'] == "double") {
         result['data']['data'].forEach(accountData => {
-            addChildToList(`./accountVoid.html?account=${accountData['id']}`, accountData['username'], `${accountData['email']}<br>${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
+            addChildToList(`./accountVoid.php?account=${accountData['id']}`, accountData['username'], `${accountData['email']}<br>${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
         });
 
         result['subdata']['data'].forEach(ideaData => {
-            addChildToList(`./ideaVoid.html?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
+            addChildToList(`./ideaVoid.php?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
         });
     }
     else if (result['format'] == "void") {
         result['data'].forEach(ideaData => {
-            addChildToList(`./ideaVoid.html?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
+            addChildToList(`./ideaVoid.php?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
         });
     }
 

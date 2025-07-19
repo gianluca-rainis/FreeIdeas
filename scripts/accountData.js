@@ -1,5 +1,5 @@
 // The id of the page to load
-const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./accountVoid.html?account=123">)
+const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./accountVoid.php?account=123">)
 const id = paramsURL.get("account"); // The id of the page to load
 let SQLdataGlobal = null;
 
@@ -80,7 +80,7 @@ async function changeDataAccount() {
             }
             else {
                 if (result['success']) {
-                    window.location.href = "./accountVoid.html";
+                    window.location.href = "./accountVoid.php";
                 }
                 else {
                     printError(result['error']);
@@ -89,7 +89,7 @@ async function changeDataAccount() {
         });
 
         document.getElementById("cancelAccountInfo").addEventListener("click", () => {
-            window.location.href = "./accountVoid.html";
+            window.location.href = "./accountVoid.php";
         });
     });
 }
@@ -198,7 +198,7 @@ function loadData2(SQLdata) {
         
         SQLdata['saved'].forEach(element => {
             document.getElementById("mainDivDinamicContent").innerHTML += `
-            <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+            <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
                 <li class="ideaBoxScr">
                     <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                     <p class="ideaTitleSrc">${element['title']}</p>
@@ -230,7 +230,7 @@ savedAccountButton.addEventListener("click", async () => {
 
     SQLdataGlobal['saved'].forEach(element => {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+        <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
             <li class="ideaBoxScr">
                 <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${element['title']}</p>
@@ -255,7 +255,7 @@ publishedAccountButton.addEventListener("click", async () => {
 
     SQLdataGlobal['published'].forEach(element => {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a href="./ideaVoid.html?idea=${element['id']}" class="ideaLinkSrc">
+        <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
             <li class="ideaBoxScr">
                 <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${element['title']}</p>

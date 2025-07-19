@@ -58,7 +58,7 @@ function printError(errorCode) {
 function loadData2(SQLdata) {
     try {
         for (let i = 0; i < linkToProjects.length; i++) {
-            linkToProjects[i].href = `./ideaVoid.html?idea=${SQLdata[i]['id']}`;
+            linkToProjects[i].href = `./ideaVoid.php?idea=${SQLdata[i]['id']}`;
             images[i].src = SQLdata[i]['ideaimage']!=null?SQLdata[i]['ideaimage']:"./images/FreeIdeas.svg";
             titles[i].innerHTML = SQLdata[i]['title'];
             authors[i].innerHTML = SQLdata[i]['username'];

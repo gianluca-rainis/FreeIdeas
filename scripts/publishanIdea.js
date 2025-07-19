@@ -36,7 +36,7 @@ let logInfo = document.querySelectorAll(".logInfo");
 let deleteLog = document.querySelectorAll(".deleteLog");
 
 // The id of the page to load
-const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.html?id=123">)
+const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.php?id=123">)
 const id = paramsURL.get("idea"); // The id of the page to load
 
 function updateQuerySelectorAll() {
@@ -136,7 +136,7 @@ logsList.addEventListener("click", (event) => {
 });
 
 cancelNewIdea.addEventListener("click", () => {
-    window.location.href = "./publishAnIdea.html";
+    window.location.href = "./publishAnIdea.php";
 });
 
 if (!id) {
@@ -207,7 +207,7 @@ if (!id) {
             const data = await response.json();
 
             if (data) {
-                window.location.href = `./index.html`;
+                window.location.href = `./index.php`;
             }
             else {
                 throw new Error("ERROR_IN_PHP");
@@ -235,7 +235,7 @@ async function ldAccountData2() {
         main.innerHTML = `
             <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(119, 177, 66);">Before to publish an idea you need to login</h1>
             <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(64, 133, 43);">Fore more information you can read our <a href="./termsOfUse.html">Terms of Use</a> and our <a href="privacyPolicy.html">Privacy Policy</a></p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(64, 133, 43);">Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a></p>
             <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(64, 133, 43);">If you have any questions you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
             <div style="padding-top: calc(6%);"></div>
         `;
@@ -418,7 +418,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
 
                     if (data) {
                         if (data['success']) {
-                            window.location.href = `./ideaVoid.html?idea=${id}`;
+                            window.location.href = `./ideaVoid.php?idea=${id}`;
                         } else {
                             throw new Error(data['error']);
                         }

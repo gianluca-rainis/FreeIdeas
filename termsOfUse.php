@@ -49,7 +49,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
             <p><strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service.</p>
             </li>
             <li>
-            <p><strong>Website</strong> refers to FreeIdeas, accessible from <a href="./index.html" rel="external nofollow noopener" target="_blank">./index.html</a></p>
+            <p><strong>Website</strong> refers to FreeIdeas, accessible from <a href="./index.php" rel="external nofollow noopener" target="_blank">https://freeideas.duckdns.org/</a></p>
             </li>
             <li>
             <p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>

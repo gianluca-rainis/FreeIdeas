@@ -55,7 +55,7 @@ let deleteCommentButton = document.querySelectorAll(".deleteComment"); // Delete
 let commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment - IT CONTAIN EVERYTHING SINCE THE comment Li
 
 // The id of the page to load
-const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.html?id=123">)
+const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.php?id=123">)
 const id = paramsURL.get("idea"); // The id of the page to load
 
 let error2 = false; // Error variable to print only the most specific error
@@ -140,7 +140,7 @@ async function loadData2(SQLdata) {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
         mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
         authorAccount.innerHTML = SQLdata['idea'][0].accountName;
-        authorAccount.href = `./accountVoid.html?account=${SQLdata['idea'][0].accountId}`;
+        authorAccount.href = `./accountVoid.php?account=${SQLdata['idea'][0].accountId}`;
         mainDescription.innerHTML = SQLdata['idea'][0].description;
 
         savedNumber.innerHTML = SQLdata['idealabels'][0].saves;
@@ -259,7 +259,7 @@ async function loadData2(SQLdata) {
                 if (row.superCommentid === null) {
                     commentsListUl.innerHTML += `<li class="comment">
                             <div class="userInfo">
-                                <a href="./accountVoid.html?account=${row.authorid}" class="writerPage">
+                                <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
                                     <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${row.username}:</div>
                                 </a>
@@ -280,7 +280,7 @@ async function loadData2(SQLdata) {
                         if (element.dataset.id == row.superCommentid) {
                             element.innerHTML += `<li class="comment">
                                 <div class="userInfo">
-                                    <a href="./accountVoid.html?account=${row.authorid}" class="writerPage">
+                                    <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
                                         <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                         <div class="writerUserName">${row.username}:</div>
                                     </a>
@@ -343,7 +343,7 @@ async function loadData2(SQLdata) {
                     if (comment[commentReplyIndex].dataset.value == "rootComment") {
                         comment[commentReplyIndex].innerHTML = `
                             <div class="userInfo">
-                                <a href="./accountVoid.html?account=${sessionData['authorid']}" class="writerPage">
+                                <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
                                     <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${sessionData['username']}:</div>
                                 </a>
@@ -364,7 +364,7 @@ async function loadData2(SQLdata) {
                         comment[commentReplyIndex].querySelector(".underComments").innerHTML += `
                         <li class="comment">
                             <div class="userInfo">
-                                <a href="./accountVoid.html?account=${sessionData['authorid']}" class="writerPage">
+                                <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
                                     <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
                                     <div class="writerUserName">${sessionData['username']}:</div>
                                 </a>
@@ -425,7 +425,7 @@ async function loadData2(SQLdata) {
                             }
                             else {
                                 if (result['success']) {
-                                    window.location.href = `./ideaVoid.html?idea=${id}`;
+                                    window.location.href = `./ideaVoid.php?idea=${id}`;
                                 }
                                 else {
                                     printError(result['error']);
@@ -480,7 +480,7 @@ async function loadData2(SQLdata) {
 
                     if (result) {
                         if (result["success"]) {
-                            window.location.href = `./ideaVoid.html?idea=${id}`;
+                            window.location.href = `./ideaVoid.php?idea=${id}`;
                         } else {
                             console.error(result['error']);
                         }
@@ -645,7 +645,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
 
         if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
             modifyButton.addEventListener("click", () => {
-                window.location.href = `./publishAnIdea.html?idea=${id}`;
+                window.location.href = `./publishAnIdea.php?idea=${id}`;
             });
         }
         else {

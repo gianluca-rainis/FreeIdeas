@@ -6,11 +6,11 @@ function loadNav() {
         nav.innerHTML = `
         <div id="pcNavBarGhost">
             <ul class="navLogo">
-                <li><a href="./index.html"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
+                <li><a href="./index.php"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
             </ul>
             <ul class="navLinks">
-                <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
-                <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
+                <li><a href="./searchAnIdea.php" class="navText">Search an Idea</a></li>
+                <li><a href="./publishAnIdea.php" class="navText">Publish an Idea</a></li>
                 <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
                 <li id="themeImageLi"><img src="./images/sun-dark.svg" class="toggle-light-dark-theme"></li>
                 <li id="userImageLi"><img src="./images/user.svg" id="userImage"><p id="userName">Login</p></li>
@@ -36,7 +36,7 @@ function loadNav() {
 
         <div id="mobileNavBarGhost">
             <ul class="navLogo">
-                <li><a href="./index.html"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
+                <li><a href="./index.php"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
             </ul>
             <ul class="navLinks">
                 <li id="themeImageLiMobile"><img src="./images/sun-dark.svg" class="toggle-light-dark-theme"></li>
@@ -44,8 +44,8 @@ function loadNav() {
             </ul>
             <div id="mobileMenuHidden">
                 <ul id="mobileNavLinks">
-                    <li><a href="./searchAnIdea.html" class="navText">Search an Idea</a></li>
-                    <li><a href="./publishAnIdea.html" class="navText">Publish an Idea</a></li>
+                    <li><a href="./searchAnIdea.php" class="navText">Search an Idea</a></li>
+                    <li><a href="./publishAnIdea.php" class="navText">Publish an Idea</a></li>
                     <li><a href="" class="navText" id="randomIdeaAMobile">Random Idea</a></li>
                 </ul>
 
@@ -76,16 +76,16 @@ function loadFooter() {
     if (footer) {
         footer.innerHTML = `
             <ul>
-                <li><a href="./privacyPolicy.html">Privacy Policy</a></li>
-                <li><a href="./termsOfUse.html">Terms of Use</a></li>
-                <li><a href="./license.html">License</a></li>
-                <li><a href="./contacts.html">Contact Us</a></li>
-                <li><a href="./about.html">About Us</a></li>
+                <li><a href="./privacyPolicy.php">Privacy Policy</a></li>
+                <li><a href="./termsOfUse.php">Terms of Use</a></li>
+                <li><a href="./license.php">License</a></li>
+                <li><a href="./contacts.php">Contact Us</a></li>
+                <li><a href="./about.php">About Us</a></li>
                 <li><a href="https://github.com/rainis-gianluca/FreeIdeas.git"><img src="./images/github.png" id="githubLogo"></a></li>
             </ul>
             <hr>
             <section class="footerTextSection">
-                <a href="./index.html" id="footerLogoA"><img src="./images/FreeIdeas.svg" id="footerLogo"></a>
+                <a href="./index.php" id="footerLogoA"><img src="./images/FreeIdeas.svg" id="footerLogo"></a>
 
                 <ul class="footerText">
                     <li>Copyright &copy; 2025 Gianluca Rainis</li>
@@ -102,7 +102,7 @@ loadFooter();
 const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme");
 let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
 
-window.location.pathname.includes("/about.html")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
+window.location.pathname.includes("/about.php")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
 
 let themeIsLight = true; // Main bool for theme control
 loadCurrentTheme();
@@ -165,19 +165,19 @@ function toggleThemeInAllFiles() {
     document.getElementById("mobileNavBarGhost").querySelector("#menuMobile").src = `./images/menu${themeIsLight?"":"_Pro"}.svg`;
     document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
 
-    if (window.location.href.includes("/publishAnIdea.html")) {
+    if (window.location.href.includes("/publishAnIdea.php")) {
         document.getElementById("addAdditionalInfo").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("addLog").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("cancelNewIdea").src = `./images/delete${themeIsLight?"":"_Pro"}.svg`;
     }
 
-    if (window.location.href.includes("/accountVoid.html")) {
+    if (window.location.href.includes("/accountVoid.php")) {
         document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("publishedAccount").children.item(0).src = `./images/publish${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("savedAccount").children.item(0).src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
     }
 
-    if (window.location.href.includes("/ideaVoid.html")) {
+    if (window.location.href.includes("/ideaVoid.php")) {
         document.getElementById("modifyOldIdea").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
     }
 }
@@ -204,8 +204,8 @@ async function getRandomIdeaId() {
 async function setRandomLinkForRandomIdea() {
     const randomIdForRandomLink = await getRandomIdeaId();
 
-    randomLink.href = `./ideaVoid.html?idea=${randomIdForRandomLink['id']}`;
-    randomLinkMobile.href = `./ideaVoid.html?idea=${randomIdForRandomLink['id']}`;
+    randomLink.href = `./ideaVoid.php?idea=${randomIdForRandomLink['id']}`;
+    randomLinkMobile.href = `./ideaVoid.php?idea=${randomIdForRandomLink['id']}`;
 }
 
 // LOGIN GESTOR
@@ -256,7 +256,7 @@ function toggleSendLoginButton() {
             const data = await response.json();
 
             if (data) {
-                window.location.href = "./index.html";
+                window.location.href = "./index.php";
             }
             else {
                 if (!isLoginArea) {
@@ -322,7 +322,7 @@ function signUpGestor() {
                         <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
                     </svg>
                 </button>
-                <p>By singing up you agree to our <a href="./termsOfUse.html">Terms of Use</a> and <a href="./privacyPolicy.html">Privacy Policy</a></p>
+                <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
                 <button type="submit" id="sendLoginButton">Create Account</button>
             </form>`;
 
@@ -433,11 +433,11 @@ function loadData(SQLdata) {
             </div>`;
 
         document.getElementById("sendAccountButton").addEventListener("click", () => {
-            window.location.href = "./accountVoid.html";
+            window.location.href = "./accountVoid.php";
         });
 
         document.getElementById("sendAccountButtonMobile").addEventListener("click", () => {
-            window.location.href = "./accountVoid.html";
+            window.location.href = "./accountVoid.php";
         });
 
         document.getElementById("sendLogoutButton").addEventListener("click", () => {
@@ -447,7 +447,7 @@ function loadData(SQLdata) {
                 printError(421);
             }
 
-            window.location.href = "./index.html";
+            window.location.href = "./index.php";
         });
 
         document.getElementById("sendLogoutButtonMobile").addEventListener("click", () => {
@@ -457,7 +457,7 @@ function loadData(SQLdata) {
                 printError(421);
             }
 
-            window.location.href = "./index.html";
+            window.location.href = "./index.php";
         });
     } catch (error) {
         printError(404);
@@ -515,7 +515,7 @@ function toggleSendLoginButtonMobile() {
             const data = await response.json();
 
             if (data) {
-                window.location.href = "./index.html";
+                window.location.href = "./index.php";
             }
             else {
                 if (!isLoginArea) {
@@ -547,7 +547,7 @@ function signUpGestorMobile() {
                         <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
                     </svg>
                 </button>
-                <p>By singing up you agree to our <a href="./termsOfUse.html">Terms of Use</a> and <a href="./privacyPolicy.html">Privacy Policy</a></p>
+                <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
                 <button type="submit" id="sendLoginButtonMobile">Create Account</button>
             </form>`;
 
