@@ -7,7 +7,7 @@
 
     $id = $_SESSION['account']['id'];
 
-    $firstName = $lastName = $email = $description = $username = "";
+    $firstName = $lastName = $description = $username = "";
     $image = null;
     $error = false;
     $errorLog = "";
@@ -15,14 +15,8 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $firstName = getInput($_POST["name"]);
         $lastName = getInput($_POST["surname"]);
-        $email = getInput($_POST["email"]);
         $description = getInput($_POST["description"]);
         $username = getInput($_POST["username"]);
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["success"=>false, "error"=>"invalid_email"]);
-        exit;
     }
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -34,7 +28,7 @@
     }
 
     if ($image !== null) {
-        $sql = "UPDATE accounts SET email=?, name=?, surname=?, username=?, userimage=?, description=? WHERE id=?;";
+        $sql = "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=? WHERE id=?;";
         $state = $conn->prepare($sql);
 
         if (!$state) {
@@ -44,12 +38,12 @@
 
         $userImage = null;
         
-        $state->bind_param("ssssbsi", $email, $firstName, $lastName, $username, $userImage, $description, $id);
+        $state->bind_param("sssbsi", $firstName, $lastName, $username, $userImage, $description, $id);
 
         $state->send_long_data(4, $image);
     }
     else {
-        $sql = "UPDATE accounts SET email=?, name=?, surname=?, username=?, description=? WHERE id=?;";
+        $sql = "UPDATE accounts SET name=?, surname=?, username=?, description=? WHERE id=?;";
         $state = $conn->prepare($sql);
 
         if (!$state) {
@@ -57,7 +51,7 @@
             exit;
         }
 
-        $state->bind_param("sssssi", $email, $firstName, $lastName, $username, $description, $id);
+        $state->bind_param("ssssi", $firstName, $lastName, $username, $description, $id);
     }
 
     if (!$state->execute()) {
@@ -69,7 +63,6 @@
     $conn->close();
 
     $_SESSION['account']['id'] = $id;
-    $_SESSION['account']['email'] = $email;
     $_SESSION['account']['name'] = $firstName;
     $_SESSION['account']['surname'] = $lastName;
 

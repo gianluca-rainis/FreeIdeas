@@ -60,7 +60,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
             </ul>
 
             <section id="downloadSection">
-                <h3 id="download">Download</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
+                <h3 id="download">External Link</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
                 <a id="buttonlink" href=""><button id="downloadButton">Download</button></a>
             </section>
 

@@ -85,8 +85,8 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
                 </section>
 
                 <section id="downloadSection">
-                    <h3 class="subtitles">Download</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
-                    <input type="url" id="buttonlink" placeholder="Link to download data" maxlength="5000" required>
+                    <h3 class="subtitles">External Link</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
+                    <input type="url" id="buttonlink" placeholder="Link to download data" maxlength="5000">
                 </section>
 
                 <section id="devLogsSection">

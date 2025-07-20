@@ -376,7 +376,7 @@ function loadData2(result) {
         });
     } else if (result['format'] == "double") {
         result['data']['data'].forEach(accountData => {
-            addChildToList(`./accountVoid.php?account=${accountData['id']}`, accountData['username'], `${accountData['email']}<br>${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
+            addChildToList(`./accountVoid.php?account=${accountData['id']}`, accountData['username'], `${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
         });
 
         result['subdata']['data'].forEach(ideaData => {

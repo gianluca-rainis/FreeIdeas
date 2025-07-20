@@ -21,7 +21,6 @@ async function changeDataAccount() {
                 <label>Image</label><input type="file" id="newuserImageAccount" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
                 <label>Name</label><input type="text" id="newuserAccountName" maxlength="255" required>
                 <label>Surname</label><input type="text" id="newuserSurnameAccount" maxlength="255" required>
-                <label>Email</label><input type="email" id="newemailAccount" maxlength="255" required>
                 <label>Description</label><textarea type="text" rows="8" cols="25" id="newdescriptionAccount" maxlength="1000"></textarea>
             </div>
         `;
@@ -29,14 +28,12 @@ async function changeDataAccount() {
         document.getElementById("newuserNameAccount").value = username;
         document.getElementById("newuserAccountName").value = name;
         document.getElementById("newuserSurnameAccount").value = surname;
-        document.getElementById("newemailAccount").value = email;
         document.getElementById("newdescriptionAccount").value = description;
 
         document.getElementById("saveAccountInfo").addEventListener("click", async () => {
             username = document.getElementById("newuserNameAccount").value;
             name = document.getElementById("newuserAccountName").value;
             surname = document.getElementById("newuserSurnameAccount").value;
-            email = document.getElementById("newemailAccount").value;
             description = document.getElementById("newdescriptionAccount").value;
 
             if (document.getElementById("newuserImageAccount").files[0] != null) {
@@ -50,7 +47,6 @@ async function changeDataAccount() {
             data.append('username', username);
             data.append('name', name);
             data.append('surname', surname);
-            data.append('email', email);
             data.append('description', description);
             
             if (image) {
@@ -111,7 +107,7 @@ async function ldAccountData2() {
     const SQLdata = await getSessionDataFromDatabase2();
 
     if (SQLdata) {
-        ldOtherAccountData(SQLdata['id']);
+        ldOtherAccountData(SQLdata['id'], true);
     }
     else {
         printError(421);
@@ -132,11 +128,11 @@ async function getSessionDataFromDatabase2() {
     }
 }
 
-async function ldOtherAccountData(accountid=id) {
+async function ldOtherAccountData(accountid=id, showEmail=false) {
     const SQLdata = await getOtherAccountDataFromDatabase(accountid);
     
     if (SQLdata) {
-        loadData2(SQLdata);
+        loadData2(SQLdata, showEmail);
     }
     else {
         printError(421);
@@ -184,14 +180,20 @@ function printError(errorCode) {
     }
 }
 
-function loadData2(SQLdata) {
+function loadData2(SQLdata, showEmail) {
     SQLdataGlobal = SQLdata;
 
     try {
         document.getElementById("userNameAccount").innerHTML = `${SQLdata['username']}`;
         document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}`;
         document.getElementById("userNameSurnameAccount").innerHTML = `${SQLdata['name']} ${SQLdata['surname']}`;
-        document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
+        
+        if (showEmail) {
+            document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
+        } else {
+            document.getElementById("emailAccount").style.display = "none";
+        }
+        
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
 
         document.getElementById("mainDivDinamicContent").innerHTML = "";

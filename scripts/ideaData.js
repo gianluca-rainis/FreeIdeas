@@ -174,9 +174,11 @@ async function loadData2(SQLdata) {
 
         if (SQLdata['idea'][0].downloadlink) { // Download link
             buttonLink.href = SQLdata['idea'][0].downloadlink;
+            downloadButton.innerHTML = SQLdata['idea'][0].downloadlink;
         }
         else {
             downloadSection.innerHTML = "";
+            downloadSection.style.display = "none";
         }
 
         if (SQLdata['info'].length != 0) { // Info with images

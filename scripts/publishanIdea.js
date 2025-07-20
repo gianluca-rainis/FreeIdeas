@@ -107,6 +107,7 @@ addAdditionalInfo.addEventListener("click", () => {
 imagesInfo.addEventListener("click", (event) => {
     if (event.target.classList.contains("deleteAdditionalInfo")) {
         event.target.closest("li").remove();
+        updateQuerySelectorAll();
     }
 });
 
@@ -132,6 +133,7 @@ addLog.addEventListener("click", () => {
 logsList.addEventListener("click", (event) => {
     if (event.target.classList.contains("deleteLog")) {
         event.target.closest("li").remove();
+        updateQuerySelectorAll();
     }
 });
 

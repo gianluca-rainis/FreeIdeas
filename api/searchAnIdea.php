@@ -11,17 +11,17 @@
         $order = getInput($_POST["order"]);
         
         // SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.title LIKE '%$search%';
-        // SELECT accounts.id, accounts.name, accounts.surname, accounts.email, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE '%$search%' OR accounts.name LIKE '%$search%' OR accounts.surname LIKE '%$search%' OR accounts.email LIKE '%$search%';
+        // SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE '%$search%' OR accounts.name LIKE '%$search%' OR accounts.surname LIKE '%$search%';
         // SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid JOIN idealabels ON idealabels.ideaid=ideas.id WHERE idealabels.type=$type OR idealabels.creativity=$creativity OR idealabels.status=$status;
 
         if ($search != "" && $type == "" && $creativity == "" && $status == "" && $order == "") {
-            $sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.email, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ? OR accounts.email LIKE ?;";
+            $sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?;";
             $typeOfQuery = "account";
 
             $searchParam = "%" . $search . "%";
 
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam);
+            $stmt->bind_param("sss", $searchParam, $searchParam, $searchParam);
         } else if (!($search == "" && $type == "" && $creativity == "" && $status == "")) {
             if ($order == "") {
                 $sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
