@@ -3,7 +3,7 @@ Author: Gianluca Rainis
 This project is licensed under the FreeIdeas License.
 You can find the license in the LICENSE file in the root directory of this project.
 Project: FreeIdeas
-Free Ideas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
+FreeIdeas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
 -->
 <!DOCTYPE html>
 
@@ -26,7 +26,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
 
         <main>
             <section id="whatisFreeIdeas">
-                <h2>What is Free Ideas?</h2>
+                <h2>What is FreeIdeas?</h2>
                 <ul id="lastIdeas">
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
@@ -109,17 +109,17 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
                     </a>
                 </ul>
                 <p id="description">
-                    Free Ideas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
+                    FreeIdeas is a platform where you can share ideas for any kind of project — creative, technical, personal, or collaborative — and where you can find inspiration for your next enterprise.
                     <br>
                     You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
                     <br>
-                    The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license).
+                    The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license section).
                     <br>
                     The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
                     <br>
-                    The goal of Free Ideas is to create a community of people who share their ideas and help each other to bring them to life.
+                    The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
                     <br>
-                    If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, Free Ideas is the place for you.
+                    If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
                     <br>
                     <strong>Join us and start sharing your ideas today!</strong>
                 </p>
@@ -215,7 +215,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
                     <br>
                     Do you want to collaborate with other people to realize your idea?
                     <br>
-                    Free Ideas is the place for you!
+                    FreeIdeas is the place for you!
                     <br>
                     You can ask for help on your ideas, and other people can help you to bring them to life.
                     <br>
@@ -223,7 +223,7 @@ Free Ideas is a collection of free ideas for projects, apps, and websites that y
                     <br>
                     The site is open to everyone, and you can contribute by asking for help on your own ideas or by helping others with their ideas.
                     <br>
-                    The goal of Free Ideas is to create a community of people who share their ideas and help each other to bring them to life.
+                    The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
                     <br>
                     <strong>Join us and help bring these ideas to light!</strong>
                 </p>
