@@ -19,6 +19,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <main id="accountMain">
             <aside id="accountAsideInfo">
+                <img id="publicPrivateAccountInfoImg" src="" data-value="">
                 <img id="modifyAccountInfo" src="./images/modify.svg">
                 <h1 id="userNameAccount"></h1>
                 <img id="userImageAccount" src="">

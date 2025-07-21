@@ -36,7 +36,7 @@
     $stmt->close();
 
     // insert values
-    $sql = "INSERT INTO accounts (email, password, name, surname, username) VALUES (?, ?, ?, ?, ?);";
+    $sql = "INSERT INTO accounts (email, password, name, surname, username, public) VALUES (?, ?, ?, ?, ?, ?);";
     $state = $conn->prepare($sql);
 
     if (!$state) {
@@ -44,7 +44,9 @@
         exit;
     }
 
-    $state->bind_param("sssss", $email, $passwordhash, $firstName, $lastName, $username);
+    $zero = 0; // Private account for default
+
+    $state->bind_param("sssssi", $email, $passwordhash, $firstName, $lastName, $username, $zero);
 
     $state->execute();
     
@@ -75,6 +77,7 @@
 
             $_SESSION['account']['description'] = $row['description'];
             $_SESSION['account']['username'] = $row['username'];
+            $_SESSION['account']['public'] = $row['public'];
 
             $stmt->close();
             echo json_encode($_SESSION['account']);

@@ -1113,6 +1113,17 @@ footer ul li a {
     cursor: pointer;
 }
 
+#publicPrivateAccountInfoImg {
+    width: 20%;
+    height: auto;
+    position: absolute;
+    margin-top: 0;
+    padding-top: 0;
+    left: 0;
+    margin-left: 10%;
+    cursor: pointer;
+}
+
 /* MODIFY INFO PART */
 #newDataSetAccount {
     display: grid;

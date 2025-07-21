@@ -32,6 +32,7 @@
 
                 $_SESSION['account']['description'] = $row['description'];
                 $_SESSION['account']['username'] = $row['username'];
+                $_SESSION['account']['public'] = $row['public'];
 
                 $stmt->close();
                 echo json_encode($_SESSION['account']);
@@ -74,6 +75,7 @@
         $_SESSION['account']['userimage'] = $row['userimage'];
         $_SESSION['account']['description'] = $row['description'];
         $_SESSION['account']['username'] = $row['username'];
+        $_SESSION['account']['public'] = $row['public'];
 
         $stmt->close();
         echo json_encode($_SESSION['account']);

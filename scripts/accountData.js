@@ -11,6 +11,7 @@ async function changeDataAccount() {
         let email = document.getElementById("emailAccount").innerHTML;
         let description = document.getElementById("descriptionAccount").innerHTML;
         let image = document.getElementById("userImageAccount").src;
+        let public = document.getElementById("publicPrivateAccountInfoImg").dataset.value;
 
         document.getElementById("accountAsideInfo").innerHTML = `
             <img id="saveAccountInfo" src="./images/save${themeIsLight?"":"_Pro"}.svg">
@@ -48,6 +49,7 @@ async function changeDataAccount() {
             data.append('name', name);
             data.append('surname', surname);
             data.append('description', description);
+            data.append('public', public=="public"?1:0);
             
             if (image) {
                 data.append('image', image);
@@ -87,6 +89,49 @@ async function changeDataAccount() {
         document.getElementById("cancelAccountInfo").addEventListener("click", () => {
             window.location.href = "./accountVoid.php";
         });
+    });
+
+    document.getElementById("publicPrivateAccountInfoImg").addEventListener("click", async () => {
+        const sessionData = await getSessionDataFromDatabase2();
+
+        if (confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
+            const data = new FormData();
+            data.append('username', sessionData['username']);
+            data.append('name', sessionData['name']);
+            data.append('surname', sessionData['surname']);
+            data.append('description', sessionData['description']);
+            data.append('public', sessionData['public']==1?0:1);
+
+            async function sendData(data) {
+                try {
+                    const res = await fetch(`./api/modifyAccountInfo.php`, {
+                        credentials: "include",
+                        method: 'POST',
+                        body: data
+                    });
+
+                    const resp = await res.json();
+
+                    return resp;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            const result = await sendData(data);
+
+            if (!result) {
+                printError(421);
+            }
+            else {
+                if (result['success']) {
+                    window.location.href = "./accountVoid.php";
+                }
+                else {
+                    printError(result['error']);
+                }
+            }
+        }
     });
 }
 
@@ -190,8 +235,11 @@ function loadData2(SQLdata, showEmail) {
         
         if (showEmail) {
             document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
+            document.getElementById("publicPrivateAccountInfoImg").src = `./images/${SQLdata['public']==1?"public":"private"}${themeIsLight?"":"_Pro"}.svg`;
+            document.getElementById("publicPrivateAccountInfoImg").dataset.value = SQLdata['public']==1?"public":"private";
         } else {
             document.getElementById("emailAccount").style.display = "none";
+            document.getElementById("publicPrivateAccountInfoImg").style.display = "none";
         }
         
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
@@ -277,9 +325,17 @@ publishedAccountButton.addEventListener("click", async () => {
     }
 });
 
+/* Theme changer */
 new MutationObserver(() => {
     if (document.getElementById("userImageAccount").src.includes("/images/user")) {
         document.getElementById("userImageAccount").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+    }
+
+    if (document.getElementById("publicPrivateAccountInfoImg").src.includes("/images/private")) {
+        document.getElementById("publicPrivateAccountInfoImg").src = `./images/private${themeIsLight?"":"_Pro"}.svg`;
+    }
+    else if (document.getElementById("publicPrivateAccountInfoImg").src.includes("/images/public")) {
+        document.getElementById("publicPrivateAccountInfoImg").src = `./images/public${themeIsLight?"":"_Pro"}.svg`;
     }
 }).observe(document.documentElement, {
     attributes: true,

@@ -15,7 +15,7 @@
         // SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid JOIN idealabels ON idealabels.ideaid=ideas.id WHERE idealabels.type=$type OR idealabels.creativity=$creativity OR idealabels.status=$status;
 
         if ($search != "" && $type == "" && $creativity == "" && $status == "" && $order == "") {
-            $sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?;";
+            $sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?) AND accounts.public=1;";
             $typeOfQuery = "account";
 
             $searchParam = "%" . $search . "%";

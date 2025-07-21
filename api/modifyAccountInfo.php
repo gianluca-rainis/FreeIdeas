@@ -7,7 +7,7 @@
 
     $id = $_SESSION['account']['id'];
 
-    $firstName = $lastName = $description = $username = "";
+    $firstName = $lastName = $description = $username = $public = "";
     $image = null;
     $error = false;
     $errorLog = "";
@@ -17,6 +17,7 @@
         $lastName = getInput($_POST["surname"]);
         $description = getInput($_POST["description"]);
         $username = getInput($_POST["username"]);
+        $public = getInput($_POST["public"]);
     }
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -28,7 +29,7 @@
     }
 
     if ($image !== null) {
-        $sql = "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=? WHERE id=?;";
+        $sql = "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=?, public=? WHERE id=?;";
         $state = $conn->prepare($sql);
 
         if (!$state) {
@@ -38,12 +39,12 @@
 
         $userImage = null;
         
-        $state->bind_param("sssbsi", $firstName, $lastName, $username, $userImage, $description, $id);
+        $state->bind_param("sssbsii", $firstName, $lastName, $username, $userImage, $description, $public, $id);
 
         $state->send_long_data(4, $image);
     }
     else {
-        $sql = "UPDATE accounts SET name=?, surname=?, username=?, description=? WHERE id=?;";
+        $sql = "UPDATE accounts SET name=?, surname=?, username=?, description=?, public=? WHERE id=?;";
         $state = $conn->prepare($sql);
 
         if (!$state) {
@@ -51,7 +52,7 @@
             exit;
         }
 
-        $state->bind_param("ssssi", $firstName, $lastName, $username, $description, $id);
+        $state->bind_param("ssssii", $firstName, $lastName, $username, $description, $public, $id);
     }
 
     if (!$state->execute()) {
@@ -72,6 +73,7 @@
 
     $_SESSION['account']['description'] = $description;
     $_SESSION['account']['username'] = $username;
+    $_SESSION['account']['public'] = $public;
 
     echo json_encode(["success"=>true]);
 

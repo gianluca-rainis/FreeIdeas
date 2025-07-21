@@ -25,6 +25,7 @@
             $data['userimage'] = $row['userimage'];
             $data['description'] = $row['description'];
             $data['username'] = $row['username'];
+            $data['public'] = $row['public'];
         }
         else {
             $data = null;

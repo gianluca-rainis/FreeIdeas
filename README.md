@@ -44,15 +44,15 @@ EVERITHING WAS DEVELOPED BY THE AUTHOR.
 ## DataBase structure
 ### Accounts
 ```SQL
-+-----------------------------------------------------------------------------+
-|                                   accounts                                  |
-+-----------------------------------------------------------------------------+
-| id | email | password | name | surname | userimage | description | username |
-+----+-------+----------+------+---------+-----------+------------------------+
-|    |       |          |      |         |           |             |          |
-|    |       |          |      |         |           |             |          |
-|    |       |          |      |         |           |             |          |
-+----+-------+----------+------+---------+-----------+-------------+----------+
++--------------------------------------------------------------------------------------+
+|                                       accounts                                       |
++--------------------------------------------------------------------------------------+
+| id | email | password | name | surname | userimage | description | username | public |
++----+-------+----------+------+---------+-----------+---------------------------------+
+|    |       |          |      |         |           |             |          |        |
+|    |       |          |      |         |           |             |          |        |
+|    |       |          |      |         |           |             |          |        |
++----+-------+----------+------+---------+-----------+-------------+----------+--------+
 ```
 
 ```SQL
@@ -64,6 +64,7 @@ CREATE TABLE accounts (
     userimage mediumblob,
     description varchar(1000),
     username varchar(255) NOT NULL,
+    public int NOT NULL,
     PRIMARY KEY (id)
 );
 ```
@@ -242,6 +243,7 @@ mysql> describe accounts;
 | userimage   | mediumblob     | YES  |     | NULL    |                |
 | description | varchar(1000)  | YES  |     | NULL    |                |
 | username    | varchar(255)   | NO   |     | NULL    |                |
+| public      | int            | NO   |     | NULL    |                |
 +-------------+----------------+------+-----+---------+----------------+
 
 mysql> describe ideas;
