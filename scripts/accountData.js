@@ -175,12 +175,17 @@ async function getSessionDataFromDatabase2() {
 
 async function ldOtherAccountData(accountid=id, showEmail=false) {
     const SQLdata = await getOtherAccountDataFromDatabase(accountid);
-    
-    if (SQLdata) {
-        loadData2(SQLdata, showEmail);
+
+    if (SQLdata['public']==1 || showEmail) {
+        if (SQLdata) {
+            loadData2(SQLdata, showEmail);
+        }
+        else {
+            printError(421);
+        }
     }
     else {
-        printError(421);
+        printError(404);
     }
 }
 
@@ -215,6 +220,7 @@ function printError(errorCode) {
         `;
 
         document.querySelector("main").style.textAlign = "center";
+        document.querySelector("main").style.display = "block";
         
         if (document.querySelector("header")) {
             document.querySelector("header").innerHTML = "";

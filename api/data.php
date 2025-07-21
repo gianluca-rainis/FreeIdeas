@@ -68,7 +68,7 @@
         return $data;
     }
 
-    $return['idea'] = getDataFromDatabase($conn, $id, "SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;");
+    $return['idea'] = getDataFromDatabase($conn, $id, "SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId, accounts.public AS accountPublic FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;");
     $return['info'] = getDataFromDatabase($conn, $id, "SELECT * FROM additionalinfo WHERE ideaid=?;"); // Return the info with image
     $return['log'] = getDataFromDatabase($conn, $id, "SELECT * FROM authorupdates WHERE ideaid=?;"); // Logs
     $return['comment'] = getDataFromDatabase($conn, $id, "SELECT comments.*, accounts.username, accounts.userimage FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;"); // Comments

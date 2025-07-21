@@ -140,7 +140,7 @@ async function loadData2(SQLdata) {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
         mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
         authorAccount.innerHTML = SQLdata['idea'][0].accountName;
-        authorAccount.href = `./accountVoid.php?account=${SQLdata['idea'][0].accountId}`;
+        authorAccount.href = `${SQLdata['idea'][0].accountPublic==1?`./accountVoid.php?account=${SQLdata['idea'][0].accountId}`:""}`;
         mainDescription.innerHTML = SQLdata['idea'][0].description;
 
         savedNumber.innerHTML = SQLdata['idealabels'][0].saves;
