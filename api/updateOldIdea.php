@@ -70,6 +70,9 @@
 
                         $iData++;
                     }
+
+                    $additionalInfo['titles'][$i] = getInput($additionalInfo['titles'][$i]);
+                    $additionalInfo['descriptions'][$i] = getInput($additionalInfo['descriptions'][$i]);
                 }
             }            
 
@@ -128,6 +131,14 @@
             }
 
             // Send all author logs data
+            if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
+                for ($i=0; $i < count($logs['dates']); $i++) { 
+                    $logs['dates'][$i] = getInput($logs['dates'][$i]);
+                    $logs['titles'][$i] = getInput($logs['titles'][$i]);
+                    $logs['descriptions'][$i] = getInput($logs['descriptions'][$i]);
+                }
+            }
+
             if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
                 $stmt = $conn->prepare("SELECT id FROM authorupdates WHERE ideaid=?;");
                 $stmt->bind_param("i", $ideaid);

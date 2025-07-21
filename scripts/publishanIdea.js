@@ -283,8 +283,10 @@ async function modifyOldPageIfAuthorLoggedIn() {
         const sessionData = await getSessionDataFromDatabase2();
 
         if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
-            title.value = SQLdata['idea'][0].title;
-            description.value = SQLdata['idea'][0].description;
+            let parseTitle = new DOMParser().parseFromString(SQLdata['idea'][0].title, 'text/html');
+
+            title.value = parseTitle.body.innerText;
+            description.innerHTML = SQLdata['idea'][0].description;
             mainImage.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
             getMainImage.removeAttribute("required");
 

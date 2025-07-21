@@ -318,11 +318,11 @@ function signUpGestor() {
             loginArea.innerHTML = `<h2>Create your account</h2>
             <p>Already have an account? <a id="signUp">Sign In!</a></p>
             <form action="./api/signUp.php" method="POST" id="loginCreateAccountForm">
-                <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" required>
-                <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" required>
-                <input type="text" id="userNameSignIn" spellcheck="false" placeholder="Username" name="userName" required>
-                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
+                <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" maxlength="255" required>
+                <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" maxlength="255" required>
+                <input type="text" id="userNameSignIn" spellcheck="false" placeholder="Username" name="userName" maxlength="255" required>
+                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" maxlength="255" name="email" required>
+                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" maxlength="255" required>
                 <button type="button" id="toggle-password-visibility">
                     <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>

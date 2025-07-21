@@ -341,11 +341,17 @@ main {
 .ideaBox .ideaTitle {
     font-size: 25px;
     padding-top: 30px;
+    word-break: break-all;
+    max-width: 140px;
+    overflow: hidden;
 }
 
 .ideaBox .ideaAuthor {
     font-size: 15px;
     padding-top: 10px;
+    word-break: break-all;
+    max-width: 140px;
+    overflow: hidden;
 }
 
 #whatisFreeIdeas #description {
@@ -809,6 +815,9 @@ footer ul li a {
     font-size: 100px;
     opacity: 80%;
     border-radius: 10px;
+    word-break: break-all;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 #ideaMain #author {
@@ -818,6 +827,9 @@ footer ul li a {
     opacity: 70%;
     font-size: 50px;
     border-radius: 10px;
+    word-break: break-all;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 #ideaMain #mainAuthorAccount {
@@ -831,6 +843,7 @@ footer ul li a {
     text-align: justify;
     margin-left: 20px;
     margin-right: 20px;
+    word-break: break-all;
 }
 
 #ideaLikeSaveSection {
@@ -907,12 +920,14 @@ footer ul li a {
     font-size: 40px;
     margin-top: 10px;
     margin-bottom: 10px;
+    word-break: break-all;
 }
 
 #imagesInfo .imageInfoDescription {
     text-align: justify;
     margin-right: 20px;
     margin-bottom: 20px;
+    word-break: break-all;
 }
 
 /* download */
@@ -935,6 +950,7 @@ footer ul li a {
     background-color: rgb(255, 130, 130);
     cursor: pointer;
     margin-bottom: 30px;
+    word-break: break-all;
 }
 
 #downloadButton:active {
@@ -974,6 +990,7 @@ footer ul li a {
 
 .logTitle {
     font-size: 20px;
+    word-break: break-all;
 }
 
 .data {
@@ -986,6 +1003,7 @@ footer ul li a {
     text-align: justify;
     margin-left: 30px;
     margin-right: 30px;
+    word-break: break-all;
 }
 
 /* comments */
@@ -1031,6 +1049,7 @@ footer ul li a {
 .writerUserName {
     margin-left: 10px;
     color: rgb(255, 130, 130);
+    word-break: break-all;
 }
 
 .dataWriter {
@@ -1041,6 +1060,7 @@ footer ul li a {
 .commentText {
     text-align: justify;
     margin-right: 50px;
+    word-break: break-all;
 }
 
 .replyComment, .deleteComment, #saveComment, #deleteComment {
