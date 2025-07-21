@@ -1,6 +1,6 @@
-FreeIdeas License
+# FreeIdeas License
 
-Copyright (c) 2025, FreeIdeas by Gianluca Rainis
+# Copyright (c) 2025, FreeIdeas by Gianluca Rainis
 
 Permission is hereby granted to any individual to use this project for personal, non-commercial purposes without prior written authorization.
 
@@ -50,6 +50,6 @@ This attribution must be clearly stated and accessible in the published work or 
 
 The purpose of this clause is to ensure full transparency, uphold the integrity of derivative efforts, and preserve historical linkage to FreeIdeas as the origin point. Failure to honor the complete attribution chain constitutes a violation of this license.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.**
 
-Version 1.4 — 2025-07-21
+**Version 1.4 — 2025-07-21**
