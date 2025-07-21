@@ -68,7 +68,7 @@ function loadNav() {
                 </div>
             </div>
         </div>
-        `; // <div id="userImageLiMobile"><img src="./images/user.svg" id="userImage"><p id="userName">Login</p></div>
+        `;
     }
 }
 
@@ -81,7 +81,7 @@ function loadFooter() {
                 <li><a href="./license_info.php">License</a></li>
                 <li><a href="./contacts.php">Contact Us</a></li>
                 <li><a href="./about.php">About Us</a></li>
-                <li><a href="https://github.com/rainis-gianluca/FreeIdeas.git"><img src="./images/github.png" id="githubLogo"></a></li>
+                <li><a href="https://github.com/rainis-gianluca/FreeIdeas.git"><img src="./images/github.svg" id="githubLogo"></a></li>
             </ul>
             <hr>
             <section class="footerTextSection">
@@ -136,12 +136,16 @@ function loadCurrentTheme() {
                 document.documentElement.setAttribute("data-theme", "light");
             });
         }
+
+        document.getElementById("githubLogo").src = "./images/github.svg";
     }
     else {
         lightDarkThemeButton.forEach(button => {
             button.src = "./images/sun-light.svg";
             document.documentElement.setAttribute("data-theme", "dark");
         });
+
+        document.getElementById("githubLogo").src = "./images/github-white.svg";
     }
 
     logos.forEach(logo => {
@@ -163,8 +167,11 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', ev
 
 function toggleThemeInAllFiles() {
     document.getElementById("mobileNavBarGhost").querySelector("#menuMobile").src = `./images/menu${themeIsLight?"":"_Pro"}.svg`;
-    document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
 
+    if (document.getElementById("userImage").src.includes("/images/user")) {
+        document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+    }
+    
     if (window.location.href.includes("/publishAnIdea.php")) {
         document.getElementById("addAdditionalInfo").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("addLog").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
