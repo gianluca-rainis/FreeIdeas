@@ -1,3 +1,11 @@
+/* 
+Author: Gianluca Rainis
+This project is licensed under the FreeIdeas License.
+You can find the license in the LICENSE file in the root directory of this project.
+Project: FreeIdeas
+Free Ideas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
+*/
+
 * {
     padding: 0;
     margin: 0;
@@ -487,7 +495,7 @@ footer ul li a {
 .footerpage ul li {
     text-align: justify;
     align-items: center;
-    padding-left: 30px;
+    padding-left: 50px;
     padding-right: 20px;
     padding-bottom: 10px;
     padding-top: 10px;

@@ -1,10 +1,10 @@
 # FreeIdeas
-Free Ideas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
+FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
 You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
 The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license).
 The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
-The goal of Free Ideas is to create a community of people who share their ideas and help each other to bring them to life.
-If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, Free Ideas is the place for you.
+The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
+If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
 
 ## Features
 - Search for ideas
@@ -19,7 +19,17 @@ The author of the project is Gianluca Rainis ( __grdev on summer.hackclub.com )
 This project was written for the Summer Of Making 2025
 
 ## License
-FreeIdeas is under the MIT license.
+FreeIdeas is under the FreeIdeas License.
+
+### 📜 License Update Notice
+
+As of *2025-07-21*, the FreeIdeas project is no longer distributed under the MIT License.
+
+All versions from *v1.4 onward* are governed by the *FreeIdeas License*, a custom licensing framework designed to preserve the project's identity, non-commercial intent, and ethical attribution chain across derivative works.
+
+Users and contributors are strongly encouraged to review the full license terms available in [LICENSE.md](./LICENSE.md) before reusing, modifying, or redistributing any part of this project.
+
+Previous releases distributed under the MIT License remain available under those original terms.
 
 ## Languages
 FreeIdeas is written in HTML, CSS and JavaScript.

@@ -1,8 +1,8 @@
 <!--
 Author: Gianluca Rainis
-This project is licensed under the MIT License.
+This project is licensed under the FreeIdeas License.
 You can find the license in the LICENSE file in the root directory of this project.
-Project: Free Ideas
+Project: FreeIdeas
 Free Ideas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
 -->
 <!DOCTYPE html>
