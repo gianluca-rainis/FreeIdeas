@@ -103,6 +103,7 @@ const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme
 let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
 
 window.location.pathname.includes("/about.php")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
+window.location.pathname.includes("/contacts.php")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
 
 let themeIsLight = true; // Main bool for theme control
 loadCurrentTheme();
@@ -179,7 +180,6 @@ function toggleThemeInAllFiles() {
     }
 
     if (window.location.href.includes("/accountVoid.php")) {
-        document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("publishedAccount").children.item(0).src = `./images/publish${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("savedAccount").children.item(0).src = `./images/saved${themeIsLight?"":"_Pro"}.svg`;
     }

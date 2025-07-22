@@ -23,8 +23,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 If you have any questions, suggestions, or just want to say hello, feel free to reach out!
             </p>
             <p>
-                You can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a>
+                You can contact us via email at: <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a>
             </p>
+            <img src="./images/FreeIdeas.svg" alt="FreeIdeas Logo" class="logo" />
         </main>
 
         <footer id="footer"></footer>

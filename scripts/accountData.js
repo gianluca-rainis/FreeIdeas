@@ -11,7 +11,6 @@ async function changeDataAccount() {
         let email = document.getElementById("emailAccount").innerHTML;
         let description = document.getElementById("descriptionAccount").innerHTML;
         let image = document.getElementById("userImageAccount").src;
-        let public = document.getElementById("publicPrivateAccountInfoImg").dataset.value;
 
         document.getElementById("accountAsideInfo").innerHTML = `
             <img id="saveAccountInfo" src="./images/save${themeIsLight?"":"_Pro"}.svg">
@@ -23,6 +22,11 @@ async function changeDataAccount() {
                 <label>Name</label><input type="text" id="newuserAccountName" maxlength="255" required>
                 <label>Surname</label><input type="text" id="newuserSurnameAccount" maxlength="255" required>
                 <label>Description</label><textarea type="text" rows="8" cols="25" id="newdescriptionAccount" maxlength="1000"></textarea>
+            </div>
+            <div id="dangerAreaAccount">
+                <label>Danger Area</label>
+                <input type="button" value="Make your account ${SQLdataGlobal['public']==0?"Public":"Private"}" data-value="" id="dangerAreaAccountPublicPrivateAccount">
+                <input type="button" value="Delete Account" id="dangerAreaAccountDeleteAccount">
             </div>
         `;
 
@@ -49,7 +53,7 @@ async function changeDataAccount() {
             data.append('name', name);
             data.append('surname', surname);
             data.append('description', description);
-            data.append('public', public=="public"?1:0);
+            data.append('public', SQLdataGlobal['public']);
             
             if (image) {
                 data.append('image', image);
@@ -89,49 +93,90 @@ async function changeDataAccount() {
         document.getElementById("cancelAccountInfo").addEventListener("click", () => {
             window.location.href = "./accountVoid.php";
         });
-    });
 
-    document.getElementById("publicPrivateAccountInfoImg").addEventListener("click", async () => {
-        const sessionData = await getSessionDataFromDatabase2();
+        document.getElementById("dangerAreaAccountPublicPrivateAccount").addEventListener("click", async () => {
+            const sessionData = await getSessionDataFromDatabase2();
 
-        if (confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
-            const data = new FormData();
-            data.append('username', sessionData['username']);
-            data.append('name', sessionData['name']);
-            data.append('surname', sessionData['surname']);
-            data.append('description', sessionData['description']);
-            data.append('public', sessionData['public']==1?0:1);
+            if (confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
+                const data = new FormData();
+                data.append('username', sessionData['username']);
+                data.append('name', sessionData['name']);
+                data.append('surname', sessionData['surname']);
+                data.append('description', sessionData['description']?sessionData['description']:"");
+                data.append('public', sessionData['public']==1?0:1);
 
-            async function sendData(data) {
-                try {
-                    const res = await fetch(`./api/modifyAccountInfo.php`, {
-                        credentials: "include",
-                        method: 'POST',
-                        body: data
-                    });
+                async function sendData(data) {
+                    try {
+                        const res = await fetch(`./api/modifyAccountInfo.php`, {
+                            credentials: "include",
+                            method: 'POST',
+                            body: data
+                        });
 
-                    const resp = await res.json();
+                        const resp = await res.json();
 
-                    return resp;
-                } catch (error) {
-                    return null;
+                        return resp;
+                    } catch (error) {
+                        return null;
+                    }
                 }
-            }
 
-            const result = await sendData(data);
+                const result = await sendData(data);
 
-            if (!result) {
-                printError(421);
-            }
-            else {
-                if (result['success']) {
-                    window.location.href = "./accountVoid.php";
+                if (!result) {
+                    printError(421);
                 }
                 else {
-                    printError(result['error']);
+                    if (result['success']) {
+                        window.location.href = "./accountVoid.php";
+                    }
+                    else {
+                        printError(result['error']);
+                    }
                 }
             }
-        }
+        });
+
+        document.getElementById("dangerAreaAccountDeleteAccount").addEventListener("click", async () => {
+            const sessionData = await getSessionDataFromDatabase2();
+
+            if (confirm(`Are you sure that you want to delete your account? This operation cannot be undone.`)) {
+                const dataId = new FormData();
+                dataId.append('id', sessionData['id']);
+
+                async function sendData(dataId) {
+                    try {
+                        const res = await fetch(`./api/deleteAccount.php`, {
+                            credentials: "include",
+                            method: 'POST',
+                            body: dataId
+                        });
+
+                        const resp = await res.json();
+                        
+                        return resp;
+                    } catch (error) {
+                        console.error(error);
+                        return null;
+                    }
+                }
+
+                const result = await sendData(dataId);
+
+                if (!result) {
+                    printError(421);
+                }
+                else {
+                    if (result['success']) {
+                        window.location.href = "./index.php";
+                    }
+                    else {
+                        printError(421);
+                        console.error(result['error']);
+                    }
+                }
+            }
+        });
     });
 }
 
@@ -241,11 +286,8 @@ function loadData2(SQLdata, showEmail) {
         
         if (showEmail) {
             document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
-            document.getElementById("publicPrivateAccountInfoImg").src = `./images/${SQLdata['public']==1?"public":"private"}${themeIsLight?"":"_Pro"}.svg`;
-            document.getElementById("publicPrivateAccountInfoImg").dataset.value = SQLdata['public']==1?"public":"private";
         } else {
             document.getElementById("emailAccount").style.display = "none";
-            document.getElementById("publicPrivateAccountInfoImg").style.display = "none";
         }
         
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
@@ -332,16 +374,25 @@ publishedAccountButton.addEventListener("click", async () => {
 });
 
 /* Theme changer */
+document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
+
 new MutationObserver(() => {
-    if (document.getElementById("userImageAccount").src.includes("/images/user")) {
-        document.getElementById("userImageAccount").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+    if (document.getElementById("userImageAccount")) {
+        if (document.getElementById("userImageAccount").src.includes("/images/user")) {
+            document.getElementById("userImageAccount").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
+        }
     }
 
-    if (document.getElementById("publicPrivateAccountInfoImg").src.includes("/images/private")) {
-        document.getElementById("publicPrivateAccountInfoImg").src = `./images/private${themeIsLight?"":"_Pro"}.svg`;
+    if (document.getElementById("modifyAccountInfo")) {
+        document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
     }
-    else if (document.getElementById("publicPrivateAccountInfoImg").src.includes("/images/public")) {
-        document.getElementById("publicPrivateAccountInfoImg").src = `./images/public${themeIsLight?"":"_Pro"}.svg`;
+
+    if (document.getElementById("saveAccountInfo")) {
+        document.getElementById("saveAccountInfo").src=`./images/save${themeIsLight?"":"_Pro"}.svg`;
+    }
+
+    if (document.getElementById("cancelAccountInfo")) {
+        document.getElementById("cancelAccountInfo").src=`./images/delete${themeIsLight?"":"_Pro"}.svg`;
     }
 }).observe(document.documentElement, {
     attributes: true,

@@ -480,7 +480,7 @@ function toggleWindowSize2() {
             updateFiltersIfExists();
         }
     }
-    else if (window.innerWidth < 600) {
+    else if (window.innerWidth <= 600) {
         if (document.getElementById("allFilters").innerHTML != partialyFiltersBackup || document.getElementById("allFilters").innerHTML == allFiltersBackup) {
             partialyFiltersBackup = document.getElementById("allFilters").innerHTML;
 

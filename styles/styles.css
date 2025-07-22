@@ -677,6 +677,11 @@ footer ul li a {
     justify-content: space-around;
 }
 
+#lastIdeasSrc .ideaTitleSrc, #lastIdeasSrc .ideaAuthorSrc {
+    max-width: 238px;
+    overflow: hidden;
+}
+
 .ideaLinkSrc {
     text-decoration: none;
     color: #2c3d27;
@@ -1100,6 +1105,36 @@ footer ul li a {
     align-items: normal;
 }
 
+#accountMain .ideaTitleSrc, #accountMain .ideaAuthorSrc {
+    max-width: 238px;
+    overflow: hidden;
+}
+
+#dangerAreaAccount {
+    border: 1px solid red;
+    margin: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#dangerAreaAccount label {
+    color: red;
+    display: grid;
+    grid-column: 1 / 3;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+#dangerAreaAccount input {
+    background-color: rgb(200, 0, 0);
+    color: beige;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: large;
+}
+
 #accountAsideInfo {
     width: 30%;
     height: 100%;
@@ -1503,7 +1538,7 @@ footer ul li a {
 
 /* MEDIA QUERIES */
 /* WIDTH */
-@media screen and (min-width: 1200px) and (max-width: 1500px) {
+@media screen and (min-width: 1201px) and (max-width: 1500px) {
     /* search an idea */
     #lastIdeasSrc {
         grid-template-columns: auto auto auto auto;
@@ -1518,9 +1553,13 @@ footer ul li a {
     #accountMain #mainDivDinamicContent {
         grid-template-columns: 1fr 1fr;
     }
+
+    #dangerAreaAccount input {
+        font-size: small;
+    }
 }
 
-@media screen and (min-width: 1100px) and (max-width: 1200px) {
+@media screen and (min-width: 1101px) and (max-width: 1200px) {
     .navLinks {
         font-size: small;
     }
@@ -1552,9 +1591,17 @@ footer ul li a {
     #accountMain #modifyAccountInfo {
         margin-left: 80%;
     }
+
+    #dangerAreaAccount {
+        gap: 5px;
+    }
+
+    #dangerAreaAccount input {
+        font-size: small;
+    }
 }
 
-@media screen and (min-width: 900px) and (max-width: 1100px) {
+@media screen and (min-width: 901px) and (max-width: 1100px) {
     .navLinks {
         font-size: small;
     }
@@ -1617,9 +1664,22 @@ footer ul li a {
     #newuserNameAccount, #newuserImageAccount, #newuserAccountName, #newuserSurnameAccount, #newemailAccount, #newdescriptionAccount {
         width: 90%;
     }
+
+    #dangerAreaAccount {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccount label {
+        grid-column: 1;
+    }
+
+    #dangerAreaAccount input {
+        font-size: medium;
+    }
 }
 
-@media screen and (min-width: 760px) and (max-width: 900px) {
+@media screen and (min-width: 761px) and (max-width: 900px) {
     .navLinks {
         font-size: x-small;
     }
@@ -1706,9 +1766,22 @@ footer ul li a {
     #newCommentText {
         width: 70%;
     }
+
+    #dangerAreaAccount {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccount label {
+        grid-column: 1;
+    }
+
+    #dangerAreaAccount input {
+        font-size: medium;
+    }
 }
 
-@media screen and (min-width: 600px) and (max-width: 760px) {
+@media screen and (min-width: 601px) and (max-width: 760px) {
     #pcNavBarGhost {
         content-visibility: hidden !important;
         width: 0 !important;
@@ -1844,9 +1917,22 @@ footer ul li a {
     #newCommentText {
         width: 80%;
     }
+
+    #dangerAreaAccount {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccount label {
+        grid-column: 1;
+    }
+
+    #dangerAreaAccount input {
+        font-size: medium;
+    }
 }
 
-@media screen and (min-width: 470px) and (max-width: 600px) {
+@media screen and (min-width: 471px) and (max-width: 600px) {
     #pcNavBarGhost {
         content-visibility: hidden !important;
         width: 0 !important;
@@ -2206,6 +2292,7 @@ footer ul li a {
         overflow-y: auto;
         position: relative;
         padding-block-end: 0;
+        padding-bottom: 20px;
     }
 
     #accountMain #navBarForAccountSaved {
@@ -2235,6 +2322,20 @@ footer ul li a {
     #newCommentText {
         width: 90%;
     }
+
+    #dangerAreaAccount {
+        gap: 5px;
+        grid-template-columns: 1fr;
+        padding-bottom: 10px;
+    }
+
+    #dangerAreaAccount label {
+        grid-column: 1;
+    }
+
+    #dangerAreaAccount input {
+        font-size: medium;
+    }
 }
 
 /* DON'T WORKS WITH WIDTH < 300PX */
@@ -2260,6 +2361,16 @@ footer ul li a {
 
     #toggle-password-visibility-mobile {
         top: 320px;
+    }
+
+    #accountMain #userImageAccount {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    #accountMain #userNameSurnameAccount {
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
