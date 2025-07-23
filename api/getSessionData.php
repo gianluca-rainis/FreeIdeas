@@ -9,11 +9,16 @@
 
     $id = $_GET['data'];
 
-    if ($id == 'account') {
-        echo json_encode($_SESSION['account']);
-        exit;
-    }
-    else {
+    try {
+        if ($id == 'account') {
+            echo json_encode($_SESSION['account']);
+            exit;
+        }
+        else {
+            echo json_encode(null);
+            exit;
+        }
+    } catch (\Throwable $th) {
         echo json_encode(null);
         exit;
     }
