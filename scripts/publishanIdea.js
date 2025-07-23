@@ -2,6 +2,7 @@ const main = document.getElementById("newIdeaMain");
 const newIdeaForm = document.getElementById("newIdeaForm");
 const saveNewIdea = document.getElementById("saveNewIdea");
 const cancelNewIdea = document.getElementById("cancelNewIdea");
+const deleteOldIdea = document.getElementById("deleteOldIdea");
 
 const title = document.getElementById("title");
 const author = document.getElementById("mainAuthorAccount");
@@ -338,6 +339,46 @@ async function modifyOldPageIfAuthorLoggedIn() {
                 logsList.appendChild(newLi);
 
                 updateQuerySelectorAll();
+            });
+
+            deleteOldIdea.style.display = "block";
+            deleteOldIdea.addEventListener("click", async () => {
+                if (await confirm(`Are you sure that you want to delete this idea? This operation cannot be undone.`)) {
+                    const dataId = new FormData();
+                    dataId.append('id', id);
+
+                    async function sendData(dataId) {
+                        try {
+                            const res = await fetch(`./api/deleteIdea.php`, {
+                                credentials: "include",
+                                method: 'POST',
+                                body: dataId
+                            });
+
+                            const resp = await res.json();
+                            
+                            return resp;
+                        } catch (error) {
+                            console.error(error);
+                            return null;
+                        }
+                    }
+
+                    const result = await sendData(dataId);
+
+                    if (!result) {
+                        printError(421);
+                    }
+                    else {
+                        if (result['success']) {
+                            window.location.href = "./index.php";
+                        }
+                        else {
+                            printError(421);
+                            console.error(result['error']);
+                        }
+                    }
+                }
             });
 
             // SUBMIT OVERRIDE

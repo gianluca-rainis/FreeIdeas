@@ -1318,13 +1318,13 @@ footer ul li a {
     width: 100%;
 }
 
-#saveNewIdea, #cancelNewIdea {
+#saveNewIdea, #cancelNewIdea, #deleteOldIdea {
     cursor: pointer;
     margin-bottom: 30px;
     margin: 10px;
 }
 
-#saveNewIdea {
+#saveNewIdea, #deleteOldIdea {
     left: 90%;
     height: 40px;
     padding: 5px;
@@ -2362,7 +2362,9 @@ footer ul li a {
     #toggle-password-visibility-mobile {
         top: 320px;
     }
+}
 
+@media screen and (max-height: 600px) {
     #accountMain #userImageAccount {
         margin-top: 0;
         margin-bottom: 0;

@@ -127,9 +127,7 @@
                 return;
             }
 
-            deleteAllIdsSubComments($conn, $ideasId[$i]);
-
-            $sql = "SELECT id FROM comments WHERE ideaid=? AND superCommentid=?;";
+            $sql = "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;";
             $state = $conn->prepare($sql);
 
             if (!$state) {
@@ -137,10 +135,16 @@
                 exit;
             }
 
-            $superCommentid = null;
-            $state->bind_param("ii", $ideasId[$i], $superCommentid);
+            $state->bind_param("i", $ideasId[$i]);
 
             $state->execute();
+            $result = $state->get_result();
+
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    deleteAllIdsSubComments($conn, $row['id']);
+                }
+            }
             
             $state->close();
 

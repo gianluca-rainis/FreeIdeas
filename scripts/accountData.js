@@ -97,7 +97,7 @@ async function changeDataAccount() {
         document.getElementById("dangerAreaAccountPublicPrivateAccount").addEventListener("click", async () => {
             const sessionData = await getSessionDataFromDatabase2();
 
-            if (confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
+            if (await confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
                 const data = new FormData();
                 data.append('username', sessionData['username']);
                 data.append('name', sessionData['name']);
@@ -140,7 +140,7 @@ async function changeDataAccount() {
         document.getElementById("dangerAreaAccountDeleteAccount").addEventListener("click", async () => {
             const sessionData = await getSessionDataFromDatabase2();
 
-            if (confirm(`Are you sure that you want to delete your account? This operation cannot be undone.`)) {
+            if (await confirm(`Are you sure that you want to delete your account? This operation cannot be undone.`)) {
                 const dataId = new FormData();
                 dataId.append('id', sessionData['id']);
 

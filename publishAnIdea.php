@@ -107,6 +107,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
                 <div style="display: flex; justify-content: center;">
                     <input type="submit" id="saveNewIdea" value="Publish">
+                    <input type="button" id="deleteOldIdea" value="Delete idea" style="display: none;">
                     <img id="cancelNewIdea" src="./images/delete.svg">
                 </div>
             </form>

@@ -61,6 +61,28 @@ const id = paramsURL.get("idea"); // The id of the page to load
 let error2 = false; // Error variable to print only the most specific error
 let existCurrentAccountIdeaData = false;
 
+function updateQuerySelectorAll() {
+    additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
+    additionalInfoWithImageImage = document.querySelectorAll(".imageInfo"); // The image
+    additionalInfoWithImageTitle = document.querySelectorAll(".titleImageInfo"); // The title
+    additionalInfoWithImageDescription = document.querySelectorAll(".imageInfoDescription"); // The description
+    log = document.querySelectorAll(".log"); // The li with the log data
+    logTitleAndDataGroup = document.querySelectorAll(".logTitleAndData"); // The div with the logtitle and the data
+    logTitle = document.querySelectorAll(".logTitle"); // The log title
+    logData = document.querySelectorAll(".data"); // The log data (yyyy-mm-gg)
+    logDescription = document.querySelectorAll(".logInfo"); // The p with the log content
+    comment = document.querySelectorAll(".comment"); // The comment - IMPORTANT
+    userInfoDiv = document.querySelectorAll(".userInfo"); // The section with the user info of the comment
+    linkToWriterAccount = document.querySelectorAll(".writerPage"); // The a with the link at the comment's writer account
+    writerImage = document.querySelectorAll(".writerImg") // The image of the writer account
+    writerUserName = document.querySelectorAll(".writerUserName"); // The username of the author
+    dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
+    commentText = document.querySelectorAll(".commentText"); // The p with the comment text
+    replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
+    deleteCommentButton = document.querySelectorAll(".deleteComment"); // Delete a comment if you have writed id
+    commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment - IT CONTAIN EVERYTHING SINCE THE comment Li
+}
+
 // LOAD DATA FROM DATABASE
 main(id);
 
@@ -199,10 +221,7 @@ async function loadData2(SQLdata) {
                         </div>
                     </li>`;
 
-                    additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
-                    additionalInfoWithImageImage = document.querySelectorAll(".imageInfo"); // The image
-                    additionalInfoWithImageTitle = document.querySelectorAll(".titleImageInfo"); // The title
-                    additionalInfoWithImageDescription = document.querySelectorAll(".imageInfoDescription"); // The description
+                    updateQuerySelectorAll();
                 }
                 else {
                     tempBoolControl = false;
@@ -235,11 +254,7 @@ async function loadData2(SQLdata) {
                             </p>
                         </li>`;
 
-                    log = document.querySelectorAll(".log"); // The li with the log data
-                    logTitleAndDataGroup = document.querySelectorAll(".logTitleAndData"); // The div with the logtitle and the data
-                    logTitle = document.querySelectorAll(".logTitle"); // The log title
-                    logData = document.querySelectorAll(".data"); // The log data (yyyy-mm-gg)
-                    logDescription = document.querySelectorAll(".logInfo"); // The p with the log content
+                    updateQuerySelectorAll();
                 }
                 else {
                     tempBoolControl = false;
@@ -301,16 +316,7 @@ async function loadData2(SQLdata) {
                     });
                 }
 
-                comment = document.querySelectorAll(".comment"); // The comment LI
-                userInfoDiv = document.querySelectorAll(".userInfo"); // The section with the user info of the comment
-                linkToWriterAccount = document.querySelectorAll(".writerPage"); // The a with the link at the comment's writer account
-                writerImage = document.querySelectorAll(".writerImg") // The image of the writer account
-                writerUserName = document.querySelectorAll(".writerUserName"); // The username of the author
-                dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
-                commentText = document.querySelectorAll(".commentText"); // The p with the comment text
-                replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
-                deleteCommentButton = document.querySelectorAll(".deleteComment");
-                commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment
+                updateQuerySelectorAll();
             });
 
             commentsListUl.innerHTML += `<li class="comment" data-value="rootComment"><p class="replyComment">Write a comment!</p></li>`;
@@ -322,71 +328,94 @@ async function loadData2(SQLdata) {
             replyAtTheCommentButton = document.querySelectorAll(".replyComment");
         }
 
-        comment = document.querySelectorAll(".comment"); // The comment LI
-        userInfoDiv = document.querySelectorAll(".userInfo"); // The section with the user info of the comment
-        linkToWriterAccount = document.querySelectorAll(".writerPage"); // The a with the link at the comment's writer account
-        writerImage = document.querySelectorAll(".writerImg") // The image of the writer account
-        writerUserName = document.querySelectorAll(".writerUserName"); // The username of the author
-        dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
-        commentText = document.querySelectorAll(".commentText"); // The p with the comment text
-        replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
-        deleteCommentButton = document.querySelectorAll(".deleteComment");
-        commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment
+        updateQuerySelectorAll();
+
+        // Delete comment gestor
+        for (let commentDeleteIndex = 0; commentDeleteIndex < deleteCommentButton.length; commentDeleteIndex++) {
+            deleteCommentButton[commentDeleteIndex].addEventListener("click", async () => {
+                const commentToDelete = deleteCommentButton[commentDeleteIndex].closest("li");
+                const commentToDeleteId = commentToDelete.querySelector(".underComments").dataset.id;
+
+                if (await confirm("Are you sure you want to delete the comment?\nThis will also delete all subcomments.")) {
+                    const data = new FormData();
+                            
+                    data.append('id', commentToDeleteId);
+
+                    async function sendData(data) {
+                        try {
+                            const res = await fetch(`./api/deleteComment.php`, {
+                                credentials: "include",
+                                method: 'POST',
+                                body: data
+                            });
+
+                            const resp = await res.json();
+
+                            return resp;
+                        } catch (error) {
+                            return null;
+                        }
+                    }
+
+                    const result = await sendData(data);
+
+                    if (result) {
+                        if (result["success"]) {
+                            window.location.href = `./ideaVoid.php?idea=${id}`;
+                        } else {
+                            console.error(result['error']);
+                        }
+                    }
+                    else {
+                        console.error("FATAL_ERROR_IN_PHP");
+                    }
+                }
+            });
+        }
 
         // Reply comment gestor
         for (let commentReplyIndex = 0; commentReplyIndex < replyAtTheCommentButton.length; commentReplyIndex++) {
             replyAtTheCommentButton[commentReplyIndex].addEventListener("click", async () => {
                 const sessionData = await isLoggedIn();
-                const oldCommentContent = comment[commentReplyIndex].innerHTML;
 
                 if (sessionData) {
+                    const oldCommentReplyButton = replyAtTheCommentButton[commentReplyIndex];
+                    const contentToIniect = document.createElement("div");
+                    contentToIniect.innerHTML = `
+                        <div class="userInfo">
+                            <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
+                                <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
+                                <div class="writerUserName">${sessionData['username']}:</div>
+                            </a>
+
+                            <div class="dataWriter">${currentdate}</div>
+                        </div>
+
+                        <p class="commentText">
+                            <textarea id="newCommentText" placeholder="Comment" maxlength="10000" required></textarea>
+                        </p>
+
+                        <div style="display:flex;">
+                            <p id="saveComment">Save</p>
+                            <p id="deleteComment">Delete</p>
+                        </div>
+                    `;
+
+                    const liCommentNew = document.createElement("li");
+                    liCommentNew.className = "comment";
+                    liCommentNew.appendChild(contentToIniect);
+                
                     let superCommentId = "";
-
                     if (comment[commentReplyIndex].dataset.value == "rootComment") {
-                        comment[commentReplyIndex].innerHTML = `
-                            <div class="userInfo">
-                                <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
-                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
-                                    <div class="writerUserName">${sessionData['username']}:</div>
-                                </a>
-
-                                <div class="dataWriter">${currentdate}</div>
-                            </div>
-
-                            <p class="commentText">
-                                <textarea id="newCommentText" placeholder="Comment" maxlength="10000" required></textarea>
-                            </p>
-
-                            <div style="display:flex;">
-                                <p id="saveComment">Save</p>
-                                <p id="deleteComment">Delete</p>
-                            </div>
-                        `;
-                    } else {
-                        comment[commentReplyIndex].querySelector(".underComments").innerHTML += `
-                        <li class="comment">
-                            <div class="userInfo">
-                                <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
-                                    <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
-                                    <div class="writerUserName">${sessionData['username']}:</div>
-                                </a>
-
-                                <div class="dataWriter">${currentdate}</div>
-                            </div>
-
-                            <p class="commentText">
-                                <textarea id="newCommentText" placeholder="Comment" maxlength="10000" required></textarea>
-                            </p>
-
-                            <div style="display:flex;">
-                                <p id="saveComment">Save</p>
-                                <p id="deleteComment">Delete</p>
-                            </div>
-                        </li>
-                        `;
+                        comment[commentReplyIndex].removeChild(replyAtTheCommentButton[commentReplyIndex]);
+                        comment[commentReplyIndex].appendChild(contentToIniect);
+                    } else {                        
+                        comment[commentReplyIndex].querySelector(".underComments").appendChild(liCommentNew);
 
                         superCommentId = comment[commentReplyIndex].querySelector(".underComments").dataset.id;
                     }
+
+                    updateQuerySelectorAll();
                     
                     document.getElementById("saveComment").addEventListener("click", async () => {
                         try {
@@ -439,57 +468,17 @@ async function loadData2(SQLdata) {
                     });
 
                     document.getElementById("deleteComment").addEventListener("click", () => {
-                        comment[commentReplyIndex].innerHTML = oldCommentContent;
+                        if (comment[commentReplyIndex].dataset.value == "rootComment") {
+                            comment[commentReplyIndex].removeChild(contentToIniect);
+                            comment[commentReplyIndex].appendChild(oldCommentReplyButton);
+                        } else {
+                            comment[commentReplyIndex].querySelector(".underComments").removeChild(liCommentNew);
+                        }
 
-                        comment[commentReplyIndex].querySelector(".replyComment").addEventListener("click", async () => {
-                            replyAtTheCommentButton[commentReplyIndex].click();
-                        });
+                        updateQuerySelectorAll();
                     });
                 } else {
                     alert("You must log in before writing a comment.");
-                }
-            });
-        }
-
-        // Delete comment gestor
-        for (let commentDeleteIndex = 0; commentDeleteIndex < deleteCommentButton.length; commentDeleteIndex++) {
-            deleteCommentButton[commentDeleteIndex].addEventListener("click", async () => {
-                const commentToDelete = deleteCommentButton[commentDeleteIndex].closest("li");
-                const commentToDeleteId = commentToDelete.querySelector(".underComments").dataset.id;
-
-                if (confirm("Are you sure you want to delete the comment?\nThis will also delete all subcomments.")) {
-                    const data = new FormData();
-                            
-                    data.append('id', commentToDeleteId);
-
-                    async function sendData(data) {
-                        try {
-                            const res = await fetch(`./api/deleteComment.php`, {
-                                credentials: "include",
-                                method: 'POST',
-                                body: data
-                            });
-
-                            const resp = await res.json();
-
-                            return resp;
-                        } catch (error) {
-                            return null;
-                        }
-                    }
-
-                    const result = await sendData(data);
-
-                    if (result) {
-                        if (result["success"]) {
-                            window.location.href = `./ideaVoid.php?idea=${id}`;
-                        } else {
-                            console.error(result['error']);
-                        }
-                    }
-                    else {
-                        console.error("FATAL_ERROR_IN_PHP");
-                    }
                 }
             });
         }
