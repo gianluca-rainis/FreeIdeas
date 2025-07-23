@@ -11,8 +11,14 @@
 
     try {
         if ($id == 'account') {
-            echo json_encode($_SESSION['account']);
-            exit;
+            if (isset($_SESSION['account'])) {
+                echo json_encode($_SESSION['account']);
+                exit;
+            }
+            else {
+                echo json_encode(null);
+                exit;
+            }
         }
         else {
             echo json_encode(null);
