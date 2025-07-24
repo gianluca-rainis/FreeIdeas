@@ -1,5 +1,5 @@
 <!-- 
-    Metadata iniected by /api/head.php
+    Metadata iniected by /include/head.php
 -->
 
 <meta charset="UTF-8" />

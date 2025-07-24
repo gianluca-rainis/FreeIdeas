@@ -10,12 +10,16 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 <html lang="en-US">
     <head>
         <?php 
-            include('./api/head.php');
+            include('./include/head.php');
         ?>
     </head>
 
     <body id="accountBody">
-        <nav id="nav"></nav>
+        <nav id="nav">
+            <?php 
+                include('./include/nav.php');
+            ?>
+        </nav>
 
         <main id="accountMain">
             <aside id="accountAsideInfo">
@@ -47,7 +51,11 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             </section>
         </main>
 
-        <footer id="footer"></footer>
+        <footer id="footer">
+            <?php 
+                include('./include/footer.php');
+            ?>
+        </footer>
 
         <script src="./scripts/commonParts.js" defer></script>
         <script src="./scripts/accountData.js" defer></script>

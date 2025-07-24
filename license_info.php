@@ -10,12 +10,16 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 <html lang="en-US">
     <head>
         <?php 
-            include('./api/head.php');
+            include('./include/head.php');
         ?>
     </head>
 
     <body>
-        <nav id="nav"></nav>
+        <nav id="nav">
+            <?php 
+                include('./include/nav.php');
+            ?>
+        </nav>
 
         <main class="footerpage">
             <h1>FreeIdeas License</h1>
@@ -78,7 +82,11 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <p>Version 1.4 — 2025-07-21</p>
         </main>
 
-        <footer id="footer"></footer>
+        <footer id="footer">
+            <?php 
+                include('./include/footer.php');
+            ?>
+        </footer>
 
         <script src="./scripts/commonParts.js" defer></script>
     </body>

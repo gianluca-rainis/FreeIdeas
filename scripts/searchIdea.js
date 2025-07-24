@@ -359,11 +359,11 @@ async function updateDisplaiedData() {
 
     const result = await sendData(formData);
 
-    if (!result) {
-        printError(421);
+    if (result) {
+        loadData2(result);
     }
     else {
-        loadData2(result);
+        printError(421);
     }
 }
 
@@ -396,7 +396,7 @@ function loadData2(result) {
         childOfListIdeas.href = href;
         childOfListIdeas.innerHTML = `
             <li class="ideaBoxScr">
-                <img src="${imgSrc}" alt="Idea Image" class="ideaImageSrc">
+                <img src="${imgSrc!=null?imgSrc:"./images/FreeIdeas.svg"}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${title}</p>
                 <p class="ideaAuthorSrc">${author}</p>
             </li>`;
@@ -549,6 +549,7 @@ function toggleWindowSize2() {
     }
 }
 
+toggleWindowSize2();
 toggleWindowSize2();
 
 /* Toggle theme */

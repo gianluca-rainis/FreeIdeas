@@ -10,12 +10,16 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 <html lang="en-US">
     <head>
         <?php 
-            include('./api/head.php');
+            include('./include/head.php');
         ?>
     </head>
 
     <body id="searchPage">
-        <nav id="nav"></nav>
+        <nav id="nav">
+            <?php 
+                include('./include/nav.php');
+            ?>
+        </nav>
 
         <header>
             <input type="search" placeholder="Search" id="search">
@@ -83,7 +87,11 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             </ul>
         </main>
 
-        <footer id="footer"></footer>
+        <footer id="footer">
+            <?php 
+                include('./include/footer.php');
+            ?>
+        </footer>
 
         <script src="./scripts/commonParts.js" defer></script>
         <script src="./scripts/searchIdea.js" defer></script>
