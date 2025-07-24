@@ -11,7 +11,7 @@
         <li><a href="./publishAnIdea.php" class="navText">Publish an Idea</a></li>
         <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
         <li id="themeImageLi"><img src="./images/sun-dark.svg" alt="Toggle Theme" class="toggle-light-dark-theme"></li>
-        <li id="notificationImageLi"><img src="./images/notifications.svg" alt="Notifications" id="notificationsImg"></li>
+        <li id="notificationImageLi"><img src="./images/notifications.svg" alt="Notifications" class="notificationsImg"></li>
         <li id="userImageLi"><img src="./images/user.svg" alt="User image" id="userImage"><p id="userName">Login</p></li>
     </ul>
     <div id="loginArea">
@@ -52,6 +52,11 @@
                 <button type="submit" id="sendCreateAccountButton">Create Account</button>
             </form>
         </div>
+
+        <div id="notificaions" style="display: none;">
+            <h2>Notifications</h2>
+            
+        </div>
     </div>
 </div>
 
@@ -61,6 +66,7 @@
     </ul>
     <ul class="navLinks">
         <li id="themeImageLiMobile"><img src="./images/sun-dark.svg" alt="Toggle Theme" class="toggle-light-dark-theme"></li>
+        <li id="notificationImageLiMobile"><img src="./images/notifications.svg" alt="Notifications" class="notificationsImg"></li>
         <li id="userImageLi"><img src="./images/menu.svg" alt="Menu" id="menuMobile"></li>
     </ul>
     <div id="mobileMenuHidden">
@@ -107,6 +113,11 @@
                     <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
                     <button type="submit" id="sendCreateAccountButtonMobile">Create Account</button>
                 </form>
+            </div>
+
+            <div id="notificaionsMobile" style="display: none;">
+                <h2>Notifications</h2>
+                
             </div>
         </div>
     </div>

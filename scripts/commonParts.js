@@ -73,11 +73,11 @@ function toggleThemeInAllFiles() {
         document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
     }
 
-    if (document.getElementById("notificationsImg").src.includes("/images/notifications_active")) {
-        document.getElementById("notificationsImg").src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`;
+    if (document.querySelectorAll(".notificationsImg").forEach(element => element.src.includes("/images/notifications_active"))) {
+        document.querySelectorAll(".notificationsImg").forEach(element => element.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`);
     }
-    else if (document.getElementById("notificationsImg").src.includes("/images/notifications")) {
-        document.getElementById("notificationsImg").src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`;
+    else if (document.querySelectorAll(".notificationsImg").forEach(element => element.src.includes("/images/notifications"))) {
+        document.querySelectorAll(".notificationsImg").forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
     }
     
     if (window.location.href.includes("/publishAnIdea.php")) {
@@ -131,7 +131,20 @@ loginButton.addEventListener("click", () => {
     if (loginArea.style.display == "none" || !loginArea.style.display) {
         loginArea.style.display = "block";
     } else {
-        loginArea.style.display = "none";
+        if (!(document.getElementById("notificaions").style.display != "none")) {
+            loginArea.style.display = "none";
+        }
+    }
+
+    if (document.getElementById("notificaions").style.display != "none") {
+        document.getElementById("loginHidden").style.display = "block";
+        document.getElementById("signUpHidden").style.display = "none";
+
+        document.getElementById("notificaions").style.display = "none";
+
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
+
+        isLoginArea = true;
     }
 });
 
@@ -250,12 +263,16 @@ document.querySelectorAll(".signUp").forEach(element => element.addEventListener
     if (isLoginArea) {
         document.getElementById("loginHidden").style.display = "none";
         document.getElementById("signUpHidden").style.display = "block";
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
 
         isLoginArea = false;
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
     } else {
         document.getElementById("signUpHidden").style.display = "none";
         document.getElementById("loginHidden").style.display = "block";
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
 
         isLoginArea = true;
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
@@ -334,7 +351,7 @@ function loadData(SQLdata) {
             </div>`;
 
         function loadNotifications(SQLdata) {
-            const notificationPc = document.getElementById("notificationsImg");
+            const notificationPc = document.querySelectorAll(".notificationsImg");
             let numNewNotifications = 0;
 
             let notificationsShowOrder = [];
@@ -365,17 +382,10 @@ function loadData(SQLdata) {
             });
 
             if (numNewNotifications != 0) {
-                notificationPc.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`;
+                notificationPc.forEach(element => element.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`);
             }
 
-            notificationPc.addEventListener("click", () => {
-                if (document.getElementById("loginArea").style.display == "block") {
-                    document.getElementById("loginArea").style.display = "none";
-                }
-                else {
-                    document.getElementById("loginArea").style.display = "block";
-                }
-            });
+            /* LOAD DATA */
         }
 
         loadNotifications(SQLdata);
@@ -412,6 +422,38 @@ function loadData(SQLdata) {
     }
 }
 
+/* NOTIFICATIONS EVENTLISTENER */
+document.querySelectorAll(".notificationsImg").forEach(element => element.addEventListener("click", () => {
+    if ((document.getElementById("loginArea").style.display == "none" || document.getElementById("mobileMenuHidden").style.display == "none" || !document.getElementById("loginArea").style.display || !document.getElementById("mobileMenuHidden").style.display) || document.getElementById("notificaions").style.display == "none" || document.getElementById("notificaionsMobile").style.display == "none") {
+        document.getElementById("loginArea").style.display = "block";
+        document.getElementById("mobileMenuHidden").style.display = "flex";
+        
+        document.getElementById("loginHidden").style.display = "none";
+        document.getElementById("signUpHidden").style.display = "none";
+        document.getElementById("loginHiddenMobile").style.display = "none";
+        document.getElementById("signUpHiddenMobile").style.display = "none";
+        
+        document.getElementById("notificaions").style.display = "block";
+        document.getElementById("notificaionsMobile").style.display = "block";
+
+        isLoginArea = false;
+    }
+    else {
+        document.getElementById("loginArea").style.display = "none";
+        document.getElementById("mobileMenuHidden").style.display = "none";
+
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
+
+        document.getElementById("loginHidden").style.display = "block";
+        document.getElementById("signUpHidden").style.display = "none";
+        document.getElementById("loginHiddenMobile").style.display = "block";
+        document.getElementById("signUpHiddenMobile").style.display = "none";
+
+        isLoginArea = true;
+    }
+}));
+
 /* MOBILE MENU GESTOR */
 const menuMobileButton = document.getElementById("menuMobile");
 const mobileMenuHidden = document.getElementById("mobileMenuHidden");
@@ -420,7 +462,20 @@ menuMobileButton.addEventListener("click", () => {
     if (mobileMenuHidden.style.display == "none" || !mobileMenuHidden.style.display) {
         mobileMenuHidden.style.display = "flex";
     } else {
-        mobileMenuHidden.style.display = "none";
+        if (!(document.getElementById("notificaionsMobile").style.display != "none")) {
+            mobileMenuHidden.style.display = "none";
+        }
+    }
+
+    if (document.getElementById("notificaionsMobile").style.display != "none") {
+        document.getElementById("loginHiddenMobile").style.display = "block";
+        document.getElementById("signUpHiddenMobile").style.display = "none";
+
+        document.getElementById("notificaionsMobile").style.display = "none";
+
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
+
+        isLoginArea = true;
     }
 });
 
@@ -509,6 +564,9 @@ document.querySelectorAll(".signUpMobile").forEach(element => element.addEventLi
     if (isLoginArea) {
         document.getElementById("loginHiddenMobile").style.display = "none";
         document.getElementById("signUpHiddenMobile").style.display = "block";
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
+
         document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
 
         isLoginArea = false;
@@ -516,6 +574,8 @@ document.querySelectorAll(".signUpMobile").forEach(element => element.addEventLi
     } else {
         document.getElementById("signUpHiddenMobile").style.display = "none";
         document.getElementById("loginHiddenMobile").style.display = "block";
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
 
         isLoginArea = true;
         document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");

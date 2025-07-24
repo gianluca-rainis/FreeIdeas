@@ -153,7 +153,7 @@ nav ul li {
     cursor: pointer;
 }
 
-#notificationsImg {
+.notificationsImg {
     width: 30px;
     height: 30px;
     cursor: pointer;
@@ -2344,7 +2344,7 @@ footer ul li a {
     }
 }
 
-/* DON'T WORKS WITH WIDTH < 300PX */
+/* STYLES DON'T WORKS WELL WITH WIDTH < 320PX */
 
 /* HEIGHT */
 @media screen and (max-height: 785px) {
