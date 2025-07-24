@@ -324,14 +324,14 @@ function loadData(SQLdata) {
         document.getElementById("userName").innerHTML = SQLdata['username'];
 
         loginArea.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
-            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
             <button type="submit" id="sendAccountButton">Account</button>
             <button type="submit" id="sendLogoutButton">Log Out</button>`;
 
         loginAreaMobile.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
             <div style="align-items: center;">
-                <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             </div>
             <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
             <div style="align-items: center;">

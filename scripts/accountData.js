@@ -13,8 +13,8 @@ async function changeDataAccount() {
         let image = document.getElementById("userImageAccount").src;
 
         document.getElementById("accountAsideInfo").innerHTML = `
-            <img id="saveAccountInfo" src="./images/save${themeIsLight?"":"_Pro"}.svg">
-            <img id="cancelAccountInfo" src="./images/delete${themeIsLight?"":"_Pro"}.svg">
+            <img id="saveAccountInfo" alt="Save changes" src="./images/save${themeIsLight?"":"_Pro"}.svg">
+            <img id="cancelAccountInfo" alt="Delete changes" src="./images/delete${themeIsLight?"":"_Pro"}.svg">
 
             <div id="newDataSetAccount">
                 <label>Username</label><input type="text" id="newuserNameAccount" maxlength="255" required>

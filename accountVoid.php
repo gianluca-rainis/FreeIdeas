@@ -23,9 +23,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <main id="accountMain">
             <aside id="accountAsideInfo">
-                <img id="modifyAccountInfo" src="./images/modify.svg">
+                <img id="modifyAccountInfo" alt="Modify account" src="./images/modify.svg">
                 <h1 id="userNameAccount"></h1>
-                <img id="userImageAccount" src="">
+                <img id="userImageAccount" alt="Account image" src="">
                 <h2 id="userNameSurnameAccount"></h2>
                 <h3 id="emailAccount"></h3>
                 <p id="descriptionAccount"></p>
@@ -34,8 +34,8 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <section id="mainAccountSectionInfo">
                 <div id="navBarForAccountSaved">
                     <ul>
-                        <li id="savedAccount"><img src="./images/saved.svg"> Saved</li>
-                        <li id="publishedAccount"><img src="./images/publish.svg"> Published</li>
+                        <li id="savedAccount"><img src="./images/saved.svg" alt="Saved"> Saved</li>
+                        <li id="publishedAccount"><img src="./images/publish.svg" alt="Published"> Published</li>
                     </ul>
                 </div>
                 

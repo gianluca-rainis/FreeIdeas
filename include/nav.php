@@ -4,14 +4,14 @@
 
 <div id="pcNavBarGhost">
     <ul class="navLogo">
-        <li><a href="./index.php"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
+        <li><a href="./index.php"><img src="./images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo"></a></li>
     </ul>
     <ul class="navLinks">
         <li><a href="./searchAnIdea.php" class="navText">Search an Idea</a></li>
         <li><a href="./publishAnIdea.php" class="navText">Publish an Idea</a></li>
         <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
-        <li id="themeImageLi"><img src="./images/sun-dark.svg" class="toggle-light-dark-theme"></li>
-        <li id="userImageLi"><img src="./images/user.svg" id="userImage"><p id="userName">Login</p></li>
+        <li id="themeImageLi"><img src="./images/sun-dark.svg" alt="Toggle Theme" class="toggle-light-dark-theme"></li>
+        <li id="userImageLi"><img src="./images/user.svg" alt="User image" id="userImage"><p id="userName">Login</p></li>
     </ul>
     <div id="loginArea">
         <h2>Sign In</h2>
@@ -34,11 +34,11 @@
 
 <div id="mobileNavBarGhost">
     <ul class="navLogo">
-        <li><a href="./index.php"><img src="./images/FreeIdeas.svg" id="navLogo"></a></li>
+        <li><a href="./index.php"><img src="./images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo"></a></li>
     </ul>
     <ul class="navLinks">
-        <li id="themeImageLiMobile"><img src="./images/sun-dark.svg" class="toggle-light-dark-theme"></li>
-        <li id="userImageLi"><img src="./images/menu.svg" id="menuMobile"></li>
+        <li id="themeImageLiMobile"><img src="./images/sun-dark.svg" alt="Toggle Theme" class="toggle-light-dark-theme"></li>
+        <li id="userImageLi"><img src="./images/menu.svg" alt="Menu" id="menuMobile"></li>
     </ul>
     <div id="mobileMenuHidden">
         <ul id="mobileNavLinks">

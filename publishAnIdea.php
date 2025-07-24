@@ -69,14 +69,14 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
                 <section id="additionalInfo">
                     <h3 class="subtitles">Additional Information</h3>
-                    <img src="./images/add.svg" id="addAdditionalInfo">
+                    <img src="./images/add.svg" alt="Add additional info" id="addAdditionalInfo">
                     <ul id="imagesInfo"> <!-- SECOND INFO - IMAGE + INFO -->
                         <!-- <li class="imageInfoLi">
                             <div></div>
-                            <img src="./images/delete.svg" class="deleteAdditionalInfo">
+                            <img src="./images/delete.svg" alt="Delete additional info" class="deleteAdditionalInfo">
                             
                             <div>
-                                <img class="preview" src="./images/voidImage.jpg">
+                                <img class="preview" alt="Additional info image" src="./images/voidImage.jpg">
                                 <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
                             </div>
 
@@ -95,10 +95,10 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
                 <section id="devLogsSection">
                     <h3 class="subtitles">Author's Log</h3> <!-- THIRD INFO - DEV LOGS ( ADD AFTER PUBLISHED ) -->
-                    <img src="./images/add.svg" id="addLog">
+                    <img src="./images/add.svg" alt="Add log" id="addLog">
                     <ul id="logsList">
                         <!-- <li class="log">
-                            <img src="./images/delete.svg" class="deleteLog">
+                            <img src="./images/delete.svg" alt="Delete log" class="deleteLog">
                             <div class="logTitleAndData">
                                 <textarea class="logTitle" placeholder="Title" maxlength="255" required></textarea>
                                 <div class="data">yyyy-mm-gg</div>
@@ -112,7 +112,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 <div style="display: flex; justify-content: center;">
                     <input type="submit" id="saveNewIdea" value="Publish">
                     <input type="button" id="deleteOldIdea" value="Delete idea" style="display: none;">
-                    <img id="cancelNewIdea" src="./images/delete.svg">
+                    <img id="cancelNewIdea" alt="Cancel changes" src="./images/delete.svg">
                 </div>
             </form>
         </main>

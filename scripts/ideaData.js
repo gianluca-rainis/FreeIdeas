@@ -208,7 +208,7 @@ async function loadData2(SQLdata) {
             SQLdata['info'].forEach(row => {
                 if (!tempBoolControl) {
                     additionalInfoWithImagesUl.innerHTML += `<li class="imageInfoLi">
-                        <img src="./images/voidImage.jpg" class="imageInfo">
+                        <img src="./images/voidImage.jpg" alt="Additional info image" class="imageInfo">
                         <div>
                             <h3 class="titleImageInfo">Info</h3>
                         
@@ -277,7 +277,7 @@ async function loadData2(SQLdata) {
                     commentsListUl.innerHTML += `<li class="comment">
                             <div class="userInfo">
                                 <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
-                                    <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
+                                    <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
                                     <div class="writerUserName">${row.username}:</div>
                                 </a>
 
@@ -298,7 +298,7 @@ async function loadData2(SQLdata) {
                             element.innerHTML += `<li class="comment">
                                 <div class="userInfo">
                                     <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
-                                        <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
+                                        <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
                                         <div class="writerUserName">${row.username}:</div>
                                     </a>
 
@@ -384,7 +384,7 @@ async function loadData2(SQLdata) {
                     contentToIniect.innerHTML = `
                         <div class="userInfo">
                             <a href="./accountVoid.php?account=${sessionData['authorid']}" class="writerPage">
-                                <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" class="writerImg">
+                                <img src="${sessionData['userimage']!=null?sessionData['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
                                 <div class="writerUserName">${sessionData['username']}:</div>
                             </a>
 

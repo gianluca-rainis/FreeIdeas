@@ -424,7 +424,7 @@ function toggleWindowSize2() {
             document.getElementById("allFilters").innerHTML = `
             <li class="filterBlock">
                 <div id="compactFilters" data-type="1">
-                    <img id="compactFiltersImg" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
+                    <img id="compactFiltersImg" alt="Filters Block" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
                     <span>Filters</span>
                 </div>
             </li>
@@ -441,7 +441,7 @@ function toggleWindowSize2() {
             
             <div id="compactFiltersHidden">
                 <ul>
-                    <li id="typeHidden"><div class="hiddenTypeFilterText">Type of project <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="typeHidden"><div class="hiddenTypeFilterText">Type of project <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="typeHiddenUl">
                         <li class="typeHiddenLi" data-selected="true">All</li>
                         <li class="typeHiddenLi">Technological Innovation</li>
@@ -455,7 +455,7 @@ function toggleWindowSize2() {
                         <li class="typeHiddenLi">Games & Entertainment</li>
                     </ul>
 
-                    <li id="creativityHidden"><div class="hiddenTypeFilterText">Creativity Type <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="creativityHidden"><div class="hiddenTypeFilterText">Creativity Type <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="creativityHiddenUl">
                         <li class="creativityHiddenLi" data-selected="true">All</li>
                         <li class="creativityHiddenLi">Practical and actionable</li>
@@ -465,7 +465,7 @@ function toggleWindowSize2() {
                         <li class="creativityHiddenLi">Humorous or satirical</li>
                     </ul>
 
-                    <li id="statusHidden"><div class="hiddenTypeFilterText">Project status <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="statusHidden"><div class="hiddenTypeFilterText">Project status <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="statusHiddenUl">
                         <li class="statusHiddenLi" data-selected="true">All</li>
                         <li class="statusHiddenLi">Finished</li>
@@ -487,14 +487,14 @@ function toggleWindowSize2() {
             document.getElementById("allFilters").innerHTML = `
             <li class="filterBlock">
                 <div id="compactFilters" data-type="2">
-                    <img id="compactFiltersImg" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
+                    <img id="compactFiltersImg" alt="Filters block" src="./images/filters${themeIsLight?"":"_Pro"}.svg">
                     <span>Filters</span>
                 </div>
             </li>
             
             <div id="compactFiltersHidden">
                 <ul>
-                    <li id="typeHidden"><div class="hiddenTypeFilterText">Type of project <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="typeHidden"><div class="hiddenTypeFilterText">Type of project <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="typeHiddenUl">
                         <li class="typeHiddenLi" data-selected="true">All</li>
                         <li class="typeHiddenLi">Technological Innovation</li>
@@ -508,7 +508,7 @@ function toggleWindowSize2() {
                         <li class="typeHiddenLi">Games & Entertainment</li>
                     </ul>
 
-                    <li id="creativityHidden"><div class="hiddenTypeFilterText">Creativity Type <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="creativityHidden"><div class="hiddenTypeFilterText">Creativity Type <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="creativityHiddenUl">
                         <li class="creativityHiddenLi" data-selected="true">All</li>
                         <li class="creativityHiddenLi">Practical and actionable</li>
@@ -518,7 +518,7 @@ function toggleWindowSize2() {
                         <li class="creativityHiddenLi">Humorous or satirical</li>
                     </ul>
 
-                    <li id="statusHidden"><div class="hiddenTypeFilterText">Project status <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="statusHidden"><div class="hiddenTypeFilterText">Project status <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="statusHiddenUl">
                         <li class="statusHiddenLi" data-selected="true">All</li>
                         <li class="statusHiddenLi">Finished</li>
@@ -526,7 +526,7 @@ function toggleWindowSize2() {
                         <li class="statusHiddenLi">Need help</li>
                     </ul>
 
-                    <li id="orderByHidden"><div class="hiddenTypeFilterText">Order By <img class="hiddenTypeFilterTextImg" src="./images/menuFilters.svg"></div></li>
+                    <li id="orderByHidden"><div class="hiddenTypeFilterText">Order By <img class="hiddenTypeFilterTextImg" alt="Filters section" src="./images/menuFilters.svg"></div></li>
                     <ul id="orderByHiddenUl">
                         <li class="orderHiddenLi" data-selected="true">All</li>
                         <li class="orderHiddenLi">Most voted</li>
