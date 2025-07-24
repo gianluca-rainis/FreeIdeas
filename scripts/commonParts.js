@@ -73,10 +73,10 @@ function toggleThemeInAllFiles() {
         document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
     }
 
-    if (document.querySelectorAll(".notificationsImg").forEach(element => element.src.includes("/images/notifications_active"))) {
+    if (document.querySelector(".notificationsImg").src.includes("/images/notifications_active")) {
         document.querySelectorAll(".notificationsImg").forEach(element => element.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`);
     }
-    else if (document.querySelectorAll(".notificationsImg").forEach(element => element.src.includes("/images/notifications"))) {
+    else if (document.querySelector(".notificationsImg").src.includes("/images/notifications")) {
         document.querySelectorAll(".notificationsImg").forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
     }
     
