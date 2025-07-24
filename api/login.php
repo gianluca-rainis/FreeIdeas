@@ -16,6 +16,8 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
+        $foundAccount = false;
+
         while ($row = $result->fetch_assoc()) {
             if (password_verify($password, $row['password'])) {
                 $_SESSION['account']['id'] = $row['id'];
@@ -34,17 +36,18 @@
                 $_SESSION['account']['username'] = $row['username'];
                 $_SESSION['account']['public'] = $row['public'];
 
-                $stmt->close();
-                echo json_encode($_SESSION['account']);
-                $conn->close();
-                exit;
+                $foundAccount = true;
+                break;
             }
         }
 
         $stmt->close();
-        echo json_encode(null);
-        $conn->close();
-        exit;
+
+        if (!$foundAccount) {
+            echo json_encode(null);
+            $conn->close();
+            exit;
+        }
     }
     else {
         if (!isset($_GET['account']) || !is_numeric($_GET['account'])) {
@@ -78,10 +81,29 @@
         $_SESSION['account']['public'] = $row['public'];
 
         $stmt->close();
-        echo json_encode($_SESSION['account']);
-        $conn->close();
-        exit;
     }
+
+    /* Notifications loading */
+    $id = $_SESSION['account']['id'];
+
+    $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $notifications = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $notifications[] = $row;
+    }
+
+    $stmt->close();
+
+    $_SESSION['account']['notifications'] = $notifications;
+
+    echo json_encode($_SESSION['account']);
+    $conn->close();
+    exit;
 
     function getInput($data) {
         $data = trim($data);

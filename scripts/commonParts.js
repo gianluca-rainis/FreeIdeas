@@ -72,6 +72,13 @@ function toggleThemeInAllFiles() {
     if (document.getElementById("userImage").src.includes("/images/user")) {
         document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
     }
+
+    if (document.getElementById("notificationsImg").src.includes("/images/notifications_active")) {
+        document.getElementById("notificationsImg").src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`;
+    }
+    else if (document.getElementById("notificationsImg").src.includes("/images/notifications")) {
+        document.getElementById("notificationsImg").src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`;
+    }
     
     if (window.location.href.includes("/publishAnIdea.php")) {
         document.getElementById("addAdditionalInfo").src = `./images/add${themeIsLight?"":"_Pro"}.svg`;
@@ -128,34 +135,93 @@ loginButton.addEventListener("click", () => {
     }
 });
 
-function togglePasswordVisibility() {
-    document.getElementById("toggle-password-visibility").addEventListener("click", () => {
-        if (document.getElementById("passwordAreaLogin").type == "password" || !document.getElementById("passwordAreaLogin").type) {
-            document.getElementById("passwordAreaLogin").type = "text";
-            document.getElementById("toggle-password-visibility").innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
-                <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
-                <path d="M5.52485 6.64616C5.50847 6.76175 5.5 6.87989 5.5 7.00001C5.5 8.38072 6.61929 9.50001 8 9.50001C8.12012 9.50001 8.23825 9.49154 8.35385 9.47516L5.52485 6.64616Z" fill="black"></path>
-                <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
-                <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
-            </svg>`;
-        } else {
-            document.getElementById("passwordAreaLogin").type = "password";
-            document.getElementById("toggle-password-visibility").innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-            </svg>`;
+/* TOGGLE PASSWORD IMAGE */
+document.querySelectorAll(".toggle-password-visibility").forEach(element => element.addEventListener("click", () => {
+    if ((document.getElementById("passwordAreaLogin").type == "password" || !document.getElementById("passwordAreaLogin").type) || (document.getElementById("passwordAreaSignIn").type == "password" || !document.getElementById("passwordAreaSignIn").type)) {
+        document.getElementById("passwordAreaLogin").type = "text";
+        document.getElementById("passwordAreaSignIn").type = "text";
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
+            <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
+            <path d="M5.52485 6.64616C5.50847 6.76175 5.5 6.87989 5.5 7.00001C5.5 8.38072 6.61929 9.50001 8 9.50001C8.12012 9.50001 8.23825 9.49154 8.35385 9.47516L5.52485 6.64616Z" fill="black"></path>
+            <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
+            <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
+        </svg>`);
+    } else {
+        document.getElementById("passwordAreaLogin").type = "password";
+        document.getElementById("passwordAreaSignIn").type = "password";
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+        </svg>`);
+    }
+}));
+
+/* SEND FORM AREA */
+document.getElementById("loginAccountForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    try {
+        const formData = new FormData(this);
+        const response = await fetch(document.getElementById("loginAccountForm").action, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            window.location.href = "./index.php";
         }
-    });
-}
+        else {
+            if (!isLoginArea) {
+                printError(404);
+            } else {
+                alert("Email or password are wrong");
+            }
+        }
+    } catch (error) {
+        printError(421);
+    }
+});
 
-function toggleSendLoginButton() {
-    document.getElementById("loginCreateAccountForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+document.getElementById("createAccountForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
+    try {
+        const formData = new FormData(this);
+        const response = await fetch(document.getElementById("createAccountForm").action, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            window.location.href = "./index.php";
+        }
+        else {
+            if (!isLoginArea) {
+                printError(404);
+            } else {
+                alert("Email or password are wrong");
+            }
+        }
+    } catch (error) {
+        printError(421);
+    }
+});
+
+/* FORGOT PASSWORD BUTTON GESTOR */
+document.getElementById("forgotPassword").addEventListener("click", async () => {
+    const email = document.getElementById("emailAreaLogin").value;
+    
+    if (email && email.includes("@") && email.includes(".")) {
         try {
-            const formData = new FormData(this);
-            const response = await fetch(document.getElementById("loginCreateAccountForm").action, {
+            const formData = new FormData();
+            formData.append("email", email);
+
+            const response = await fetch("./api/forgotPassword.php", {
                 method: "POST",
                 body: formData
             });
@@ -163,112 +229,40 @@ function toggleSendLoginButton() {
             const data = await response.json();
 
             if (data) {
-                window.location.href = "./index.php";
+                alert("Sended email to: "+email);
             }
             else {
-                if (!isLoginArea) {
-                    printError(404);
-                } else {
-                    alert("Email or password are wrong");
-                }
-            }
-        } catch (error) {
-            printError(421);
-        }
-    });
-}
-
-async function toggleForgotPassword() {
-    document.getElementById("forgotPassword").addEventListener("click", async () => {
-        const email = document.getElementById("emailAreaLogin").value;
-        
-        if (email && email.includes("@") && email.includes(".")) {
-            try {
-                const formData = new FormData();
-                formData.append("email", email);
-
-                const response = await fetch("./api/forgotPassword.php", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (data) {
-                    alert("Sended email to: "+email);
-                }
-                else {
-                    printError(421);
-                }
-            } catch (error) {
-                console.log(error);
                 printError(421);
             }
-        } else {
-            document.getElementById("emailAreaLogin").focus();
-
-            alert("Insert a valid email");
+        } catch (error) {
+            console.log(error);
+            printError(421);
         }
-    });
-}
+    } else {
+        document.getElementById("emailAreaLogin").focus();
 
-function signUpGestor() {
-    document.getElementById("signUp").addEventListener("click", () => {
-        if (isLoginArea) {
-            loginArea.innerHTML = `<h2>Create your account</h2>
-            <p>Already have an account? <a id="signUp">Sign In!</a></p>
-            <form action="./api/signUp.php" method="POST" id="loginCreateAccountForm">
-                <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" maxlength="255" required>
-                <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" maxlength="255" required>
-                <input type="text" id="userNameSignIn" spellcheck="false" placeholder="Username" name="userName" maxlength="255" required>
-                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" maxlength="255" name="email" required>
-                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" maxlength="255" required>
-                <button type="button" id="toggle-password-visibility">
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                    </svg>
-                </button>
-                <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
-                <button type="submit" id="sendLoginButton">Create Account</button>
-            </form>`;
+        alert("Insert a valid email");
+    }
+});
 
-            isLoginArea = false;
-            document.getElementById("toggle-password-visibility").style.top = "256px";
-        } else {
-            loginArea.innerHTML = `<h2>Sign In</h2>
-            <p>Don't have an account? <a id="signUp">Register!</a></p>
-            <form action="./api/login.php" method="POST" id="loginCreateAccountForm">
-                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
-                <button type="button" id="toggle-password-visibility">
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                    </svg>
-                </button>
-                <p><a id="forgotPassword">Forgot your password?</a></p>
-                <button type="submit" id="sendLoginButton">Sign In</button>
-            </form>`;
+/* TOGGLE LOGIN / SIGN UP AREAS */
+document.querySelectorAll(".signUp").forEach(element => element.addEventListener("click", () => {
+    if (isLoginArea) {
+        document.getElementById("loginHidden").style.display = "none";
+        document.getElementById("signUpHidden").style.display = "block";
 
-            isLoginArea = true;
+        isLoginArea = false;
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
+    } else {
+        document.getElementById("signUpHidden").style.display = "none";
+        document.getElementById("loginHidden").style.display = "block";
 
-            toggleForgotPassword();
-        }
-
-        signUpGestor();
-        togglePasswordVisibility();
-        toggleSendLoginButton();
-    });
-}
-
-toggleForgotPassword();
-togglePasswordVisibility();
-toggleSendLoginButton();
-signUpGestor();
+        isLoginArea = true;
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
+    }
+}));
 
 /* LOGIN GESTOR */
-
 let error = false; // Error variable to print only the most specific error
 let tempBoolControl = false;
 
@@ -339,6 +333,53 @@ function loadData(SQLdata) {
                 <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
             </div>`;
 
+        function loadNotifications(SQLdata) {
+            const notificationPc = document.getElementById("notificationsImg");
+            let numNewNotifications = 0;
+
+            let notificationsShowOrder = [];
+
+            /* Order by data the notifications (from the oldest to the newest) */
+            function orderByData(array) {
+                return array.sort((a, b) => {
+                    let dateA = new Date(a['data']);
+                    let dateB = new Date(b['data']);
+                    return dateB - dateA;
+                });
+            }
+
+            /* Order by not-read first notifications */
+            function orderByNotReaded(array) {                
+                return array.sort((a, b) => {
+                    return a['status'] - b['status'];
+                });
+            }
+
+            notificationsShowOrder = orderByData(SQLdata['notifications']); // Ordered by data, to order by to read - readed
+            notificationsShowOrder = orderByNotReaded(notificationsShowOrder); // Ordered by data, to order by to read - readed
+
+            notificationsShowOrder.forEach(notification => {
+                if (notification['status'] == 0) {
+                    numNewNotifications++;
+                }
+            });
+
+            if (numNewNotifications != 0) {
+                notificationPc.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`;
+            }
+
+            notificationPc.addEventListener("click", () => {
+                if (document.getElementById("loginArea").style.display == "block") {
+                    document.getElementById("loginArea").style.display = "none";
+                }
+                else {
+                    document.getElementById("loginArea").style.display = "block";
+                }
+            });
+        }
+
+        loadNotifications(SQLdata);
+
         document.getElementById("sendAccountButton").addEventListener("click", () => {
             window.location.href = "./accountVoid.php";
         });
@@ -387,108 +428,99 @@ menuMobileButton.addEventListener("click", () => {
 const loginAreaMobile = document.getElementById("loginAreaMobile");
 isLoginArea = true;
 
-function togglePasswordVisibilityMobile() {
-    document.getElementById("toggle-password-visibility-mobile").addEventListener("click", () => {
-        if (document.getElementById("passwordAreaLoginMobile").type == "password" || !document.getElementById("passwordAreaLoginMobile").type) {
-            document.getElementById("passwordAreaLoginMobile").type = "text";
-            document.getElementById("toggle-password-visibility-mobile").innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
-                <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
-                <path d="M5.52485 6.64616C5.50847 6.76175 5.5 6.87989 5.5 7.00001C5.5 8.38072 6.61929 9.50001 8 9.50001C8.12012 9.50001 8.23825 9.49154 8.35385 9.47516L5.52485 6.64616Z" fill="black"></path>
-                <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
-                <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
-            </svg>`;
-        } else {
-            document.getElementById("passwordAreaLoginMobile").type = "password";
-            document.getElementById("toggle-password-visibility-mobile").innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-            </svg>`;
+document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.addEventListener("click", () => {
+    if ((document.getElementById("passwordAreaLoginMobile").type == "password" || !document.getElementById("passwordAreaLoginMobile").type) || (document.getElementById("passwordAreaSignUpMobile").type == "password" || !document.getElementById("passwordAreaSignUpMobile").type)) {
+        document.getElementById("passwordAreaLoginMobile").type = "text";
+        document.getElementById("passwordAreaSignUpMobile").type = "text";
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
+            <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
+            <path d="M5.52485 6.64616C5.50847 6.76175 5.5 6.87989 5.5 7.00001C5.5 8.38072 6.61929 9.50001 8 9.50001C8.12012 9.50001 8.23825 9.49154 8.35385 9.47516L5.52485 6.64616Z" fill="black"></path>
+            <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
+            <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
+        </svg>`);
+    } else {
+        document.getElementById("passwordAreaLoginMobile").type = "password";
+        document.getElementById("passwordAreaSignUpMobile").type = "password";
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+        </svg>`);
+    }
+}));
+
+/* SEND FORM AREA */
+document.getElementById("loginAccountFormMobile").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    try {
+        const formData = new FormData(this);
+        const response = await fetch(document.getElementById("loginAccountFormMobile").action, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            window.location.href = "./index.php";
         }
-    });
-}
-
-function toggleSendLoginButtonMobile() {
-    document.getElementById("loginCreateAccountFormMobile").addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        try {
-            const formData = new FormData(this);
-            const response = await fetch(document.getElementById("loginCreateAccountFormMobile").action, {
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (data) {
-                window.location.href = "./index.php";
+        else {
+            if (!isLoginArea) {
+                printError(404);
+            } else {
+                alert("Email or password are wrong");
             }
-            else {
-                if (!isLoginArea) {
-                    printError(404);
-                } else {
-                    alert("Email or password are wrong");
-                }
+        }
+    } catch (error) {
+        printError(421);
+    }
+});
+
+document.getElementById("createAccountFormMobile").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    try {
+        const formData = new FormData(this);
+        const response = await fetch(document.getElementById("createAccountFormMobile").action, {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data) {
+            window.location.href = "./index.php";
+        }
+        else {
+            if (!isLoginArea) {
+                printError(404);
+            } else {
+                alert("Email or password are wrong");
             }
-        } catch (error) {
-            printError(421);
         }
-    });
-}
+    } catch (error) {
+        printError(421);
+    }
+});
 
-function signUpGestorMobile() {
-    document.getElementById("signUpMobile").addEventListener("click", () => {
-        if (isLoginArea) {
-            loginAreaMobile.innerHTML = `<h2>Create your account</h2>
-            <p>Already have an account? <a id="signUpMobile">Sign In!</a></p>
-            <form action="./api/signUp.php" method="POST" id="loginCreateAccountFormMobile">
-                <input type="text" id="firstNameMobile" spellcheck="false" placeholder="First Name" name="firstName" required>
-                <input type="text" id="lastNameMobile" spellcheck="false" placeholder="Last Name" name="lastName" required>
-                <input type="text" id="userNameSignInMobile" spellcheck="false" placeholder="Username" name="userName" required>
-                <input type="email" id="emailAreaLoginMobile" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-                <input type="password" id="passwordAreaLoginMobile" autocomplete="current-password" placeholder="Password" name="password" required>
-                <button type="button" id="toggle-password-visibility-mobile">
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                    </svg>
-                </button>
-                <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
-                <button type="submit" id="sendLoginButtonMobile">Create Account</button>
-            </form>`;
+/* TOGGLE LOGIN / SIGN UP AREAS */
+document.querySelectorAll(".signUpMobile").forEach(element => element.addEventListener("click", () => {
+    if (isLoginArea) {
+        document.getElementById("loginHiddenMobile").style.display = "none";
+        document.getElementById("signUpHiddenMobile").style.display = "block";
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
 
-            document.getElementById("toggle-password-visibility-mobile").style.top = window.innerHeight>785?"542px":"441px";
-            isLoginArea = false;
-        } else {
-            loginAreaMobile.innerHTML = `<h2>Sign In</h2>
-                <p>Don't have an account? <a id="signUpMobile">Register!</a></p>
-                <form action="./api/login.php" method="POST" id="loginCreateAccountFormMobile">
-                    <input type="email" id="emailAreaLoginMobile" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-                    <input type="password" id="passwordAreaLoginMobile" autocomplete="current-password" placeholder="Password" name="password" required>
-                
-                    <button type="button" id="toggle-password-visibility-mobile">
-                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                        </svg>
-                    </button>
-                    <p><a id="forgotPassword">Forgot your password?</a></p>
-                    <button type="submit" id="sendLoginButtonMobile">Sign In</button>
-                </form>`;
+        isLoginArea = false;
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
+    } else {
+        document.getElementById("signUpHiddenMobile").style.display = "none";
+        document.getElementById("loginHiddenMobile").style.display = "block";
 
-            isLoginArea = true;
-        }
-
-        signUpGestorMobile();
-        togglePasswordVisibilityMobile();
-        toggleSendLoginButtonMobile();
-    });
-}
-
-togglePasswordVisibilityMobile();
-toggleSendLoginButtonMobile();
-signUpGestorMobile();
+        isLoginArea = true;
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
+    }
+}));
 
 /* TOGGLE WINDOW SIZE */
 window.addEventListener("resize", () => {
@@ -497,7 +529,10 @@ window.addEventListener("resize", () => {
 
 function toggleWindowSize() {
     if (!isLoginArea) {
-        document.getElementById("toggle-password-visibility-mobile").style.top = window.innerHeight>785?"542px":"441px";
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
+    }
+    else {
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
     }
 }
 

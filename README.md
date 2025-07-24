@@ -230,6 +230,32 @@ CREATE TABLE accountideadata (
 );
 ```
 
+### Account notifications
+```SQL
++------------------------------------------------------+
+|                     notifications                    |
++------------------------------------------------------+
+| id | accountid | title | description | data | status |
++----+-----------+-------+-------------+------+--------+
+|    |           |       |             |      |        |
+|    |           |       |             |      |        |
+|    |           |       |             |      |        |
++----+-----------+-------+-------------+------+--------+
+```
+
+```SQL
+CREATE TABLE notifications (
+    id int NOT NULL AUTO_INCREMENT,
+    accountid int NOT NULL,
+    title varchar(255) NOT NULL,
+    description varchar(10000) NOT NULL,
+    data date NOT NULL,
+    status int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (accountid) REFERENCES accounts(id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -319,4 +345,16 @@ mysql> describe accountideadata;
 | dislike   | int  | YES  |     | NULL    |                |
 | liked     | int  | YES  |     | NULL    |                |
 +-----------+------+------+-----+---------+----------------+
+
+mysql> describe notifications;
++-------------+----------------+------+-----+---------+----------------+
+| Field       | Type           | Null | Key | Default | Extra          |
++-------------+----------------+------+-----+---------+----------------+
+| id          | int            | NO   | PRI | NULL    | auto_increment |
+| accountid   | int            | NO   | MUL | NULL    |                |
+| title       | varchar(255)   | NO   |     | NULL    |                |
+| description | varchar(10000) | NO   |     | NULL    |                |
+| data        | date           | NO   |     | NULL    |                |
+| status      | int            | NO   |     | NULL    |                |
++-------------+----------------+------+-----+---------+----------------+
 ```

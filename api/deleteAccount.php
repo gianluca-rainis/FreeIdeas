@@ -51,6 +51,21 @@
         
         $state->close();
 
+        // notifications clear
+        $sql = "DELETE FROM notifications WHERE accountid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"delete_notifications_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        
+        $state->close();
+
         for ($i=0; $i < count($ideasId); $i++) { 
             // idealabels clear
             $sql = "DELETE FROM idealabels WHERE ideaid=?;";

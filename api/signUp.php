@@ -80,6 +80,44 @@
             $_SESSION['account']['public'] = $row['public'];
 
             $stmt->close();
+
+            // add default notification
+            $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+            $state = $conn->prepare($sql);
+
+            if (!$state) {
+                echo json_encode(null);
+                exit;
+            }
+
+            $zero = 0; // Not read for default
+            $today = date("Y-m-d");
+            $id = $_SESSION['account']['id'];
+            $title = "Welcome to FreeIdeas, " . $_SESSION['account']['username'] . "!";
+            $description = "Welcome to FreeIdeas, " . $_SESSION['account']['username'] . "! We're thrilled to welcome you to our community! We hope you enjoy your stay. If you have any questions or concerns, please visit the Contact Us section of this website!";
+
+            $state->bind_param("isssi", $id, $title, $description, $today, $zero);
+
+            $state->execute();
+            
+            $state->close();
+
+            /* Notifications loading */
+            $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $notifications = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $notifications[] = $row;
+            }
+
+            $stmt->close();
+
+            $_SESSION['account']['notifications'] = $notifications;
+            
             echo json_encode($_SESSION['account']);
             $conn->close();
             exit;

@@ -11,24 +11,47 @@
         <li><a href="./publishAnIdea.php" class="navText">Publish an Idea</a></li>
         <li><a href="" class="navText" id="randomIdeaA">Random Idea</a></li>
         <li id="themeImageLi"><img src="./images/sun-dark.svg" alt="Toggle Theme" class="toggle-light-dark-theme"></li>
+        <li id="notificationImageLi"><img src="./images/notifications.svg" alt="Notifications" id="notificationsImg"></li>
         <li id="userImageLi"><img src="./images/user.svg" alt="User image" id="userImage"><p id="userName">Login</p></li>
     </ul>
     <div id="loginArea">
-        <h2>Sign In</h2>
-        <p>Don't have an account? <a id="signUp">Register!</a></p>
-        <form action="./api/login.php" method="POST" id="loginCreateAccountForm">
-            <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-            <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
-        
-            <button type="button" id="toggle-password-visibility">
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                    <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                </svg>
-            </button>
-            <p><a id="forgotPassword">Forgot your password?</a></p>
-            <button type="submit" id="sendLoginButton">Sign In</button>
-        </form>
+        <div id="loginHidden">
+            <h2>Sign In</h2>
+            <p>Don't have an account? <a class="signUp">Register!</a></p>
+            <form action="./api/login.php" method="POST" id="loginAccountForm">
+                <input type="email" id="emailAreaLogin" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                <input type="password" id="passwordAreaLogin" autocomplete="current-password" placeholder="Password" name="password" required>
+            
+                <button type="button" class="toggle-password-visibility">
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                    </svg>
+                </button>
+                <p><a id="forgotPassword">Forgot your password?</a></p>
+                <button type="submit" id="sendLoginButton">Sign In</button>
+            </form>
+        </div>
+
+        <div id="signUpHidden" style="display: none;">
+            <h2>Create your account</h2>
+            <p>Already have an account? <a class="signUp">Sign In!</a></p>
+            <form action="./api/signUp.php" method="POST" id="createAccountForm">
+                <input type="text" id="firstName" spellcheck="false" placeholder="First Name" name="firstName" maxlength="255" required>
+                <input type="text" id="lastName" spellcheck="false" placeholder="Last Name" name="lastName" maxlength="255" required>
+                <input type="text" id="userNameSignIn" spellcheck="false" placeholder="Username" name="userName" maxlength="255" required>
+                <input type="email" id="emailAreaSignIn" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" maxlength="255" name="email" required>
+                <input type="password" id="passwordAreaSignIn" autocomplete="current-password" placeholder="Password" name="password" maxlength="255" required>
+                <button type="button" class="toggle-password-visibility">
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                    </svg>
+                </button>
+                <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
+                <button type="submit" id="sendCreateAccountButton">Create Account</button>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -48,21 +71,43 @@
         </ul>
 
         <div id="loginAreaMobile">
-            <h2>Sign In</h2>
-            <p>Don't have an account? <a id="signUpMobile">Register!</a></p>
-            <form action="./api/login.php" method="POST" id="loginCreateAccountFormMobile">
-                <input type="email" id="emailAreaLoginMobile" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
-                <input type="password" id="passwordAreaLoginMobile" autocomplete="current-password" placeholder="Password" name="password" required>
-            
-                <button type="button" id="toggle-password-visibility-mobile">
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                        <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                    </svg>
-                </button>
-                <p><a id="forgotPassword">Forgot your password?</a></p>
-                <button type="submit" id="sendLoginButtonMobile">Sign In</button>
-            </form>
+            <div id="loginHiddenMobile">
+                <h2>Sign In</h2>
+                <p>Don't have an account? <a class="signUpMobile">Register!</a></p>
+                <form action="./api/login.php" method="POST" id="loginAccountFormMobile">
+                    <input type="email" id="emailAreaLoginMobile" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                    <input type="password" id="passwordAreaLoginMobile" autocomplete="current-password" placeholder="Password" name="password" required>
+                
+                    <button type="button" class="toggle-password-visibility-mobile">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                        </svg>
+                    </button>
+                    <p><a id="forgotPassword">Forgot your password?</a></p>
+                    <button type="submit" id="sendLoginButtonMobile">Sign In</button>
+                </form>
+            </div>
+
+            <div id="signUpHiddenMobile" style="display: none;">
+                <h2>Create your account</h2>
+                <p>Already have an account? <a class="signUpMobile">Sign In!</a></p>
+                <form action="./api/signUp.php" method="POST" id="createAccountFormMobile">
+                    <input type="text" id="firstNameMobile" spellcheck="false" placeholder="First Name" name="firstName" required>
+                    <input type="text" id="lastNameMobile" spellcheck="false" placeholder="Last Name" name="lastName" required>
+                    <input type="text" id="userNameSignInMobile" spellcheck="false" placeholder="Username" name="userName" required>
+                    <input type="email" id="emailAreaSignUpMobile" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" required>
+                    <input type="password" id="passwordAreaSignUpMobile" autocomplete="current-password" placeholder="Password" name="password" required>
+                    <button type="button" class="toggle-password-visibility-mobile">
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
+                            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
+                        </svg>
+                    </button>
+                    <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
+                    <button type="submit" id="sendCreateAccountButtonMobile">Create Account</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
