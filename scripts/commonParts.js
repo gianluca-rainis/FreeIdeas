@@ -1,4 +1,4 @@
-// LIGHT DARK THEME
+/* ============= LIGHT-DARK THEME ============= */
 const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme");
 let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
 
@@ -73,6 +73,10 @@ function toggleThemeInAllFiles() {
         document.getElementById("userImage").src = `./images/user${themeIsLight?"":"_Pro"}.svg`;
     }
 
+    if (document.getElementById("notificationBackImage")) {
+        document.getElementById("notificationBackImage").src = `./images/back${themeIsLight?"":"_Pro"}.svg`;
+    }
+
     if (document.querySelector(".notificationsImg").src.includes("/images/notifications_active")) {
         document.querySelectorAll(".notificationsImg").forEach(element => element.src = `./images/notifications_active${themeIsLight?"":"_Pro"}.svg`);
     }
@@ -96,7 +100,7 @@ function toggleThemeInAllFiles() {
     }
 }
 
-// RANDOM IDEA BUTTON
+/* ============= RANDOM IDEA BUTTON ============= */
 const randomLink = document.getElementById("randomIdeaA");
 const randomLinkMobile = document.getElementById("randomIdeaAMobile");
 setRandomLinkForRandomIdea();
@@ -122,37 +126,49 @@ async function setRandomLinkForRandomIdea() {
     randomLinkMobile.href = `./ideaVoid.php?idea=${randomIdForRandomLink['id']}`;
 }
 
-// LOGIN GESTOR
-const loginButton = document.getElementById("userImage");
-const loginArea = document.getElementById("loginArea");
+/* ============= LOGIN GESTOR ============= */
 let isLoginArea = true;
 
-loginButton.addEventListener("click", () => {
-    if (loginArea.style.display == "none" || !loginArea.style.display) {
+/* PC MENU GESTOR */
+const loginButton = document.getElementById("userImage");
+const loginArea = document.getElementById("loginArea");
+const menuMobileButton = document.getElementById("menuMobile");
+const mobileMenuHidden = document.getElementById("mobileMenuHidden");
+
+function triggerLoginAreaForAllPlatforms() {
+    if ((loginArea.style.display == "none" || !loginArea.style.display) && (mobileMenuHidden.style.display == "none" || !mobileMenuHidden.style.display)) {
         loginArea.style.display = "block";
+        mobileMenuHidden.style.display = "flex";
+
+        document.getElementById("pcLoginSignUpBlock").style.display = "block";
+        document.getElementById("mobileLoginSignUpBlock").style.display = "block";
     } else {
-        if (!(document.getElementById("notificaions").style.display != "none")) {
-            loginArea.style.display = "none";
+        if (loginArea.style.display && mobileMenuHidden.style.display) {
+            if (document.getElementById("notificaions").style.display == "none" && document.getElementById("notificaionsMobile").style.display == "none") {
+                loginArea.style.display = "none";
+                mobileMenuHidden.style.display = "none";
+            }
         }
     }
 
-    if (document.getElementById("notificaions").style.display != "none") {
-        document.getElementById("loginHidden").style.display = "block";
-        document.getElementById("signUpHidden").style.display = "none";
+    if (document.getElementById("notificaions").style.display != "none" && document.getElementById("notificaionsMobile").style.display != "none") {
+        document.getElementById("pcLoginSignUpBlock").style.display = "block";
+        document.getElementById("mobileLoginSignUpBlock").style.display = "block";
 
         document.getElementById("notificaions").style.display = "none";
-
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
-
-        isLoginArea = true;
+        document.getElementById("notificaionsMobile").style.display = "none";
     }
-});
+}
+
+loginButton.addEventListener("click", triggerLoginAreaForAllPlatforms);
+menuMobileButton.addEventListener("click", triggerLoginAreaForAllPlatforms);
 
 /* TOGGLE PASSWORD IMAGE */
 document.querySelectorAll(".toggle-password-visibility").forEach(element => element.addEventListener("click", () => {
     if ((document.getElementById("passwordAreaLogin").type == "password" || !document.getElementById("passwordAreaLogin").type) || (document.getElementById("passwordAreaSignIn").type == "password" || !document.getElementById("passwordAreaSignIn").type)) {
         document.getElementById("passwordAreaLogin").type = "text";
         document.getElementById("passwordAreaSignIn").type = "text";
+
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
             <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
@@ -163,10 +179,40 @@ document.querySelectorAll(".toggle-password-visibility").forEach(element => elem
     } else {
         document.getElementById("passwordAreaLogin").type = "password";
         document.getElementById("passwordAreaSignIn").type = "password";
+
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
             <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
         </svg>`);
+    }
+}));
+
+/* TOGGLE LOGIN / SIGN UP AREAS */
+document.querySelectorAll(".signUp").forEach(element => element.addEventListener("click", () => {
+    if (isLoginArea) {
+        document.getElementById("loginHidden").style.display = "none";
+        document.getElementById("signUpHidden").style.display = "block";
+        document.getElementById("loginHiddenMobile").style.display = "none";
+        document.getElementById("signUpHiddenMobile").style.display = "block";
+
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
+
+        isLoginArea = false;
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
+    } else {
+        document.getElementById("signUpHidden").style.display = "none";
+        document.getElementById("loginHidden").style.display = "block";
+        document.getElementById("signUpHiddenMobile").style.display = "none";
+        document.getElementById("loginHiddenMobile").style.display = "block";
+
+        document.getElementById("notificaions").style.display = "none";
+        document.getElementById("notificaionsMobile").style.display = "none";
+
+        isLoginArea = true;
+        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
+        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
     }
 }));
 
@@ -258,28 +304,7 @@ document.getElementById("forgotPassword").addEventListener("click", async () => 
     }
 });
 
-/* TOGGLE LOGIN / SIGN UP AREAS */
-document.querySelectorAll(".signUp").forEach(element => element.addEventListener("click", () => {
-    if (isLoginArea) {
-        document.getElementById("loginHidden").style.display = "none";
-        document.getElementById("signUpHidden").style.display = "block";
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        isLoginArea = false;
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
-    } else {
-        document.getElementById("signUpHidden").style.display = "none";
-        document.getElementById("loginHidden").style.display = "block";
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        isLoginArea = true;
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
-    }
-}));
-
-/* LOGIN GESTOR */
+/* LOGIN GESTOR - Backend */
 let error = false; // Error variable to print only the most specific error
 let tempBoolControl = false;
 
@@ -334,13 +359,13 @@ function loadData(SQLdata) {
         loginButton.src = SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`;
         document.getElementById("userName").innerHTML = SQLdata['username'];
 
-        loginArea.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
+        document.getElementById("pcLoginSignUpBlock").innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
             <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
             <button type="submit" id="sendAccountButton">Account</button>
             <button type="submit" id="sendLogoutButton">Log Out</button>`;
 
-        loginAreaMobile.innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
+        document.getElementById("mobileLoginSignUpBlock").innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
             <div style="align-items: center;">
                 <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             </div>
@@ -386,6 +411,77 @@ function loadData(SQLdata) {
             }
 
             /* LOAD DATA */
+            const notificationsUl = document.querySelectorAll(".notificationsUl");
+
+            for (let i = 0; i < notificationsUl.length; i++) {
+                const notifUl = notificationsUl[i];
+                
+                notificationsShowOrder.forEach(notificationToLoad => {
+                    let li = document.createElement("li");
+                    let dataETitle = document.createElement("div");
+                    let content = document.createElement("div");
+
+                    dataETitle.innerHTML = `<strong>${notificationToLoad.title}</strong> &nbsp; - &nbsp; <div style="color: grey;">${notificationToLoad.data}</div>`;
+                    dataETitle.style.display = "flex";
+                    content.innerHTML = `${notificationToLoad.description}`;
+
+                    li.appendChild(dataETitle);
+                    li.appendChild(content);
+
+                    if (notificationToLoad.status == 0) {
+                        li.classList = "unReadNotification";
+                    }
+
+                    notifUl.appendChild(li);
+                });
+
+                notifUl.querySelectorAll("li").forEach(li => li.addEventListener("click", () => {
+                    notifUl.style.display = "none";
+                    document.querySelectorAll(".hiddenNotificationData")[i].style.display = "block";
+
+                    document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = `
+                        <h3 style="display: flex; justify-content: center;">${li.querySelectorAll("div")[0].querySelector("strong").innerText} &nbsp; - &nbsp; <div style="color: grey;">${li.querySelectorAll("div")[0].querySelector("div").innerText}</div></h3>
+                        <br>
+                        <p>${li.querySelectorAll("div")[2].innerText}</p>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <img id="notificationBackImage" src="./images/back${themeIsLight?"":"_Pro"}.svg">
+                            <input type="button" id="notificationDeleteButton" value="Delete">
+                        </div>
+                    `;
+
+                    document.getElementById("notificationBackImage").addEventListener("click", () => {
+                        notifUl.style.display = "block";
+                        document.querySelectorAll(".hiddenNotificationData")[i].style.display = "none";
+
+                        document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = "";
+                    });
+
+                    // ======================================================= TO DO (delete notification and set status read) =======================================================
+                    document.getElementById("notificationDeleteButton").addEventListener("click", () => {
+                        notifUl.style.display = "block";
+                        document.querySelectorAll(".hiddenNotificationData")[i].style.display = "none";
+                        
+                        document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = "";
+                    });
+                }));
+
+                if (notificationsShowOrder.length < 6) {
+                    for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
+                        let li = document.createElement("li");
+                        let dataETitle = document.createElement("div");
+                        let content = document.createElement("div");
+
+                        dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
+                        dataETitle.style.display = "flex";
+                        content.innerHTML = ` `;
+
+                        li.appendChild(dataETitle);
+                        li.appendChild(content);
+
+                        notifUl.appendChild(li);
+                    }
+                }
+            }
         }
 
         loadNotifications(SQLdata);
@@ -428,15 +524,13 @@ document.querySelectorAll(".notificationsImg").forEach(element => element.addEve
         document.getElementById("loginArea").style.display = "block";
         document.getElementById("mobileMenuHidden").style.display = "flex";
         
-        document.getElementById("loginHidden").style.display = "none";
-        document.getElementById("signUpHidden").style.display = "none";
-        document.getElementById("loginHiddenMobile").style.display = "none";
-        document.getElementById("signUpHiddenMobile").style.display = "none";
+        
+        document.getElementById("pcLoginSignUpBlock").style.display = "none";
+        document.getElementById("mobileLoginSignUpBlock").style.display = "none";
+
         
         document.getElementById("notificaions").style.display = "block";
         document.getElementById("notificaionsMobile").style.display = "block";
-
-        isLoginArea = false;
     }
     else {
         document.getElementById("loginArea").style.display = "none";
@@ -445,48 +539,19 @@ document.querySelectorAll(".notificationsImg").forEach(element => element.addEve
         document.getElementById("notificaions").style.display = "none";
         document.getElementById("notificaionsMobile").style.display = "none";
 
-        document.getElementById("loginHidden").style.display = "block";
-        document.getElementById("signUpHidden").style.display = "none";
-        document.getElementById("loginHiddenMobile").style.display = "block";
-        document.getElementById("signUpHiddenMobile").style.display = "none";
-
-        isLoginArea = true;
+        document.getElementById("pcLoginSignUpBlock").style.display = "block";
+        document.getElementById("mobileLoginSignUpBlock").style.display = "block";
     }
 }));
 
-/* MOBILE MENU GESTOR */
-const menuMobileButton = document.getElementById("menuMobile");
-const mobileMenuHidden = document.getElementById("mobileMenuHidden");
-
-menuMobileButton.addEventListener("click", () => {
-    if (mobileMenuHidden.style.display == "none" || !mobileMenuHidden.style.display) {
-        mobileMenuHidden.style.display = "flex";
-    } else {
-        if (!(document.getElementById("notificaionsMobile").style.display != "none")) {
-            mobileMenuHidden.style.display = "none";
-        }
-    }
-
-    if (document.getElementById("notificaionsMobile").style.display != "none") {
-        document.getElementById("loginHiddenMobile").style.display = "block";
-        document.getElementById("signUpHiddenMobile").style.display = "none";
-
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
-
-        isLoginArea = true;
-    }
-});
-
 /* MOBILE LOGIN GESTOR */
 const loginAreaMobile = document.getElementById("loginAreaMobile");
-isLoginArea = true;
 
 document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.addEventListener("click", () => {
     if ((document.getElementById("passwordAreaLoginMobile").type == "password" || !document.getElementById("passwordAreaLoginMobile").type) || (document.getElementById("passwordAreaSignUpMobile").type == "password" || !document.getElementById("passwordAreaSignUpMobile").type)) {
         document.getElementById("passwordAreaLoginMobile").type = "text";
         document.getElementById("passwordAreaSignUpMobile").type = "text";
+
         document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
             <path d="M5.20967 2.08834C6.05172 1.72683 6.98462 1.50001 8 1.50001C13 1.50001 16 7.00001 16 7.00001C16 7.00001 15.0613 8.72098 13.3589 10.2376L11.2975 8.17615C11.4286 7.80857 11.5 7.41263 11.5 7.00001C11.5 5.06701 9.933 3.50001 8 3.50001C7.58738 3.50001 7.19144 3.57141 6.82386 3.70253L5.20967 2.08834Z" fill="black"></path>
@@ -497,6 +562,7 @@ document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element 
     } else {
         document.getElementById("passwordAreaLoginMobile").type = "password";
         document.getElementById("passwordAreaSignUpMobile").type = "password";
+
         document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
             <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
@@ -559,30 +625,7 @@ document.getElementById("createAccountFormMobile").addEventListener("submit", as
     }
 });
 
-/* TOGGLE LOGIN / SIGN UP AREAS */
-document.querySelectorAll(".signUpMobile").forEach(element => element.addEventListener("click", () => {
-    if (isLoginArea) {
-        document.getElementById("loginHiddenMobile").style.display = "none";
-        document.getElementById("signUpHiddenMobile").style.display = "block";
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
-
-        isLoginArea = false;
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
-    } else {
-        document.getElementById("signUpHiddenMobile").style.display = "none";
-        document.getElementById("loginHiddenMobile").style.display = "block";
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        isLoginArea = true;
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
-    }
-}));
-
-/* TOGGLE WINDOW SIZE */
+/* ============= TOGGLE WINDOW SIZE ============= */
 window.addEventListener("resize", () => {
     toggleWindowSize();
 });
@@ -598,7 +641,7 @@ function toggleWindowSize() {
 
 toggleWindowSize();
 
-/* ALERT AND CONFIRM PERSONALIZED */
+/* ============= ALERT AND CONFIRM PERSONALIZED ============= */
 function alert(text) {
     try {
         const blur = document.createElement("div");
