@@ -84,8 +84,9 @@
             
             $conn->close();
 
+            /* SEND MAIL */
             $to = $email;
-            $subject = "Change password";
+            $subject = "Change password FreeIdeas account.";
             $message = <<<EOT
             <html lang="en-US">
                 <head>
