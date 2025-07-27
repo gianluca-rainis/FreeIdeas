@@ -106,7 +106,7 @@
 
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= "From: <free_ideas@yahoo.com>";
+            $headers .= "From: <noreply@freeideas.duckdns.org>";
 
             if (!mail($to, $subject, $message, $headers)) {
                 echo json_encode(['success'=>false, 'error'=>"error_in_send_email"]);
