@@ -274,23 +274,25 @@ document.getElementById("createAccountForm").addEventListener("submit", async fu
 /* FORGOT PASSWORD BUTTON GESTOR */
 document.getElementById("forgotPassword").addEventListener("click", async () => {
     const email = document.getElementById("emailAreaLogin").value;
-    
+
     if (email && email.includes("@") && email.includes(".")) {
         try {
             const formData = new FormData();
             formData.append("email", email);
 
-            const response = await fetch("./api/forgotPassword.php", {
+            const response = await fetch("./api/changePassword.php", {
                 method: "POST",
+                credentials: "include",
                 body: formData
             });
 
             const data = await response.json();
 
-            if (data) {
+            if (data['success']) {
                 alert("Sended email to: "+email);
             }
             else {
+                console.error(data['error']);
                 printError(421);
             }
         } catch (error) {
@@ -423,7 +425,8 @@ function loadData(SQLdata) {
 
                     dataETitle.innerHTML = `<strong>${notificationToLoad.title}</strong> &nbsp; - &nbsp; <div style="color: grey;">${notificationToLoad.data}</div>`;
                     dataETitle.style.display = "flex";
-                    content.innerHTML = `${notificationToLoad.description}`;
+                    content.innerHTML = `${notificationToLoad.description.substring(0, 30)}...`;
+                    content.dataset.fullDescription = notificationToLoad.description;
 
                     li.appendChild(dataETitle);
                     li.appendChild(content);
@@ -431,6 +434,8 @@ function loadData(SQLdata) {
                     if (notificationToLoad.status == 0) {
                         li.classList = "unReadNotification";
                     }
+
+                    li.dataset.notificationId = notificationToLoad.id;
 
                     notifUl.appendChild(li);
                 });
@@ -442,26 +447,120 @@ function loadData(SQLdata) {
                     document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = `
                         <h3 style="display: flex; justify-content: center;">${li.querySelectorAll("div")[0].querySelector("strong").innerText} &nbsp; - &nbsp; <div style="color: grey;">${li.querySelectorAll("div")[0].querySelector("div").innerText}</div></h3>
                         <br>
-                        <p>${li.querySelectorAll("div")[2].innerText}</p>
+                        <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
                         <div style="display: flex; justify-content: center; align-items: center;">
                             <img id="notificationBackImage" src="./images/back${themeIsLight?"":"_Pro"}.svg">
                             <input type="button" id="notificationDeleteButton" value="Delete">
                         </div>
                     `;
 
-                    document.getElementById("notificationBackImage").addEventListener("click", () => {
+                    /* Back button */
+                    document.getElementById("notificationBackImage").addEventListener("click", async () => {
                         notifUl.style.display = "block";
                         document.querySelectorAll(".hiddenNotificationData")[i].style.display = "none";
 
                         document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = "";
+
+                        const idToSetStatus = li.dataset.notificationId;
+
+                        li.classList = ``;
+
+                        notificationsUl.forEach(ul => ul.querySelectorAll("li").forEach(li2 => {
+                            if (li2.dataset.notificationId == li.dataset.notificationId) {
+                                li2.classList = ``;
+                            }
+                        }));
+
+                        if (document.querySelectorAll("unReadNotification").length == 0) {
+                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                        }
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idToSetStatus);
+
+                            const response = await fetch(`./api/setNotificationAsRead.php`, {
+                                method: "POST",
+                                credentials: "include",
+                                body: formData
+                            });
+
+                            const data = await response.json();
+
+                            if (data) {
+                                if (!data['success']) {
+                                    console.error(data['error']);
+                                }
+                            }
+                            else {
+                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                            }
+                        } catch (error) {
+                            printError(421);
+                            console.error(error);
+                        }
                     });
 
-                    // ======================================================= TO DO (delete notification and set status read) =======================================================
-                    document.getElementById("notificationDeleteButton").addEventListener("click", () => {
+                    /* Delete button */
+                    document.getElementById("notificationDeleteButton").addEventListener("click", async () => {
                         notifUl.style.display = "block";
                         document.querySelectorAll(".hiddenNotificationData")[i].style.display = "none";
                         
                         document.querySelectorAll(".hiddenNotificationData")[i].innerHTML = "";
+
+                        const idToDelete = li.dataset.notificationId;
+
+                        notificationsUl.forEach(ul => ul.querySelectorAll("li").forEach(li2 => {
+                            if (li2.dataset.notificationId == li.dataset.notificationId) {
+                                li2.remove();
+                            }
+                        }));
+
+                        li.remove();
+
+                        if (document.querySelectorAll("unReadNotification").length == 0) {
+                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                        }
+
+                        if (notificationsShowOrder.length < 6 || (notificationsUl[0].querySelectorAll("li").length < 6)) {
+                            let linew = document.createElement("li");
+                            let dataETitle = document.createElement("div");
+                            let content = document.createElement("div");
+
+                            dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
+                            dataETitle.style.display = "flex";
+                            content.innerHTML = ` `;
+
+                            linew.appendChild(dataETitle);
+                            linew.appendChild(content);
+
+                            notificationsUl.forEach(ul => ul.appendChild(linew.cloneNode(true)));
+                        }
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idToDelete);
+
+                            const response = await fetch(`./api/deleteNotification.php`, {
+                                method: "POST",
+                                credentials: "include",
+                                body: formData
+                            });
+
+                            const data = await response.json();
+
+                            if (data) {
+                                if (!data['success']) {
+                                    console.error(data['error']);
+                                }
+                            }
+                            else {
+                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                            }
+                        } catch (error) {
+                            printError(421);
+                            console.error(error);
+                        }
                     });
                 }));
 

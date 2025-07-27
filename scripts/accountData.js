@@ -26,6 +26,7 @@ async function changeDataAccount() {
             <div id="dangerAreaAccount">
                 <label>Danger Area</label>
                 <input type="button" value="Make your account ${SQLdataGlobal['public']==0?"Public":"Private"}" data-value="" id="dangerAreaAccountPublicPrivateAccount">
+                <input type="button" value="Change Password" id="dangerAreaAccountChangePassword">
                 <input type="button" value="Delete Account" id="dangerAreaAccountDeleteAccount">
             </div>
         `;
@@ -174,6 +175,46 @@ async function changeDataAccount() {
                         printError(421);
                         console.error(result['error']);
                     }
+                }
+            }
+        });
+
+        document.getElementById("dangerAreaAccountChangePassword").addEventListener("click", async () => {
+            const sessionData = await getSessionDataFromDatabase2();
+
+            const dataId = new FormData();
+            dataId.append('email', sessionData['email']);
+
+            async function sendData(dataId) {
+                try {
+                    const res = await fetch(`./api/changePassword.php`, {
+                        credentials: "include",
+                        method: 'POST',
+                        body: dataId
+                    });
+
+                    const resp = await res.json();
+                    
+                    return resp;
+                } catch (error) {
+                    console.error(error);
+                    return null;
+                }
+            }
+
+            const result = await sendData(dataId);
+
+            if (!result) {
+                printError(421);
+            }
+            else {
+                if (result['success']) {
+                    alert("Check your inbox for the password reset email.");
+                    window.location.href = "./accountVoid.php";
+                }
+                else {
+                    printError(421);
+                    console.error(result['error']);
                 }
             }
         });

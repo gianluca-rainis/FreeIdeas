@@ -1650,10 +1650,15 @@ footer ul li a {
 
     #dangerAreaAccount {
         gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccount label {
+        grid-column: 1;
     }
 
     #dangerAreaAccount input {
-        font-size: small;
+        font-size: medium;
     }
 }
 
@@ -2130,6 +2135,7 @@ footer ul li a {
         overflow-y: auto;
         position: relative;
         padding-block-end: 0;
+        padding-bottom: 30px;
     }
 
     #accountMain #userNameSurnameAccount {
@@ -2348,7 +2354,7 @@ footer ul li a {
         overflow-y: auto;
         position: relative;
         padding-block-end: 0;
-        padding-bottom: 20px;
+        padding-bottom: 70px;
     }
 
     #accountMain #navBarForAccountSaved {
@@ -2573,25 +2579,25 @@ footer ul li a {
         color: #cba95c;
     }
 
-    #signUp {
+    .signUp {
         color: #ffdd8d;
     }
 
-    #signUp:hover {
+    .signUp:hover {
         color: #5c4e2e;
     }
 
-    #emailAreaLogin, #passwordAreaLogin, #firstName, #lastName, #userNameSignIn {
+    #emailAreaLogin, #passwordAreaLogin, #firstName, #lastName, #userNameSignIn, #emailAreaSignIn, #passwordAreaSignIn {
         background-color: #5c4e2e;
         border: 1px solid #cba95c;
         color: #cba95c;
     }
 
-    #emailAreaLogin::placeholder, #passwordAreaLogin::placeholder, #firstName::placeholder, #lastName::placeholder, #userNameSignIn::placeholder {
+    #emailAreaLogin::placeholder, #passwordAreaLogin::placeholder, #firstName::placeholder, #lastName::placeholder, #userNameSignIn::placeholder, #emailAreaSignIn::placeholder, #passwordAreaSignIn::placeholder {
         color: #cba95c;
     }
 
-    #sendLoginButton {
+    #sendLoginButton, #sendCreateAccountButton {
         background-color: #cba95c;
         border: 1px solid #5c4e2e;
         color: #5c4e2e;

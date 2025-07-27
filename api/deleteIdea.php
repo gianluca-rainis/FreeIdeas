@@ -153,6 +153,26 @@
         
         $state->close();
 
+        // get the idea title for the notification
+        $sql = "SELECT title FROM ideas WHERE id=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"comments_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        if ($result) {
+            $title = $result;
+        }
+        
+        $state->close();
+
         // ideas clear
         $sql = "DELETE FROM ideas WHERE id=?;";
         $state = $conn->prepare($sql);
@@ -173,6 +193,43 @@
     }
 
     $conn->close();
+
+    // add default notification
+    $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        echo json_encode(null);
+        exit;
+    }
+
+    $zero = 0; // Not read for default
+    $today = date("Y-m-d");
+    $id = $_SESSION['account']['id'];
+    $titleNot = "You have deleted an idea!";
+    $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas from our site. If you've had any specific issues, please don't hesitate to contact us.";
+
+    $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
+
+    $stmt->execute();
+    
+    $stmt->close();
+
+    /* Notifications loading */
+    $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $notifications = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $notifications[] = $row;
+    }
+
+    $stmt->close();
+
+    $_SESSION['account']['notifications'] = $notifications;
 
     function getInput($data) {
         $data = trim($data);

@@ -75,6 +75,43 @@
     $_SESSION['account']['username'] = $username;
     $_SESSION['account']['public'] = $public;
 
+    // add default notification
+    $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        echo json_encode(null);
+        exit;
+    }
+
+    $zero = 0; // Not read for default
+    $today = date("Y-m-d");
+    $id = $_SESSION['account']['id'];
+    $titleNot = "You have updated your account!";
+    $description = "You have updated your account information! Now is the time to post some new ideas to increase your popularity! If you didn't update your account information, it's possible your account has been compromised. In this case, we recommend changing your password as soon as possible. If you experience any major issues, please contact us immediately.";
+
+    $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
+
+    $stmt->execute();
+    
+    $stmt->close();
+
+    /* Notifications loading */
+    $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $notifications = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $notifications[] = $row;
+    }
+
+    $stmt->close();
+
+    $_SESSION['account']['notifications'] = $notifications;
+
     echo json_encode(["success"=>true]);
 
     function getInput($data) {

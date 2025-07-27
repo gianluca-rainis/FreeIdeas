@@ -117,6 +117,43 @@
 
         $stmt->close();
 
+        // add default notification
+        $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            echo json_encode(null);
+            exit;
+        }
+
+        $zero = 0; // Not read for default
+        $today = date("Y-m-d");
+        $id = $_SESSION['account']['id'];
+        $titleNot = "You have published a new idea!";
+        $description = "Congratulations on posting a new idea: " . $title . "! We're so glad you feel inspired! We wish your idea the success it deserves.";
+
+        $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
+
+        $stmt->execute();
+        
+        $stmt->close();
+
+        /* Notifications loading */
+        $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $notifications = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $notifications[] = $row;
+        }
+
+        $stmt->close();
+
+        $_SESSION['account']['notifications'] = $notifications;
+
         echo json_encode(['success'=>true]);
         $conn->close();
         exit;
