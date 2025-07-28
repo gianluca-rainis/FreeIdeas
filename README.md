@@ -6,7 +6,7 @@ The site is open to everyone, and you can contribute by publishing your own idea
 The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
 If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
 
-## Features
+## ✨ Features
 - Search for ideas
 - Publish your own ideas
 - Ask for help on your ideas
@@ -14,14 +14,14 @@ If you have an idea that you want to share with the world, or if you are looking
 - Open to everyone
 - Free to use
 
-## Author
+## 🧑‍💻 Author
 The author of the project is Gianluca Rainis ( __grdev on summer.hackclub.com )
 This project was written for the Summer Of Making 2025
 
-## License
+## 📜 License
 FreeIdeas is under the FreeIdeas License.
 
-### 📜 License Update Notice
+### 📜⚠️ License Update Notice
 
 As of *2025-07-21*, the FreeIdeas project is no longer distributed under the MIT License.
 
@@ -31,17 +31,17 @@ Users and contributors are strongly encouraged to review the full license terms 
 
 Previous releases distributed under the MIT License remain available under those original terms.
 
-## Languages
+## 🌍 Languages
 FreeIdeas is written in HTML, CSS and JavaScript.
 
-## AI Disclaimer
+## ֎🇦🇮 AI Disclaimer
 THE AI WAS USED IN THIS PROJECT ONLY IN THE DEBUG PHASE.
 
 NO TYPE OF AI WAS USED FOR THE DESIGN, DEVELOPMENT OR ACTUAL IMPLEMENTATION FOR THIS PROJECT.
 
 EVERITHING WAS DEVELOPED BY THE AUTHOR.
 
-## DataBase structure
+## 🛢 DataBase structure
 ### Accounts
 ```SQL
 +--------------------------------------------------------------------------------------+
