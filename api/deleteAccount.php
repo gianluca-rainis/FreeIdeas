@@ -27,7 +27,22 @@
         
         $state->close();
 
-        // accountideadata clear
+        // reports clear
+        $sql = "DELETE FROM reports WHERE accountid=? OR authorid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"reports_error"]);
+            exit;
+        }
+
+        $state->bind_param("ii", $id, $id);
+
+        $state->execute();
+        
+        $state->close();
+
+        // get ideas id
         $sql = "SELECT id FROM ideas WHERE authorid=?;";
         $state = $conn->prepare($sql);
 
@@ -73,6 +88,21 @@
 
             if (!$state) {
                 echo json_encode(["success"=>false, "error"=>"idealabels_error"]);
+                exit;
+            }
+
+            $state->bind_param("i", $ideasId[$i]);
+
+            $state->execute();
+            
+            $state->close();
+
+            // reports clear
+            $sql = "DELETE FROM reports WHERE ideaid=?;";
+            $state = $conn->prepare($sql);
+
+            if (!$state) {
+                echo json_encode(["success"=>false, "error"=>"reports_error"]);
                 exit;
             }
 

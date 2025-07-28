@@ -943,3 +943,132 @@ async function confirm(text) {
         }
     });
 }
+
+async function prompt(message, _default="") {
+    return new Promise((resolve) => {
+        try {
+            const blur = document.createElement("div");
+
+            blur.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                backdrop-filter: blur(5px);
+                background-color: rgba(255, 255, 255, 0.2); /* leggero overlay */
+                z-index: 9998;
+                pointer-events: all;
+            `;
+
+            const alert = document.createElement("div");
+            const textElement = document.createElement("div");
+            const buttonsDiv = document.createElement("div");
+            const okButton = document.createElement("input");
+            const noButton = document.createElement("input");
+            const inputText = document.createElement("textarea");
+
+            textElement.innerHTML = message;
+            okButton.type = "button";
+            okButton.value = "Send";
+            noButton.type = "button";
+            noButton.value = "Delete";
+            inputText.name = "inputPrompt";
+            inputText.innerText = _default;
+            inputText.maxLength = 10000;
+
+            buttonsDiv.appendChild(okButton);
+            buttonsDiv.appendChild(noButton);
+
+            alert.style.cssText = `
+                width: 500px;
+                height: 400px;
+                max-width: 80%;
+                max-height: 70%;
+                position: fixed;
+                top: 0;
+                align-self: anchor-center;
+                justify-self: center;
+                z-index: 10000;
+                background-color: white;
+                border-radius: 30px;
+                justify-self: center;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                background-color: ${themeIsLight?"#eaffbe":"#000000"};
+            `;
+
+            textElement.style.cssText = `
+                padding: 10px;
+                align-self: center;
+                top: 5%;
+                position: absolute;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+            `;
+
+            inputText.style.cssText = `
+                height: 60%;
+                margin-top: 5%;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                padding: 10px;
+            `;
+
+            buttonsDiv.style.cssText = `
+                justify-content: space-around;
+                display: flex;
+                bottom: -10%;
+                position: relative;
+            `;
+
+            okButton.style.cssText = `
+                padding: 10px;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                width: 45%;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+                background-color: ${themeIsLight?"#f8f095":"#272727"};
+                cursor: pointer;
+            `;
+
+            noButton.style.cssText = `
+                padding: 10px;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                width: 45%;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+                background-color: ${themeIsLight?"#f8f095":"#272727"};
+                cursor: pointer;
+            `;
+
+            function endAlert() {
+                document.body.removeChild(alert);
+                document.body.removeChild(blur);
+            }
+
+            okButton.addEventListener("click", () => {
+                endAlert();
+                resolve(inputText.value);
+            });
+
+            noButton.addEventListener("click", () => {
+                endAlert();
+                resolve(null);
+            });
+
+            alert.appendChild(textElement);
+            alert.appendChild(inputText);
+            alert.appendChild(buttonsDiv);
+
+            document.body.appendChild(blur);
+            document.body.appendChild(alert);
+        } catch (error) {
+            console.error(error);
+            resolve(null);
+        }
+    });
+}

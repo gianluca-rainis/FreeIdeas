@@ -28,6 +28,10 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 <img id="userImageAccount" alt="Account image" src="">
                 <h2 id="userNameSurnameAccount"></h2>
                 <h3 id="emailAccount"></h3>
+                <div id="followReportAccountDiv">
+                    <input type="button" id="followAccountButton" value="Follow Account">
+                    <input type="button" id="reportAccountButton" value="Report Account">
+                </div>
                 <p id="descriptionAccount"></p>
             </aside>
 

@@ -948,6 +948,19 @@ footer ul li a {
     align-items: center;
 }
 
+#reportIdeaButton {
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(200, 0, 0);
+    color: beige;
+    padding: 10px;
+    font-size: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    align-self: center;
+    cursor: pointer;
+}
+
 #modifyOldIdea {
     width: 30px;
     height: 30px;
@@ -968,19 +981,20 @@ footer ul li a {
     align-items: center;
     justify-content: center;
     background-color: #f3ffc9;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #imagesInfo .imageInfo {
-    width: 40rem;
-    margin-left: 50px;
+    max-width: 90%;
+    max-height: 90vh;
+    margin: 0;
+    justify-self: center;
 }
 
 #imagesInfo .titleImageInfo {
     font-size: 40px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px;
     word-break: break-all;
 }
 
@@ -1051,6 +1065,7 @@ footer ul li a {
 
 .logTitle {
     font-size: 20px;
+    max-width: 80vw;
     word-break: break-all;
 }
 
@@ -1290,6 +1305,37 @@ footer ul li a {
 
 #emailAccount {
     margin-bottom: 20px;
+}
+
+#followReportAccountDiv {
+    margin: 10px;
+}
+
+#followAccountButton {
+    border-radius: 10px;
+    border: 0;
+    background-color: #f8f095;
+    padding: 10px;
+    font-size: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    align-self: center;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#reportAccountButton {
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(200, 0, 0);
+    color: beige;
+    padding: 10px;
+    font-size: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    align-self: center;
+    cursor: pointer;
+    margin: 5px;
 }
 
 #descriptionAccount {
@@ -1636,7 +1682,7 @@ footer ul li a {
 
     /* idea page */
     #ideaMain .imageInfo {
-        width: 35rem;
+        max-width: 70%;
     }
 
     /* account page */
@@ -1700,11 +1746,6 @@ footer ul li a {
 
     #newIdeaMain .imageInfo {
         width: 250px;
-    }
-
-    /* idea page */
-    #ideaMain .imageInfo {
-        max-width: 50%;
     }
 
     /* account page */
@@ -1800,11 +1841,7 @@ footer ul li a {
 
     /* idea page */
     #ideaMain .imageInfo {
-        max-width: 50%;
-    }
-
-    #ideaMain .imageInfoDescription {
-        margin-right: 5px;
+        margin-right: 10px;
     }
 
     #ideaMain .underComments {
@@ -1927,9 +1964,13 @@ footer ul li a {
         width: 250px;
     }
 
-    /* idea page */
-    #ideaMain .imageInfo {
-        max-width: 50%;
+    /* Idea page */
+    #ideaMain #title {
+        font-size: 90px;
+    }
+
+    #imagesInfo .imageInfoLi {
+        display: block;
     }
 
     #ideaMain .titleImageInfo {
@@ -1937,7 +1978,16 @@ footer ul li a {
     }
 
     #ideaMain .imageInfoDescription {
-        margin-right: 5px;
+        margin: 20px;
+    }
+
+    #ideaMain .logTitleAndData {
+        flex-direction: column-reverse;
+    }
+
+    #ideaMain .logTitle {
+        margin: 10px;
+        max-width: 90vw;
     }
 
     #ideaMain .comment {
@@ -2099,16 +2149,33 @@ footer ul li a {
     }
 
     /* idea page */
-    #ideaMain .imageInfo {
-        max-width: 50%;
+    #ideaMain #title {
+        font-size: 80px;
     }
 
     #ideaMain .titleImageInfo {
         font-size: 30px;
     }
 
+    #imagesInfo .imageInfoLi {
+        display: block;
+    }
+
+    #imagesInfo .imageInfo {
+        max-height: 70vh;
+    }
+
     #ideaMain .imageInfoDescription {
-        margin-right: 5px;
+        margin: 20px;
+    }
+
+    #ideaMain .logTitleAndData {
+        flex-direction: column-reverse;
+    }
+
+    #ideaMain .logTitle {
+        margin: 10px;
+        max-width: 90vw;
     }
 
     #ideaMain .comment {
@@ -2301,11 +2368,11 @@ footer ul li a {
 
     /* idea page */
     #ideaMain .imageInfo {
-        max-width: 50%;
+        max-height: 60vh;
     }
 
     #ideaMain #title {
-        font-size: 80px;
+        font-size: 70px;
     }
 
     #ideaMain #mainAuthorAccount {
@@ -2316,13 +2383,33 @@ footer ul li a {
         font-size: medium;
     }
 
+    #ideaLikeSaveSection {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        gap: 10px;
+    }
+
     #ideaMain .titleImageInfo {
         font-size: 25px;
     }
 
+    #imagesInfo .imageInfoLi {
+        display: block;
+    }
+
     #ideaMain .imageInfoDescription {
-        margin-right: 5px;
+        margin: 20px;
         font-size: 15px;
+    }
+
+    #ideaMain .logTitleAndData {
+        flex-direction: column-reverse;
+    }
+
+    #ideaMain .logTitle {
+        margin: 10px;
+        max-width: 90vw;
     }
 
     #ideaMain #commentsList {
@@ -2791,5 +2878,9 @@ footer ul li a {
 
     .hiddenNotificationData div input:hover {
         background-color: #5c4e2e;
+    }
+
+    #followAccountButton {
+        background-color: #cba95c;
     }
 }

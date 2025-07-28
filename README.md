@@ -256,6 +256,31 @@ CREATE TABLE notifications (
 );
 ```
 
+### Reports (ideas, accounts)
+```SQL
++-----------------------------------------------+
+|                    reports                    |
++-----------------------------------------------+
+| id | authorid | ideaid | accountid | feedback |
++----+----------+--------+-----------+----------+
+|    |          |        |           |          |
+|    |          |        |           |          |
+|    |          |        |           |          |
++----+----------+--------+-----------+----------+
+```
+
+```SQL
+CREATE TABLE reports (
+    id int NOT NULL AUTO_INCREMENT,
+    authorid int NOT NULL,
+    ideaid int,
+    accountid int,
+    feedback varchar(10000) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (authorid) REFERENCES accounts(id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -357,4 +382,15 @@ mysql> describe notifications;
 | data        | date           | NO   |     | NULL    |                |
 | status      | int            | NO   |     | NULL    |                |
 +-------------+----------------+------+-----+---------+----------------+
+
+mysql> describe reports;
++-----------+----------------+------+-----+---------+----------------+
+| Field     | Type           | Null | Key | Default | Extra          |
++-----------+----------------+------+-----+---------+----------------+
+| id        | int            | NO   | PRI | NULL    | auto_increment |
+| authorid  | int            | NO   | MUL | NULL    |                |
+| ideaid    | int            | YES  |     | NULL    |                |
+| accountid | int            | YES  |     | NULL    |                |
+| feedback  | varchar(10000) | NO   |     | NULL    |                |
++-----------+----------------+------+-----+---------+----------------+
 ```

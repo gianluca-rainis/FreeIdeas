@@ -27,6 +27,21 @@
         
         $state->close();
 
+        // reports clear
+        $sql = "DELETE FROM reports WHERE ideaid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"reports_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        
+        $state->close();
+
         // additionalinfo clear
         $sql = "DELETE FROM additionalinfo WHERE ideaid=?;";
         $state = $conn->prepare($sql);

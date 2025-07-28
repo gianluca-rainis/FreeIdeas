@@ -222,6 +222,7 @@ async function changeDataAccount() {
 }
 
 if (!id) {
+    document.getElementById("followReportAccountDiv").style.display = "none";
     changeDataAccount();
     ldAccountData2();
 }
@@ -413,6 +414,100 @@ publishedAccountButton.addEventListener("click", async () => {
         </a>`;
     }
 });
+
+// Follow account
+const followAccountButton = document.getElementById("followAccountButton");
+
+async function followAccount() {
+    try {
+        const sessionData = await getSessionDataFromDatabase2();
+
+        if (sessionData) {
+            /* const formData = new FormData();
+            formData.append("accountid", id);
+
+            try {
+                const res = await fetch(`./api/reportIdeaAccount.php`, {
+                    credentials: "include",
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (!data['success']) {
+                    console.error(data['error']);
+                }
+                else {
+                    // Change the color of followAccountButton
+                }
+            } catch (error) {
+                console.error(error);
+            } */
+        }
+        else {
+            alert("You must login before you can follow an account!");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Report account
+const reportAccountButton = document.getElementById("reportAccountButton");
+
+async function reportAccount() {
+    try {
+        const sessionData = await getSessionDataFromDatabase2();
+
+        if (sessionData) {
+            if (await confirm("Are you sure you want to report this account? This action cannot be undone. Remember that reporting an account harms its owner.")) {
+                const feedback = await prompt("Please tell us why you think this account is inappropriate.");
+                
+                if (feedback != null) {
+                    if (feedback != "") {
+                        const formData = new FormData();
+                        formData.append("ideaid", null);
+                        formData.append("feedback", feedback);
+                        formData.append("accountid", id);
+
+                        try {
+                            const res = await fetch(`./api/reportIdeaAccount.php`, {
+                                credentials: "include",
+                                method: "POST",
+                                body: formData
+                            });
+
+                            const data = await res.json();
+
+                            if (!data['success']) {
+                                console.error(data['error']);
+                            }
+                            else {
+                                alert("The account was successfully reported.");
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                    else {
+                        alert("The feedback cannot be empty.");
+                    }
+                }
+            }
+        }
+        else {
+            alert("You must login before you can report an account!");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+if (id) {
+    reportAccountButton.addEventListener("click", reportAccount);
+    followAccountButton.addEventListener("click", followAccount);
+}
 
 /* Theme changer */
 document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;

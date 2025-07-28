@@ -647,6 +647,59 @@ async function modifyOldPageIfAuthorLoggedIn() {
     }
 }
 
+// Report idea
+const reportIdeaButton = document.getElementById("reportIdeaButton");
+
+async function reportIdea() {
+    try {
+        const sessionData = await isLoggedIn();
+
+        if (sessionData) {
+            if (await confirm("Are you sure you want to report this idea? This action cannot be undone. Remember that reporting an idea also harms the idea's creator.")) {
+                const feedback = await prompt("Please tell us why you think this content is inappropriate.");
+                
+                if (feedback != null) {
+                    if (feedback != "") {
+                        const formData = new FormData();
+                        formData.append("ideaid", id);
+                        formData.append("feedback", feedback);
+                        formData.append("accountid", null);
+
+                        try {
+                            const res = await fetch(`./api/reportIdeaAccount.php`, {
+                                credentials: "include",
+                                method: "POST",
+                                body: formData
+                            });
+
+                            const data = await res.json();
+
+                            if (!data['success']) {
+                                console.error(data['error']);
+                            }
+                            else {
+                                alert("The idea was successfully reported.");
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+                    else {
+                        alert("The feedback cannot be empty.");
+                    }
+                }
+            }
+        }
+        else {
+            alert("You must login before you can report an idea!");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+reportIdeaButton.addEventListener("click", reportIdea);
+
 /* Toggle theme */
 function toggleThemeGestorIdeaData() {
     new MutationObserver(() => {
