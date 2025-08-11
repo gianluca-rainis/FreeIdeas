@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /include/
+
+Sitemap: https://freeideas.duckdns.org/sitemap.xml
