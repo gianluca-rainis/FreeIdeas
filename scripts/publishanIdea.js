@@ -90,7 +90,7 @@ addAdditionalInfo.addEventListener("click", () => {
         <img src="./images/delete${themeIsLight?"":"_Pro"}.svg" alt="Delete Additional info" class="deleteAdditionalInfo">
         
         <div>
-            <img class="preview" alt="Additional info image" src="./images/voidImage.jpg">
+            <img class="preview" alt="Additional info image" src="./images/FreeIdeas.svg">
             <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
         </div>
 

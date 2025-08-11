@@ -76,7 +76,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <img src="./images/delete.svg" alt="Delete additional info" class="deleteAdditionalInfo">
                             
                             <div>
-                                <img class="preview" alt="Additional info image" src="./images/voidImage.jpg">
+                                <img class="preview" alt="Additional info image" src="./images/FreeIdeas.svg">
                                 <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
                             </div>
 

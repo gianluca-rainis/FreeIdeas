@@ -208,7 +208,7 @@ async function loadData2(SQLdata) {
             SQLdata['info'].forEach(row => {
                 if (!tempBoolControl) {
                     additionalInfoWithImagesUl.innerHTML += `<li class="imageInfoLi">
-                        <img src="./images/voidImage.jpg" alt="Additional info image" class="imageInfo">
+                        <img src="./images/FreeIdeas.svg" alt="Additional info image" class="imageInfo">
                         <div>
                             <h3 class="titleImageInfo">Info</h3>
                         

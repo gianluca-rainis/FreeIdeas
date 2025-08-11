@@ -857,7 +857,7 @@ footer ul li a {
 
 /* main block */
 #ideaMain #ideaImageAsBackground {
-    background-image: url("../images/voidImage.jpg");
+    background-image: url("../images/FreeIdeas.svg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1441,7 +1441,7 @@ footer ul li a {
 
 /* main block */
 #newIdeaMain #ideaImageAsBackground {
-    background-image: url("../images/voidImage.jpg");
+    background-image: url("../images/FreeIdeas.svg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
