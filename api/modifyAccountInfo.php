@@ -61,7 +61,6 @@
     }
 
     $state->close();
-    $conn->close();
 
     $_SESSION['account']['id'] = $id;
     $_SESSION['account']['name'] = $firstName;
@@ -109,6 +108,7 @@
     }
 
     $stmt->close();
+    $conn->close();
 
     $_SESSION['account']['notifications'] = $notifications;
 

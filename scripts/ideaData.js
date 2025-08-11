@@ -269,14 +269,14 @@ async function loadData2(SQLdata) {
             devLogsSection.innerHTML = "";
         }
         
-        if (SQLdata['comment'].length != 0) {
+        if (SQLdata['comment'].length != 0) { // Comments
             const sessionData = await isLoggedIn();
 
             SQLdata['comment'].forEach(row => {
                 if (row.superCommentid === null) {
                     commentsListUl.innerHTML += `<li class="comment">
                             <div class="userInfo">
-                                <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
+                                <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
                                     <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
                                     <div class="writerUserName">${row.username}:</div>
                                 </a>
@@ -297,7 +297,7 @@ async function loadData2(SQLdata) {
                         if (element.dataset.id == row.superCommentid) {
                             element.innerHTML += `<li class="comment">
                                 <div class="userInfo">
-                                    <a href="./accountVoid.php?account=${row.authorid}" class="writerPage">
+                                    <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
                                         <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
                                         <div class="writerUserName">${row.username}:</div>
                                     </a>
