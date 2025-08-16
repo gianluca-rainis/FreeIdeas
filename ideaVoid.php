@@ -12,6 +12,15 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <?php 
             include('./include/head.php');
         ?>
+
+        <!-- Dinamic head -->
+        <?php
+            if (isset($_GET['idea']) && !empty($_GET['idea'])) {
+                $id = $_GET['idea'];
+                $canonical = "https://freeideas.duckdns.org/ideaVoid.php?idea=$id";
+                echo "<link rel=\"canonical\" href=\"$canonical\" />";
+            }
+        ?>
     </head>
 
     <body>

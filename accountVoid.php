@@ -12,6 +12,15 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <?php 
             include('./include/head.php');
         ?>
+
+        <!-- Dinamic head -->
+        <?php
+            if (isset($_GET['account']) && !empty($_GET['account'])) {
+                $id = $_GET['account'];
+                $canonical = "https://freeideas.duckdns.org/accountVoid.php?account=$id";
+                echo "<link rel=\"canonical\" href=\"$canonical\" />";
+            }
+        ?>
     </head>
 
     <body id="accountBody">

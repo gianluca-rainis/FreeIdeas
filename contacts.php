@@ -12,6 +12,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <?php 
             include('./include/head.php');
         ?>
+
+        <!-- Dinamic head -->
+        <link rel="canonical" href="https://freeideas.duckdns.org/contacts.php" />
     </head>
 
     <body>

@@ -289,8 +289,14 @@ async function getOtherAccountDataFromDatabase(accountid) {
 
         const data = await res.json();
 
-        return data;
+        if (data["success"]) {
+            return data["data"];
+        }
+        else {
+            throw new Error(data["error"]);
+        }
     } catch (error) {
+        console.error(error);
         return null;
     }
 }
@@ -335,6 +341,13 @@ function loadData2(SQLdata, showEmail) {
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
 
         document.getElementById("mainDivDinamicContent").innerHTML = "";
+
+        if (SQLdata['followed']) {
+            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
+        }
+        else {
+            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#f8f095":"#cba95c"}`;
+        }
         
         SQLdata['saved'].forEach(element => {
             document.getElementById("mainDivDinamicContent").innerHTML += `
@@ -423,11 +436,11 @@ async function followAccount() {
         const sessionData = await getSessionDataFromDatabase2();
 
         if (sessionData) {
-            /* const formData = new FormData();
-            formData.append("accountid", id);
+            const formData = new FormData();
+            formData.append("followedaccountid", id);
 
             try {
-                const res = await fetch(`./api/reportIdeaAccount.php`, {
+                const res = await fetch(`./api/followAccountIdea.php`, {
                     credentials: "include",
                     method: "POST",
                     body: formData
@@ -439,11 +452,12 @@ async function followAccount() {
                     console.error(data['error']);
                 }
                 else {
-                    // Change the color of followAccountButton
+                    followAccountButton.style.backgroundColor = data["isNowFollowed"]?`${themeIsLight?"#a9acf5":"#5c4e2e"}`:`${themeIsLight?"#f8f095":"#cba95c"}`;
+                    SQLdataGlobal["followed"] = data["isNowFollowed"];
                 }
             } catch (error) {
                 console.error(error);
-            } */
+            }
         }
         else {
             alert("You must login before you can follow an account!");
@@ -529,6 +543,15 @@ new MutationObserver(() => {
 
     if (document.getElementById("cancelAccountInfo")) {
         document.getElementById("cancelAccountInfo").src=`./images/delete${themeIsLight?"":"_Pro"}.svg`;
+    }
+
+    if (document.getElementById("followAccountButton")) {
+        if (SQLdataGlobal['followed']) {
+            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
+        }
+        else {
+            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#f8f095":"#cba95c"}`;
+        }
     }
 }).observe(document.documentElement, {
     attributes: true,

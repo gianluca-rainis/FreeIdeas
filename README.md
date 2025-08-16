@@ -281,6 +281,32 @@ CREATE TABLE reports (
 );
 ```
 
+### Follow (ideas, accounts)
+```SQL
++-----------------------------------------------------------+
+|                          follow                           |
++-----------------------------------------------------------+
+| id | followaccountid | followedaccountid | followedideaid |
++----+-----------------+-------------------+----------------+
+|    |                 |                   |                |
+|    |                 |                   |                |
+|    |                 |                   |                |
++----+-----------------+-------------------+----------------+
+```
+
+```SQL
+CREATE TABLE follow (
+    id int NOT NULL AUTO_INCREMENT,
+    followaccountid int NOT NULL,
+    followedaccountid int,
+    followedideaid int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (followaccountid) REFERENCES accounts(id),
+    FOREIGN KEY (followedaccountid) REFERENCES accounts(id),
+    FOREIGN KEY (followedideaid) REFERENCES ideas(id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -393,4 +419,14 @@ mysql> describe reports;
 | accountid | int            | YES  |     | NULL    |                |
 | feedback  | varchar(10000) | NO   |     | NULL    |                |
 +-----------+----------------+------+-----+---------+----------------+
+
+mysql> describe follow;
++-------------------+------+------+-----+---------+----------------+
+| Field             | Type | Null | Key | Default | Extra          |
++-------------------+------+------+-----+---------+----------------+
+| id                | int  | NO   | PRI | NULL    | auto_increment |
+| followaccountid   | int  | NO   | MUL | NULL    |                |
+| followedaccountid | int  | YES  | MUL | NULL    |                |
+| followedideaid    | int  | YES  | MUL | NULL    |                |
++-------------------+------+------+-----+---------+----------------+
 ```
