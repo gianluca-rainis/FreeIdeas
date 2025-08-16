@@ -230,12 +230,18 @@ async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() {
     else {
         const sessionData = await getSessionDataFromDatabase2();
 
-        if (sessionData['id'] != id) {
-            document.getElementById("modifyAccountInfo").style.display = "none";
-            ldOtherAccountData();
+        if (sessionData) {
+            if (sessionData['id'] != id) {
+                document.getElementById("modifyAccountInfo").style.display = "none";
+                ldOtherAccountData();
+            }
+            else {
+                window.location.href = `./accountVoid.php`;
+            }
         }
         else {
-            window.location.href = `./accountVoid.php`;
+            document.getElementById("modifyAccountInfo").style.display = "none";
+            ldOtherAccountData();
         }
     }
 }
