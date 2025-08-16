@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FreeIdeas</title>
 
-<link rel="icon" href="https://freeideas.duckdns.org/images/FreeIdeas.svg" type="image/svg" />
+<link rel="shortcut icon" href="https://freeideas.duckdns.org/images/FreeIdeas.svg" type="image/svg" />
 <link href="./styles/styles.css" rel="stylesheet" />
 
 <meta name="description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
