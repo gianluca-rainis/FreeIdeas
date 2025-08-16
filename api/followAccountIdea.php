@@ -52,7 +52,7 @@
             exit;
         }
 
-        $state->bind_param("ii", $authorid, $followedaccountid);
+        $state->bind_param("ii", $authorid, $tempNotNull);
         
         if (!$state->execute()) {
             echo json_encode(["success"=>false, "error"=>"execution_command"]);

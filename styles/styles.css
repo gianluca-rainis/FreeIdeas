@@ -1311,7 +1311,7 @@ footer ul li a {
     margin: 10px;
 }
 
-#followAccountButton {
+#followAccountButton, #followIdeaButton {
     border-radius: 10px;
     border: 0;
     background-color: #f8f095;
@@ -1322,6 +1322,10 @@ footer ul li a {
     align-self: center;
     cursor: pointer;
     margin: 5px;
+}
+
+#followIdeaButton {
+    background-color: #b6ffa4;
 }
 
 #reportAccountButton {

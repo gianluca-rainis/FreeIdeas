@@ -22,7 +22,7 @@
             return null;
         }
 
-        $state->bind_param("s", $id);
+        $state->bind_param("i", $id);
 
         $state->execute();
         $result = $state->get_result();
@@ -52,7 +52,7 @@
             return null;
         }
 
-        $state->bind_param("si", $id, $accountId);
+        $state->bind_param("ii", $id, $accountId);
 
         $state->execute();
         $result = $state->get_result();
@@ -74,6 +74,7 @@
     $return['comment'] = getDataFromDatabase($conn, $id, "SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;"); // Comments
     $return['idealabels'] = getDataFromDatabase($conn, $id, "SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;"); // Labels
     $return['accountdata'] = getDataFromDatabaseWithAccountInfo($conn, $id, "SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;"); // Labels
+    $return['followAccountData'] = getDataFromDatabaseWithAccountInfo($conn, $id, "SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;"); // Follow
 
     echo json_encode($return);
     

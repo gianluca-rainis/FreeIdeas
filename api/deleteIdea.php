@@ -6,6 +6,7 @@
     session_start();
 
     $id = "";
+    $title = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
@@ -88,65 +89,6 @@
         $state->close();
 
         // comments clear
-        // Delete all the comments from the deeper
-        function deleteAllIdsSubComments($conn, $id) {
-            try {
-                $sql = "SELECT * FROM comments WHERE superCommentid=?;";
-                $state = $conn->prepare($sql);
-
-                if (!$state) {
-                    echo json_encode(["success"=>false, "error"=>"database_connection"]);
-                    exit;
-                }
-
-                $state->bind_param("i", $id);
-                
-                if (!$state->execute()) {
-                    echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
-                    exit;
-                }
-
-                $result = $state->get_result();
-
-                $data = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
-                }
-
-                $state->close();
-
-                // $data contains all the subcomments
-                foreach ($data as $row) {
-                    deleteAllIdsSubComments($conn, $row['id']);
-                }
-
-                // This is the deeper ($id comment)
-                // Delete the subcomment
-                $sql = "DELETE FROM comments WHERE id=?;";
-                $state = $conn->prepare($sql);
-
-                if (!$state) {
-                    echo json_encode(["success"=>false, "error"=>"database_connection"]);
-                    exit;
-                }
-
-                $state->bind_param("i", $id);
-                
-                if (!$state->execute()) {
-                    echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
-                    exit;
-                }
-
-                $state->close();
-            } catch (\Throwable $th) {
-                global $fatalError;
-                $fatalError = $th;
-            }
-            
-            return;
-        }
-
         $sql = "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;";
         $state = $conn->prepare($sql);
 
@@ -182,10 +124,65 @@
         $state->execute();
         $result = $state->get_result();
 
-        if ($result) {
-            $title = $result;
+        if ($row = $result->fetch_assoc()) {
+            $title = $row['title'];
         }
         
+        $state->close();
+
+        // Send notification to followers
+        $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("ii", $_SESSION['account']['id'], $id);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // add default notification
+                $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    echo json_encode(["success"=>false, "error"=>"follow_error"]);
+                    exit;
+                }
+
+                $zero = 0; // Not read for default
+                $today = date("Y-m-d");
+                $idNot = $row['followaccountid'];
+                $titleNot = $_SESSION['account']['username'] . " has deleted " . $title . ".";
+                $description = $_SESSION['account']['username'] . " has deleted " . $title . ". You can no longer visit its idea page.";
+
+                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+
+                $stmt->execute();
+                
+                $stmt->close();
+            }
+        }
+        
+        $state->close();
+
+        // Delete followers from idea
+        $sql = "DELETE FROM follow WHERE followedideaid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();    
         $state->close();
 
         // ideas clear
@@ -207,8 +204,6 @@
         exit;
     }
 
-    $conn->close();
-
     // add default notification
     $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
     $stmt = $conn->prepare($sql);
@@ -220,11 +215,11 @@
 
     $zero = 0; // Not read for default
     $today = date("Y-m-d");
-    $id = $_SESSION['account']['id'];
+    $idNot = $_SESSION['account']['id'];
     $titleNot = "You have deleted an idea!";
-    $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas from our site. If you've had any specific issues, please don't hesitate to contact us.";
+    $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
 
-    $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
+    $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 
     $stmt->execute();
     
@@ -232,7 +227,7 @@
 
     /* Notifications loading */
     $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $_SESSION['account']['id']);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -244,6 +239,8 @@
 
     $stmt->close();
 
+    $conn->close();
+
     $_SESSION['account']['notifications'] = $notifications;
 
     function getInput($data) {
@@ -252,6 +249,65 @@
         $data = htmlspecialchars($data);
 
         return $data;
+    }
+
+    // Delete all the comments from the deeper
+    function deleteAllIdsSubComments($conn, $id) {
+        try {
+            $sql = "SELECT * FROM comments WHERE superCommentid=?;";
+            $state = $conn->prepare($sql);
+
+            if (!$state) {
+                echo json_encode(["success"=>false, "error"=>"database_connection"]);
+                exit;
+            }
+
+            $state->bind_param("i", $id);
+            
+            if (!$state->execute()) {
+                echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
+                exit;
+            }
+
+            $result = $state->get_result();
+
+            $data = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+
+            $state->close();
+
+            // $data contains all the subcomments
+            foreach ($data as $row) {
+                deleteAllIdsSubComments($conn, $row['id']);
+            }
+
+            // This is the deeper ($id comment)
+            // Delete the subcomment
+            $sql = "DELETE FROM comments WHERE id=?;";
+            $state = $conn->prepare($sql);
+
+            if (!$state) {
+                echo json_encode(["success"=>false, "error"=>"database_connection"]);
+                exit;
+            }
+
+            $state->bind_param("i", $id);
+            
+            if (!$state->execute()) {
+                echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
+                exit;
+            }
+
+            $state->close();
+        } catch (\Throwable $th) {
+            global $fatalError;
+            $fatalError = $th;
+        }
+        
+        return;
     }
 
     echo json_encode(["success"=>true]);

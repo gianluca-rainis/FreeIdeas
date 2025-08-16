@@ -98,7 +98,7 @@ async function changeDataAccount() {
         document.getElementById("dangerAreaAccountPublicPrivateAccount").addEventListener("click", async () => {
             const sessionData = await getSessionDataFromDatabase2();
 
-            if (await confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}?`)) {
+            if (await confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}? ${sessionData['public']==1?"You'll loose all your follower and the others can't see your account informations.":"The others can follow your account and can see your account informations."}`)) {
                 const data = new FormData();
                 data.append('username', sessionData['username']);
                 data.append('name', sessionData['name']);
@@ -221,15 +221,26 @@ async function changeDataAccount() {
     });
 }
 
-if (!id) {
-    document.getElementById("followReportAccountDiv").style.display = "none";
-    changeDataAccount();
-    ldAccountData2();
+async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() {
+    if (!id) {
+        document.getElementById("followReportAccountDiv").style.display = "none";
+        changeDataAccount();
+        ldAccountData2();
+    }
+    else {
+        const sessionData = await getSessionDataFromDatabase2();
+
+        if (sessionData['id'] != id) {
+            document.getElementById("modifyAccountInfo").style.display = "none";
+            ldOtherAccountData();
+        }
+        else {
+            window.location.href = `./accountVoid.php`;
+        }
+    }
 }
-else {
-    document.getElementById("modifyAccountInfo").style.display = "none";
-    ldOtherAccountData();
-}
+
+loadDinamicAccountInfoInBaseOfTheCurrentAccountPage();
 
 /* DINAMIC PART */
 error = false; // Error variable to print only the most specific error

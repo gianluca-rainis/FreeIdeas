@@ -194,6 +194,15 @@ async function loadData2(SQLdata) {
             existCurrentAccountIdeaData = true;
         }
 
+        if (SQLdata['followAccountData']) {
+            if (SQLdata['followAccountData'].length == 0) {
+                document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#b6ffa4":"#cba95c"}`;
+            }
+            else {
+                document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
+            }
+        }
+
         if (SQLdata['idea'][0].downloadlink) { // Download link
             buttonLink.href = SQLdata['idea'][0].downloadlink;
             downloadButton.innerHTML = SQLdata['idea'][0].downloadlink;
@@ -700,6 +709,46 @@ async function reportIdea() {
 
 reportIdeaButton.addEventListener("click", reportIdea);
 
+// Follow idea
+const followIdeaButton = document.getElementById("followIdeaButton");
+
+async function followIdea() {
+    try {
+        const sessionData = await getSessionData2();
+
+        if (sessionData) {
+            const formData = new FormData();
+            formData.append("followedideaid", id);
+
+            try {
+                const res = await fetch(`./api/followAccountIdea.php`, {
+                    credentials: "include",
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (!data['success']) {
+                    console.error(data['error']);
+                }
+                else {
+                    followIdeaButton.style.backgroundColor = data["isNowFollowed"]?`${themeIsLight?"#a9acf5":"#5c4e2e"}`:`${themeIsLight?"#b6ffa4":"#cba95c"}`;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        else {
+            alert("You must login before you can follow an idea!");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+followIdeaButton.addEventListener("click", followIdea);
+
 /* Toggle theme */
 function toggleThemeGestorIdeaData() {
     new MutationObserver(() => {
@@ -724,6 +773,24 @@ function toggleThemeGestorIdeaData() {
         }
         else {
             dislikedIdeaImg.src = `./images/disliked${themeIsLight?"":"_Pro"}.svg`;
+        }
+
+        if (document.getElementById("followIdeaButton")) {
+            function rgbToHex(rgb) { // Convert rgb(r, g, b) to #rrggbb
+                const result = rgb.match(/\d+/g); // Select the numbers
+
+                return ("#" + result.map((x) => {
+                    const hex = parseInt(x).toString(16); // In base 16
+                    return hex.length==1?"0"+hex:hex; // If have 1 char add a 0
+                }).join(""));
+            }
+
+            if (rgbToHex(document.getElementById("followIdeaButton").style.backgroundColor) == `${!themeIsLight?"#b6ffa4":"#cba95c"}`) {
+                document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#b6ffa4":"#cba95c"}`;
+            }
+            else {
+                document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
+            }
         }
 
         writerImage.forEach(writer => {

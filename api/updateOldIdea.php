@@ -188,6 +188,47 @@
 
             $stmt->close();
 
+            // Send notification to followers
+            $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
+            $state = $conn->prepare($sql);
+
+            if (!$state) {
+                echo json_encode(["success"=>false, "error"=>"follow_error"]);
+                exit;
+            }
+
+            $state->bind_param("ii", $_SESSION['account']['id'], $ideaid);
+
+            $state->execute();
+            $result = $state->get_result();
+
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    // add default notification
+                    $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+                    $stmt = $conn->prepare($sql);
+
+                    if (!$stmt) {
+                        echo json_encode(["success"=>false, "error"=>"follow_error"]);
+                        exit;
+                    }
+
+                    $zero = 0; // Not read for default
+                    $today = date("Y-m-d");
+                    $idNot = $row['followaccountid'];
+                    $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
+                    $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
+
+                    $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+
+                    $stmt->execute();
+                    
+                    $stmt->close();
+                }
+            }
+            
+            $state->close();
+
             $conn->close();
 
             echo json_encode(['success'=>true]);

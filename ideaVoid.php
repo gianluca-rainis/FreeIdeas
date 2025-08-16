@@ -43,6 +43,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <li id="dislikedIdea"><img src="./images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg"><div id="dislikedNumber">0</div></li>
                 </ul>
                 
+                <input type="button" id="followIdeaButton" value="Follow Idea">
                 <input type="button" id="reportIdeaButton" value="Report Idea">
                 <img src="./images/modify.svg" alt="Modify idea" id="modifyOldIdea">
             </section>

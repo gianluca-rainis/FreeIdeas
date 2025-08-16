@@ -95,6 +95,105 @@
     
     $stmt->close();
 
+    if ($_SESSION['account']['public'] == 1) {
+        // get followers id
+        $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"get_follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // add default notification
+                $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    echo json_encode(null);
+                    exit;
+                }
+
+                $zero = 0; // Not read for default
+                $today = date("Y-m-d");
+                $idNot = $row['followaccountid'];
+                $titleNot = $_SESSION['account']['username'] . " has updated his account information.";
+                $description = $_SESSION['account']['username'] . " has updated his account information. Visit his account page to see the changes!";
+
+                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+
+                $stmt->execute();
+                
+                $stmt->close();
+            }
+        }
+        
+        $state->close();
+    } else {
+        // get followers id
+        $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"get_follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // add default notification
+                $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    echo json_encode(null);
+                    exit;
+                }
+
+                $zero = 0; // Not read for default
+                $today = date("Y-m-d");
+                $idNot = $row['followaccountid'];
+                $titleNot = $_SESSION['account']['username'] . " has made his account private.";
+                $description = $_SESSION['account']['username'] . " has updated his account information. Now his account is set to private. You can no longer visit his account page and you will no longer receive notifications regarding activity on this account.";
+
+                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+
+                $stmt->execute();
+                
+                $stmt->close();
+            }
+        }
+        
+        $state->close();
+
+        // delete followers
+        $sql = "DELETE FROM follow WHERE followedaccountid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"delete_follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("i", $id);
+
+        $state->execute();
+        
+        $state->close();
+    }
+
     /* Notifications loading */
     $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
     $stmt->bind_param("i", $id);
