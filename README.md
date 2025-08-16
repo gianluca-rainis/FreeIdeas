@@ -31,6 +31,16 @@ Users and contributors are strongly encouraged to review the full license terms 
 
 Previous releases distributed under the MIT License remain available under those original terms.
 
+---
+
+As of *2025-08-16*, the FreeIdeas project is distributed under an updated version of the FreeIdeas License.
+
+All versions from *v1.7 onward* are governed by the *FreeIdeas License*, a custom licensing framework designed to preserve the project's identity, non-commercial intent, and ethical attribution chain across derivative works.
+
+Users and contributors are strongly encouraged to review the full license terms available in [LICENSE.md](./LICENSE.md) before reusing, modifying, or redistributing any part of this project.
+
+Previous releases distributed under the old FreeIdeas License remain available under those original terms.
+
 ## 🌍 Languages
 FreeIdeas is written in HTML, CSS and JavaScript.
 
