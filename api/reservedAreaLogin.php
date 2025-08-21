@@ -65,7 +65,7 @@
     function getInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
-        $data = htmlspecialchars($data);
+        // $data = htmlspecialchars($data);
 
         return $data;
     }
