@@ -17,8 +17,19 @@
             $password5 = getInput($_POST["password5"]);
 
             $stmt = $conn->prepare("SELECT * FROM reservedareaaccounts WHERE username = ?;");
+
+            if (!$stmt) {
+                echo json_encode(["success"=>false, "error"=>"database_connection"]);
+                exit;
+            }
+
             $stmt->bind_param("s", $username);
-            $stmt->execute();
+            
+            if (!$stmt->execute()) {
+                echo json_encode(["success"=>false, "error"=>"execution_command"]);
+                exit;
+            }
+
             $result = $stmt->get_result();
 
             $foundAccount = false;
