@@ -33,7 +33,7 @@ loginReservedAreaForm.addEventListener("submit", async function (e) {
         const data = await response.json();
 
         if (data['success']) {
-            console.log("OK");
+            alert("Logging in...");
         }
         else {
             if (data['error'] == "account_not_found") {
