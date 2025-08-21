@@ -20,7 +20,6 @@ loginReservedAreaForm.addEventListener("submit", async function (e) {
         console.error(error);
         printError(421);
     }
-    await fetch("./api/TEMP.php");
 
     try {
         const formData = new FormData(this);
