@@ -317,6 +317,32 @@ CREATE TABLE follow (
 );
 ```
 
+### Reserved Area Accounts
+```SQL
++---------------------------------------------------------------------------+
+|                            reservedareaaccounts                           |
++---------------------------------------------------------------------------+
+| id | username | password1 | password2 | password3 | password4 | password5 |
++---------------------------------------------------------------------------+
+|    |          |           |           |           |           |           |
+|    |          |           |           |           |           |           |
+|    |          |           |           |           |           |           |
++---------------------------------------------------------------------------+
+```
+
+```SQL
+CREATE TABLE reservedareaaccounts (
+    id int NOT NULL AUTO_INCREMENT,
+    username varchar(255) NOT NULL,
+    password1 varchar(255) NOT NULL,
+    password2 varchar(255) NOT NULL,
+    password3 varchar(255) NOT NULL,
+    password4 varchar(255) NOT NULL,
+    password5 varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+```
+
 ## Database Types
 ```SQL
 mysql> describe accounts;
@@ -439,4 +465,17 @@ mysql> describe follow;
 | followedaccountid | int  | YES  | MUL | NULL    |                |
 | followedideaid    | int  | YES  | MUL | NULL    |                |
 +-------------------+------+------+-----+---------+----------------+
+
+mysql> describe reservedareaaccounts;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| id        | int          | NO   | PRI | NULL    | auto_increment |
+| username  | varchar(255) | NO   |     | NULL    |                |
+| password1 | varchar(255) | NO   |     | NULL    |                |
+| password2 | varchar(255) | NO   |     | NULL    |                |
+| password3 | varchar(255) | NO   |     | NULL    |                |
+| password4 | varchar(255) | NO   |     | NULL    |                |
+| password5 | varchar(255) | NO   |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
 ```

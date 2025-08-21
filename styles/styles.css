@@ -1642,6 +1642,48 @@ footer ul li a {
     margin-right: 30px;
 }
 
+/* RESERVED AREA */
+#reservedAreaMain {
+    background-color: #000000;
+    display: grid;
+    justify-content: center;
+    color: #d31c1c;
+    text-align: center;
+}
+
+#reservedAreaMain .logo {
+    justify-self: center;
+}
+
+#reservedAreaMain hr {
+    border: 1px solid #d31c1c;
+    margin: 10px;
+    justify-self: center;
+    width: 100%;
+}
+
+#reservedAreaMain ul {
+    list-style-type: none;
+    text-align: center;
+    margin: 30px;
+}
+
+#reservedAreaMain ul li {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    justify-content: space-around;
+}
+
+#reservedAreaMain ul li input {
+    padding: 5px;
+    color: #d31c1c;
+    background-color: #272727;
+    border: 0;
+    border-radius: 7px;
+    margin-top: 10px;
+}
+
 /* MEDIA QUERIES */
 /* WIDTH */
 @media screen and (min-width: 1201px) and (max-width: 1500px) {
@@ -1902,10 +1944,9 @@ footer ul li a {
 
     #footer ul {
         padding-right: 10px;
-    }
-
-    #footer ul li {
-        font-size: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
     }
 
     #githubLogo {
@@ -2066,10 +2107,9 @@ footer ul li a {
 
     #footer ul {
         padding-right: 10px;
-    }
-
-    #footer ul li {
-        font-size: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
     }
 
     #githubLogo {
@@ -2232,6 +2272,20 @@ footer ul li a {
     #newCommentText {
         width: 90%;
     }
+
+    /* Reserved area */
+    #reservedAreaMain .logo {
+        width: 80%;
+        justify-self: center;
+    }
+
+    #reservedAreaMain h2 {
+        font-size: 21px
+    }
+
+    #reservedAreaMain hr {
+        width: 90%;
+    }
 }
 
 @media screen and (max-width: 470px) {
@@ -2260,14 +2314,11 @@ footer ul li a {
     }
 
     #footer ul {
-        padding-right: 4px;
-        padding-left: 4px;
+        padding-right: 10px;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: center;
         margin-bottom: 10px;
-        gap: 10px;
-    }
-
-    #footer ul li {
-        font-size: 10px;
     }
 
     #githubLogo {
@@ -2488,6 +2539,20 @@ footer ul li a {
 
     #dangerAreaAccount input {
         font-size: medium;
+    }
+
+    /* Reserved area */
+    #reservedAreaMain .logo {
+        width: 80%;
+        justify-self: center;
+    }
+
+    #reservedAreaMain h2 {
+        font-size: 100%
+    }
+
+    #reservedAreaMain hr {
+        width: 90%;
     }
 }
 

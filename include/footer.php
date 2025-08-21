@@ -8,6 +8,7 @@
     <li><a href="./license_info.php">License</a></li>
     <li><a href="./contacts.php">Contact Us</a></li>
     <li><a href="./about.php">About Us</a></li>
+    <li><a href="./reservedArea.php">Reserved Area</a></li>
     <li><a href="https://github.com/rainis-gianluca/FreeIdeas.git"><img src="./images/github.svg" alt="GitHub Logo" id="githubLogo"></a></li>
 </ul>
 <hr>
