@@ -1644,11 +1644,64 @@ footer ul li a {
 
 /* RESERVED AREA */
 #reservedAreaMain {
-    background-color: #000000;
+    background-color: #272727;
     display: grid;
     justify-content: center;
     color: #d31c1c;
     text-align: center;
+}
+
+#reservedAreaHeader {
+    position: sticky;
+    top: 100px;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    align-items: center;
+    background-color: #000000;
+    color: #d31c1c;
+}
+
+#reservedAreaHeader ul {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    padding-right: 3rem;
+    list-style-type: none;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#reservedAreaHeader ul li button {
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+    color: #d31c1c;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+#reservedAreaHeader ul li #menuReservedArea {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+}
+
+#reservedAreaHeader ul li button:hover {
+    color: #272727;
+    background-color: #d31c1c;
+}
+
+#reservedAreaHeader .logo {
+    width: 250px;
 }
 
 #reservedAreaMain .logo {
@@ -1678,8 +1731,8 @@ footer ul li a {
 #reservedAreaMain ul li input {
     padding: 5px;
     color: #d31c1c;
-    background-color: #272727;
-    border: 0;
+    background-color: #000000;
+    border: 1px solid #d31c1c;
     border-radius: 7px;
     margin-top: 10px;
 }
@@ -1923,6 +1976,11 @@ footer ul li a {
     #dangerAreaAccount input {
         font-size: medium;
     }
+
+    /* reserved area page */
+    #reservedAreaHeader ul li button {
+        font-size: small;
+    }
 }
 
 @media screen and (min-width: 601px) and (max-width: 760px) {
@@ -2085,6 +2143,16 @@ footer ul li a {
 
     #dangerAreaAccount input {
         font-size: medium;
+    }
+
+    /* reserved area page */
+    #reservedAreaHeader ul {
+        gap: 5px;
+        padding-right: 2rem;
+    }
+
+    #reservedAreaHeader ul li button {
+        font-size: small;
     }
 }
 
@@ -2285,6 +2353,11 @@ footer ul li a {
 
     #reservedAreaMain hr {
         width: 90%;
+    }
+
+    #reservedAreaHeader ul {
+        gap: 5px;
+        padding-right: 2rem;
     }
 }
 
@@ -2547,12 +2620,21 @@ footer ul li a {
         justify-self: center;
     }
 
+    #reservedAreaHeader .logo {
+        width: 150px;
+    }
+
     #reservedAreaMain h2 {
         font-size: 100%
     }
 
     #reservedAreaMain hr {
         width: 90%;
+    }
+
+    #reservedAreaHeader ul {
+        gap: 5px;
+        padding-right: 2rem;
     }
 }
 

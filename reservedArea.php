@@ -24,12 +24,26 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             ?>
         </nav>
 
+        <header id="reservedAreaHeader" style="display: none;">
+            <img src="./images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" class="logo" />
+
+            <ul id="ulReservedAreaHeader">
+                <li><button id="accountsReservedAreaHeader">Accounts</button></li>
+                <li><button id="ideasReservedAreaHeader">Ideas</button></li>
+                <li><button id="notificationsReservedAreaHeader">Notifications</button></li>
+                <li><button id="reportsReservedAreaHeader">Reports</button></li>
+                <li><button id="logoutReservedAreaHeader">Logout</button></li>
+            </ul>
+        </header>
+
         <main id="reservedAreaMain">
             <img src="./images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" class="logo" />
 
-            <hr>
-            <h2>All unauthorized access will be punished!</h2>
-            <hr>
+            <div id="bannerDiv">
+                <hr>
+                <h2>All unauthorized access will be punished!</h2>
+                <hr>
+            </div>
 
             <form action="./api/reservedAreaLogin.php" method="POST" id="loginReservedAreaForm">
                 <ul>

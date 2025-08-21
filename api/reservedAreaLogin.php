@@ -38,7 +38,7 @@
                 if (password_verify($password1, $row['password1']) && password_verify($password2, $row['password2']) && password_verify($password3, $row['password3']) && password_verify($password4, $row['password4']) && password_verify($password5, $row['password5'])) {
                     $_SESSION['administrator']['id'] = $row['id'];
                     $_SESSION['administrator']['username'] = $row['username'];
-
+                    
                     $foundAccount = true;
                     break;
                 }
@@ -65,7 +65,6 @@
     function getInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
-        // $data = htmlspecialchars($data);
 
         return $data;
     }

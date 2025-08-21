@@ -20,6 +20,16 @@
                 exit;
             }
         }
+        else if ($id == 'administrator') {
+            if (isset($_SESSION['administrator'])) {
+                echo json_encode($_SESSION['administrator']);
+                exit;
+            }
+            else {
+                echo json_encode(null);
+                exit;
+            }
+        }
         else {
             echo json_encode(null);
             exit;
