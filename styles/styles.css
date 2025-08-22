@@ -1655,6 +1655,8 @@ footer ul li a {
     width: 80%;
     justify-self: center;
     word-break: break-all;
+    background-color: #d31c1c !important;
+    color: #ffffff;
 }
 
 #reservedAreaHeader {
