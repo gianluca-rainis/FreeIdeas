@@ -3,6 +3,13 @@
 
     include("./db_connection.php");
 
+    // Logout if logged in
+    session_start();
+    session_unset();
+    session_destroy();
+    
+    session_start();
+
     $firstName = $lastName = $email = $password = $username = "";
     $error = false;
     $errorLog = "";
@@ -57,8 +64,6 @@
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-    
-    session_start();
 
     while ($row = $result->fetch_assoc()) {
         if (password_verify($password, $row['password'])) {

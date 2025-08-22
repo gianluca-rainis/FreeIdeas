@@ -28,12 +28,23 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <img src="./images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" class="logo" />
 
             <ul id="ulReservedAreaHeader">
-                <li><button id="accountsReservedAreaHeader">Accounts</button></li>
-                <li><button id="ideasReservedAreaHeader">Ideas</button></li>
-                <li><button id="notificationsReservedAreaHeader">Notifications</button></li>
-                <li><button id="reportsReservedAreaHeader">Reports</button></li>
-                <li><button id="logoutReservedAreaHeader">Logout</button></li>
+                <li class="liReservedAreaHeaderExt"><button class="accountsReservedAreaHeader">Accounts</button></li>
+                <li class="liReservedAreaHeaderExt"><button class="ideasReservedAreaHeader">Ideas</button></li>
+                <li class="liReservedAreaHeaderExt"><button class="notificationsReservedAreaHeader">Notifications</button></li>
+                <li class="liReservedAreaHeaderExt"><button class="reportsReservedAreaHeader">Reports</button></li>
+                <li class="liReservedAreaHeaderExt"><button class="logoutReservedAreaHeader">Logout</button></li>
+                <li class="liReservedAreaHeaderRed"><img src="./images/menuReservedArea.svg" id="menuReservedArea"></li>
             </ul>
+
+            <div id="mobileNavBarReservedAreaHeader">
+                <ul>
+                    <li><button class="accountsReservedAreaHeader">Accounts</button></li>
+                    <li><button class="ideasReservedAreaHeader">Ideas</button></li>
+                    <li><button class="notificationsReservedAreaHeader">Notifications</button></li>
+                    <li><button class="reportsReservedAreaHeader">Reports</button></li>
+                    <li><button class="logoutReservedAreaHeader">Logout</button></li>
+                </ul>
+            </div>
         </header>
 
         <main id="reservedAreaMain">

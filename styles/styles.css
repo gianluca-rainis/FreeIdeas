@@ -1651,6 +1651,12 @@ footer ul li a {
     text-align: center;
 }
 
+#reservedAreaMain .reservedAreaLiBoxInfo {
+    width: 80%;
+    justify-self: center;
+    word-break: break-all;
+}
+
 #reservedAreaHeader {
     position: sticky;
     top: 100px;
@@ -1676,6 +1682,50 @@ footer ul li a {
     text-align: center;
     align-items: center;
     gap: 20px;
+}
+
+.liReservedAreaHeaderExt {
+    display: block;
+}
+
+.liReservedAreaHeaderRed {
+    display: none;
+}
+
+#mobileNavBarReservedAreaHeader {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    background-color: #000000;
+    z-index: 8;
+    top: 200px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: calc(100%);
+}
+
+#mobileNavBarReservedAreaHeader ul {
+    padding: 0 !important;
+    margin: 0;
+    gap: 0 !important;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+
+#mobileNavBarReservedAreaHeader ul li {
+    width: 100%;
+    border-top: 1px solid #d31c1c;
+    border-bottom: 1px solid #d31c1c;
+}
+
+#mobileNavBarReservedAreaHeader ul li button {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #reservedAreaHeader ul li button {
@@ -2154,6 +2204,14 @@ footer ul li a {
     #reservedAreaHeader ul li button {
         font-size: small;
     }
+
+    .liReservedAreaHeaderExt {
+        display: none;
+    }
+
+    .liReservedAreaHeaderRed {
+        display: block;
+    }
 }
 
 @media screen and (min-width: 471px) and (max-width: 600px) {
@@ -2358,6 +2416,14 @@ footer ul li a {
     #reservedAreaHeader ul {
         gap: 5px;
         padding-right: 2rem;
+    }
+
+    .liReservedAreaHeaderExt {
+        display: none;
+    }
+
+    .liReservedAreaHeaderRed {
+        display: block;
     }
 }
 
@@ -2620,6 +2686,14 @@ footer ul li a {
         justify-self: center;
     }
 
+    #reservedAreaHeader {
+        top: 60px;
+    }
+
+    #mobileNavBarReservedAreaHeader {
+        top: 120px;
+    }
+
     #reservedAreaHeader .logo {
         width: 150px;
     }
@@ -2635,6 +2709,14 @@ footer ul li a {
     #reservedAreaHeader ul {
         gap: 5px;
         padding-right: 2rem;
+    }
+
+    .liReservedAreaHeaderExt {
+        display: none;
+    }
+
+    .liReservedAreaHeaderRed {
+        display: block;
     }
 }
 

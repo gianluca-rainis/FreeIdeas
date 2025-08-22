@@ -3,6 +3,11 @@
 
     include("./db_connection.php");
 
+    // Logout if logged in
+    session_start();
+    session_unset();
+    session_destroy();
+
     session_start();
 
     $email = $password = $id = "";
