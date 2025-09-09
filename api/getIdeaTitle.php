@@ -20,11 +20,10 @@
             }
 
             $stmt->close();
-            $conn->close();
 
             return $title;
         } catch (\Throwable $th) {
-            return "";
+            return strval($th);
         }
     }
 ?>
