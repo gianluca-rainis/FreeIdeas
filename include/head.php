@@ -26,7 +26,7 @@
 <meta property="og:image:alt" content="FreeIdeas preview image" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:domain" content="freeideas.duckdns.org">
+<meta property="twitter:domain" content="freeideas.duckdns.org" />
 <meta name="twitter:url" content="https://freeideas.duckdns.org/" />
 <meta name="twitter:title" content="FreeIdeas" />
 <meta name="twitter:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
