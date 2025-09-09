@@ -38,6 +38,11 @@
   </url>
 
   <url>
+    <loc>https://freeideas.duckdns.org/sitemap.xml</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
     <loc>https://freeideas.duckdns.org/termsOfUse.php</loc>
     <priority>0.50</priority>
   </url>
