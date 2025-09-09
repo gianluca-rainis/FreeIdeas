@@ -23,7 +23,7 @@
 
             return $title;
         } catch (\Throwable $th) {
-            return strval($th);
+            return "";
         }
     }
 ?>
