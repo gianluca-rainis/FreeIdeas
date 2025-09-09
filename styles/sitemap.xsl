@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<xsl:stylesheet version="1.0" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:sm="http://www.sitemaps.org/schemas/sitemap/0.9">
     <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes" />
 
     <xsl:template match="/">
@@ -44,7 +44,7 @@
                         <th>URL</th>
                         <th>Priority</th>
                     </tr>
-                    <xsl:for-each select="//url">
+                    <xsl:for-each select="//sm:url">
                         <tr>
                             <td>
                                 <a href="{loc}">
