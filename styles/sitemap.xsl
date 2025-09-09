@@ -14,6 +14,8 @@
                         background-color: #f9f9f9;
                         margin: 2em;
                         color: #333;
+                        text-align: center;
+                        background-color: #f6ffd7;
                     }
 
                     table {
@@ -27,7 +29,7 @@
                     }
 
                     th {
-                        background-color: #f0f0f0;
+                        background-color: #f8f095;
                         text-align: left;
                     }
 
@@ -37,7 +39,10 @@
                 </style>
             </head>
             <body>
-                <h1>FreeIdeas Sitemap</h1>
+                <h1>
+                    <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a><a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>
+                     Sitemap
+                </h1>
 
                 <table>
                     <tr>
