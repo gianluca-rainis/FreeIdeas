@@ -15,6 +15,17 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <!-- Dinamic head -->
         <?php
+            include("./api/getIdeaTitle.php");
+
+            if (isset($_GET['idea']) && !empty($_GET['idea'])) {
+                $id = $_GET['idea'];
+                $title = getIdeaTitleFromDatabase($id);
+
+                echo "<title>FreeIdeas - $title</title>";
+            }
+        ?>
+
+        <?php
             if (isset($_GET['idea']) && !empty($_GET['idea'])) {
                 $id = $_GET['idea'];
                 $canonical = "https://freeideas.duckdns.org/ideaVoid.php?idea=$id";

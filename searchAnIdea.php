@@ -14,6 +14,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         ?>
 
         <!-- Dinamic head -->
+        <title>FreeIdeas - Search an Idea</title>
         <link rel="canonical" href="https://freeideas.duckdns.org/searchAnIdea.php" />
     </head>
 

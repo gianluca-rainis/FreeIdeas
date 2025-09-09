@@ -14,6 +14,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         ?>
 
         <!-- Dinamic head -->
+        <title>FreeIdeas - Reserved Area</title>
         <link rel="canonical" href="https://freeideas.duckdns.org/about.php" />
     </head>
 

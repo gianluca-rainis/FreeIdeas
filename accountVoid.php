@@ -14,6 +14,8 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         ?>
 
         <!-- Dinamic head -->
+        <title>FreeIdeas - Account</title>
+        
         <?php
             if (isset($_GET['account']) && !empty($_GET['account'])) {
                 $id = $_GET['account'];

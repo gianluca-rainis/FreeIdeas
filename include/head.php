@@ -4,7 +4,6 @@
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FreeIdeas</title>
 
 <link rel="shortcut icon" type="image/svg+xml" href="https://freeideas.duckdns.org/favicon.svg" />
 <link href="./styles/styles.css" rel="stylesheet" />

@@ -862,11 +862,10 @@ async function confirm(text) {
                 position: fixed;
                 top: 0;
                 align-self: anchor-center;
-                justify-self: center;
+                justify-self: anchor-center;
                 z-index: 10000;
                 background-color: white;
                 border-radius: 30px;
-                justify-self: center;
                 padding: 20px;
                 display: flex;
                 flex-direction: column;
@@ -986,11 +985,10 @@ async function prompt(message, _default="") {
                 position: fixed;
                 top: 0;
                 align-self: anchor-center;
-                justify-self: center;
+                justify-self: anchor-center;
                 z-index: 10000;
                 background-color: white;
                 border-radius: 30px;
-                justify-self: center;
                 padding: 20px;
                 display: flex;
                 flex-direction: column;
