@@ -47,12 +47,12 @@
                     <xsl:for-each select="//sm:url">
                         <tr>
                             <td>
-                                <a href="{loc}">
-                                    <xsl:value-of select="loc"/>
+                                <a href="{sm:loc}">
+                                    <xsl:value-of select="sm:loc" />
                                 </a>
                             </td>
                             <td>
-                                <xsl:value-of select="priority"/>
+                                <xsl:value-of select="sm:priority" />
                             </td>
                         </tr>
                     </xsl:for-each>
