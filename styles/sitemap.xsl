@@ -11,7 +11,6 @@
                 <style type="text/css">
                     body {
                         font-family: Arial, sans-serif;
-                        background-color: #f9f9f9;
                         margin: 2em;
                         color: #333;
                         text-align: center;
@@ -25,7 +24,7 @@
 
                     th, td {
                         padding: 8px 12px;
-                        border-bottom: 1px solid #ccc;
+                        border-bottom: 1px solid #106d19;
                     }
 
                     th {
@@ -34,7 +33,7 @@
                     }
 
                     tr:hover {
-                        background-color: #eef;
+                        background-color: rgb(214, 233, 144);
                     }
                 </style>
             </head>
