@@ -6,7 +6,49 @@
     <xsl:template match="/">
         <html>
             <head>
+                <!-- Special version of the head.php file -->
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+                <link rel="shortcut icon" type="image/svg+xml" href="https://freeideas.duckdns.org/favicon.svg" />
+
+                <meta name="description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
+                <meta name="author" content="Gianluca Rainis" />
+                <meta name="keywords" content="FreeIdeas, Free, Ideas, Sitemap, sitemap" />
+                <meta name="application-name" content="FreeIdeas" lang="en" />
+
+                <meta property="og:url" content="https://freeideas.duckdns.org/" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="FreeIdeas" />
+                <meta property="og:title" content="FreeIdeas" />
+                <meta property="og:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
+                <meta property="og:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
+                <meta property="og:image:secure_url" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
+                <meta property="og:image:type" content="image/png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta property="og:image:alt" content="FreeIdeas preview image" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta property="twitter:domain" content="freeideas.duckdns.org">
+                <meta name="twitter:url" content="https://freeideas.duckdns.org/" />
+                <meta name="twitter:title" content="FreeIdeas" />
+                <meta name="twitter:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
+                <meta name="twitter:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
+
+                <script type="application/ld+json">
+                    {
+                        "@content": "https://schema.org",
+                        "@type": "WebSite",
+                        "name": "FreeIdeas",
+                        "url": "https://freeideas.duckdns.org"
+                    }
+                </script>
+
+                <!-- End of special version of the head.php file -->
+
                 <title>FreeIdeas - Sitemap</title>
+                <link rel="canonical" href="https://freeideas.duckdns.org/sitemap.xml" />
 
                 <style type="text/css">
                     body {
