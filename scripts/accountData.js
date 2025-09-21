@@ -256,7 +256,7 @@ async function ldAccountData2() {
     const SQLdata = await getSessionDataFromDatabase2();
 
     if (SQLdata) {
-        ldOtherAccountData(SQLdata['id'], true);
+        ldOtherAccountData(SQLdata['id']);
     }
     else {
         printError(421);
@@ -277,12 +277,12 @@ async function getSessionDataFromDatabase2() {
     }
 }
 
-async function ldOtherAccountData(accountid=id, showEmail=false) {
+async function ldOtherAccountData(accountid=id) {
     const SQLdata = await getOtherAccountDataFromDatabase(accountid);
 
-    if (SQLdata['public']==1 || showEmail) {
+    if (SQLdata['public']==1) {
         if (SQLdata) {
-            loadData2(SQLdata, showEmail);
+            loadData2(SQLdata);
         }
         else {
             printError(421);
@@ -341,20 +341,14 @@ function printError(errorCode) {
     }
 }
 
-function loadData2(SQLdata, showEmail) {
+function loadData2(SQLdata) {
     SQLdataGlobal = SQLdata;
 
     try {
         document.getElementById("userNameAccount").innerHTML = `${SQLdata['username']}`;
         document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}`;
         document.getElementById("userNameSurnameAccount").innerHTML = `${SQLdata['name']} ${SQLdata['surname']}`;
-        
-        if (showEmail) {
-            document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
-        } else {
-            document.getElementById("emailAccount").style.display = "none";
-        }
-        
+        document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
         document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
 
         document.getElementById("mainDivDinamicContent").innerHTML = "";

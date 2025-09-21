@@ -287,7 +287,7 @@ async function loadData2(SQLdata) {
                             <div class="userInfo">
                                 <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
                                     <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
-                                    <div class="writerUserName">${row.username}:</div>
+                                    <div class="writerUserName">${row.username==null?"Deleted":row.username}:</div>
                                 </a>
 
                                 <div class="dataWriter">${row.data}</div>
@@ -308,7 +308,7 @@ async function loadData2(SQLdata) {
                                 <div class="userInfo">
                                     <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
                                         <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
-                                        <div class="writerUserName">${row.username}:</div>
+                                        <div class="writerUserName">${row.username==null?"Deleted":row.username}:</div>
                                     </a>
 
                                     <div class="dataWriter">${row.data}</div>
@@ -345,7 +345,7 @@ async function loadData2(SQLdata) {
                 const commentToDelete = deleteCommentButton[commentDeleteIndex].closest("li");
                 const commentToDeleteId = commentToDelete.querySelector(".underComments").dataset.id;
 
-                if (await confirm("Are you sure you want to delete the comment?\nThis will also delete all subcomments.")) {
+                if (await confirm("Are you sure you want to delete the comment?")) {
                     const data = new FormData();
                             
                     data.append('id', commentToDeleteId);

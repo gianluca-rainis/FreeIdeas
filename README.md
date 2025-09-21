@@ -15,8 +15,7 @@ If you have an idea that you want to share with the world, or if you are looking
 - Free to use
 
 ## 🧑‍💻 Author
-The author of the project is Gianluca Rainis ( __grdev on summer.hackclub.com )
-This project was written for the Summer Of Making 2025
+The author of the project is Gianluca Rainis ( gianluca-rainis on GitHub ).
 
 ## 📜 License
 FreeIdeas is under the FreeIdeas License.

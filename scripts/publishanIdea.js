@@ -235,17 +235,90 @@ async function ldAccountData2() {
         loadData2(SQLdata);
     }
     else {
-        main.innerHTML = `
-            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(119, 177, 66);">Before to publish an idea you need to login</h1>
-            <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(64, 133, 43);">Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a></p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(64, 133, 43);">If you have any questions you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-            <div style="padding-top: calc(6%);"></div>
-        `;
+        try {
+            const main = document.querySelector("main");
+            main.style.position = "relative";
 
-        if (document.querySelector("header")) {
-            document.querySelector("header").innerHTML = "";
-            document.querySelector("header").style.visibility = "hidden";
+            const blur = document.createElement("div");
+
+            blur.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                backdrop-filter: blur(5px);
+                background-color: rgba(255, 255, 255, 0.2); /* leggero overlay */
+                z-index: 90;
+                pointer-events: all;
+            `;
+
+            const alert = document.createElement("div");
+            const titleTextElement = document.createElement("div");
+            const textElement = document.createElement("div");
+
+            titleTextElement.innerHTML = "Before to publish an idea you need to login!";
+            textElement.innerHTML = `Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a><br><br>If you have any questions you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a>`;
+
+            alert.style.cssText = `
+                width: 500px;
+                height: 300px;
+                max-width: 80%;
+                max-height: 70%;
+                position: absolute;
+                top: 0;
+                align-self: anchor-center;
+                justify-self: center;
+                z-index: 91;
+                background-color: white;
+                border-radius: 30px;
+                justify-self: center;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                background-color: ${themeIsLight?"#eaffbe":"#000000"};
+            `;
+
+            titleTextElement.style.cssText = `
+                font-size: larger;
+                padding: 10px;
+                align-self: center;
+                top: 20%;
+                position: absolute;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+            `;
+
+            textElement.style.cssText = `
+                padding: 20px;
+                align-self: center;
+                top: 40%;
+                position: absolute;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+            `;
+
+            alert.appendChild(titleTextElement);
+            alert.appendChild(textElement);
+
+            main.appendChild(blur);
+            main.appendChild(alert);
+
+            /* Theme changer */
+            try {
+                new MutationObserver(() => {
+                    alert.style.backgroundColor = `${themeIsLight?"#eaffbe":"#000000"}`;
+                    titleTextElement.style.color = `${themeIsLight?"#2c3d27":"#cba95c"}`;
+                    textElement.style.color = `${themeIsLight?"#2c3d27":"#cba95c"}`;
+                }).observe(document.documentElement, {
+                    attributes: true,
+                    attributeFilter: ['data-theme']
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 }
