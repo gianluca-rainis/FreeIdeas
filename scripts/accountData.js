@@ -72,6 +72,7 @@ async function changeDataAccount() {
 
                     return resp;
                 } catch (error) {
+                    console.error(error);
                     return null;
                 }
             }
@@ -86,7 +87,8 @@ async function changeDataAccount() {
                     window.location.href = "./accountVoid.php";
                 }
                 else {
-                    printError(result['error']);
+                    printError(421);
+                    console.error(result['error']);
                 }
             }
         });
