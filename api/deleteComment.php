@@ -6,7 +6,6 @@
     session_start();
 
     $id = "";
-    $fatalError = "";
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
@@ -39,19 +38,13 @@
 
         $state->close();
     } catch (\Throwable $th) {
-        if ($fatalError == "") {
-            $fatalError = $th;
-        }
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
+        exit;
     }
 
     $conn->close();
 
-    if ($fatalError == "") {
-        echo json_encode(["success"=>true]);
-    }
-    else {
-        echo json_encode(["success"=>false, "error"=>$fatalError]);
-    }
+    echo json_encode(["success"=>true]);
 
     function getInput($data) {
         $data = trim($data);
