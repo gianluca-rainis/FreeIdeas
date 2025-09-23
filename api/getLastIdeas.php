@@ -3,7 +3,7 @@
 
     include("./db_connection.php");
 
-    $stmt = $conn->prepare("SELECT accounts.username, recentIdeas.* FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id;");
+    $stmt = $conn->prepare("SELECT accounts.username, ideas.id, ideas.title, ideas.ideaimage FROM ideas JOIN accounts ON ideas.authorid=accounts.id ORDER BY ideas.id DESC LIMIT 20;");
     $stmt->execute();
     $result = $stmt->get_result();
 
