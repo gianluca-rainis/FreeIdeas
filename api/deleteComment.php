@@ -26,7 +26,7 @@
             exit;
         }
 
-        $authorid = 0;
+        $authorid = 14;
         $description = "This comment was deleted by the author.";
 
         $state->bind_param("ssi", $authorid, $description, $id);
