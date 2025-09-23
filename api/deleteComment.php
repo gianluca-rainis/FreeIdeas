@@ -26,7 +26,7 @@
             exit;
         }
 
-        $authorid = 14;
+        $authorid = 14; // Need an account named "Deleted" without profile image with id 14 to work
         $description = "This comment was deleted by the author.";
 
         $state->bind_param("ssi", $authorid, $description, $id);
