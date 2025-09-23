@@ -280,7 +280,7 @@ async function getSessionDataFromDatabase2() {
 async function ldOtherAccountData(accountid=id) {
     const SQLdata = await getOtherAccountDataFromDatabase(accountid);
 
-    if (SQLdata['public']==1) {
+    if (SQLdata['public']==1 || !id) {
         if (SQLdata) {
             loadData2(SQLdata);
         }
