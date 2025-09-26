@@ -40,6 +40,88 @@ let deleteLog = document.querySelectorAll(".deleteLog");
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.php?id=123">)
 const id = paramsURL.get("idea"); // The id of the page to load
 
+if (id) { // If is an old idea
+    modifyOldPageIfAuthorLoggedIn();
+}
+else { // If is a new idea
+    newIdeaForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        try {
+            const formData = new FormData();
+            formData.append("title", title.value);
+            formData.append("author", authorid);
+            formData.append("data", currentdate);
+            formData.append("description", description.value);
+            formData.append("mainImage", getMainImage.files[0]);
+
+            formData.append("type", typeProject.value);
+            formData.append("creativity", creativityType.value);
+            formData.append("status", statusProject.value);
+
+            const tempTitles = [];
+            const tempDescriptions = [];
+
+            for (let i = 0; i < fileImage.length; i++) {
+                if (fileImage[i].files[0]) {
+                    formData.append("additionalInfoImages[]", fileImage[i].files[0]);
+                }
+                else {
+                    throw new Error("ERROR_IMAGE_FILE");
+                }
+
+                tempTitles.push(titleSupplemImfo[i].value);
+                tempDescriptions.push(descriptionSupplemImfo[i].value);
+            }
+
+            const additionalInfoJson = {
+                "titles": tempTitles,
+                "descriptions": tempDescriptions
+            };
+            
+            formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
+
+            formData.append("link", buttonlink.value);
+
+            const temp2Dates = [];
+            const temp2Titles = [];
+            const temp2Descriptions = [];
+
+            for (let i = 0; i < logTitle.length; i++) {
+                temp2Dates.push(logData[i].innerHTML);
+                temp2Titles.push(logTitle[i].value);
+                temp2Descriptions.push(logInfo[i].value);
+            }
+
+            const logJson = {
+                "dates": temp2Dates,
+                "titles": temp2Titles,
+                "descriptions": temp2Descriptions
+            };
+
+            formData.append("logs", JSON.stringify(logJson));
+
+            const response = await fetch(newIdeaForm.action, {
+                method: "POST",
+                credentials: "include",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data) {
+                window.location.href = `./index.php`;
+            }
+            else {
+                throw new Error("ERROR_IN_PHP");
+            }
+        } catch (error) {
+            console.error(error);
+            printError(421);
+        }
+    });
+}
+
 function updateQuerySelectorAll() {
     fileImage = document.querySelectorAll(".imageInfo");
     imagePreview = document.querySelectorAll(".preview");
@@ -68,7 +150,7 @@ function updateQuerySelectorAll() {
     }
 }
 
-getMainImage.addEventListener("change", () => {
+getMainImage.addEventListener("change", () => { // Main image gestor
     const file = getMainImage.files[0];
 
     if (file) {
@@ -82,7 +164,7 @@ getMainImage.addEventListener("change", () => {
     }
 });
 
-addAdditionalInfo.addEventListener("click", () => {
+addAdditionalInfo.addEventListener("click", () => { // Add additional info
     const newLi = document.createElement("li");
     newLi.classList.add("imageInfoLi");
     newLi.innerHTML += `
@@ -105,14 +187,14 @@ addAdditionalInfo.addEventListener("click", () => {
     updateQuerySelectorAll();
 });
 
-imagesInfo.addEventListener("click", (event) => {
+imagesInfo.addEventListener("click", (event) => { // Delete additional info
     if (event.target.classList.contains("deleteAdditionalInfo")) {
         event.target.closest("li").remove();
         updateQuerySelectorAll();
     }
 });
 
-addLog.addEventListener("click", () => {
+addLog.addEventListener("click", () => { // Add log
     const newLi = document.createElement("li");
     newLi.classList.add("log");
 
@@ -131,96 +213,16 @@ addLog.addEventListener("click", () => {
     updateQuerySelectorAll();
 });
 
-logsList.addEventListener("click", (event) => {
+logsList.addEventListener("click", (event) => { // Delete log
     if (event.target.classList.contains("deleteLog")) {
         event.target.closest("li").remove();
         updateQuerySelectorAll();
     }
 });
 
-cancelNewIdea.addEventListener("click", () => {
+cancelNewIdea.addEventListener("click", () => { // Delete changes
     window.location.href = "./publishAnIdea.php";
 });
-
-if (!id) {
-    newIdeaForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        try {
-            const formData = new FormData();
-            formData.append("title", title.value);
-            formData.append("author", authorid);
-            formData.append("data", currentdate);
-            formData.append("description", description.value);
-            formData.append("mainImage", getMainImage.files[0]);
-
-            formData.append("type", typeProject.value);
-            formData.append("creativity", creativityType.value);
-            formData.append("status", statusProject.value);
-
-            const tempTitles = [];
-            const tempDescriptions = [];
-            for (let i = 0; i < fileImage.length; i++) {
-                if (fileImage[i].files[0]) {
-                    formData.append("additionalInfoImages[]", fileImage[i].files[0]);
-                }
-                else {
-                    throw new Error("ERROR_IMAGE_FILE");
-                }
-
-                tempTitles.push(titleSupplemImfo[i].value);
-                tempDescriptions.push(descriptionSupplemImfo[i].value);
-            }
-
-            const additionalInfoJson = {
-                "titles": tempTitles,
-                "descriptions": tempDescriptions
-            };
-            
-            formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
-
-            formData.append("link", buttonlink.value);
-
-            const temp2Dates = [];
-            const temp2Titles = [];
-            const temp2Descriptions = [];
-            for (let i = 0; i < logTitle.length; i++) {
-                temp2Dates.push(logData[i].innerHTML);
-                temp2Titles.push(logTitle[i].value);
-                temp2Descriptions.push(logInfo[i].value);
-            }
-
-            const logJson = {
-                "dates": temp2Dates,
-                "titles": temp2Titles,
-                "descriptions": temp2Descriptions
-            };
-
-            formData.append("logs", JSON.stringify(logJson));
-
-            /* for (const [key, value] of formData) {
-                console.log(`${key}: ${value}\n`);
-            } */
-
-            const response = await fetch(newIdeaForm.action, {
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (data) {
-                window.location.href = `./index.php`;
-            }
-            else {
-                throw new Error("ERROR_IN_PHP");
-            }
-        } catch (error) {
-            console.error(error);
-            printError(421);
-        }
-    });
-}
 
 /* LOGIN GESTOR */
 error = false; // Error variable to print only the most specific error
@@ -229,10 +231,16 @@ tempBoolControl = false;
 ldAccountData2();
 
 async function ldAccountData2() {
-    const SQLdata = await getSessionDataFromDatabase2();
+    const SQLdata = await getSessionDataAccountFromDatabase();
 
     if (SQLdata) {
-        loadData2(SQLdata);
+        try {
+            author.innerHTML = SQLdata['username'];
+            authorid = SQLdata['id'];
+        } catch (error) {
+            console.error(error);
+            printError(404);
+        }
     }
     else {
         try {
@@ -323,38 +331,11 @@ async function ldAccountData2() {
     }
 }
 
-async function getSessionDataFromDatabase2() {
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=account`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
-function loadData2(SQLdata) {
-    try {
-        author.innerHTML = SQLdata['username'];
-        authorid = SQLdata['id'];
-    } catch (error) {
-        printError(404);
-    }
-}
-
 // Modify an existing idea features
-if (id) {
-    modifyOldPageIfAuthorLoggedIn();
-}
-
 async function modifyOldPageIfAuthorLoggedIn() {
     try {
-        const SQLdata = await getDataFromDatabase2(id);
-        const sessionData = await getSessionDataFromDatabase2();
+        const SQLdata = await getIdeaDataFromDatabase();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
             let parseTitle = new DOMParser().parseFromString(SQLdata['idea'][0].title, 'text/html');
@@ -447,8 +428,8 @@ async function modifyOldPageIfAuthorLoggedIn() {
                             window.location.href = "./index.php";
                         }
                         else {
-                            printError(421);
                             console.error(result['error']);
+                            printError(421);
                         }
                     }
                 }
@@ -470,7 +451,8 @@ async function modifyOldPageIfAuthorLoggedIn() {
 
                     if (getMainImage.files[0]) {
                         formData.append("mainImageFile", getMainImage.files[0]);
-                    } else {
+                    }
+                    else {
                         formData.append("mainImageData", SQLdata['idea'][0].ideaimage);
                     }
 
@@ -481,6 +463,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
                     const tempTitles = [];
                     const tempDescriptions = [];
                     const tempTypeOfFile = [];
+
                     for (let i = 0; i < fileImage.length; i++) {
                         if (fileImage[i].files[0]) {
                             formData.append("additionalInfoImagesFile[]", fileImage[i].files[0]);
@@ -508,6 +491,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
                     const temp2Dates = [];
                     const temp2Titles = [];
                     const temp2Descriptions = [];
+
                     for (let i = 0; i < logTitle.length; i++) {
                         temp2Dates.push(logData[i].innerHTML);
                         temp2Titles.push(logTitle[i].value);
@@ -522,10 +506,6 @@ async function modifyOldPageIfAuthorLoggedIn() {
 
                     formData.append("logs", JSON.stringify(logJson));
 
-                    /* for (const [key, value] of formData) {
-                        console.log(`${key}: ${value}\n`);
-                    } */
-
                     const response = await fetch(`./api/updateOldIdea.php`, {
                         credentials: "include",
                         method: "POST",
@@ -537,7 +517,8 @@ async function modifyOldPageIfAuthorLoggedIn() {
                     if (data) {
                         if (data['success']) {
                             window.location.href = `./ideaVoid.php?idea=${id}`;
-                        } else {
+                        }
+                        else {
                             throw new Error(data['error']);
                         }
                     }
@@ -555,15 +536,14 @@ async function modifyOldPageIfAuthorLoggedIn() {
     }
 }
 
-async function getDataFromDatabase2(id) {
+async function getIdeaDataFromDatabase() {
     try {
         const res = await fetch(`./api/data.php?id=${id}`);
         const data = await res.json();
 
         return data;
     } catch (error) {
-        console.log(error);
-
+        console.error(error);
         printError(421);
 
         return null;

@@ -115,6 +115,7 @@ async function getRandomIdeaId() {
 
         return data;
     } catch (error) {
+        console.error(error);
         return null;
     }
 }
@@ -142,7 +143,8 @@ function triggerLoginAreaForAllPlatforms() {
 
         document.getElementById("pcLoginSignUpBlock").style.display = "block";
         document.getElementById("mobileLoginSignUpBlock").style.display = "block";
-    } else {
+    }
+    else {
         if (loginArea.style.display && mobileMenuHidden.style.display) {
             if (document.getElementById("notificaions").style.display == "none" && document.getElementById("notificaionsMobile").style.display == "none") {
                 loginArea.style.display = "none";
@@ -176,7 +178,8 @@ document.querySelectorAll(".toggle-password-visibility").forEach(element => elem
             <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
             <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
         </svg>`);
-    } else {
+    }
+    else {
         document.getElementById("passwordAreaLogin").type = "password";
         document.getElementById("passwordAreaSignIn").type = "password";
 
@@ -201,7 +204,8 @@ document.querySelectorAll(".signUp").forEach(element => element.addEventListener
         isLoginArea = false;
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
         document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
-    } else {
+    }
+    else {
         document.getElementById("signUpHidden").style.display = "none";
         document.getElementById("loginHidden").style.display = "block";
         document.getElementById("signUpHiddenMobile").style.display = "none";
@@ -216,7 +220,7 @@ document.querySelectorAll(".signUp").forEach(element => element.addEventListener
     }
 }));
 
-/* SEND FORM AREA */
+/* SEND FORM LOGIN/SIGN UP AREA */
 document.getElementById("loginAccountForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -224,6 +228,7 @@ document.getElementById("loginAccountForm").addEventListener("submit", async fun
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("loginAccountForm").action, {
             method: "POST",
+            credentials: "include",
             body: formData
         });
 
@@ -235,11 +240,13 @@ document.getElementById("loginAccountForm").addEventListener("submit", async fun
         else {
             if (!isLoginArea) {
                 printError(404);
-            } else {
+            }
+            else {
                 alert("Email or password are wrong");
             }
         }
     } catch (error) {
+        console.error(error);
         printError(421);
     }
 });
@@ -251,6 +258,7 @@ document.getElementById("createAccountForm").addEventListener("submit", async fu
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("createAccountForm").action, {
             method: "POST",
+            credentials: "include",
             body: formData
         });
 
@@ -262,11 +270,13 @@ document.getElementById("createAccountForm").addEventListener("submit", async fu
         else {
             if (!isLoginArea) {
                 printError(404);
-            } else {
+            }
+            else {
                 alert("Email or password are wrong");
             }
         }
     } catch (error) {
+        console.error(error);
         printError(421);
     }
 });
@@ -296,10 +306,11 @@ document.getElementById("forgotPassword").addEventListener("click", async () => 
                 printError(421);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             printError(421);
         }
-    } else {
+    }
+    else {
         document.getElementById("emailAreaLogin").focus();
 
         alert("Insert a valid email");
@@ -313,14 +324,14 @@ let tempBoolControl = false;
 ldAccountData();
 
 async function ldAccountData() {
-    const SQLdata = await getDataFromDatabase();
+    const SQLdata = await getSessionDataAccountFromDatabase();
 
     if (SQLdata) {
         loadData(SQLdata);
     }
 }
 
-async function getDataFromDatabase() {
+async function getSessionDataAccountFromDatabase() { // Get the data of the account saved in the session
     try {
         const res = await fetch(`./api/getSessionData.php?data=account`, {
             credentials: "include"
@@ -330,29 +341,8 @@ async function getDataFromDatabase() {
 
         return data;
     } catch (error) {
+        console.error(error);
         return null;
-    }
-}
-
-function printError(errorCode) {
-    if (!error) {
-        document.querySelector("main").innerHTML = `
-            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
-            <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-            <div style="padding-top: calc(6%);"></div>
-        `;
-
-        document.querySelector("main").style.textAlign = "center";
-        
-        if (document.querySelector("header")) {
-            document.querySelector("header").innerHTML = "";
-            document.querySelector("header").style.visibility = "hidden";
-        }
-
-        error = true;
     }
 }
 
@@ -496,8 +486,8 @@ function loadData(SQLdata) {
                                 console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
                             }
                         } catch (error) {
-                            printError(421);
                             console.error(error);
+                            printError(421);
                         }
                     });
 
@@ -558,8 +548,8 @@ function loadData(SQLdata) {
                                 console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
                             }
                         } catch (error) {
-                            printError(421);
                             console.error(error);
+                            printError(421);
                         }
                     });
                 }));
@@ -597,6 +587,7 @@ function loadData(SQLdata) {
             try {
                 fetch("./api/logout.php");
             } catch (error) {
+                console.error(error);
                 printError(421);
             }
 
@@ -607,12 +598,14 @@ function loadData(SQLdata) {
             try {
                 fetch("./api/logout.php");
             } catch (error) {
+                console.error(error);
                 printError(421);
             }
 
             window.location.href = "./index.php";
         });
     } catch (error) {
+        console.error(error);
         printError(404);
     }
 }
@@ -658,7 +651,8 @@ document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element 
             <path d="M10.4752 7.35383L7.64618 4.52485C7.76176 4.50848 7.87989 4.50001 8 4.50001C9.38071 4.50001 10.5 5.6193 10.5 7.00001C10.5 7.12011 10.4915 7.23824 10.4752 7.35383Z" fill="black"></path>
             <path d="M13.6464 13.3536L1.64645 1.35356L2.35355 0.646454L14.3536 12.6465L13.6464 13.3536Z" fill="black"></path>
         </svg>`);
-    } else {
+    }
+    else {
         document.getElementById("passwordAreaLoginMobile").type = "password";
         document.getElementById("passwordAreaSignUpMobile").type = "password";
 
@@ -677,6 +671,7 @@ document.getElementById("loginAccountFormMobile").addEventListener("submit", asy
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("loginAccountFormMobile").action, {
             method: "POST",
+            credentials: "include",
             body: formData
         });
 
@@ -688,11 +683,13 @@ document.getElementById("loginAccountFormMobile").addEventListener("submit", asy
         else {
             if (!isLoginArea) {
                 printError(404);
-            } else {
+            }
+            else {
                 alert("Email or password are wrong");
             }
         }
     } catch (error) {
+        console.error(error);
         printError(421);
     }
 });
@@ -704,6 +701,7 @@ document.getElementById("createAccountFormMobile").addEventListener("submit", as
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("createAccountFormMobile").action, {
             method: "POST",
+            credentials: "include",
             body: formData
         });
 
@@ -715,11 +713,13 @@ document.getElementById("createAccountFormMobile").addEventListener("submit", as
         else {
             if (!isLoginArea) {
                 printError(404);
-            } else {
+            }
+            else {
                 alert("Email or password are wrong");
             }
         }
     } catch (error) {
+        console.error(error);
         printError(421);
     }
 });
@@ -1069,4 +1069,26 @@ async function prompt(message, _default="") {
             resolve(null);
         }
     });
+}
+
+function printError(errorCode) { // Print the error in the main section
+    if (!error) {
+        document.querySelector("main").innerHTML = `
+            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
+            <div style="padding-top: calc(5%);"></div>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
+            <div style="padding-top: calc(6%);"></div>
+        `;
+
+        document.querySelector("main").style.textAlign = "center";
+        
+        if (document.querySelector("header")) {
+            document.querySelector("header").innerHTML = "";
+            document.querySelector("header").style.visibility = "hidden";
+        }
+
+        error = true;
+    }
 }

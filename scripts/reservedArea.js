@@ -14,21 +14,6 @@ const loginReservedArea = document.getElementById("loginReservedArea");
 // Header const
 const ulReservedAreaHeader = document.getElementById("ulReservedAreaHeader");
 
-// Functions
-async function getAdminSessionData() {
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=administrator`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
 mainReservedArea();
 
 // Control if logged in yet
@@ -100,6 +85,20 @@ async function accessReservedArea() {
     text.innerHTML = `Welcome <strong>${sessionData["username"]}</strong>.`;
     text.style.paddingBottom = "10%";
     reservedAreaMain.appendChild(text);
+}
+
+async function getAdminSessionData() { // Get the session data on admin info
+    try {
+        const res = await fetch(`./api/getSessionData.php?data=administrator`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        return null;
+    }
 }
 
 // Buttons function

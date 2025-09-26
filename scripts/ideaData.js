@@ -58,7 +58,6 @@ let commentAtTheComment = document.querySelectorAll(".underComments"); // The co
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.php?id=123">)
 const id = paramsURL.get("idea"); // The id of the page to load
 
-let error2 = false; // Error variable to print only the most specific error
 let existCurrentAccountIdeaData = false;
 
 function updateQuerySelectorAll() {
@@ -84,11 +83,11 @@ function updateQuerySelectorAll() {
 }
 
 // LOAD DATA FROM DATABASE
-main(id);
+main();
 
-async function main(id) {
+async function main() {
     if (id && id > 0) {
-        const SQLdata = await getDataFromDatabase2(id);
+        const SQLdata = await getIdeaDataFromDatabase();
 
         if (SQLdata) {
             loadData2(SQLdata);
@@ -102,18 +101,7 @@ async function main(id) {
     }
 }
 
-async function isLoggedIn() {
-    const sessionData = await getSessionData2();
-
-    if (sessionData) {
-        return sessionData;
-    }
-    else {
-        return null;
-    }
-}
-
-async function getDataFromDatabase2(id) {
+async function getIdeaDataFromDatabase() {
     try {
         const res = await fetch(`./api/data.php?id=${id}`);
         const data = await res.json();
@@ -121,39 +109,9 @@ async function getDataFromDatabase2(id) {
         return data;
     } catch (error) {
         console.error(error);
-
         printError(421);
 
         return null;
-    }
-}
-
-async function getSessionData2() {
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=account`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
-function printError(errorCode) {
-    if (!error2) {
-        mainIdea.innerHTML = `
-            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
-            <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-            <div style="padding-top: calc(6%);"></div>
-        `;
-
-        error2 = true;
     }
 }
 
@@ -279,7 +237,7 @@ async function loadData2(SQLdata) {
         }
         
         if (SQLdata['comment'].length != 0) { // Comments
-            const sessionData = await isLoggedIn();
+            const sessionData = await getSessionDataAccountFromDatabase();
 
             SQLdata['comment'].forEach(row => {
                 if (row.superCommentid === null) {
@@ -362,6 +320,7 @@ async function loadData2(SQLdata) {
 
                             return resp;
                         } catch (error) {
+                            console.error(error);
                             return null;
                         }
                     }
@@ -371,7 +330,8 @@ async function loadData2(SQLdata) {
                     if (result) {
                         if (result["success"]) {
                             window.location.href = `./ideaVoid.php?idea=${id}`;
-                        } else {
+                        }
+                        else {
                             console.error(result['error']);
                         }
                     }
@@ -385,7 +345,7 @@ async function loadData2(SQLdata) {
         // Reply comment gestor
         for (let commentReplyIndex = 0; commentReplyIndex < replyAtTheCommentButton.length; commentReplyIndex++) {
             replyAtTheCommentButton[commentReplyIndex].addEventListener("click", async () => {
-                const sessionData = await isLoggedIn();
+                const sessionData = await getSessionDataAccountFromDatabase();
 
                 if (sessionData) {
                     const oldCommentReplyButton = replyAtTheCommentButton[commentReplyIndex];
@@ -418,7 +378,8 @@ async function loadData2(SQLdata) {
                     if (comment[commentReplyIndex].dataset.value == "rootComment") {
                         comment[commentReplyIndex].removeChild(replyAtTheCommentButton[commentReplyIndex]);
                         comment[commentReplyIndex].appendChild(contentToIniect);
-                    } else {                        
+                    }
+                    else {                        
                         comment[commentReplyIndex].querySelector(".underComments").appendChild(liCommentNew);
 
                         superCommentId = comment[commentReplyIndex].querySelector(".underComments").dataset.id;
@@ -453,6 +414,7 @@ async function loadData2(SQLdata) {
 
                                     return resp;
                                 } catch (error) {
+                                    console.error(error);
                                     return null;
                                 }
                             }
@@ -480,13 +442,15 @@ async function loadData2(SQLdata) {
                         if (comment[commentReplyIndex].dataset.value == "rootComment") {
                             comment[commentReplyIndex].removeChild(contentToIniect);
                             comment[commentReplyIndex].appendChild(oldCommentReplyButton);
-                        } else {
+                        }
+                        else {
                             comment[commentReplyIndex].querySelector(".underComments").removeChild(liCommentNew);
                         }
 
                         updateQuerySelectorAll();
                     });
-                } else {
+                }
+                else {
                     alert("You must log in before writing a comment.");
                 }
             });
@@ -556,7 +520,7 @@ async function toggleSavedLikedDislikedAccountIdeaData() {
 }
 
 savedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await isLoggedIn();
+    const sessionData = await getSessionDataAccountFromDatabase();
 
     if (sessionData) {
         const currentSrc = savedIdeaImg.src;
@@ -578,7 +542,7 @@ savedIdeaButton.addEventListener("click", async () => {
 });
 
 likedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await isLoggedIn();
+    const sessionData = await getSessionDataAccountFromDatabase();
 
     if (sessionData) {
         const currentSrc = likedIdeaImg.src;
@@ -606,7 +570,7 @@ likedIdeaButton.addEventListener("click", async () => {
 });
 
 dislikedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await isLoggedIn();
+    const sessionData = await getSessionDataAccountFromDatabase();
 
     if (sessionData) {
         const currentSrc = dislikedIdeaImg.src;
@@ -640,8 +604,8 @@ modifyOldPageIfAuthorLoggedIn();
 
 async function modifyOldPageIfAuthorLoggedIn() {
     try {
-        const SQLdata = await getDataFromDatabase2(id);
-        const sessionData = await isLoggedIn();
+        const SQLdata = await getIdeaDataFromDatabase();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
             modifyButton.addEventListener("click", () => {
@@ -661,7 +625,7 @@ const reportIdeaButton = document.getElementById("reportIdeaButton");
 
 async function reportIdea() {
     try {
-        const sessionData = await isLoggedIn();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData) {
             if (await confirm("Are you sure you want to report this idea? This action cannot be undone. Remember that reporting an idea also harms the idea's creator.")) {
@@ -714,7 +678,7 @@ const followIdeaButton = document.getElementById("followIdeaButton");
 
 async function followIdea() {
     try {
-        const sessionData = await getSessionData2();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData) {
             const formData = new FormData();

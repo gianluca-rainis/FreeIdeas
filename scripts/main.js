@@ -6,10 +6,10 @@ const authors = document.querySelectorAll(".ideaAuthor");
 
 let error2 = false;
 
-ldAccountData2();
+loadLastIdeas();
 
-async function ldAccountData2() {
-    const SQLdata = await getDataFromDatabase2();
+async function loadLastIdeas() {
+    const SQLdata = await getLastIdeasFromDatabase();
 
     if (SQLdata) {
         loadData2(SQLdata);
@@ -21,7 +21,7 @@ async function ldAccountData2() {
     }
 }
 
-async function getDataFromDatabase2() {
+async function getLastIdeasFromDatabase() {
     try {
         const res = await fetch(`./api/getLastIdeas.php`);
 
@@ -29,29 +29,8 @@ async function getDataFromDatabase2() {
 
         return data;
     } catch (error) {
+        console.error(error);
         return null;
-    }
-}
-
-function printError(errorCode) {
-    if (!error2) {
-        document.querySelector("main").innerHTML = `
-            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
-            <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-            <div style="padding-top: calc(6%);"></div>
-        `;
-
-        document.querySelector("main").style.textAlign = "center";
-        
-        if (document.querySelector("header")) {
-            document.querySelector("header").innerHTML = "";
-            document.querySelector("header").style.visibility = "hidden";
-        }
-
-        error2 = true;
     }
 }
 
@@ -64,6 +43,7 @@ function loadData2(SQLdata) {
             authors[i].innerHTML = SQLdata[i]['username'];
         }
     } catch (error) {
+        console.error(error);
         printError(404);
     }
 }

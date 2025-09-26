@@ -3,7 +3,34 @@ const paramsURL = new URLSearchParams(window.location.search); // The params pas
 const id = paramsURL.get("account"); // The id of the page to load
 let SQLdataGlobal = null;
 
-async function changeDataAccount() {
+loadDinamicAccountInfoInBaseOfTheCurrentAccountPage();
+
+async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() { // If is the page of another user, load the data of the other user, else load the current logged in account page
+    if (!id) {
+        document.getElementById("followReportAccountDiv").style.display = "none";
+        changeDataAccount();
+        ldCurrentUserAccountData();
+    }
+    else {
+        const sessionData = await getSessionDataAccountFromDatabase();
+
+        if (sessionData) {
+            if (sessionData['id'] != id) {
+                document.getElementById("modifyAccountInfo").style.display = "none";
+                ldOtherAccountData();
+            }
+            else {
+                window.location.href = `./accountVoid.php`;
+            }
+        }
+        else {
+            document.getElementById("modifyAccountInfo").style.display = "none";
+            ldOtherAccountData();
+        }
+    }
+}
+
+async function changeDataAccount() { // Change the data of the account
     document.getElementById("modifyAccountInfo").addEventListener("click", () => {
         let username = document.getElementById("userNameAccount").innerHTML;
         let name = document.getElementById("userNameSurnameAccount").innerHTML.split(' ')[0];
@@ -87,8 +114,8 @@ async function changeDataAccount() {
                     window.location.href = "./accountVoid.php";
                 }
                 else {
-                    printError(421);
                     console.error(result['error']);
+                    printError(421);
                 }
             }
         });
@@ -98,7 +125,7 @@ async function changeDataAccount() {
         });
 
         document.getElementById("dangerAreaAccountPublicPrivateAccount").addEventListener("click", async () => {
-            const sessionData = await getSessionDataFromDatabase2();
+            const sessionData = await getSessionDataAccountFromDatabase();
 
             if (await confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}? ${sessionData['public']==1?"You'll loose all your follower and the others can't see your account informations.":"The others can follow your account and can see your account informations."}`)) {
                 const data = new FormData();
@@ -120,6 +147,7 @@ async function changeDataAccount() {
 
                         return resp;
                     } catch (error) {
+                        console.error(error);
                         return null;
                     }
                 }
@@ -134,14 +162,15 @@ async function changeDataAccount() {
                         window.location.href = "./accountVoid.php";
                     }
                     else {
-                        printError(result['error']);
+                        console.error(result['error']);
+                        printError(404);
                     }
                 }
             }
         });
 
         document.getElementById("dangerAreaAccountDeleteAccount").addEventListener("click", async () => {
-            const sessionData = await getSessionDataFromDatabase2();
+            const sessionData = await getSessionDataAccountFromDatabase();
 
             if (await confirm(`Are you sure that you want to delete your account? This operation cannot be undone.`)) {
                 const dataId = new FormData();
@@ -174,15 +203,15 @@ async function changeDataAccount() {
                         window.location.href = "./index.php";
                     }
                     else {
-                        printError(421);
                         console.error(result['error']);
+                        printError(421);
                     }
                 }
             }
         });
 
         document.getElementById("dangerAreaAccountChangePassword").addEventListener("click", async () => {
-            const sessionData = await getSessionDataFromDatabase2();
+            const sessionData = await getSessionDataAccountFromDatabase();
 
             const dataId = new FormData();
             dataId.append('email', sessionData['email']);
@@ -215,72 +244,31 @@ async function changeDataAccount() {
                     window.location.href = "./accountVoid.php";
                 }
                 else {
-                    printError(421);
                     console.error(result['error']);
+                    printError(421);
                 }
             }
         });
     });
 }
 
-async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() {
-    if (!id) {
-        document.getElementById("followReportAccountDiv").style.display = "none";
-        changeDataAccount();
-        ldAccountData2();
-    }
-    else {
-        const sessionData = await getSessionDataFromDatabase2();
-
-        if (sessionData) {
-            if (sessionData['id'] != id) {
-                document.getElementById("modifyAccountInfo").style.display = "none";
-                ldOtherAccountData();
-            }
-            else {
-                window.location.href = `./accountVoid.php`;
-            }
-        }
-        else {
-            document.getElementById("modifyAccountInfo").style.display = "none";
-            ldOtherAccountData();
-        }
-    }
-}
-
-loadDinamicAccountInfoInBaseOfTheCurrentAccountPage();
-
 /* DINAMIC PART */
 error = false; // Error variable to print only the most specific error
 tempBoolControl = false;
 
-async function ldAccountData2() {
-    const SQLdata = await getSessionDataFromDatabase2();
+async function ldCurrentUserAccountData() {
+    const SQLdata = await getAccountDataFromDatabase((await getSessionDataAccountFromDatabase())['id']);
 
     if (SQLdata) {
-        ldOtherAccountData(SQLdata['id']);
+        loadData2(SQLdata);
     }
     else {
         printError(421);
     }
 }
 
-async function getSessionDataFromDatabase2() {
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=account`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
 async function ldOtherAccountData(accountid=id) {
-    const SQLdata = await getOtherAccountDataFromDatabase(accountid);
+    const SQLdata = await getAccountDataFromDatabase(accountid);
 
     if (SQLdata['public']==1 || !id) {
         if (SQLdata) {
@@ -295,7 +283,7 @@ async function ldOtherAccountData(accountid=id) {
     }
 }
 
-async function getOtherAccountDataFromDatabase(accountid) {
+async function getAccountDataFromDatabase(accountid) { // Get info about the account from the database
     try {
         const formData = new FormData();
         formData.append("id", accountid);
@@ -317,29 +305,6 @@ async function getOtherAccountDataFromDatabase(accountid) {
     } catch (error) {
         console.error(error);
         return null;
-    }
-}
-
-function printError(errorCode) {
-    if (!error) {
-        document.querySelector("main").innerHTML = `
-            <h1 style="margin-top: 50px; margin-bottom: 50px; color: rgb(255, 0, 0);">ERROR ${errorCode}</h1>
-            <div style="padding-top: calc(5%);"></div>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
-            <div style="padding-top: calc(6%);"></div>
-        `;
-
-        document.querySelector("main").style.textAlign = "center";
-        document.querySelector("main").style.display = "block";
-        
-        if (document.querySelector("header")) {
-            document.querySelector("header").innerHTML = "";
-            document.querySelector("header").style.visibility = "hidden";
-        }
-
-        error = true;
     }
 }
 
@@ -383,6 +348,7 @@ function loadData2(SQLdata) {
             </a>`;
         }
     } catch (error) {
+        console.error(error);
         printError(404);
     }
 }
@@ -446,7 +412,7 @@ const followAccountButton = document.getElementById("followAccountButton");
 
 async function followAccount() {
     try {
-        const sessionData = await getSessionDataFromDatabase2();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData) {
             const formData = new FormData();
@@ -485,7 +451,7 @@ const reportAccountButton = document.getElementById("reportAccountButton");
 
 async function reportAccount() {
     try {
-        const sessionData = await getSessionDataFromDatabase2();
+        const sessionData = await getSessionDataAccountFromDatabase();
 
         if (sessionData) {
             if (await confirm("Are you sure you want to report this account? This action cannot be undone. Remember that reporting an account harms its owner.")) {

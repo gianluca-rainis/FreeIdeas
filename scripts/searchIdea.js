@@ -132,7 +132,8 @@ function compactFiltersClickGestor() {
 
             if (document.querySelectorAll(".hiddenTypeFilterTextImg")[3].style.transform == "") {
                 document.querySelectorAll(".hiddenTypeFilterTextImg")[3].style.transform = "rotate(180deg)";
-            } else {
+            }
+            else {
                 document.querySelectorAll(".hiddenTypeFilterTextImg")[3].style.transform = "";
             }
 
@@ -186,7 +187,8 @@ function compactFiltersClickGestor() {
 
         if (document.querySelectorAll(".hiddenTypeFilterTextImg")[0].style.transform == "") {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[0].style.transform = "rotate(180deg)";
-        } else {
+        }
+        else {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[0].style.transform = "";
         }
 
@@ -239,7 +241,8 @@ function compactFiltersClickGestor() {
 
         if (document.querySelectorAll(".hiddenTypeFilterTextImg")[1].style.transform == "") {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[1].style.transform = "rotate(180deg)";
-        } else {
+        }
+        else {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[1].style.transform = "";
         }
 
@@ -292,7 +295,8 @@ function compactFiltersClickGestor() {
 
         if (document.querySelectorAll(".hiddenTypeFilterTextImg")[2].style.transform == "") {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[2].style.transform = "rotate(180deg)";
-        } else {
+        }
+        else {
             document.querySelectorAll(".hiddenTypeFilterTextImg")[2].style.transform = "";
         }
 
@@ -353,6 +357,7 @@ async function updateDisplaiedData() {
 
             return resp;
         } catch (error) {
+            console.error(error);
             return null;
         }
     }
@@ -374,7 +379,8 @@ function loadData2(result) {
         result['data'].forEach(ideaData => {
             addChildToList(`./ideaVoid.php?idea=${ideaData['id']}`, ideaData['title'], ideaData['username'], ideaData['ideaimage']);
         });
-    } else if (result['format'] == "double") {
+    }
+    else if (result['format'] == "double") {
         result['data']['data'].forEach(accountData => {
             addChildToList(`./accountVoid.php?account=${accountData['id']}`, accountData['username'], `${accountData['name']} ${accountData['surname']}`, accountData['userimage']);
         });
