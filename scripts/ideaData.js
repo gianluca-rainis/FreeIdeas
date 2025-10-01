@@ -106,6 +106,10 @@ async function getIdeaDataFromDatabase() {
         const res = await fetch(`./api/data.php?id=${id}`);
         const data = await res.json();
 
+        if (data['success'] && data['success']==false) {
+            throw new Error(data['error']);
+        }
+
         return data;
     } catch (error) {
         console.error(error);
