@@ -49,14 +49,15 @@
         $stmt->close();
 
         if (!$foundAccount) {
-            echo json_encode(null);
             $conn->close();
+
+            echo json_encode(["success"=>false, "error"=>"found_account_in_database"]);
             exit;
         }
     }
     else {
         if (!isset($_GET['account']) || !is_numeric($_GET['account'])) {
-            echo json_encode(null);
+            echo json_encode(["success"=>false, "error"=>"get_account_data"]);
             exit;
         }
 
@@ -71,8 +72,9 @@
 
         if (!$row) {
             $stmt->close();
-            echo json_encode(null);
             $conn->close();
+
+            echo json_encode(["success"=>false, "error"=>"get_account_id_from_database"]);
             exit;
         }
 
@@ -101,13 +103,13 @@
     while ($row = $result->fetch_assoc()) {
         $notifications[] = $row;
     }
-
-    $stmt->close();
-
+    
     $_SESSION['account']['notifications'] = $notifications;
 
-    echo json_encode($_SESSION['account']);
+    $stmt->close();
     $conn->close();
+
+    echo json_encode(["success"=>true, "data"=>$_SESSION['account']]);
     exit;
 
     function getInput($data) {
@@ -117,6 +119,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

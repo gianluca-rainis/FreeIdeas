@@ -234,11 +234,12 @@ document.getElementById("loginAccountForm").addEventListener("submit", async fun
 
         const data = await response.json();
 
-        if (data) {
+        if (data && data['success']) {
             window.location.href = "./index.php";
         }
         else {
             if (!isLoginArea) {
+                console.error(data['error']);
                 printError(404);
             }
             else {

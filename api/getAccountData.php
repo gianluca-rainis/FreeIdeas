@@ -7,102 +7,102 @@
 
     $id = "";
 
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $id = getInput($_POST["id"]);
+    }
+    else {
+        echo json_encode(["success"=>false, "error"=>"method_not_post"]);
+        exit;
+    }
+
     try {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id = getInput($_POST["id"]);
+        $stmt = $conn->prepare("SELECT * FROM accounts WHERE id = ?;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $stmt = $conn->prepare("SELECT * FROM accounts WHERE id = ?;");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $data = [];
 
-            $data = [];
-
-            if ($row = $result->fetch_assoc()) {
-                $data["id"] = $row['id'];
-                $data['email'] = $row['email'];
-                $data['name'] = $row['name'];
-                $data['surname'] = $row['surname'];
-                $data['userimage'] = $row['userimage'];
-                $data['description'] = $row['description'];
-                $data['username'] = $row['username'];
-                $data['public'] = $row['public'];
-            }
-            else {
-                $data = null;
-            }
-
-            $stmt->close();
-
-            // Get saved ideas
-            $stmt = $conn->prepare("SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM accountideadata JOIN ideas ON ideas.id=accountideadata.ideaid JOIN accounts ON accounts.id=ideas.authorid WHERE accountideadata.accountid=? AND accountideadata.saved=1;");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            $data['saved'] = [];
-            $indexForSaved = 0;
-
-            while ($row = $result->fetch_assoc()) {
-                $data['saved'][$indexForSaved]['id'] = $row['id'];
-                $data['saved'][$indexForSaved]['title'] = $row['title'];
-                $data['saved'][$indexForSaved]['image'] = $row['ideaimage'];
-                $data['saved'][$indexForSaved]['username'] = $row['username'];
-
-                $indexForSaved++;
-            }
-
-            $stmt->close();
-
-            // Get published ideas
-            $stmt = $conn->prepare("SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.authorid=? ORDER BY ideas.data DESC;");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            $data['published'] = [];
-            $indexForSaved = 0;
-
-            while ($row = $result->fetch_assoc()) {
-                $data['published'][$indexForSaved]['id'] = $row['id'];
-                $data['published'][$indexForSaved]['title'] = $row['title'];
-                $data['published'][$indexForSaved]['image'] = $row['ideaimage'];
-                $data['published'][$indexForSaved]['username'] = $row['username'];
-
-                $indexForSaved++;
-            }
-
-            $stmt->close();
-
-            // If is logged in get if is followed
-            if (isset($_SESSION['account']['id'])) {
-                $currentAccountId = $_SESSION['account']['id'];
-
-                $stmt = $conn->prepare("SELECT * FROM follow WHERE follow.followaccountid=? AND follow.followedaccountid=?;");
-
-                $stmt->bind_param("ii", $currentAccountId, $id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                $data['followed'] = false;
-                $indexForSaved = 0;
-
-                while ($row = $result->fetch_assoc()) {
-                    $data['followed'] = true;
-                }
-
-                $stmt->close();
-            }
-
-            $conn->close();
-            
-            echo json_encode(["success"=>true, "data"=>$data]);
-            exit;
+        if ($row = $result->fetch_assoc()) {
+            $data["id"] = $row['id'];
+            $data['email'] = $row['email'];
+            $data['name'] = $row['name'];
+            $data['surname'] = $row['surname'];
+            $data['userimage'] = $row['userimage'];
+            $data['description'] = $row['description'];
+            $data['username'] = $row['username'];
+            $data['public'] = $row['public'];
         }
         else {
-            echo json_encode(["success"=>false, "error"=>"method_not_post"]);
-            exit;
+            $data = null;
         }
+
+        $stmt->close();
+
+        // Get saved ideas
+        $stmt = $conn->prepare("SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM accountideadata JOIN ideas ON ideas.id=accountideadata.ideaid JOIN accounts ON accounts.id=ideas.authorid WHERE accountideadata.accountid=? AND accountideadata.saved=1;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data['saved'] = [];
+        $indexForSaved = 0;
+
+        while ($row = $result->fetch_assoc()) {
+            $data['saved'][$indexForSaved]['id'] = $row['id'];
+            $data['saved'][$indexForSaved]['title'] = $row['title'];
+            $data['saved'][$indexForSaved]['image'] = $row['ideaimage'];
+            $data['saved'][$indexForSaved]['username'] = $row['username'];
+
+            $indexForSaved++;
+        }
+
+        $stmt->close();
+
+        // Get published ideas
+        $stmt = $conn->prepare("SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.authorid=? ORDER BY ideas.data DESC;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data['published'] = [];
+        $indexForSaved = 0;
+
+        while ($row = $result->fetch_assoc()) {
+            $data['published'][$indexForSaved]['id'] = $row['id'];
+            $data['published'][$indexForSaved]['title'] = $row['title'];
+            $data['published'][$indexForSaved]['image'] = $row['ideaimage'];
+            $data['published'][$indexForSaved]['username'] = $row['username'];
+
+            $indexForSaved++;
+        }
+
+        $stmt->close();
+
+        // If is logged in get if is followed
+        if (isset($_SESSION['account']['id'])) {
+            $currentAccountId = $_SESSION['account']['id'];
+
+            $stmt = $conn->prepare("SELECT * FROM follow WHERE follow.followaccountid=? AND follow.followedaccountid=?;");
+
+            $stmt->bind_param("ii", $currentAccountId, $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $data['followed'] = false;
+            $indexForSaved = 0;
+
+            while ($row = $result->fetch_assoc()) {
+                $data['followed'] = true;
+            }
+
+            $stmt->close();
+        }
+
+        $conn->close();
+        
+        echo json_encode(["success"=>true, "data"=>$data]);
+        exit;
     } catch (\Throwable $th) {
         echo json_encode(["success"=>false, "error"=>strval($th)]);
         exit;

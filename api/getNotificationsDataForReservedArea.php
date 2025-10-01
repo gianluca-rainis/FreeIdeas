@@ -4,7 +4,7 @@
     include("./db_connection.php");
 
     try {
-        $sql = "SELECT * FROM notifications;";
+        $sql = "SELECT * FROM notifications ORDER BY id DESC;";
 
         $stmt = $conn->prepare($sql);
         

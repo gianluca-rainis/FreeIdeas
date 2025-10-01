@@ -19,6 +19,10 @@
         $username = getInput($_POST["username"]);
         $public = getInput($_POST["public"]);
     }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
     try {
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -31,33 +35,33 @@
 
         if ($image !== null) {
             $sql = "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=?, public=? WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"image_database_connection"]);
                 exit;
             }
             
-            $state->bind_param("sssssii", $firstName, $lastName, $username, $image, $description, $public, $id);
+            $stmt->bind_param("sssssii", $firstName, $lastName, $username, $image, $description, $public, $id);
         }
         else {
             $sql = "UPDATE accounts SET name=?, surname=?, username=?, description=?, public=? WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("ssssii", $firstName, $lastName, $username, $description, $public, $id);
+            $stmt->bind_param("ssssii", $firstName, $lastName, $username, $description, $public, $id);
         }
 
-        if (!$state->execute()) {
+        if (!$stmt->execute()) {
             echo json_encode(["success"=>false, "error"=>"execution_command"]);
             exit;
         }
 
-        $state->close();
+        $stmt->close();
 
         $_SESSION['account']['id'] = $id;
         $_SESSION['account']['name'] = $firstName;
@@ -76,7 +80,7 @@
         $stmt = $conn->prepare($sql);
 
         if (!$stmt) {
-            echo json_encode(null);
+            echo json_encode(["success"=>false, "error"=>"insert_notification_default"]);
             exit;
         }
 
@@ -89,23 +93,22 @@
         $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
 
         $stmt->execute();
-        
         $stmt->close();
 
         if ($_SESSION['account']['public'] == 1) {
             // get followers id
             $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"get_follow_error"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
 
-            $state->execute();
-            $result = $state->get_result();
+            $stmt->execute();
+            $result = $stmt->get_result();
 
             if ($result) {
                 while ($row = $result->fetch_assoc()) {
@@ -114,7 +117,7 @@
                     $stmt = $conn->prepare($sql);
 
                     if (!$stmt) {
-                        echo json_encode(null);
+                        echo json_encode(["success"=>false, "error"=>"load_default_notification"]);
                         exit;
                     }
 
@@ -127,26 +130,25 @@
                     $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 
                     $stmt->execute();
-                    
                     $stmt->close();
                 }
             }
             
-            $state->close();
+            $stmt->close();
         } else {
             // get followers id
             $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"get_follow_error"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
 
-            $state->execute();
-            $result = $state->get_result();
+            $stmt->execute();
+            $result = $stmt->get_result();
 
             if ($result) {
                 while ($row = $result->fetch_assoc()) {
@@ -155,7 +157,7 @@
                     $stmt = $conn->prepare($sql);
 
                     if (!$stmt) {
-                        echo json_encode(null);
+                        echo json_encode(["success"=>false, "error"=>"insert_notification_default"]);
                         exit;
                     }
 
@@ -168,27 +170,25 @@
                     $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 
                     $stmt->execute();
-                    
                     $stmt->close();
                 }
             }
             
-            $state->close();
+            $stmt->close();
 
             // delete followers
             $sql = "DELETE FROM follow WHERE followedaccountid=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"delete_follow_error"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
 
-            $state->execute();
-            
-            $state->close();
+            $stmt->execute();
+            $stmt->close();
         }
 
         /* Notifications loading */
@@ -263,6 +263,4 @@
 
         return $return;
     }
-
-    exit;
 ?>

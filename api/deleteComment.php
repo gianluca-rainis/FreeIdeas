@@ -11,6 +11,10 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
     }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
     if ($id === "") {
         echo json_encode(["success"=>false, "error"=>"post_data"]);
@@ -24,23 +28,23 @@
     else { // Delete the info about the comment without delete the subcomments
         try {
             $sql = "UPDATE comments SET authorid=?, description=? WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
             $description = "This comment was deleted by the author.";
 
-            $state->bind_param("isi", $authorDeletedCommentid, $description, $id);
+            $stmt->bind_param("isi", $authorDeletedCommentid, $description, $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_delete_comment"]);
                 exit;
             }
 
-            $state->close();
+            $stmt->close();
         } catch (\Throwable $th) {
             echo json_encode(["success"=>false, "error"=>strval($th)]);
             exit;
@@ -66,27 +70,27 @@
 
         try {
             $sql = "SELECT * FROM comments WHERE superCommentid=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_get_subcomments"]);
                 exit;
             }
 
-            $result = $state->get_result();
+            $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $ret = true;
             }
 
-            $state->close();
+            $stmt->close();
         } catch (\Throwable $th) {
             echo json_encode(["success"=>false, "error"=>strval($th)]);
             exit;
@@ -101,21 +105,21 @@
 
         try {
             $sql = "SELECT superCommentid FROM comments WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_get_subcomments"]);
                 exit;
             }
 
-            $result = $state->get_result();
+            $result = $stmt->get_result();
 
             if ($result && $result->num_rows > 0) {
                 $row = $result->fetch_assoc();
@@ -123,7 +127,7 @@
                 $ret = $row['superCommentid'];
             }
 
-            $state->close();
+            $stmt->close();
         } catch (\Throwable $th) {
             echo json_encode(["success"=>false, "error"=>strval($th)]);
             exit;
@@ -138,21 +142,21 @@
 
         try {
             $sql = "SELECT authorid FROM comments WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_get_subcomments"]);
                 exit;
             }
 
-            $result = $state->get_result();
+            $result = $stmt->get_result();
 
             if ($result && $result->num_rows > 0) {
                 $row = $result->fetch_assoc();
@@ -160,7 +164,7 @@
                 $ret = $row['authorid'];
             }
 
-            $state->close();
+            $stmt->close();
         } catch (\Throwable $th) {
             echo json_encode(["success"=>false, "error"=>strval($th)]);
             exit;
@@ -178,21 +182,21 @@
 
         try {
             $sql = "DELETE FROM comments WHERE id=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_delete_comment"]);
                 exit;
             }
 
-            $state->close();
+            $stmt->close();
         } catch (\Throwable $th) {
             echo json_encode(["success"=>false, "error"=>strval($th)]);
             exit;
@@ -202,6 +206,4 @@
             deleteCommentAndSuperCommentsWithoutSubComments($conn, $superCommentId);
         }
     }
-
-    exit;
 ?>

@@ -11,96 +11,45 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
     }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
     try {
         // authorupdates clear
         $sql = "DELETE FROM authorupdates WHERE ideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"authorupdates_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();
-        
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // reports clear
         $sql = "DELETE FROM reports WHERE ideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"reports_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();
-        
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // additionalinfo clear
         $sql = "DELETE FROM additionalinfo WHERE ideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"additionalinfo_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();
-        
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // idealabels clear
         $sql = "DELETE FROM idealabels WHERE ideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"idealabels_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();
-        
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // accountideadata clear
         $sql = "DELETE FROM accountideadata WHERE ideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"accountideadata_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();
-        
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // comments clear
         $sql = "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"comments_error"]);
             exit;
         }
 
-        $state->bind_param("i", $id);
+        $stmt->bind_param("i", $id);
 
-        $state->execute();
-        $result = $state->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -108,41 +57,41 @@
             }
         }
         
-        $state->close();
+        $stmt->close();
 
         // get the idea title for the notification
         $sql = "SELECT title FROM ideas WHERE id=?;";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"comments_error"]);
             exit;
         }
 
-        $state->bind_param("i", $id);
+        $stmt->bind_param("i", $id);
 
-        $state->execute();
-        $result = $state->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
             $title = $row['title'];
         }
         
-        $state->close();
+        $stmt->close();
 
         // Send notification to followers
         $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"follow_error"]);
             exit;
         }
 
-        $state->bind_param("ii", $_SESSION['account']['id'], $id);
+        $stmt->bind_param("ii", $_SESSION['account']['id'], $id);
 
-        $state->execute();
-        $result = $state->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -162,86 +111,68 @@
                 $description = $_SESSION['account']['username'] . " has deleted " . $title . ". You can no longer visit its idea page.";
 
                 $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
-
                 $stmt->execute();
-                
                 $stmt->close();
             }
         }
         
-        $state->close();
+        $stmt->close();
 
         // Delete followers from idea
         $sql = "DELETE FROM follow WHERE followedideaid=?;";
-        $state = $conn->prepare($sql);
-
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"follow_error"]);
-            exit;
-        }
-
-        $state->bind_param("i", $id);
-
-        $state->execute();    
-        $state->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // ideas clear
         $sql = "DELETE FROM ideas WHERE id=?;";
-        $state = $conn->prepare($sql);
+        deleteDataFormDb($conn, $id, $sql);
+    } catch (\Throwable $th) {
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
+        exit;
+    }
 
-        if (!$state) {
-            echo json_encode(["success"=>false, "error"=>"ideas_error"]);
+    try {
+        // add default notification
+        $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            echo json_encode(["success"=>false, "error"=>"error_insert_notification"]);
             exit;
         }
 
-        $state->bind_param("i", $id);
+        $zero = 0; // Not read for default
+        $today = date("Y-m-d");
+        $idNot = $_SESSION['account']['id'];
+        $titleNot = "You have deleted an idea!";
+        $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
 
-        $state->execute();
-        
-        $state->close();
+        $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+        $stmt->execute();
+        $stmt->close();
+
+        /* Notifications loading */
+        $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+        $stmt->bind_param("i", $_SESSION['account']['id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $notifications = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $notifications[] = $row;
+        }
+
+        $stmt->close();
+        $conn->close();
+
+        $_SESSION['account']['notifications'] = $notifications;
+
+        echo json_encode(["success"=>true]);
+        exit;
     } catch (\Throwable $th) {
-        echo json_encode(["success"=>false, "error"=>$th->__toString()]);
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
         exit;
     }
-
-    // add default notification
-    $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
-    $stmt = $conn->prepare($sql);
-
-    if (!$stmt) {
-        echo json_encode(null);
-        exit;
-    }
-
-    $zero = 0; // Not read for default
-    $today = date("Y-m-d");
-    $idNot = $_SESSION['account']['id'];
-    $titleNot = "You have deleted an idea!";
-    $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
-
-    $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
-
-    $stmt->execute();
-    
-    $stmt->close();
-
-    /* Notifications loading */
-    $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
-    $stmt->bind_param("i", $_SESSION['account']['id']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $notifications = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $notifications[] = $row;
-    }
-
-    $stmt->close();
-
-    $conn->close();
-
-    $_SESSION['account']['notifications'] = $notifications;
 
     function getInput($data) {
         $data = trim($data);
@@ -251,25 +182,43 @@
         return $data;
     }
 
+    function deleteDataFormDb($conn, $id, $sql) {
+        try {
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                echo json_encode(["success"=>false, "error"=>"generic_delete_query_error"]);
+                exit;
+            }
+
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->close();
+        } catch (\Throwable $th) {
+            echo json_encode(["success"=>false, "error"=>strval($th)]);
+            exit;
+        }
+    }
+
     // Delete all the comments from the deeper
     function deleteAllIdsSubComments($conn, $id) {
         try {
             $sql = "SELECT * FROM comments WHERE superCommentid=?;";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("i", $id);
+            $stmt->bind_param("i", $id);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
                 exit;
             }
 
-            $result = $state->get_result();
+            $result = $stmt->get_result();
 
             $data = [];
 
@@ -277,7 +226,7 @@
                 $data[] = $row;
             }
 
-            $state->close();
+            $stmt->close();
 
             // $data contains all the subcomments
             foreach ($data as $row) {
@@ -287,21 +236,7 @@
             // This is the deeper ($id comment)
             // Delete the subcomment
             $sql = "DELETE FROM comments WHERE id=?;";
-            $state = $conn->prepare($sql);
-
-            if (!$state) {
-                echo json_encode(["success"=>false, "error"=>"database_connection"]);
-                exit;
-            }
-
-            $state->bind_param("i", $id);
-            
-            if (!$state->execute()) {
-                echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
-                exit;
-            }
-
-            $state->close();
+            deleteDataFormDb($conn, $id, $sql);
         } catch (\Throwable $th) {
             global $fatalError;
             $fatalError = $th;
@@ -309,7 +244,4 @@
         
         return;
     }
-
-    echo json_encode(["success"=>true]);
-    exit;
 ?>

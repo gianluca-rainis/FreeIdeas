@@ -12,6 +12,10 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
     }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
     // Get account info
     try {
@@ -97,16 +101,7 @@
 
         // accountideadata clear
         $sql = "DELETE FROM accountideadata WHERE accountid=?;";
-        $stmt = $conn->prepare($sql);
-
-        if (!$stmt) {
-            echo json_encode(["success"=>false, "error"=>"delete_accountideadata_error"]);
-            exit;
-        }
-
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // reports clear
         $sql = "DELETE FROM reports WHERE accountid=? OR authorid=?;";
@@ -123,16 +118,7 @@
 
         // notifications clear
         $sql = "DELETE FROM notifications WHERE accountid=?;";
-        $stmt = $conn->prepare($sql);
-
-        if (!$stmt) {
-            echo json_encode(["success"=>false, "error"=>"delete_notifications_error"]);
-            exit;
-        }
-
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
+        deleteDataFormDb($conn, $id, $sql);
 
         // get ideas id
         $sql = "SELECT id FROM ideas WHERE authorid=?;";
@@ -161,42 +147,15 @@
         for ($i=0; $i < count($ideasId); $i++) { 
             // idealabels clear
             $sql = "DELETE FROM idealabels WHERE ideaid=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"idealabels_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
 
             // reports clear
             $sql = "DELETE FROM reports WHERE ideaid=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"reports_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
 
             // follow clear
             $sql = "DELETE FROM follow WHERE followedideaid=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"follow_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
 
             // comments clear
             $sql = "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;";
@@ -227,56 +186,20 @@
 
             // authorupdates clear
             $sql = "DELETE FROM authorupdates WHERE ideaid=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"authorupdates_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
 
             // additionalinfo clear
             $sql = "DELETE FROM additionalinfo WHERE ideaid=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"additionalinfo_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
 
             // ideas clear
             $sql = "DELETE FROM ideas WHERE id=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"ideas_error"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $ideasId[$i]);
-            $stmt->execute();
-            $stmt->close();
+            deleteDataFormDb($conn, $ideasId[$i], $sql);
         }
 
         // accounts clear
         $sql = "DELETE FROM accounts WHERE id=?;";
-        $stmt = $conn->prepare($sql);
-
-        if (!$stmt) {
-            echo json_encode(["success"=>false, "error"=>"accounts_error"]);
-            exit;
-        }
-
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
+        deleteDataFormDb($conn, $id, $sql);
     } catch (\Throwable $th) {
         echo json_encode(["success"=>false, "error"=>strval($th)]);
         exit;
@@ -286,6 +209,9 @@
     session_destroy();
 
     $conn->close();
+    
+    echo json_encode(["success"=>true]);
+    exit;
 
     function getInput($data) {
         $data = trim($data);
@@ -293,6 +219,24 @@
         $data = htmlspecialchars($data);
 
         return $data;
+    }
+
+    function deleteDataFormDb($conn, $id, $sql) {
+        try {
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                echo json_encode(["success"=>false, "error"=>"generic_delete_query_error"]);
+                exit;
+            }
+
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->close();
+        } catch (\Throwable $th) {
+            echo json_encode(["success"=>false, "error"=>strval($th)]);
+            exit;
+        }
     }
 
     // Delete all the comments from the deeper
@@ -331,21 +275,7 @@
             // This is the deeper ($id comment)
             // Delete the subcomment
             $sql = "DELETE FROM comments WHERE id=?;";
-            $stmt = $conn->prepare($sql);
-
-            if (!$stmt) {
-                echo json_encode(["success"=>false, "error"=>"database_connection"]);
-                exit;
-            }
-
-            $stmt->bind_param("i", $id);
-            
-            if (!$stmt->execute()) {
-                echo json_encode(["success"=>false, "error"=>"execution_command_delete_subcomments"]);
-                exit;
-            }
-
-            $stmt->close();
+            deleteDataFormDb($conn, $id, $sql);
         } catch (\Throwable $th) {
             global $fatalError;
             $fatalError = strval($th);
@@ -353,7 +283,4 @@
         
         return;
     }
-
-    echo json_encode(["success"=>true]);
-    exit;
 ?>

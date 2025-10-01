@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+
     session_start();
 
     if (!isset($_GET['data'])) {
@@ -38,6 +39,4 @@
         echo json_encode(null);
         exit;
     }
-
-    exit;
 ?>

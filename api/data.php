@@ -5,8 +5,7 @@
 
     session_start();
 
-    if (!isset($_GET['id']) || !is_numeric($_GET['id']))
-    {
+    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
         echo json_encode(["success"=>false, "error"=>"cannot_get_id_with_GET"]);
         exit;
     }
@@ -19,8 +18,7 @@
         try {
             $state = $conn->prepare($query);
 
-            if (!$state)
-            {
+            if (!$state) {
                 return null;
             }
 
@@ -45,19 +43,15 @@
 
     function getDataFromDatabaseWithAccountInfo($conn, $id, $query) {
         try {
-            if (!isset($_SESSION['account']['id']))
-            {
+            if (!isset($_SESSION['account']['id'])) {
                 return [null];
-            }
-            else
-            {
+            } else {
                 $accountId = $_SESSION['account']['id'];
             }
             
             $state = $conn->prepare($query);
 
-            if (!$state)
-            {
+            if (!$state) {
                 return null;
             }
 

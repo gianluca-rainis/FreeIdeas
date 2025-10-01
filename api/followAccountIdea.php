@@ -23,6 +23,10 @@
                 exit;
             }
         }
+        else {
+            echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+            exit;
+        }
 
         if (isset($_SESSION['account']['id'])) {
             $authorid = $_SESSION['account']['id'];
@@ -45,21 +49,21 @@
             $tempNotNull = $followedideaid;
         }
         
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"database_connection"]);
             exit;
         }
 
-        $state->bind_param("ii", $authorid, $tempNotNull);
+        $stmt->bind_param("ii", $authorid, $tempNotNull);
         
-        if (!$state->execute()) {
+        if (!$stmt->execute()) {
             echo json_encode(["success"=>false, "error"=>"execution_command"]);
             exit;
         }
 
-        $result = $state->get_result();
+        $result = $stmt->get_result();
 
         $data = [];
 
@@ -67,26 +71,26 @@
             $data[] = $row;
         }
 
-        $state->close();
+        $stmt->close();
 
         if (count($data) == 0) {
             // If not followed follow
             $sql = "INSERT INTO follow (followaccountid, followedaccountid, followedideaid) VALUES (?, ?, ?);";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("iii", $authorid, $followedaccountid, $followedideaid);
+            $stmt->bind_param("iii", $authorid, $followedaccountid, $followedideaid);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command"]);
                 exit;
             }
 
-            $state->close();
+            $stmt->close();
 
             $isNowFollowed = true;
         }
@@ -104,21 +108,21 @@
                 $tempNotNull = $followedideaid;
             }
 
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
 
-            $state->bind_param("ii", $authorid, $tempNotNull);
+            $stmt->bind_param("ii", $authorid, $tempNotNull);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command"]);
                 exit;
             }
 
-            $state->close();
+            $stmt->close();
 
             $isNowFollowed = false;
         }
@@ -139,6 +143,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

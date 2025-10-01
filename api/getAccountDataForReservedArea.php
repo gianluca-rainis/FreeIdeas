@@ -4,7 +4,7 @@
     include("./db_connection.php");
 
     try {
-        $sql = "SELECT * FROM accounts;";
+        $sql = "SELECT * FROM accounts ORDER BY id DESC;";
 
         $stmt = $conn->prepare($sql);
         

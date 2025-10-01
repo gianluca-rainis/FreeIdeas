@@ -11,48 +11,54 @@
         $id = getInput($_POST["id"]);
     }
     else {
-        echo json_encode(["success"=>false, "error"=>"method_not_post"]);
-        exit;
-    }
-    
-    $sql = "DELETE FROM notifications WHERE id=?;";
-    $state = $conn->prepare($sql);
-
-    if (!$state) {
-        echo json_encode(["success"=>false, "error"=>"database_connection"]);
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
         exit;
     }
 
-    $state->bind_param("i", $id);
-    
-    if (!$state->execute()) {
-        echo json_encode(["success"=>false, "error"=>"execution_command"]);
+    try {
+        $sql = "DELETE FROM notifications WHERE id=?;";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            echo json_encode(["success"=>false, "error"=>"database_connection"]);
+            exit;
+        }
+
+        $stmt->bind_param("i", $id);
+        
+        if (!$stmt->execute()) {
+            echo json_encode(["success"=>false, "error"=>"execution_command"]);
+            exit;
+        }
+
+        $stmt->close();
+
+        /* Notifications loading */
+        $id = $_SESSION['account']['id'];
+
+        $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $notifications = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $notifications[] = $row;
+        }
+
+        $stmt->close();
+
+        $_SESSION['account']['notifications'] = $notifications;
+        
+        $conn->close();
+
+        echo json_encode(["success"=>true]);
+        exit;
+    } catch (\Throwable $th) {
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
         exit;
     }
-
-    $state->close();
-
-    /* Notifications loading */
-    $id = $_SESSION['account']['id'];
-
-    $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $notifications = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $notifications[] = $row;
-    }
-
-    $stmt->close();
-
-    $_SESSION['account']['notifications'] = $notifications;
-    
-    $conn->close();
-
-    echo json_encode(["success"=>true]);
 
     function getInput($data) {
         $data = trim($data);
@@ -61,6 +67,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

@@ -5,19 +5,24 @@
 
     session_start();
 
-    $stmt = $conn->prepare("SELECT id FROM ideas ORDER BY RAND() LIMIT 1;");
-    $stmt->execute();
-    $result = $stmt->get_result();
+    try {
+        $stmt = $conn->prepare("SELECT id FROM ideas ORDER BY RAND() LIMIT 1;");
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $data = [];
+        $data = [];
 
-    if ($row = $result->fetch_assoc()) {
-        $data = ["id"=>$row['id']];
+        if ($row = $result->fetch_assoc()) {
+            $data = ["id"=>$row['id']];
+        }
+
+        $stmt->close();
+        $conn->close();
+        
+        echo json_encode($data);
+        exit;
+    } catch (\Throwable $th) {
+        echo json_encode(""); // Void link
+        exit;
     }
-
-    $stmt->close();
-    $conn->close();
-    
-    echo json_encode($data);
-    exit;
 ?>

@@ -133,6 +133,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

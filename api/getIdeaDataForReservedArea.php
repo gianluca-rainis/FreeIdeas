@@ -4,7 +4,7 @@
     include("./db_connection.php");
 
     try {
-        $sql = "SELECT * FROM ideas;";
+        $sql = "SELECT * FROM ideas ORDER BY id DESC;";
 
         $stmt = $conn->prepare($sql);
         
