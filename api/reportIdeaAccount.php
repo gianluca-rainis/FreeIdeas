@@ -7,13 +7,17 @@
 
     $authorid = $ideaid = $accountid = $feedback = "";
 
-    try {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $ideaid = getInput($_POST["ideaid"]);
-            $accountid = getInput($_POST["accountid"]);
-            $feedback = getInput($_POST["feedback"]);
-        }
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $ideaid = getInput($_POST["ideaid"]);
+        $accountid = getInput($_POST["accountid"]);
+        $feedback = getInput($_POST["feedback"]);
+    }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
+    try {
         if (isset($_SESSION['account']['id'])) {
             $authorid = $_SESSION['account']['id'];
         }
@@ -23,39 +27,39 @@
         }
         
         $sql = "INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"database_connection"]);
             exit;
         }
 
-        $state->bind_param("iiis", $authorid, $ideaid, $accountid, $feedback);
+        $stmt->bind_param("iiis", $authorid, $ideaid, $accountid, $feedback);
         
-        if (!$state->execute()) {
+        if (!$stmt->execute()) {
             echo json_encode(["success"=>false, "error"=>"execution_command"]);
             exit;
         }
 
-        $state->close();
+        $stmt->close();
 
         // Control if the author have done too much reports on the same thing
         $sql = "SELECT * FROM reports WHERE authorid=? AND ideaid=? AND accountid=?;";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"database_connection_verify_reports_sended"]);
             exit;
         }
 
-        $state->bind_param("iii", $authorid, $ideaid, $accountid);
+        $stmt->bind_param("iii", $authorid, $ideaid, $accountid);
         
-        if (!$state->execute()) {
+        if (!$stmt->execute()) {
             echo json_encode(["success"=>false, "error"=>"execution_command_verify_reports_sended"]);
             exit;
         }
 
-        $result = $state->get_result();
+        $result = $stmt->get_result();
 
         $data = [];
 
@@ -63,13 +67,13 @@
             $data[] = $row;
         }
 
-        $state->close();
+        $stmt->close();
 
         if (count($data) == 6) { // If the same author have report the same account/idea more than 5 times, report it's account
             $sql = "INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);";
-            $state = $conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
 
-            if (!$state) {
+            if (!$stmt) {
                 echo json_encode(["success"=>false, "error"=>"database_connection"]);
                 exit;
             }
@@ -78,14 +82,14 @@
             $tempIdeaId = null;
             $tempFeedback = "The user have reported too much times the same account/idea. This is an auto-generated report.";
 
-            $state->bind_param("iiis", $tempAuthorId, $tempIdeaId, $authorid, $tempFeedback);
+            $stmt->bind_param("iiis", $tempAuthorId, $tempIdeaId, $authorid, $tempFeedback);
             
-            if (!$state->execute()) {
+            if (!$stmt->execute()) {
                 echo json_encode(["success"=>false, "error"=>"execution_command"]);
                 exit;
             }
 
-            $state->close();
+            $stmt->close();
         }
 
         $conn->close();
@@ -104,6 +108,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

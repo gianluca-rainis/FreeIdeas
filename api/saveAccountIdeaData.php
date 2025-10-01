@@ -16,7 +16,13 @@
         $dislike = getInput($_POST["dislike"]);
         $liked = getInput($_POST["liked"]);
         $existRow = getInput($_POST["existRowYet"]);
+    }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
+    try {
         if ($existRow == "1") {
             // Get old accountideadata data
             $sql = "SELECT saved, liked, dislike FROM accountideadata WHERE accountid=? AND ideaid=?;";
@@ -119,10 +125,12 @@
         }
         
         $stmt->close();
-
         $conn->close();
         
         echo json_encode(["success"=>true]);
+        exit;
+    } catch (\Throwable $th) {
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
         exit;
     }
 
@@ -133,6 +141,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

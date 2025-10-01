@@ -15,6 +15,10 @@
         $ideaid = getInput($_POST["ideaid"]);
         $superCommentid = getInput($_POST["superCommentid"]);
     }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
 
     if ($superCommentid === "") {
         $superCommentid = null;
@@ -39,6 +43,7 @@
     $conn->close();
 
     echo json_encode(["success"=>true]);
+    exit;
 
     function getInput($data) {
         $data = trim($data);
@@ -47,6 +52,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

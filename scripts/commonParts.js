@@ -265,10 +265,12 @@ document.getElementById("createAccountForm").addEventListener("submit", async fu
 
         const data = await response.json();
 
-        if (data) {
+        if (data && data['success']) {
             window.location.href = "./index.php";
         }
         else {
+            console.error(data['error']);
+
             if (!isLoginArea) {
                 printError(404);
             }

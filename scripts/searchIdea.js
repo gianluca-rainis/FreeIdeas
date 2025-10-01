@@ -355,7 +355,11 @@ async function updateDisplaiedData() {
 
             const resp = await res.json();
 
-            return resp;
+            if (resp && resp['success']) {
+                return resp['data']
+            } else {
+                throw new Error(resp['error']);
+            }
         } catch (error) {
             console.error(error);
             return null;

@@ -11,14 +11,19 @@
     $additionalInfoImagesConverted = [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $title = getInput($_POST["title"]);
+        $ideaid = getInput($_POST["ideaid"]);
+        $author = getInput($_POST["author"]);
+        $data = getInput($_POST["data"]);
+        $description = getInput($_POST["description"]);
+        $link = getInput($_POST["link"]);
+        $type = getInput($_POST["type"]);
+        $creativity = getInput($_POST["creativity"]);
+        $status = getInput($_POST["status"]);
+        $additionalInfo = json_decode($_POST["additionalInfo"], true);
+        $logs = json_decode($_POST["logs"], true);
+
         try {
-            // Get data ideaid
-            $title = getInput($_POST["title"]);
-            $ideaid = getInput($_POST["ideaid"]);
-            $author = getInput($_POST["author"]);
-            $data = getInput($_POST["data"]);
-            $description = getInput($_POST["description"]);
-            
             if (isset($_FILES["mainImageFile"]) && $_FILES["mainImageFile"]['error'] === UPLOAD_ERR_OK) {
                 $mainImage = $_FILES["mainImageFile"];
 
@@ -32,14 +37,6 @@
                 $mainImage = $_POST["mainImageData"];
                 $mainImageConverted = $mainImage;
             }
-
-            $link = getInput($_POST["link"]);
-
-            $type = getInput($_POST["type"]);
-            $creativity = getInput($_POST["creativity"]);
-            $status = getInput($_POST["status"]);
-
-            $additionalInfo = json_decode($_POST["additionalInfo"], true);
 
             if (count($additionalInfo['titles']) != 0) {
                 $iFile = $iData = 0;
@@ -74,172 +71,171 @@
                     $additionalInfo['titles'][$i] = getInput($additionalInfo['titles'][$i]);
                     $additionalInfo['descriptions'][$i] = getInput($additionalInfo['descriptions'][$i]);
                 }
-            }            
-
-            $logs = json_decode($_POST["logs"], true);
-
-            // Send idea data
-            $stmt = $conn->prepare("UPDATE ideas SET title=?, data=?, ideaimage=?, description=?, downloadlink=? WHERE id=?;");
-            $stmt->bind_param("sssssi", $title, $data, $mainImageConverted, $description, $link, $ideaid);
-            
-            $stmt->execute();
-
-            $stmt->close();
-
-            // Send all additional info data
-            if (count($additionalInfo['titles']) != 0 && count($additionalInfo['descriptions']) != 0) {
-                $stmt = $conn->prepare("SELECT id FROM additionalinfo WHERE ideaid=?;");
-                $stmt->bind_param("i", $ideaid);
-                $stmt->execute();
-
-                $result = $stmt->get_result();
-
-                $idOfAdditionalInfo = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $idOfAdditionalInfo[] = $row['id'];
-                }
-
-                $stmt->close();
-
-                if (count($additionalInfo['titles']) != count($idOfAdditionalInfo)) {
-                    for ($i=0; $i < count($idOfAdditionalInfo); $i++) { 
-                        $stmt = $conn->prepare("DELETE FROM additionalinfo WHERE id=?;");
-                        $stmt->bind_param("i", $idOfAdditionalInfo[$i]);
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-
-                    for ($i=0; $i < count($additionalInfo['titles']); $i++) {
-                        $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
-                        $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-                } else {
-                    for ($i=0; $i < count($additionalInfo['titles']); $i++) {
-                        $stmt = $conn->prepare("UPDATE additionalinfo SET title=?, updtimage=?, description=? WHERE id=?;");
-                        $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $idOfAdditionalInfo[$i]);
-                        
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-                }                
             }
-
-            // Send all author logs data
-            if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
-                for ($i=0; $i < count($logs['dates']); $i++) { 
-                    $logs['dates'][$i] = getInput($logs['dates'][$i]);
-                    $logs['titles'][$i] = getInput($logs['titles'][$i]);
-                    $logs['descriptions'][$i] = getInput($logs['descriptions'][$i]);
-                }
-            }
-
-            if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
-                $stmt = $conn->prepare("SELECT id FROM authorupdates WHERE ideaid=?;");
-                $stmt->bind_param("i", $ideaid);
-                $stmt->execute();
-
-                $result = $stmt->get_result();
-
-                $idOfLogs = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $idOfLogs[] = $row['id'];
-                }
-
-                $stmt->close();
-
-                if (count($logs['dates']) != count($idOfLogs)) {
-                    for ($i=0; $i < count($idOfLogs); $i++) { 
-                        $stmt = $conn->prepare("DELETE FROM authorupdates WHERE id=?;");
-                        $stmt->bind_param("i", $idOfLogs[$i]);
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-
-                    for ($i=0; $i < count($logs['dates']); $i++) {
-                        $stmt = $conn->prepare("INSERT INTO authorupdates (title, description, data, ideaid) VALUES (?, ?, ?, ?);");
-                        $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $ideaid);
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-                } else {
-                    for ($i=0; $i < count($logs['dates']); $i++) {
-                        $stmt = $conn->prepare("UPDATE authorupdates SET title=?, description=?, data=? WHERE id=?;");
-                        $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $idOfLogs[$i]);
-                        $stmt->execute();
-
-                        $stmt->close();
-                    }
-                }
-            }
-
-            // Send idealabels
-            $stmt = $conn->prepare("UPDATE idealabels SET type=?, creativity=?, status=? WHERE ideaid=?;");
-            $stmt->bind_param("sssi", $type, $creativity, $status, $ideaid);
-            $stmt->execute();
-
-            $stmt->close();
-
-            // Send notification to followers
-            $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
-            $state = $conn->prepare($sql);
-
-            if (!$state) {
-                echo json_encode(["success"=>false, "error"=>"follow_error"]);
-                exit;
-            }
-
-            $state->bind_param("ii", $_SESSION['account']['id'], $ideaid);
-
-            $state->execute();
-            $result = $state->get_result();
-
-            if ($result) {
-                while ($row = $result->fetch_assoc()) {
-                    // add default notification
-                    $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
-                    $stmt = $conn->prepare($sql);
-
-                    if (!$stmt) {
-                        echo json_encode(["success"=>false, "error"=>"follow_error"]);
-                        exit;
-                    }
-
-                    $zero = 0; // Not read for default
-                    $today = date("Y-m-d");
-                    $idNot = $row['followaccountid'];
-                    $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
-                    $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
-
-                    $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
-
-                    $stmt->execute();
-                    
-                    $stmt->close();
-                }
-            }
-            
-            $state->close();
-
-            $conn->close();
-
-            echo json_encode(['success'=>true]);
-            exit;
         } catch (\Throwable $th) {
-            echo json_encode(['success'=>false, 'error'=>$th->getMessage()]);
+            echo json_encode(['success'=>false, 'error'=>strval($th)]);
             exit;
         }
     }
     else {
-        echo json_encode(null);
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
+
+    try {
+        // Send idea data
+        $stmt = $conn->prepare("UPDATE ideas SET title=?, data=?, ideaimage=?, description=?, downloadlink=? WHERE id=?;");
+        $stmt->bind_param("sssssi", $title, $data, $mainImageConverted, $description, $link, $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+
+        // Send all additional info data
+        if (count($additionalInfo['titles']) != 0 && count($additionalInfo['descriptions']) != 0) {
+            $stmt = $conn->prepare("SELECT id FROM additionalinfo WHERE ideaid=?;");
+            $stmt->bind_param("i", $ideaid);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            $idOfAdditionalInfo = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $idOfAdditionalInfo[] = $row['id'];
+            }
+
+            $stmt->close();
+
+            if (count($additionalInfo['titles']) != count($idOfAdditionalInfo)) {
+                for ($i=0; $i < count($idOfAdditionalInfo); $i++) { 
+                    $stmt = $conn->prepare("DELETE FROM additionalinfo WHERE id=?;");
+                    $stmt->bind_param("i", $idOfAdditionalInfo[$i]);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+
+                for ($i=0; $i < count($additionalInfo['titles']); $i++) {
+                    $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
+                    $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            } else {
+                for ($i=0; $i < count($additionalInfo['titles']); $i++) {
+                    $stmt = $conn->prepare("UPDATE additionalinfo SET title=?, updtimage=?, description=? WHERE id=?;");
+                    $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $idOfAdditionalInfo[$i]);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            }                
+        }
+
+        // Send all author logs data
+        if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
+            for ($i=0; $i < count($logs['dates']); $i++) { 
+                $logs['dates'][$i] = getInput($logs['dates'][$i]);
+                $logs['titles'][$i] = getInput($logs['titles'][$i]);
+                $logs['descriptions'][$i] = getInput($logs['descriptions'][$i]);
+            }
+        }
+
+        if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
+            $stmt = $conn->prepare("SELECT id FROM authorupdates WHERE ideaid=?;");
+            $stmt->bind_param("i", $ideaid);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            $idOfLogs = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $idOfLogs[] = $row['id'];
+            }
+
+            $stmt->close();
+
+            if (count($logs['dates']) != count($idOfLogs)) {
+                for ($i=0; $i < count($idOfLogs); $i++) { 
+                    $stmt = $conn->prepare("DELETE FROM authorupdates WHERE id=?;");
+                    $stmt->bind_param("i", $idOfLogs[$i]);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+
+                for ($i=0; $i < count($logs['dates']); $i++) {
+                    $stmt = $conn->prepare("INSERT INTO authorupdates (title, description, data, ideaid) VALUES (?, ?, ?, ?);");
+                    $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $ideaid);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            } else {
+                for ($i=0; $i < count($logs['dates']); $i++) {
+                    $stmt = $conn->prepare("UPDATE authorupdates SET title=?, description=?, data=? WHERE id=?;");
+                    $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $idOfLogs[$i]);
+                    
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            }
+        }
+
+        // Send idealabels
+        $stmt = $conn->prepare("UPDATE idealabels SET type=?, creativity=?, status=? WHERE ideaid=?;");
+        $stmt->bind_param("sssi", $type, $creativity, $status, $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+
+        // Send notification to followers
+        $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
+        $state = $conn->prepare($sql);
+
+        if (!$state) {
+            echo json_encode(["success"=>false, "error"=>"follow_error"]);
+            exit;
+        }
+
+        $state->bind_param("ii", $_SESSION['account']['id'], $ideaid);
+
+        $state->execute();
+        $result = $state->get_result();
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                // add default notification
+                $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    echo json_encode(["success"=>false, "error"=>"follow_error"]);
+                    exit;
+                }
+
+                $zero = 0; // Not read for default
+                $today = date("Y-m-d");
+                $idNot = $row['followaccountid'];
+                $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
+                $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
+
+                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+        
+        $state->close();
+        $conn->close();
+
+        echo json_encode(['success'=>true]);
+        exit;
+    } catch (\Throwable $th) {
+        echo json_encode(['success'=>false, 'error'=>strval($th)]);
         exit;
     }
 
@@ -293,6 +289,4 @@
 
         return $return;
     }
-
-    exit;
 ?>

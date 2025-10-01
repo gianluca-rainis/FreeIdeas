@@ -115,6 +115,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

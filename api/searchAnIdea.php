@@ -9,11 +9,13 @@
         $creativity = getInput($_POST["creativity"]);
         $status = getInput($_POST["status"]);
         $order = getInput($_POST["order"]);
+    }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
         
-        // SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.title LIKE '%$search%';
-        // SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE accounts.username LIKE '%$search%' OR accounts.name LIKE '%$search%' OR accounts.surname LIKE '%$search%';
-        // SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid JOIN idealabels ON idealabels.ideaid=ideas.id WHERE idealabels.type=$type OR idealabels.creativity=$creativity OR idealabels.status=$status;
-
+    try {
         if ($search != "" && $type == "" && $creativity == "" && $status == "" && $order == "") {
             $sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?) AND accounts.public=1;";
             $typeOfQuery = "account";
@@ -180,18 +182,24 @@
                 $stmt->close();
             }
 
-            echo json_encode($output);
+            $conn->close();
+
+            echo json_encode(['success'=>true, 'data'=>$output]);
+            exit;
         }
         else {
             $stmt->close();
-            echo json_encode(null);
-        }
-    }
-    else {
-        echo json_encode(null);
-    }
+            $conn->close();
 
-    $conn->close();
+            echo json_encode(['success'=>false, 'error'=>"error_get_ideas_and_accounts"]);
+            exit;
+        }
+    } catch (\Throwable $th) {
+        $conn->close();
+
+        echo json_encode(['success'=>false, 'error'=>strval($th)]);
+        exit;
+    }
 
     function getInput($data) {
         $data = trim($data);
@@ -200,6 +208,4 @@
 
         return $data;
     }
-
-    exit;
 ?>

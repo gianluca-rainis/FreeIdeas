@@ -16,7 +16,19 @@
         $author = getInput($_POST["author"]);
         $data = getInput($_POST["data"]);
         $description = getInput($_POST["description"]);
-        
+        $link = getInput($_POST["link"]);
+        $type = getInput($_POST["type"]);
+        $creativity = getInput($_POST["creativity"]);
+        $status = getInput($_POST["status"]);
+        $additionalInfo = json_decode($_POST["additionalInfo"], true);
+        $logs = json_decode($_POST["logs"], true);
+    }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
+    
+    try {
         if (isset($_FILES["mainImage"]) && $_FILES["mainImage"]['error'] === UPLOAD_ERR_OK) {
             $mainImage = $_FILES["mainImage"];
 
@@ -29,14 +41,6 @@
         else {
             throw new Exception("Error in mainImage", 1);
         }
-
-        $link = getInput($_POST["link"]);
-
-        $type = getInput($_POST["type"]);
-        $creativity = getInput($_POST["creativity"]);
-        $status = getInput($_POST["status"]);
-
-        $additionalInfo = json_decode($_POST["additionalInfo"], true);
 
         if (isset($_FILES['additionalInfoImages']) && count($_FILES["additionalInfoImages"]['name']) > 0) {
             $additionalInfoImages = $_FILES['additionalInfoImages'];
@@ -65,8 +69,6 @@
             }
         }
 
-        $logs = json_decode($_POST["logs"], true);
-
         // Send idea data
         $stmt = $conn->prepare("INSERT INTO ideas (authorid, title, data, ideaimage, description, downloadlink) VALUES (?, ?, ?, ?, ?, ?);");
         $stmt->bind_param("ssssss", $author, $title, $data, $mainImageConverted, $description, $link);
@@ -84,7 +86,6 @@
                 $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaId);
                 
                 $stmt->execute();
-
                 $stmt->close();
             }
         }
@@ -102,8 +103,8 @@
             for ($i=0; $i < count($logs['dates']); $i++) { 
                 $stmt = $conn->prepare("INSERT INTO authorupdates (title, description, ideaid, data) VALUES (?, ?, ?, ?);");
                 $stmt->bind_param("ssis", $logs['titles'][$i], $logs['descriptions'][$i], $ideaId, $logs['dates'][$i]);
+                
                 $stmt->execute();
-
                 $stmt->close();
             }
         }
@@ -113,8 +114,8 @@
 
         $stmt = $conn->prepare("INSERT INTO idealabels (ideaid, type, creativity, status, saves, likes, dislike) VALUES (?, ?, ?, ?, ?, ?, ?);");
         $stmt->bind_param("isssiii", $ideaId, $type, $creativity, $status, $zero, $zero, $zero);
+        
         $stmt->execute();
-
         $stmt->close();
 
         // add default notification
@@ -122,7 +123,7 @@
         $stmt = $conn->prepare($sql);
 
         if (!$stmt) {
-            echo json_encode(null);
+            echo json_encode(["success"=>false, "error"=>"connect_to_database"]);
             exit;
         }
 
@@ -135,7 +136,6 @@
         $stmt->bind_param("isssi", $id, $titleNot, $description, $today, $zero);
 
         $stmt->execute();
-        
         $stmt->close();
 
         // Send notification to followers
@@ -172,7 +172,6 @@
                 $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 
                 $stmt->execute();
-                
                 $stmt->close();
             }
         }
@@ -191,25 +190,22 @@
             $notifications[] = $row;
         }
 
-        $stmt->close();
-
         $_SESSION['account']['notifications'] = $notifications;
 
-        echo json_encode(['success'=>true]);
+        $stmt->close();
         $conn->close();
+
+        echo json_encode(['success'=>true]);
         exit;
-    }
-    else {
-        echo json_encode(null);
+    } catch (\Throwable $th) {
+        echo json_encode(['success'=>false, "error"=>strval($th)]);
         exit;
     }
 
     function getInput($data) {
-        if (!is_array($data)) {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-        }
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
 
         return $data;
     }
@@ -254,6 +250,4 @@
 
         return $return;
     }
-
-    exit;
 ?>
