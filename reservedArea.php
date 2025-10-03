@@ -15,7 +15,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <!-- Dinamic head -->
         <title>FreeIdeas - Reserved Area</title>
-        <link rel="canonical" href="https://freeideas.duckdns.org/about.php" />
+        <link rel="canonical" href="https://freeideas.duckdns.org/reservedArea.php" />
     </head>
 
     <body>
@@ -26,7 +26,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         </nav>
 
         <header id="reservedAreaHeader" style="display: none;">
-            <img src="./images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" class="logo" />
+            <a href="./reservedArea.php">
+                <img src="./images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" class="logo" />
+            </a>
 
             <ul id="ulReservedAreaHeader">
                 <li class="liReservedAreaHeaderExt"><button class="accountsReservedAreaHeader">Accounts</button></li>
@@ -58,7 +60,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             </div>
 
             <form action="./api/reservedAreaLogin.php" method="POST" id="loginReservedAreaForm">
-                <ul>
+                <ul style="width: auto;">
                     <li>
                         <label for="usernameReservedArea">Username:</label>
                         <input type="text" name="username" id="usernameReservedArea" autocomplete="username" required>

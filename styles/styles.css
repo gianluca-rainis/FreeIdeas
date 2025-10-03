@@ -1657,6 +1657,7 @@ footer ul li a {
     word-break: break-all;
     background-color: #d31c1c !important;
     color: #ffffff;
+    position: relative;
 }
 
 #reservedAreaHeader {
@@ -1669,6 +1670,7 @@ footer ul li a {
     align-items: center;
     background-color: #000000;
     color: #d31c1c;
+    z-index: 100;
 }
 
 #reservedAreaHeader ul {
@@ -1770,7 +1772,7 @@ footer ul li a {
 #reservedAreaMain ul {
     list-style-type: none;
     text-align: center;
-    margin: 30px;
+    width: 100vw;
 }
 
 #reservedAreaMain ul li {
@@ -1787,6 +1789,96 @@ footer ul li a {
     border: 1px solid #d31c1c;
     border-radius: 7px;
     margin-top: 10px;
+}
+
+#searchSectionInReservedArea {
+    width: 100%;
+    background-color: #d31c1c;
+    display: flex;
+    justify-content: center;
+}
+
+#searchSectionInReservedArea #searchReservedArea {
+    width: 30%;
+    padding: 10px 5px 10px 5px;
+    margin-right: 50px;
+    border-radius: 10px;
+    border: 1px solid #2c3d27;
+    margin: 10px;
+    background-color: #272727;
+    color: #d31c1c;
+}
+
+.modifyAccountInfoAdmin {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    margin-left: 90%;
+    cursor: pointer;
+}
+
+.editDataSectionAdmin {
+    width: 100%;
+    justify-self: center;
+    word-break: break-all;
+    background-color: #d31c1c !important;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    position: relative;
+}
+
+#newuserNameAccountAdmin, #newuserImageAccountAdmin, #newuserAccountNameAdmin, #newuserSurnameAccountAdmin, #newemailAccountAdmin, #newdescriptionAccountAdmin {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
+}
+
+#dangerAreaAccountAdmin {
+    border: 1px solid #272727;
+    margin: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#dangerAreaAccountAdmin label {
+    color: #272727;
+    display: grid;
+    grid-column: 1 / 3;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+#dangerAreaAccountAdmin input {
+    background-color: rgb(200, 0, 0);
+    color: beige;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: large;
+    width: 80%;
+}
+
+#saveAccountInfoAdmin, #cancelAccountInfoAdmin {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin-top: 20px;
+    left: 0;
+    top: 0;
+    margin-left: 90%;
+    cursor: pointer;
+}
+
+#saveAccountInfoAdmin {
+    margin-left: 80%;
 }
 
 /* MEDIA QUERIES */
@@ -2214,6 +2306,18 @@ footer ul li a {
     .liReservedAreaHeaderRed {
         display: block;
     }
+    
+    .editDataSectionAdmin {
+        width: 90%;
+    }
+
+    #dangerAreaAccountAdmin {
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccountAdmin label {
+        grid-column: auto;
+    }
 }
 
 @media screen and (min-width: 471px) and (max-width: 600px) {
@@ -2426,6 +2530,18 @@ footer ul li a {
 
     .liReservedAreaHeaderRed {
         display: block;
+    }
+
+    .editDataSectionAdmin {
+        width: 90%;
+    }
+
+    #dangerAreaAccountAdmin {
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccountAdmin label {
+        grid-column: auto;
     }
 }
 
@@ -2719,6 +2835,30 @@ footer ul li a {
 
     .liReservedAreaHeaderRed {
         display: block;
+    }
+
+    #saveAccountInfoAdmin {
+        margin-left: 90%;
+    }
+
+    #cancelAccountInfoAdmin {
+        top: 40px;
+    }
+
+    .editDataSectionAdmin {
+        width: 90%;
+    }
+
+    #dangerAreaAccountAdmin {
+        grid-template-columns: 1fr;
+    }
+
+    #dangerAreaAccountAdmin label {
+        grid-column: auto;
+    }
+
+    #dangerAreaAccountAdmin input {
+        width: 100%;
     }
 }
 

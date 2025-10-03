@@ -110,17 +110,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutReservedAreaHeader = document.querySelectorAll(".logoutReservedAreaHeader");
     const menuReservedArea = document.getElementById("menuReservedArea");
 
+    // Create search section
+    const searchInReservedArea = document.createElement("section");
+    searchInReservedArea.id = "searchSectionInReservedArea";
+    
+    const inputSearchReservedArea = document.createElement("input");
+    inputSearchReservedArea.type = "search";
+    inputSearchReservedArea.placeholder = "Search";
+    inputSearchReservedArea.id = "searchReservedArea";
+
+    searchInReservedArea.appendChild(inputSearchReservedArea);
+
+    // reservedAreaMain.appendChild(searchInReservedArea); // Move in each gestor after the reset of the innerHTML
+
     // Accounts gestor
     accountsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
-        document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
+        reservedAreaMain.appendChild(searchInReservedArea);
 
+        document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
+        
         reservedAreaMain.appendChild(document.createElement("ul"));
 
         async function updateDisplaiedData() {
+            reservedAreaMain.querySelector("ul").remove();
+            reservedAreaMain.appendChild(document.createElement("ul"));
+
             async function sendData() {
                 try {
-                    const res = await fetch(`./api/getAccountDataForReservedArea.php`);
+                    const data = new FormData();
+                    data.append("search", inputSearchReservedArea.value);
+
+                    const res = await fetch(`./api/getAccountDataForReservedArea.php`, {
+                        method: 'POST',
+                        body: data
+                    });
 
                     const resp = await res.json();                    
 
@@ -157,14 +181,289 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="ideaAuthorSrc">${author}</p>
                             <p class="ideaAuthorSrc">${email}</p>
                             <p class="ideaAuthorSrc">${description}</p>`;
+                    
+                    const editAccountAdminButton = document.createElement("img");
+                    editAccountAdminButton.classList.add("modifyAccountInfoAdmin");
+                    editAccountAdminButton.alt = "Edit account";
+                    editAccountAdminButton.src = "./images/modify.svg";
+                    editAccountAdminButton.dataset.valueId = id; // data-value-id
+
+                    childOfListIdeas.appendChild(editAccountAdminButton);
 
                     reservedAreaMain.querySelector("ul").appendChild(childOfListIdeas);
                 }
+
+                document.querySelectorAll(".modifyAccountInfoAdmin").forEach(element => {
+                    element.addEventListener("click", async () => {
+                        const idAccountToEdit = element.dataset.valueId;
+                        let sqlData = null;
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idAccountToEdit);
+
+                            const res = await fetch(`./api/getAccountData.php`, {
+                                credentials: "include",
+                                method: "POST",
+                                body: formData
+                            });
+
+                            const data = await res.json();
+
+                            if (!data["success"]) {
+                                throw new Error(data["error"]);
+                            }
+                            else {
+                                sqlData = data["data"];
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            printError(421);
+                        }
+
+                        // Reset all
+                        reservedAreaMain.innerHTML = ``;
+
+                        document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
+
+                        const modifyAccountDataSection = document.createElement("section");
+                        modifyAccountDataSection.classList.add("editDataSectionAdmin");
+                        modifyAccountDataSection.innerHTML = `
+                                <img src="${sqlData["userimage"]!=null?sqlData["userimage"]:"./images/FreeIdeas.svg"}" alt="Account Image" class="ideaImageSrc">
+                                <p class="ideaAuthorSrc">ID: ${sqlData["id"]}</p>
+                                
+                                <img id="saveAccountInfoAdmin" alt="Save changes" src="./images/save${themeIsLight?"":"_Pro"}.svg">
+                                <img id="cancelAccountInfoAdmin" alt="Delete changes" src="./images/delete${themeIsLight?"":"_Pro"}.svg">
+
+                                <div id="newDataSetAccount">
+                                    <label>Image</label><input type="file" id="newuserImageAccountAdmin" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
+                                    <label>Username</label><input type="text" id="newuserNameAccountAdmin" maxlength="255" value="${sqlData["username"]}" required>
+                                    <label>Name</label><input type="text" id="newuserAccountNameAdmin" maxlength="255" value="${sqlData["name"]}" required>
+                                    <label>Surname</label><input type="text" id="newuserSurnameAccountAdmin" maxlength="255" value="${sqlData["surname"]}" required>
+                                    <label>Email</label><input type="text" id="newemailAccountAdmin" maxlength="255" value="${sqlData["email"]}" required>
+                                    <label>Description</label><textarea type="text" rows="8" cols="25" id="newdescriptionAccountAdmin" maxlength="1000">${sqlData["description"]==null?"":sqlData["description"]}</textarea>
+                                </div>
+                                <div id="dangerAreaAccountAdmin">
+                                    <label>Danger Area</label>
+                                    <input type="button" value="Make the account ${sqlData['public']==0?"Public":"Private"}" data-value="" id="dangerAreaAccountPublicPrivateAccountAdmin">
+                                    <input type="button" value="Change Password" id="dangerAreaAccountChangePasswordAdmin">
+                                    <input type="button" value="Delete Account" id="dangerAreaAccountDeleteAccountAdmin">
+                                </div>`;
+                        
+                        reservedAreaMain.appendChild(modifyAccountDataSection);
+
+                        const deleteAccountButton = document.getElementById("dangerAreaAccountDeleteAccountAdmin");
+                        deleteAccountButton.addEventListener("click", async () => {
+                            if (await confirm(`Are you sure that you want to delete this account? This operation cannot be undone.`)) {
+                                const dataId = new FormData();
+                                dataId.append('id', sqlData['id']);
+
+                                async function sendData(dataId) {
+                                    try {
+                                        const res = await fetch(`./api/deleteAccount.php`, {
+                                            credentials: "include",
+                                            method: 'POST',
+                                            body: dataId
+                                        });
+
+                                        const resp = await res.json();
+                                        
+                                        return resp;
+                                    } catch (error) {
+                                        console.error(error);
+                                        return null;
+                                    }
+                                }
+
+                                const result = await sendData(dataId);
+
+                                if (!result) {
+                                    printError(421);
+                                }
+                                else {
+                                    if (result['success']) {
+                                        window.location.href = "./reservedArea.php";
+                                    }
+                                    else {
+                                        console.error(result['error']);
+                                        printError(421);
+                                    }
+                                }
+                            }
+                        });
+
+                        const dangerAreaAccountPublicPrivateAccountAdmin = document.getElementById("dangerAreaAccountPublicPrivateAccountAdmin");
+                        dangerAreaAccountPublicPrivateAccountAdmin.addEventListener("click", async () => {
+                            let username = document.getElementById("newuserNameAccountAdmin").value;
+                            let name = document.getElementById("newuserAccountNameAdmin").value;
+                            let surname = document.getElementById("newuserSurnameAccountAdmin").value;
+                            let email = document.getElementById("newemailAccountAdmin").value;
+                            let description = document.getElementById("newdescriptionAccountAdmin").value;
+                            let image = null;
+
+                            if (document.getElementById("newuserImageAccountAdmin").files[0] != null) {
+                                image = document.getElementById("newuserImageAccountAdmin").files[0];
+                            }
+                            
+                            const data = new FormData();
+                            data.append('id', sqlData["id"]);
+                            data.append('username', username);
+                            data.append('name', name);
+                            data.append('surname', surname);
+                            data.append('description', description);
+                            data.append('email', email);
+                            data.append('public', sqlData['public']==0?1:0);
+                            
+                            if (image) {
+                                data.append('image', image);
+                            }
+
+                            async function sendData(data) {
+                                try {
+                                    const res = await fetch(`./api/modifyAccountInfoAdmin.php`, {
+                                        credentials: "include",
+                                        method: 'POST',
+                                        body: data
+                                    });
+
+                                    const resp = await res.json();
+
+                                    return resp;
+                                } catch (error) {
+                                    console.error(error);
+                                    return null;
+                                }
+                            }
+
+                            const result = await sendData(data);
+
+                            if (!result) {
+                                printError(421);
+                            }
+                            else {
+                                if (result['success']) {
+                                    window.location.href = "./reservedArea.php";
+                                }
+                                else {
+                                    console.error(result['error']);
+                                    printError(421);
+                                }
+                            }
+                        });
+
+                        const dangerAreaAccountChangePasswordAdmin = document.getElementById("dangerAreaAccountChangePasswordAdmin");
+                        dangerAreaAccountChangePasswordAdmin.addEventListener("click", async () => {
+                            const dataId = new FormData();
+                            dataId.append('email', sqlData['email']);
+
+                            async function sendData(dataId) {
+                                try {
+                                    const res = await fetch(`./api/changePassword.php`, {
+                                        credentials: "include",
+                                        method: 'POST',
+                                        body: dataId
+                                    });
+
+                                    const resp = await res.json();
+                                    
+                                    return resp;
+                                } catch (error) {
+                                    console.error(error);
+                                    return null;
+                                }
+                            }
+
+                            const result = await sendData(dataId);
+
+                            if (!result) {
+                                printError(421);
+                            }
+                            else {
+                                if (result['success']) {
+                                    alert("Reset password email was send successfully.");
+                                    window.location.href = "./reservedArea.php";
+                                }
+                                else {
+                                    console.error(result['error']);
+                                    printError(421);
+                                }
+                            }
+                        });
+
+                        const saveAccountInfoAdmin = document.getElementById("saveAccountInfoAdmin");
+                        saveAccountInfoAdmin.addEventListener("click", async () => {
+                            let username = document.getElementById("newuserNameAccountAdmin").value;
+                            let name = document.getElementById("newuserAccountNameAdmin").value;
+                            let surname = document.getElementById("newuserSurnameAccountAdmin").value;
+                            let email = document.getElementById("newemailAccountAdmin").value;
+                            let description = document.getElementById("newdescriptionAccountAdmin").value;
+                            let image = null;
+
+                            if (document.getElementById("newuserImageAccountAdmin").files[0] != null) {
+                                image = document.getElementById("newuserImageAccountAdmin").files[0];
+                            }
+                            
+                            const data = new FormData();
+                            data.append('id', sqlData["id"]);
+                            data.append('username', username);
+                            data.append('name', name);
+                            data.append('surname', surname);
+                            data.append('description', description);
+                            data.append('email', email);
+                            data.append('public', sqlData['public']);
+                            
+                            if (image) {
+                                data.append('image', image);
+                            }
+
+                            async function sendData(data) {
+                                try {
+                                    const res = await fetch(`./api/modifyAccountInfoAdmin.php`, {
+                                        credentials: "include",
+                                        method: 'POST',
+                                        body: data
+                                    });
+
+                                    const resp = await res.json();
+
+                                    return resp;
+                                } catch (error) {
+                                    console.error(error);
+                                    return null;
+                                }
+                            }
+
+                            const result = await sendData(data);
+
+                            if (!result) {
+                                printError(421);
+                            }
+                            else {
+                                if (result['success']) {
+                                    window.location.href = "./reservedArea.php";
+                                }
+                                else {
+                                    console.error(result['error']);
+                                    printError(421);
+                                }
+                            }
+                        });
+
+                        const cancelAccountInfoAdmin = document.getElementById("cancelAccountInfoAdmin");
+                        cancelAccountInfoAdmin.addEventListener("click", async () => {
+                            window.location.href = "./reservedArea.php";
+                        });
+                    });
+                });
             }
             else {
                 printError(421);
             }
         }
+
+        searchInReservedArea.addEventListener("input", () => {
+            updateDisplaiedData();
+        });
         
         updateDisplaiedData();
     })});
@@ -172,14 +471,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ideas gestor
     ideasReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        reservedAreaMain.appendChild(searchInReservedArea);
+
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
 
         reservedAreaMain.appendChild(document.createElement("ul"));
 
         async function updateDisplaiedData() {
+            reservedAreaMain.querySelector("ul").remove();
+            reservedAreaMain.appendChild(document.createElement("ul"));
+
             async function sendData() {
                 try {
-                    const res = await fetch(`./api/getIdeaDataForReservedArea.php`);
+                    const data = new FormData();
+                    data.append("search", inputSearchReservedArea.value);
+
+                    const res = await fetch(`./api/getIdeaDataForReservedArea.php`, {
+                        method: 'POST',
+                        body: data
+                    });
 
                     const resp = await res.json();                    
 
@@ -224,6 +534,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 printError(421);
             }
         }
+
+        searchInReservedArea.addEventListener("input", () => {
+            updateDisplaiedData();
+        });
         
         updateDisplaiedData();
     })});
@@ -231,14 +545,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Notifications gestor
     notificationsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        reservedAreaMain.appendChild(searchInReservedArea);
+
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
 
         reservedAreaMain.appendChild(document.createElement("ul"));
 
         async function updateDisplaiedData() {
+            reservedAreaMain.querySelector("ul").remove();
+            reservedAreaMain.appendChild(document.createElement("ul"));
+
             async function sendData() {
                 try {
-                    const res = await fetch(`./api/getNotificationsDataForReservedArea.php`);
+                    const data = new FormData();
+                    data.append("search", inputSearchReservedArea.value);
+
+                    const res = await fetch(`./api/getNotificationsDataForReservedArea.php`, {
+                        method: 'POST',
+                        body: data
+                    });
 
                     const resp = await res.json();                    
 
@@ -282,6 +607,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 printError(421);
             }
         }
+
+        searchInReservedArea.addEventListener("input", () => {
+            updateDisplaiedData();
+        });
         
         updateDisplaiedData();
     })});
@@ -289,14 +618,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reports gestor
     reportsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        reservedAreaMain.appendChild(searchInReservedArea);
+
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
 
         reservedAreaMain.appendChild(document.createElement("ul"));
 
         async function updateDisplaiedData() {
+            reservedAreaMain.querySelector("ul").remove();
+            reservedAreaMain.appendChild(document.createElement("ul"));
+
             async function sendData() {
                 try {
-                    const res = await fetch(`./api/getReportsDataForReservedArea.php`);
+                    const data = new FormData();
+                    data.append("search", inputSearchReservedArea.value);
+
+                    const res = await fetch(`./api/getReportsDataForReservedArea.php`, {
+                        method: 'POST',
+                        body: data
+                    });
 
                     const resp = await res.json();                    
 
@@ -338,6 +678,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 printError(421);
             }
         }
+
+        searchInReservedArea.addEventListener("input", () => {
+            updateDisplaiedData();
+        });
         
         updateDisplaiedData();
     })});

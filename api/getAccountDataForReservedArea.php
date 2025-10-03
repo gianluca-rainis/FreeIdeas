@@ -3,28 +3,65 @@
 
     include("./db_connection.php");
 
+    $search = "";
+    $searchParam = "";
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $search = getInput($_POST["search"]);
+        $searchParam = "%" . $search . "%";
+    } else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
+        exit;
+    }
+
     try {
-        $sql = "SELECT * FROM accounts ORDER BY id DESC;";
+        if ($search == "") {
+            $sql = "SELECT * FROM accounts ORDER BY id DESC;";
+            $stmt = $conn->prepare($sql);
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        $stmt = $conn->prepare($sql);
-        
-        $stmt->execute();
-        $result = $stmt->get_result();
+            $data = [];
 
-        $data = [];
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
 
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
+                echo json_encode(['success'=>true, 'data'=>$data]);
+            }
+            else {
+                echo json_encode(['success'=>false, 'error'=>"no_data_found"]);
             }
 
-            echo json_encode(['success'=>true, 'data'=>$data]);
+            $stmt->close();
         }
         else {
-            echo json_encode(['success'=>false, 'error'=>"no_data_found"]);
-        }
+            $sql = "SELECT * FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ? OR accounts.id LIKE ? OR accounts.email LIKE ?) ORDER BY id DESC;";
+            $stmt = $conn->prepare($sql);
 
-        $stmt->close();
+            $stmt->bind_param("sssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $data = [];
+
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+
+                echo json_encode(['success'=>true, 'data'=>$data]);
+            }
+            else {
+                echo json_encode(['success'=>true, 'data'=>[]]);
+            }
+
+            $stmt->close();
+        }
+        
         $conn->close();
         exit;
     } catch (\Throwable $th) {
