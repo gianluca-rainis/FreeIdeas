@@ -112,7 +112,6 @@
 
                 $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
                 $stmt->execute();
-                $stmt->close();
             }
         }
         
