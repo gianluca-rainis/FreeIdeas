@@ -113,19 +113,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create search section
     const searchInReservedArea = document.createElement("section");
     searchInReservedArea.id = "searchSectionInReservedArea";
-    
-    const inputSearchReservedArea = document.createElement("input");
-    inputSearchReservedArea.type = "search";
-    inputSearchReservedArea.placeholder = "Search";
-    inputSearchReservedArea.id = "searchReservedArea";
-
-    searchInReservedArea.appendChild(inputSearchReservedArea);
-
-    // reservedAreaMain.appendChild(searchInReservedArea); // Move in each gestor after the reset of the innerHTML
 
     // Accounts gestor
     accountsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        searchInReservedArea.innerHTML = ``;
+
+        const inputSearchReservedArea = document.createElement("input");
+        inputSearchReservedArea.type = "search";
+        inputSearchReservedArea.placeholder = "Search";
+        inputSearchReservedArea.id = "searchReservedArea";
+
+        searchInReservedArea.appendChild(inputSearchReservedArea);
         reservedAreaMain.appendChild(searchInReservedArea);
 
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
@@ -461,9 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        searchInReservedArea.addEventListener("input", () => {
-            updateDisplaiedData();
-        });
+        inputSearchReservedArea.addEventListener("input", updateDisplaiedData);
         
         updateDisplaiedData();
     })});
@@ -471,6 +468,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ideas gestor
     ideasReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        searchInReservedArea.innerHTML = ``;
+
+        const inputSearchReservedArea = document.createElement("input");
+        inputSearchReservedArea.type = "search";
+        inputSearchReservedArea.placeholder = "Search";
+        inputSearchReservedArea.id = "searchReservedArea";
+
+        searchInReservedArea.appendChild(inputSearchReservedArea);
         reservedAreaMain.appendChild(searchInReservedArea);
 
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
@@ -535,9 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        searchInReservedArea.addEventListener("input", () => {
-            updateDisplaiedData();
-        });
+        inputSearchReservedArea.addEventListener("input", updateDisplaiedData);
         
         updateDisplaiedData();
     })});
@@ -545,6 +548,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Notifications gestor
     notificationsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        searchInReservedArea.innerHTML = ``;
+
+        const inputSearchReservedArea = document.createElement("input");
+        inputSearchReservedArea.type = "search";
+        inputSearchReservedArea.placeholder = "Search";
+        inputSearchReservedArea.id = "searchReservedArea";
+
+        searchInReservedArea.appendChild(inputSearchReservedArea);
         reservedAreaMain.appendChild(searchInReservedArea);
 
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
@@ -608,9 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        searchInReservedArea.addEventListener("input", () => {
-            updateDisplaiedData();
-        });
+        inputSearchReservedArea.addEventListener("input", updateDisplaiedData);
         
         updateDisplaiedData();
     })});
@@ -618,6 +627,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reports gestor
     reportsReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         reservedAreaMain.innerHTML = ``;
+        searchInReservedArea.innerHTML = ``;
+
+        const inputSearchReservedArea = document.createElement("input");
+        inputSearchReservedArea.type = "search";
+        inputSearchReservedArea.placeholder = "Search";
+        inputSearchReservedArea.id = "searchReservedArea";
+
+        searchInReservedArea.appendChild(inputSearchReservedArea);
         reservedAreaMain.appendChild(searchInReservedArea);
 
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
@@ -679,9 +696,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        searchInReservedArea.addEventListener("input", () => {
-            updateDisplaiedData();
-        });
+        inputSearchReservedArea.addEventListener("input", updateDisplaiedData);
         
         updateDisplaiedData();
     })});
