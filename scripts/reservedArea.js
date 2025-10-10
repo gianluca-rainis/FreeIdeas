@@ -74,16 +74,12 @@ async function accessReservedArea() {
     document.getElementById("bannerDiv").remove();
     loginReservedAreaForm.remove();
     
-    reservedAreaMain.querySelector(".logo").style.width = "90%";
+    reservedAreaMain.querySelector(".logo").style.width = "70%";
     reservedAreaMain.querySelector(".logo").style.margin = "0";
-    reservedAreaMain.querySelector(".logo").style.paddingTop = "10%";
-    reservedAreaMain.querySelector(".logo").style.paddingBottom = "10%";
-    reservedAreaMain.querySelector(".logo").style.paddingLeft = "0";
-    reservedAreaMain.querySelector(".logo").style.paddingRight = "0";
 
     const text = document.createElement("h1");
     text.innerHTML = `Welcome <strong>${sessionData["username"]}</strong>.`;
-    text.style.paddingBottom = "10%";
+    text.style.paddingBottom = "5%";
     reservedAreaMain.appendChild(text);
 }
 

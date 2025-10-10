@@ -1645,7 +1645,8 @@ footer ul li a {
 /* RESERVED AREA */
 #reservedAreaMain {
     background-color: #272727;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     color: #d31c1c;
     text-align: center;
