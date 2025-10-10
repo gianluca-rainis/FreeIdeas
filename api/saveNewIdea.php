@@ -6,7 +6,7 @@
     session_start();
 
     $title = $author = $data = $description = $mainImage = $type = $creativity = 
-    $status = $additionalInfo = $additionalInfoImages = $link = $logs = $mainImageConverted = "";
+    $status = $additionalInfo = $additionalInfoImages = $link = $license = $logs = $mainImageConverted = "";
 
     $additionalInfoImagesConverted = [];
 
@@ -69,9 +69,18 @@
             }
         }
 
+        if (isset($_FILES['license']) && $_FILES['license']['error'] === UPLOAD_ERR_OK) {
+            $license = $_FILES['license'];
+
+            $license = getConvertedPdf($license);
+        }
+        else {
+            $license = null;
+        }
+
         // Send idea data
-        $stmt = $conn->prepare("INSERT INTO ideas (authorid, title, data, ideaimage, description, downloadlink) VALUES (?, ?, ?, ?, ?, ?);");
-        $stmt->bind_param("ssssss", $author, $title, $data, $mainImageConverted, $description, $link);
+        $stmt = $conn->prepare("INSERT INTO ideas (authorid, title, data, ideaimage, description, downloadlink, license) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        $stmt->bind_param("sssssss", $author, $title, $data, $mainImageConverted, $description, $link, $license);
         
         $stmt->execute();
 
@@ -242,6 +251,24 @@
                 default:
                     $return = null;
                     break;
+            }
+        }
+        else {
+            $return = null;
+        }
+
+        return $return;
+    }
+
+    function getConvertedPdf($pdf) {
+        $return = "";
+
+        if ($pdf && file_exists($pdf['tmp_name'])) {
+            if ($pdf['type'] === 'application/pdf') {
+                $return = 'data:application/pdf;base64,' . base64_encode(file_get_contents($pdf['tmp_name']));
+            }
+            else {
+                $return = null;
             }
         }
         else {

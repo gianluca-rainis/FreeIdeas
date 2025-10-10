@@ -113,11 +113,11 @@ else { // If is a new idea
 
             const data = await response.json();
 
-            if (data) {
+            if (data['success']) {
                 window.location.href = `./index.php`;
             }
             else {
-                throw new Error("ERROR_IN_PHP");
+                throw new Error(data['error']);
             }
         } catch (error) {
             console.error(error);

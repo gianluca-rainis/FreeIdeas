@@ -6,7 +6,7 @@
     session_start();
 
     $ideaid = $title = $author = $data = $description = $mainImage = $type = $creativity = 
-    $status = $additionalInfo = $additionalInfoImages = $link = $logs = $mainImageConverted = "";
+    $status = $additionalInfo = $additionalInfoImages = $link = $license = $logs = $mainImageConverted = "";
 
     $additionalInfoImagesConverted = [];
 
@@ -36,6 +36,15 @@
             else {
                 $mainImage = $_POST["mainImageData"];
                 $mainImageConverted = $mainImage;
+            }
+
+            if (isset($_FILES["license"]) && $_FILES["license"]['error'] === UPLOAD_ERR_OK) {
+                $license = $_FILES["license"];
+
+                $license = getConvertedPdf($license);
+            }
+            else {
+                $license = null;
             }
 
             if (count($additionalInfo['titles']) != 0) {
@@ -84,8 +93,8 @@
 
     try {
         // Send idea data
-        $stmt = $conn->prepare("UPDATE ideas SET title=?, data=?, ideaimage=?, description=?, downloadlink=? WHERE id=?;");
-        $stmt->bind_param("sssssi", $title, $data, $mainImageConverted, $description, $link, $ideaid);
+        $stmt = $conn->prepare("UPDATE ideas SET title=?, data=?, ideaimage=?, description=?, downloadlink=?, license=? WHERE id=?;");
+        $stmt->bind_param("ssssssi", $title, $data, $mainImageConverted, $description, $link, $license, $ideaid);
         
         $stmt->execute();
         $stmt->close();
@@ -281,6 +290,24 @@
                 default:
                     $return = null;
                     break;
+            }
+        }
+        else {
+            $return = null;
+        }
+
+        return $return;
+    }
+
+    function getConvertedPdf($pdf) {
+        $return = "";
+
+        if ($pdf && file_exists($pdf['tmp_name'])) {
+            if ($pdf['type'] === 'application/pdf') {
+                $return = 'data:application/pdf;base64,' . base64_encode(file_get_contents($pdf['tmp_name']));
+            }
+            else {
+                $return = null;
             }
         }
         else {
