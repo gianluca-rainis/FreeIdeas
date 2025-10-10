@@ -109,7 +109,7 @@ async function getIdeaDataFromDatabase() {
         const res = await fetch(`./api/data.php?id=${id}`);
         const data = await res.json();
 
-        if (data['success'] && data['success']==false) {
+        if (data && data['success'] == false) {
             throw new Error(data['error']);
         }
 
@@ -122,16 +122,25 @@ async function getIdeaDataFromDatabase() {
     }
 }
 
-async function getFreeIdeasLicense() {
+async function getFreeIdeasLicense(title, author) {
     try {
-        const res = await fetch(`./api/getFreeIdeasLicense.php`);
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('author', author);
+
+        const res = await fetch(`./api/getFreeIdeasLicense.php`, {
+            credentials: "include",
+            method: 'POST',
+            body: formData
+        });
+
         const data = await res.json();
 
-        if (data['success'] && data['success']==false) {
+        if (data && data['success'] == false) {
             throw new Error(data['error']);
         }
 
-        return data;
+        return data[0];
     } catch (error) {
         console.error(error);
         printError(421);
@@ -199,7 +208,8 @@ async function loadData2(SQLdata) {
             licensePdfEmbed.src = SQLdata['idea'][0].license;
         }
         else {
-            licensePdfEmbed.src = getFreeIdeasLicense();
+            const tempFreeIdeasLicense = await getFreeIdeasLicense(SQLdata['idea'][0].title, SQLdata['idea'][0].accountName);
+            licensePdfEmbed.src = tempFreeIdeasLicense;
         }
 
         if (SQLdata['info'].length != 0) { // Info with images

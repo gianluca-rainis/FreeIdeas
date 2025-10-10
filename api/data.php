@@ -86,6 +86,7 @@
         $conn->close();
     } catch (\Throwable $th) {
         echo json_encode(["success"=>false, "error"=>strval($th)]);
+        exit;
     }
 
     echo json_encode($return);
