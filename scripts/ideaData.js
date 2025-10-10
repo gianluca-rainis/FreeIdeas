@@ -122,6 +122,24 @@ async function getIdeaDataFromDatabase() {
     }
 }
 
+async function getFreeIdeasLicense() {
+    try {
+        const res = await fetch(`./api/getFreeIdeasLicense.php`);
+        const data = await res.json();
+
+        if (data['success'] && data['success']==false) {
+            throw new Error(data['error']);
+        }
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        printError(421);
+
+        return null;
+    }
+}
+
 async function loadData2(SQLdata) {
     try {
         ideaTitle.innerHTML = SQLdata['idea'][0].title;
@@ -179,6 +197,9 @@ async function loadData2(SQLdata) {
 
         if (SQLdata['idea'][0].license) { // License
             licensePdfEmbed.src = SQLdata['idea'][0].license;
+        }
+        else {
+            licensePdfEmbed.src = getFreeIdeasLicense();
         }
 
         if (SQLdata['info'].length != 0) { // Info with images
