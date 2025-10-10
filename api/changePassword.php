@@ -104,7 +104,7 @@
                 <p><strong>If you haven't asked for change your password report it immediatly.</strong></p>
                 <h2>To change your password press here:</h2>
                 <button>Change your password</button>
-                <img src="./images/FreeIdeas.svg" alt="FreeIdeas logo">
+                <img src="https://freeideas.duckdns.org/images/FreeIdeas.svg" alt="FreeIdeas logo">
             </body>
         </html>
         EOT;

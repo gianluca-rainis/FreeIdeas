@@ -240,7 +240,7 @@ async function changeDataAccount() { // Change the data of the account
             }
             else {
                 if (result['success']) {
-                    alert("Check your inbox for the password reset email.");
+                    await asyncAlert("Check your inbox for the password reset email.");
                     window.location.href = "./accountVoid.php";
                 }
                 else {

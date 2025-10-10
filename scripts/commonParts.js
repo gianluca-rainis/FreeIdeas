@@ -827,6 +827,94 @@ function alert(text) {
     }
 }
 
+async function asyncAlert(text) {
+    return new Promise((resolve) => {
+        try {
+            const blur = document.createElement("div");
+
+            blur.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                backdrop-filter: blur(5px);
+                background-color: rgba(255, 255, 255, 0.2); /* leggero overlay */
+                z-index: 9998;
+                pointer-events: all;
+            `;
+
+            const alert = document.createElement("div");
+            const textElement = document.createElement("div");
+            const okButton = document.createElement("input");
+
+            textElement.innerHTML = text;
+            okButton.type = "button";
+            okButton.value = "Ok";
+
+            alert.style.cssText = `
+                width: 500px;
+                height: 300px;
+                max-width: 80%;
+                max-height: 70%;
+                position: fixed;
+                top: 0;
+                align-self: anchor-center;
+                justify-self: center;
+                z-index: 10000;
+                background-color: white;
+                border-radius: 30px;
+                justify-self: center;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                background-color: ${themeIsLight?"#eaffbe":"#000000"};
+            `;
+
+            textElement.style.cssText = `
+                padding: 10px;
+                align-self: center;
+                top: 20%;
+                position: absolute;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+            `;
+
+            okButton.style.cssText = `
+                padding: 10px;
+                border-radius: 10px;
+                border: 0;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                width: 50%;
+                align-self: center;
+                position: relative;
+                bottom: -40%;
+                color: ${themeIsLight?"#2c3d27":"#cba95c"};
+                background-color: ${themeIsLight?"#f8f095":"#272727"};
+                cursor: pointer;
+            `;
+
+            function endAlert() {
+                document.body.removeChild(alert);
+                document.body.removeChild(blur);
+
+                resolve(true);
+            }
+
+            okButton.addEventListener("click", endAlert);
+            blur.addEventListener("click", endAlert);
+
+            alert.appendChild(textElement);
+            alert.appendChild(okButton);
+
+            document.body.appendChild(blur);
+            document.body.appendChild(alert);
+        } catch (error) {
+            console.error(error);
+            resolve(false);
+        }
+    });
+}
+
 async function confirm(text) {
     return new Promise((resolve) => {
         try {

@@ -379,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
                             else {
                                 if (result['success']) {
-                                    alert("Reset password email was send successfully.");
+                                    await asyncAlert("Reset password email was send successfully.");
                                     window.location.href = "./reservedArea.php";
                                 }
                                 else {
