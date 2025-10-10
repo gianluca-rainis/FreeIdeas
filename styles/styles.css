@@ -1032,6 +1032,23 @@ footer ul li a {
     background-color: rgb(200, 130, 130);
 }
 
+/* license */
+#licenseSection {
+    background-color: #99f57d;
+    margin-bottom: 10px;
+}
+
+#licenseTitle {
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#licensePdfEmbed {
+    width: 80%;
+    height: 40%;
+}
+
 /* dev logs */
 #devLogsSection {
     background-color: #f8f095;
@@ -1598,6 +1615,11 @@ footer ul li a {
     border-radius: 10px;
     border: 0;
     padding: 5px;
+}
+
+/* license */
+#licensePdfFile {
+    padding: 20px;
 }
 
 /* dev logs */
@@ -3164,6 +3186,10 @@ footer ul li a {
 
     #devLogsSection {
         background-color: #000000;
+    }
+
+    #licenseSection {
+        background-color: #272727;
     }
 
     .log {

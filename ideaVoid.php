@@ -81,6 +81,11 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 <a id="buttonlink" href=""><button id="downloadButton">Download</button></a>
             </section>
 
+            <section id="licenseSection">
+                <h3 id="licenseTitle">License</h3> <!-- MAIN INFO - LICENSE -->
+                <embed src="" id="licensePdfEmbed">
+            </section>
+
             <section id="devLogsSection">
                 <h3 id="logsName">Author's Log</h3> <!-- THIRD INFO - DEV LOGS ( ADD AFTER PUBLISHED ) -->
                 <ul id="logsList">

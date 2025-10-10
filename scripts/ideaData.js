@@ -30,6 +30,9 @@ const downloadSection = document.getElementById("downloadSection"); // The secti
 const buttonLink = document.getElementById("buttonlink"); // The a for the link of the button
 const downloadButton = document.getElementById("downloadButton"); // The button to the download
 
+const licenseSection = document.getElementById("licenseSection");
+const licensePdfEmbed = document.getElementById("licensePdfEmbed");
+
 const devLogsSection = document.getElementById("devLogsSection"); // The section with the logs
 // const logsTitleh3 = document.getElementById("logsName"); // The name of the log
 const logsListUl = document.getElementById("logsList"); // The ul of the logs
@@ -172,6 +175,10 @@ async function loadData2(SQLdata) {
         else {
             downloadSection.innerHTML = "";
             downloadSection.style.display = "none";
+        }
+
+        if (SQLdata['idea'][0].license) { // License
+            licensePdfEmbed.src = SQLdata['idea'][0].license;
         }
 
         if (SQLdata['info'].length != 0) { // Info with images

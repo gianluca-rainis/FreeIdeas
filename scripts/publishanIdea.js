@@ -29,6 +29,9 @@ let deleteAdditionalInfo = document.querySelectorAll(".deleteAdditionalInfo");
 
 const buttonlink = document.getElementById("buttonlink");
 
+const licensePdfFile = document.getElementById("licensePdfFile");
+const licenseDefaultLicense = document.getElementById("licenseDefaultLicense");
+
 const logsList = document.getElementById("logsList");
 const addLog = document.getElementById("addLog");
 let logTitle = document.querySelectorAll(".logTitle");
@@ -82,6 +85,7 @@ else { // If is a new idea
             formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
 
             formData.append("link", buttonlink.value);
+            formData.append("license", licensePdfFile.files[0]);
 
             const temp2Dates = [];
             const temp2Titles = [];
@@ -161,6 +165,26 @@ getMainImage.addEventListener("change", () => { // Main image gestor
         }
 
         reader.readAsDataURL(file);
+    }
+});
+
+licensePdfFile.addEventListener("change", () => { // Main image gestor
+    const file = licensePdfFile.files[0];
+
+    if (file) {
+        licenseDefaultLicense.checked = false;
+    }
+});
+
+licenseDefaultLicense.addEventListener("change", () => {
+    const file = licensePdfFile.files[0];
+
+    if (file) {
+        licensePdfFile.value = "";
+    }
+    else {
+        alert("Your idea must have a license!");
+        licenseDefaultLicense.checked = true;
     }
 });
 
@@ -487,6 +511,13 @@ async function modifyOldPageIfAuthorLoggedIn() {
                     formData.append("additionalInfo", JSON.stringify(additionalInfoJson));
 
                     formData.append("link", buttonlink.value);
+
+                    if (licensePdfFile.files[0]) {
+                        formData.append("license", licensePdfFile.files[0]);
+                    }
+                    else {
+                        formData.append("license", SQLdata['idea'][0].license);
+                    }
 
                     const temp2Dates = [];
                     const temp2Titles = [];

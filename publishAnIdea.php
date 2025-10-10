@@ -97,6 +97,15 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <input type="url" id="buttonlink" placeholder="Link to download data" maxlength="5000">
                 </section>
 
+                <section id="licenseSection">
+                    <h3 class="subtitles">License</h3> <!-- MAIN INFO - LICENSE -->
+                    <input type="file" id="licensePdfFile" accept=".pdf">
+                    <div style="padding: 10px;">
+                        <label for="licenseDefaultLicense">Use the FreeIdeas license: </label>
+                        <input type="checkbox" id="licenseDefaultLicense" name="licenseDefaultLicense" checked>
+                    </div>
+                </section>
+
                 <section id="devLogsSection">
                     <h3 class="subtitles">Author's Log</h3> <!-- THIRD INFO - DEV LOGS ( ADD AFTER PUBLISHED ) -->
                     <img src="./images/add.svg" alt="Add log" id="addLog">

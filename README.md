@@ -81,15 +81,15 @@ CREATE TABLE accounts (
 
 ### Ideas
 ```SQL
-+-----------------------------------------------------------------------+
-|                                ideas                                  |
-+-----------------------------------------------------------------------+
-| id | authorid | title | data | ideaimage | description | downloadlink |
-+----+----------+-------+------+-----------+-------------+--------------+
-|    |          |       |      |           |             |              |
-|    |          |       |      |           |             |              |
-|    |          |       |      |           |             |              |
-+----+----------+-------+------+-----------+-------------+--------------+
++---------------------------------------------------------------------------------+
+|                                     ideas                                       |
++---------------------------------------------------------------------------------+
+| id | authorid | title | data | ideaimage | description | downloadlink | license |
++----+----------+-------+------+-----------+-------------+------------------------+
+|    |          |       |      |           |             |              |         |
+|    |          |       |      |           |             |              |         |
+|    |          |       |      |           |             |              |         |
++----+----------+-------+------+-----------+-------------+------------------------+
 ```
 
 ```SQL
@@ -101,6 +101,7 @@ CREATE TABLE ideas (
     ideaimage mediumblob,
     description varchar(10000) NOT NULL,
     downloadlink varchar(5000),
+    license mediumblob,
     PRIMARY KEY (id),
     FOREIGN KEY (authorid) REFERENCES accounts(id)
 );
@@ -370,6 +371,7 @@ mysql> describe ideas;
 | ideaimage    | mediumblob     | YES  |     | NULL    |                |
 | description  | varchar(10000) | NO   |     | NULL    |                |
 | downloadlink | varchar(5000)  | YES  |     | NULL    |                |
+| license      | mediumblob     | YES  |     | NULL    |                |
 +--------------+----------------+------+-----+---------+----------------+
 
 mysql> describe additionalinfo;
