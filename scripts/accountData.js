@@ -257,12 +257,109 @@ error = false; // Error variable to print only the most specific error
 tempBoolControl = false;
 
 async function ldCurrentUserAccountData() {
-    const SQLdata = await getAccountDataFromDatabase((await getSessionDataAccountFromDatabase())['id']);
+    try {
+        const sessionData = await getSessionDataAccountFromDatabase();
 
-    if (SQLdata) {
-        loadData2(SQLdata);
-    }
-    else {
+        if (sessionData) {
+            const SQLdata = await getAccountDataFromDatabase(sessionData['id']);
+
+            if (SQLdata) {
+                loadData2(SQLdata);
+            }
+            else {
+                printError(421);
+            }
+        }
+        else {
+            try {
+                const main = document.querySelector("main");
+                main.style.position = "relative";
+
+                const blur = document.createElement("div");
+
+                blur.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    backdrop-filter: blur(5px);
+                    background-color: rgba(255, 255, 255, 0.2); /* leggero overlay */
+                    z-index: 90;
+                    pointer-events: all;
+                `;
+
+                const alert = document.createElement("div");
+                const titleTextElement = document.createElement("div");
+                const textElement = document.createElement("div");
+
+                titleTextElement.innerHTML = "You need to login before to view your account information!";
+                textElement.innerHTML = `Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a><br><br>If you have any questions you can contact us via email at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>`;
+
+                alert.style.cssText = `
+                    width: 500px;
+                    height: 300px;
+                    max-width: 80%;
+                    max-height: 70%;
+                    position: absolute;
+                    top: 0;
+                    align-self: anchor-center;
+                    justify-self: center;
+                    z-index: 91;
+                    background-color: white;
+                    border-radius: 30px;
+                    justify-self: center;
+                    justify-self: anchor-center;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                    background-color: ${themeIsLight?"#eaffbe":"#000000"};
+                `;
+
+                titleTextElement.style.cssText = `
+                    font-size: larger;
+                    padding: 10px;
+                    align-self: center;
+                    top: 20%;
+                    position: absolute;
+                    color: ${themeIsLight?"#2c3d27":"#cba95c"};
+                `;
+
+                textElement.style.cssText = `
+                    padding: 20px;
+                    align-self: center;
+                    top: 40%;
+                    position: absolute;
+                    color: ${themeIsLight?"#2c3d27":"#cba95c"};
+                `;
+
+                alert.appendChild(titleTextElement);
+                alert.appendChild(textElement);
+
+                main.appendChild(blur);
+                main.appendChild(alert);
+
+                /* Theme changer */
+                try {
+                    new MutationObserver(() => {
+                        alert.style.backgroundColor = `${themeIsLight?"#eaffbe":"#000000"}`;
+                        titleTextElement.style.color = `${themeIsLight?"#2c3d27":"#cba95c"}`;
+                        textElement.style.color = `${themeIsLight?"#2c3d27":"#cba95c"}`;
+                    }).observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['data-theme']
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    } catch (error) {
+        console.error(error);
         printError(421);
     }
 }
