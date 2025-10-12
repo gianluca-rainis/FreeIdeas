@@ -290,7 +290,7 @@ async function ldAccountData2() {
             const textElement = document.createElement("div");
 
             titleTextElement.innerHTML = "Before to publish an idea you need to login!";
-            textElement.innerHTML = `Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a><br><br>If you have any questions you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a>`;
+            textElement.innerHTML = `Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a><br><br>If you have any questions you can contact us via email at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>`;
 
             alert.style.cssText = `
                 width: 500px;

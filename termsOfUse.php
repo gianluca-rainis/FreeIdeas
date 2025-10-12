@@ -106,7 +106,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <h2>Contact Us</h2>
             <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
             <ul>
-            <li>By email: free_ideas@yahoo.com</li>
+            <li>By email: freeideas.site@gmail.com</li>
             </ul>
         </main>
 

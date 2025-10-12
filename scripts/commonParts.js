@@ -1169,7 +1169,7 @@ function printError(errorCode) { // Print the error in the main section
             <div style="padding-top: calc(5%);"></div>
             <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">We are sorry to inform you that the searched page aren't avable in this moment.</p>
             <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">If the problem persist contact the author of the page.</p>
-            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:free_ideas@yahoo.com">free_ideas@yahoo.com</a></p>
+            <p style="margin-top: 20px; margin-bottom: 20px; color: rgb(255, 130, 130);">For more info you can contact us via email at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a></p>
             <div style="padding-top: calc(6%);"></div>
         `;
 
