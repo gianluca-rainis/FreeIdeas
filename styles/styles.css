@@ -1889,6 +1889,10 @@ footer ul li a {
     width: 80%;
 }
 
+#loginReservedAreaForm {
+    width: 500px;
+}
+
 #saveAccountInfoAdmin, #cancelAccountInfoAdmin {
     width: 30px;
     height: 30px;
@@ -2566,6 +2570,10 @@ footer ul li a {
     #dangerAreaAccountAdmin label {
         grid-column: auto;
     }
+
+    #loginReservedAreaForm {
+        width: 80% !important;
+    }
 }
 
 @media screen and (max-width: 470px) {
@@ -2882,6 +2890,10 @@ footer ul li a {
 
     #dangerAreaAccountAdmin input {
         width: 100%;
+    }
+
+    #loginReservedAreaForm {
+        width: 80% !important;
     }
 }
 
