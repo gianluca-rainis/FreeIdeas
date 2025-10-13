@@ -1832,6 +1832,28 @@ footer ul li a {
     color: #d31c1c;
 }
 
+#searchSectionInReservedArea #createNotificationReservedArea {
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.newNotificationDivsAdmin {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    width: 80%;
+}
+
+.newNotificationDivsAdmin input {
+    height: 30px;
+    border: 0;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 15px;
+}
+
 .modifyAccountInfoAdmin, .deleteReportsAdmin, .deleteNotificationAdmin {
     width: 30px;
     height: 30px;
@@ -1892,7 +1914,7 @@ footer ul li a {
     width: 500px;
 }
 
-#saveAccountInfoAdmin, #cancelAccountInfoAdmin {
+#saveAccountInfoAdmin, #cancelAccountInfoAdmin, #saveNotificationInfoAdmin, #cancelNotificaitonInfoAdmin {
     width: 30px;
     height: 30px;
     position: absolute;
@@ -1903,7 +1925,7 @@ footer ul li a {
     cursor: pointer;
 }
 
-#saveAccountInfoAdmin {
+#saveAccountInfoAdmin, #saveNotificationInfoAdmin {
     margin-left: 80%;
 }
 

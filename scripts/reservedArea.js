@@ -227,8 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <img src="${sqlData["userimage"]!=null?sqlData["userimage"]:"./images/FreeIdeas.svg"}" alt="Account Image" class="ideaImageSrc">
                                 <p class="ideaAuthorSrc">ID: ${sqlData["id"]}</p>
                                 
-                                <img id="saveAccountInfoAdmin" alt="Save changes" src="./images/save${themeIsLight?"":"_Pro"}.svg">
-                                <img id="cancelAccountInfoAdmin" alt="Delete changes" src="./images/delete${themeIsLight?"":"_Pro"}.svg">
+                                <img id="saveAccountInfoAdmin" alt="Save changes" src="./images/save.svg">
+                                <img id="cancelAccountInfoAdmin" alt="Delete changes" src="./images/delete.svg">
 
                                 <div id="newDataSetAccount">
                                     <label>Image</label><input type="file" id="newuserImageAccountAdmin" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
@@ -551,7 +551,13 @@ document.addEventListener("DOMContentLoaded", () => {
         inputSearchReservedArea.placeholder = "Search";
         inputSearchReservedArea.id = "searchReservedArea";
 
+        const createNotificationReservedArea = document.createElement("img");
+        createNotificationReservedArea.src = "./images/add.svg";
+        createNotificationReservedArea.alt = "Create notification";
+        createNotificationReservedArea.id = "createNotificationReservedArea";
+
         searchInReservedArea.appendChild(inputSearchReservedArea);
+        searchInReservedArea.appendChild(createNotificationReservedArea);
         reservedAreaMain.appendChild(searchInReservedArea);
 
         document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
@@ -663,7 +669,108 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        async function createNewNotification() {
+            // Reset all
+            reservedAreaMain.innerHTML = ``;
+
+            document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
+
+            const newNotifiactionSection = document.createElement("section");
+            newNotifiactionSection.classList.add("ideaBoxScr");
+            newNotifiactionSection.classList.add("reservedAreaLiBoxInfo");
+            newNotifiactionSection.innerHTML = `
+            <img id="saveNotificationInfoAdmin" alt="Save changes" src="./images/save.svg">
+            <img id="cancelNotificaitonInfoAdmin" alt="Delete changes" src="./images/delete.svg">
+            
+            <div class="ideaTitleSrc newNotificationDivsAdmin">
+                <label for="newNotificationTitle">Title</label>
+                <input type="text" name="title" placeholder="Title" id="newNotificationTitle">
+            </div>
+            <div class="ideaAuthorSrc newNotificationDivsAdmin">
+                <label for="newNotificationAccountId">Account ID</label>
+                <input type="number" name="accountId" placeholder="Account ID" id="newNotificationAccountId">
+            </div>
+            <div class="ideaAuthorSrc newNotificationDivsAdmin">
+                <label for="newNotificationDate">Date</label>
+                <input type="date" name="date" placeholder="Date" id="newNotificationDate">
+            </div>
+            <div class="ideaAuthorSrc newNotificationDivsAdmin">
+                <label for="newNotificationDescription">Description</label>
+                <input type="text" name="description" placeholder="Description" id="newNotificationDescription">
+            </div>
+            <div class="ideaAuthorSrc newNotificationDivsAdmin">
+                <label for="newNotificationStatus">Status</label>
+                <input type="checkbox" name="status" id="newNotificationStatus">
+                <p id="statusResult">Not read</p>
+            </div>`;
+            
+            reservedAreaMain.appendChild(newNotifiactionSection);
+
+            document.getElementById("newNotificationStatus").addEventListener("click", () => {
+                document.getElementById("statusResult").innerHTML = document.getElementById("newNotificationStatus").checked?"Read":"Not read";
+            });
+
+            const saveNotificationInfoAdmin = document.getElementById("saveNotificationInfoAdmin");
+            saveNotificationInfoAdmin.addEventListener("click", async () => {
+                let title = document.getElementById("newNotificationTitle").value;
+                let accountId = document.getElementById("newNotificationAccountId").value;
+                let date = document.getElementById("newNotificationDate").value;
+                let description = document.getElementById("newNotificationDescription").value;
+                let status = document.getElementById("newNotificationStatus").checked?1:0;
+
+                if (!title || !accountId || !date || !description) {
+                    alert("You need to insert a value for each box in the form!");
+                    return;
+                }
+                
+                const data = new FormData();
+                data.append('title', title);
+                data.append('accountId', accountId);
+                data.append('date', date);
+                data.append('description', description);
+                data.append('status', status);
+
+                async function sendData(data) {
+                    try {
+                        const res = await fetch(`./api/createNewNotificationAdmin.php`, {
+                            credentials: "include",
+                            method: 'POST',
+                            body: data
+                        });
+
+                        const resp = await res.json();
+
+                        return resp;
+                    } catch (error) {
+                        console.error(error);
+                        return null;
+                    }
+                }
+
+                const result = await sendData(data);
+
+                if (!result) {
+                    printError(421);
+                }
+                else {
+                    if (result['success']) {
+                        window.location.href = "./reservedArea.php";
+                    }
+                    else {
+                        console.error(result['error']);
+                        printError(421);
+                    }
+                }
+            });
+            
+            const cancelNotificaitonInfoAdmin = document.getElementById("cancelNotificaitonInfoAdmin");
+            cancelNotificaitonInfoAdmin.addEventListener("click", async () => {
+                window.location.href = "./reservedArea.php";
+            });
+        }
+
         inputSearchReservedArea.addEventListener("input", updateDisplaiedData);
+        createNotificationReservedArea.addEventListener("click", createNewNotification);
         
         updateDisplaiedData();
     })});
