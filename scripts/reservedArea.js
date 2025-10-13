@@ -607,8 +607,56 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="ideaAuthorSrc">${description}</p>
                             <p class="ideaAuthorSrc">Status: ${status?"Read":"Not read"}</p>`;
 
+                    const deleteNotificationAdmin = document.createElement("img");
+                    deleteNotificationAdmin.classList.add("deleteNotificationAdmin");
+                    deleteNotificationAdmin.alt = "Delete notification";
+                    deleteNotificationAdmin.src = "./images/delete.svg";
+                    deleteNotificationAdmin.dataset.valueId = id; // data-value-id
+
+                    childOfListIdeas.appendChild(deleteNotificationAdmin);
+
                     reservedAreaMain.querySelector("ul").appendChild(childOfListIdeas);
                 }
+
+                document.querySelectorAll(".deleteNotificationAdmin").forEach(element => {
+                    element.addEventListener("click", async () => {
+                        if (await confirm("Are you sure that you want to delete this notification?")) {
+                            const idNotificationToDelete = element.dataset.valueId;
+                            let isDeleted = false;
+
+                            try {
+                                const formData = new FormData();
+                                formData.append("id", idNotificationToDelete);
+
+                                const res = await fetch(`./api/deleteNotificationAdmin.php`, {
+                                    credentials: "include",
+                                    method: "POST",
+                                    body: formData
+                                });
+
+                                const data = await res.json();
+
+                                if (data) {
+                                    if (!data["success"]) {
+                                        throw new Error(data["error"]);
+                                    }
+                                    else {
+                                        isDeleted = true;
+                                    }
+                                } else {
+                                    throw new Error("generic_error_in_delete_notification");
+                                }
+                            } catch (error) {
+                                console.error(error);
+                                printError(421);
+                            }
+
+                            if (isDeleted) {
+                                element.closest("li").remove();
+                            }
+                        }
+                    });
+                });
             }
             else {
                 printError(421);
@@ -684,8 +732,56 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="ideaAuthorSrc">${ideaid!=0?`Idea id: ${ideaid}`:`Account id: ${accountid}`}</p>
                             <p class="ideaAuthorSrc">${feedback}</p>`;
 
+                    const deleteReportsAdmin = document.createElement("img");
+                    deleteReportsAdmin.classList.add("deleteReportsAdmin");
+                    deleteReportsAdmin.alt = "Delete report";
+                    deleteReportsAdmin.src = "./images/delete.svg";
+                    deleteReportsAdmin.dataset.valueId = id; // data-value-id
+
+                    childOfListIdeas.appendChild(deleteReportsAdmin);
+
                     reservedAreaMain.querySelector("ul").appendChild(childOfListIdeas);
                 }
+
+                document.querySelectorAll(".deleteReportsAdmin").forEach(element => {
+                    element.addEventListener("click", async () => {
+                        if (await confirm("Are you sure that you want to delete this report?")) {
+                            const idReportToDelete = element.dataset.valueId;
+                            let isDeleted = false;
+
+                            try {
+                                const formData = new FormData();
+                                formData.append("id", idReportToDelete);
+
+                                const res = await fetch(`./api/deleteReportAdmin.php`, {
+                                    credentials: "include",
+                                    method: "POST",
+                                    body: formData
+                                });
+
+                                const data = await res.json();
+
+                                if (data) {
+                                    if (!data["success"]) {
+                                        throw new Error(data["error"]);
+                                    }
+                                    else {
+                                        isDeleted = true;
+                                    }
+                                } else {
+                                    throw new Error("generic_error_in_delete_report");
+                                }
+                            } catch (error) {
+                                console.error(error);
+                                printError(421);
+                            }
+
+                            if (isDeleted) {
+                                element.closest("li").remove();
+                            }
+                        }
+                    });
+                });
             }
             else {
                 printError(421);

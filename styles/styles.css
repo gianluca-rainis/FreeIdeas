@@ -1832,7 +1832,7 @@ footer ul li a {
     color: #d31c1c;
 }
 
-.modifyAccountInfoAdmin {
+.modifyAccountInfoAdmin, .deleteReportsAdmin, .deleteNotificationAdmin {
     width: 30px;
     height: 30px;
     position: absolute;
