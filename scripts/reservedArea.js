@@ -97,6 +97,33 @@ async function getAdminSessionData() { // Get the session data on admin info
     }
 }
 
+async function getFreeIdeasLicense(title, author) {
+    try {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('author', author);
+
+        const res = await fetch(`./api/getFreeIdeasLicense.php`, {
+            credentials: "include",
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (data && data['success'] == false) {
+            throw new Error(data['error']);
+        }
+
+        return data[0];
+    } catch (error) {
+        console.error(error);
+        printError(421);
+
+        return null;
+    }
+}
+
 // Buttons function
 document.addEventListener("DOMContentLoaded", () => {
     const accountsReservedAreaHeader = document.querySelectorAll(".accountsReservedAreaHeader");
@@ -528,8 +555,247 @@ document.addEventListener("DOMContentLoaded", () => {
                             <p class="ideaAuthorSrc">${description}</p>
                             <p class="ideaAuthorSrc">${downloadlink}</p>`;
 
+                    const editIdeaAdminButton = document.createElement("img");
+                    editIdeaAdminButton.classList.add("modifyIdeaInfoAdmin");
+                    editIdeaAdminButton.alt = "Edit idea";
+                    editIdeaAdminButton.src = "./images/modify.svg";
+                    editIdeaAdminButton.dataset.valueId = id; // data-value-id
+
+                    childOfListIdeas.appendChild(editIdeaAdminButton);
+
                     reservedAreaMain.querySelector("ul").appendChild(childOfListIdeas);
                 }
+
+                document.querySelectorAll(".modifyIdeaInfoAdmin").forEach(element => {
+                    element.addEventListener("click", async () => {
+                        const idIdeaToEdit = element.dataset.valueId;
+
+                        let tempFreeIdeasLicense = null;
+                        let sqlData = null;
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idIdeaToEdit);
+
+                            const res = await fetch(`./api/data.php`, {
+                                credentials: "include",
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            const data = await res.json();
+
+                            if (data["success"] && data["success"] == false) {
+                                throw new Error(data["error"]);
+                            }
+                            else {
+                                sqlData = data;
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            printError(421);
+                        }
+
+                        tempFreeIdeasLicense = await getFreeIdeasLicense(sqlData['idea'][0].title, sqlData['idea'][0].accountName)
+
+                        // Reset all
+                        reservedAreaMain.innerHTML = ``;
+
+                        document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
+
+                        const modifyIdeaDataSection = document.createElement("section");
+                        modifyIdeaDataSection.classList.add("editDataSectionAdmin");
+                        modifyIdeaDataSection.innerHTML = `
+                                <img src="${sqlData['idea'][0].ideaimage}" alt="Idea Image" class="ideaImageSrc">
+                                <p class="ideaAuthorSrc">ID: ${sqlData['idea'][0].id}</p>
+                                <p class="ideaAuthorSrc">Author Name: ${sqlData['idea'][0].accountName}</p>
+                                
+                                <img id="saveIdeaInfoAdmin" alt="Save changes" src="./images/save.svg">
+                                <img id="cancelIdeaInfoAdmin" alt="Delete changes" src="./images/delete.svg">
+
+                                <div id="newDataSetAccount">
+                                    <label>Image</label><input type="file" id="newideaImageAdmin" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp">
+                                    <label>Title</label><input type="text" id="newideaTitleAdmin" maxlength="255" value="${sqlData['idea'][0].title}" required>
+                                    <label>Author ID</label><input type="number" id="newideaAuthorIdAdmin" value="${sqlData['idea'][0].accountId}" required>
+                                    <label>Type of project</label><input type="text" id="newideaTypeAdmin" maxlength="500" value="${sqlData['idealabels'][0].type}" required>
+                                    <label>Creativity Type</label><input type="text" id="newideaCreativityAdmin" maxlength="500" value="${sqlData['idealabels'][0].creativity}" required>
+                                    <label>Project Status</label><input type="text" id="newideaStatusAdmin" maxlength="500" value="${sqlData['idealabels'][0].status}" required>
+                                    <label>Saves</label><input type="number" id="newideaSavesAdmin" value="${sqlData['idealabels'][0].saves}" required>
+                                    <label>Likes</label><input type="number" id="newideaLikesAdmin" value="${sqlData['idealabels'][0].likes}" required>
+                                    <label>Dislikes</label><input type="number" id="newideaDislikesAdmin" value="${sqlData['idealabels'][0].dislike}" required>
+                                    <label>Description</label><textarea type="text" rows="8" cols="25" id="newideaDescriptionAdmin" maxlength="10000">${sqlData['idea'][0].description}</textarea>
+                                    <label>External link</label><input type="url" id="newideaLinkAdmin" maxlength="5000" value="${sqlData['idea'][0].downloadlink}" required>
+                                    <label>License</label>
+                                    <div>
+                                        <embed src="${sqlData['idea'][0].license?sqlData['idea'][0].license:tempFreeIdeasLicense}" id="licensePdfEmbed">
+                                        <input type="file" id="newIdealicensePdfFileAdmin" accept=".pdf">
+                                        <div style="padding: 10px;">
+                                            <label for="licenseDefaultLicense">Use the FreeIdeas license: </label>
+                                            <input type="checkbox" id="licenseDefaultLicense" name="licenseDefaultLicense" ${sqlData['idea'][0].license?"":"checked"}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="dangerAreaAccountAdmin">
+                                    <label>Danger Area</label>
+                                    <input type="button" value="Delete Idea" id="dangerAreaDeleteIdeaAdmin">
+                                </div>`;
+                        
+                        reservedAreaMain.appendChild(modifyIdeaDataSection);
+
+                        document.getElementById("newIdealicensePdfFileAdmin").addEventListener("change", () => { // Main image gestor
+                            const file = document.getElementById("newIdealicensePdfFileAdmin").files[0];
+
+                            if (file) {
+                                document.getElementById("licenseDefaultLicense").checked = false;
+                            }
+                        });
+
+                        document.getElementById("licenseDefaultLicense").addEventListener("change", () => {
+                            const file = document.getElementById("newIdealicensePdfFileAdmin").files[0];
+
+                            if (file) {
+                                document.getElementById("newIdealicensePdfFileAdmin").value = "";
+                            }
+                            else {
+                                !document.getElementById("licenseDefaultLicense").checked?alert("The idea must have a license!"):null;
+                                document.getElementById("licenseDefaultLicense").checked = true;
+                            }
+                        });
+
+                        const deleteIdeaButton = document.getElementById("dangerAreaDeleteIdeaAdmin");
+                        deleteIdeaButton.addEventListener("click", async () => {
+                            if (await confirm(`Are you sure that you want to delete this idea? This operation cannot be undone.`)) {
+                                const dataId = new FormData();
+                                dataId.append('id', sqlData['idea'][0].id);
+
+                                async function sendData(dataId) {
+                                    try {
+                                        const res = await fetch(`./api/deleteIdeaAdmin.php`, {
+                                            credentials: "include",
+                                            method: 'POST',
+                                            body: dataId
+                                        });
+
+                                        const resp = await res.json();
+                                        
+                                        return resp;
+                                    } catch (error) {
+                                        console.error(error);
+                                        return null;
+                                    }
+                                }
+
+                                const result = await sendData(dataId);
+
+                                if (!result) {
+                                    printError(421);
+                                }
+                                else {
+                                    if (result['success']) {
+                                        window.location.href = "./reservedArea.php";
+                                    }
+                                    else {
+                                        console.error(result['error']);
+                                        printError(421);
+                                    }
+                                }
+                            }
+                        });
+
+                        const saveIdeaInfoAdmin = document.getElementById("saveIdeaInfoAdmin");
+                        saveIdeaInfoAdmin.addEventListener("click", async () => {
+                            let image = null;
+                            let license = null;
+
+                            let title = document.getElementById("newideaTitleAdmin").value;
+                            let authorid = document.getElementById("newideaAuthorIdAdmin").value;
+                            let type = document.getElementById("newideaTypeAdmin").value;
+                            let creativity = document.getElementById("newideaCreativityAdmin").value;
+                            let status = document.getElementById("newideaStatusAdmin").value;
+                            let saves = document.getElementById("newideaSavesAdmin").value;
+                            let likes = document.getElementById("newideaLikesAdmin").value;
+                            let dislikes = document.getElementById("newideaDislikesAdmin").value;
+                            let description = document.getElementById("newideaDescriptionAdmin").value;
+                            let link = document.getElementById("newideaLinkAdmin").value;
+
+                            if (document.getElementById("newideaImageAdmin").files[0] != null) {
+                                image = document.getElementById("newideaImageAdmin").files[0];
+                            }
+
+                            if (document.getElementById("newIdealicensePdfFileAdmin").files[0] != null) {
+                                license = document.getElementById("newIdealicensePdfFileAdmin").files[0];
+                            }
+                            
+                            const data = new FormData();
+                            data.append('id', idIdeaToEdit);
+                            data.append('title', title);
+                            data.append('authorid', authorid);
+                            data.append('type', type);
+                            data.append('creativity', creativity);
+                            data.append('status', status);
+                            data.append('saves', saves);
+                            data.append('likes', likes);
+                            data.append('dislikes', dislikes);
+                            data.append('description', description);
+                            data.append('link', link);
+                            
+                            if (image) {
+                                data.append('mainImageFile', image);
+                            }
+                            else {
+                                data.append('mainImageData', sqlData['idea'][0].ideaimage);
+                            }
+
+                            if (license) {
+                                data.append('license', license);
+                            }
+                            else {
+                                if (document.getElementById("licenseDefaultLicense").checked) {
+                                    data.append('licenseData', null);
+                                } else {
+                                    data.append('licenseData', sqlData['idea'][0].license);
+                                }
+                            }
+
+                            async function sendData(data) {
+                                try {
+                                    const res = await fetch(`./api/modifyIdeaInfoAdmin.php`, {
+                                        credentials: "include",
+                                        method: 'POST',
+                                        body: data
+                                    });
+
+                                    const resp = await res.json();
+
+                                    return resp;
+                                } catch (error) {
+                                    console.error(error);
+                                    return null;
+                                }
+                            }
+
+                            const result = await sendData(data);
+
+                            if (!result) {
+                                printError(421);
+                            }
+                            else {
+                                if (result['success']) {
+                                    window.location.href = "./reservedArea.php";
+                                }
+                                else {
+                                    console.error(result['error']);
+                                    printError(421);
+                                }
+                            }
+                        });
+
+                        const cancelIdeaInfoAdmin = document.getElementById("cancelIdeaInfoAdmin");
+                        cancelIdeaInfoAdmin.addEventListener("click", async () => {
+                            window.location.href = "./reservedArea.php";
+                        });
+                    });
+                });
             }
             else {
                 printError(421);

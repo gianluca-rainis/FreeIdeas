@@ -202,17 +202,17 @@
 
         // Send notification to followers
         $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
-        $state = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-        if (!$state) {
+        if (!$stmt) {
             echo json_encode(["success"=>false, "error"=>"follow_error"]);
             exit;
         }
 
-        $state->bind_param("ii", $_SESSION['account']['id'], $ideaid);
+        $stmt->bind_param("ii", $_SESSION['account']['id'], $ideaid);
 
-        $state->execute();
-        $result = $state->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -238,7 +238,7 @@
             }
         }
         
-        $state->close();
+        $stmt->close();
         $conn->close();
 
         echo json_encode(['success'=>true]);

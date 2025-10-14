@@ -569,7 +569,15 @@ async function modifyOldPageIfAuthorLoggedIn() {
 
 async function getIdeaDataFromDatabase() {
     try {
-        const res = await fetch(`./api/data.php?id=${id}`);
+        const formData = new FormData();
+        formData.append("id", id);
+
+        const res = await fetch(`./api/data.php`, {
+            credentials: "include",
+            method: 'POST',
+            body: formData
+        });
+        
         const data = await res.json();
 
         return data;

@@ -55,40 +55,6 @@
             exit;
         }
     }
-    else {
-        if (!isset($_GET['account']) || !is_numeric($_GET['account'])) {
-            echo json_encode(["success"=>false, "error"=>"get_account_data"]);
-            exit;
-        }
-
-        $id = $_GET['account'];
-
-        $stmt = $conn->prepare("SELECT * FROM accounts WHERE id = ?;");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $row = $result->fetch_assoc();
-
-        if (!$row) {
-            $stmt->close();
-            $conn->close();
-
-            echo json_encode(["success"=>false, "error"=>"get_account_id_from_database"]);
-            exit;
-        }
-
-        $_SESSION['account']['id'] = $row['id'];
-        $_SESSION['account']['email'] = $row['email'];
-        $_SESSION['account']['name'] = $row['name'];
-        $_SESSION['account']['surname'] = $row['surname'];
-        $_SESSION['account']['userimage'] = $row['userimage'];
-        $_SESSION['account']['description'] = $row['description'];
-        $_SESSION['account']['username'] = $row['username'];
-        $_SESSION['account']['public'] = $row['public'];
-
-        $stmt->close();
-    }
 
     /* Notifications loading */
     $id = $_SESSION['account']['id'];

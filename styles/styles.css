@@ -1854,7 +1854,7 @@ footer ul li a {
     font-size: 15px;
 }
 
-.modifyAccountInfoAdmin, .deleteReportsAdmin, .deleteNotificationAdmin {
+.modifyAccountInfoAdmin, .modifyIdeaInfoAdmin, .deleteReportsAdmin, .deleteNotificationAdmin {
     width: 30px;
     height: 30px;
     position: absolute;
@@ -1875,7 +1875,9 @@ footer ul li a {
     position: relative;
 }
 
-#newuserNameAccountAdmin, #newuserImageAccountAdmin, #newuserAccountNameAdmin, #newuserSurnameAccountAdmin, #newemailAccountAdmin, #newdescriptionAccountAdmin {
+#newuserNameAccountAdmin, #newuserImageAccountAdmin, #newuserAccountNameAdmin, #newuserSurnameAccountAdmin, #newemailAccountAdmin, #newdescriptionAccountAdmin,
+#newideaImageAdmin, #newideaAuthorIdAdmin, #newideaSavesAdmin, #newideaLikesAdmin, #newideaDislikesAdmin, #newideaDescriptionAdmin, #newideaTitleAdmin,
+#newideaTypeAdmin, #newideaCreativityAdmin, #newideaStatusAdmin, #newideaLinkAdmin, #newIdealicensePdfFileAdmin {
     margin-top: 20px;
     margin-bottom: 20px;
     width: 100%;
@@ -1914,7 +1916,7 @@ footer ul li a {
     width: 500px;
 }
 
-#saveAccountInfoAdmin, #cancelAccountInfoAdmin, #saveNotificationInfoAdmin, #cancelNotificaitonInfoAdmin {
+#saveAccountInfoAdmin, #cancelAccountInfoAdmin, #saveNotificationInfoAdmin, #cancelNotificaitonInfoAdmin, #saveIdeaInfoAdmin, #cancelIdeaInfoAdmin {
     width: 30px;
     height: 30px;
     position: absolute;
@@ -1925,7 +1927,7 @@ footer ul li a {
     cursor: pointer;
 }
 
-#saveAccountInfoAdmin, #saveNotificationInfoAdmin {
+#saveAccountInfoAdmin, #saveNotificationInfoAdmin, #saveIdeaInfoAdmin {
     margin-left: 80%;
 }
 
