@@ -1,4 +1,7 @@
-# FreeIdeas
+# <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a><a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>
+
+# A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a>
+
 FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
 You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
 The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license).
@@ -12,7 +15,9 @@ If you have an idea that you want to share with the world, or if you are looking
 - Ask for help on your ideas
 - Browse through the ideas of others
 - Open to everyone
-- Free to use
+- Simple to use
+- Follow your favourites ideas and authors
+- Personalized license for your ideas
 
 ## 🧑‍💻 Author
 The author of the project is Gianluca Rainis ( gianluca-rainis on GitHub ).
@@ -40,10 +45,7 @@ Users and contributors are strongly encouraged to review the full license terms 
 
 Previous releases distributed under the old FreeIdeas License remain available under those original terms.
 
-## 🌍 Languages
-FreeIdeas is written in HTML, CSS and JavaScript.
-
-## ֎🇦🇮 AI Disclaimer
+## ֎ AI Disclaimer
 THE AI WAS USED IN THIS PROJECT ONLY IN THE DEBUG PHASE.
 
 NO TYPE OF AI WAS USED FOR THE DESIGN, DEVELOPMENT OR ACTUAL IMPLEMENTATION FOR THIS PROJECT.
