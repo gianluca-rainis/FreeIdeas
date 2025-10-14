@@ -1,6 +1,6 @@
-# <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a><a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>
+<div style="text-align: center;"><img src="./images/logo/FreeIdeas.svg" style="width: 50%;"></div>
 
-# A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a>
+<h1 style="text-align: center;">A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a></h1>
 
 FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
 You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
