@@ -2446,6 +2446,33 @@ footer ul li a {
     }
 
     /* index */
+    #whatisFreeIdeas {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    #whatisFreeIdeas h2 {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    #whatisFreeIdeas #lastIdeasVertical1, #whatisFreeIdeas #lastIdeasVertical2 {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
     #whatisFreeIdeas #description, #helpIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
@@ -2688,6 +2715,33 @@ footer ul li a {
     }
 
     /* index */
+    #whatisFreeIdeas {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    #whatisFreeIdeas h2 {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    #whatisFreeIdeas #lastIdeasVertical1, #whatisFreeIdeas #lastIdeasVertical2 {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+    
     #whatisFreeIdeas #description, #helpIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;

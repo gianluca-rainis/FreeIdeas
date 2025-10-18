@@ -125,9 +125,7 @@ function startAutoScroll() {
 }
 
 /* ============= TOGGLE WINDOW SIZE ============= */
-window.addEventListener("resize", () => {
-    toggleWindowSize();
-});
+window.addEventListener("resize", toggleWindowSize);
 
 function toggleWindowSize() {
     const scrollMode = window.innerWidth>760?"vertical":"horizontal";
