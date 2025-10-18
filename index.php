@@ -34,8 +34,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <main>
             <section id="whatisFreeIdeas">
-                <h2>What is FreeIdeas?</h2>
-                <ul id="lastIdeas">
+                <ul id="lastIdeasVertical1">
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
@@ -75,11 +74,40 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
+                </ul>
 
+                <section id="middleTextSection">
+                    <h2>What is FreeIdeas?</h2>
+                    <p id="description">
+                        FreeIdeas is a platform where you can share ideas for any kind of project — creative, technical, personal, or collaborative — and where you can find inspiration for your next enterprise.
+                        <br>
+                        You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
+                        <br>
+                        The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license section).
+                        <br>
+                        The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
+                        <br>
+                        The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
+                        <br>
+                        If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
+                        <br>
+                        <strong>Join us and start sharing your ideas today!</strong>
+                    </p>
+                </section>
+
+                <ul id="lastIdeasVertical2">
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title6</p>
+                            <p class="ideaTitle">Title1</p>
+                            <p class="ideaAuthor">Author</p>
+                        </li>
+                    </a>
+                    
+                    <a href="" class="ideaLink">
+                        <li class="ideaBox">
+                            <img src="" alt="Idea Image" class="ideaImage">
+                            <p class="ideaTitle">Title2</p>
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
@@ -87,7 +115,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title7</p>
+                            <p class="ideaTitle">Title3</p>
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
@@ -95,7 +123,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title8</p>
+                            <p class="ideaTitle">Title4</p>
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
@@ -103,37 +131,14 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title9</p>
-                            <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
-
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
-                            <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title10</p>
+                            <p class="ideaTitle">Title5</p>
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
                 </ul>
-                <p id="description">
-                    FreeIdeas is a platform where you can share ideas for any kind of project — creative, technical, personal, or collaborative — and where you can find inspiration for your next enterprise.
-                    <br>
-                    You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
-                    <br>
-                    The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license section).
-                    <br>
-                    The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
-                    <br>
-                    The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
-                    <br>
-                    If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
-                    <br>
-                    <strong>Join us and start sharing your ideas today!</strong>
-                </p>
             </section>
 
-            <section id="helpIdeas">
+            <!-- <section id="helpIdeas">
                 <h2>Help other people realizing their ideas!</h2>
                 <ul id="lastHelp">
                     <a href="" class="ideaLink">
@@ -235,7 +240,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                     <br>
                     <strong>Join us and help bring these ideas to light!</strong>
                 </p>
-            </section>
+            </section> -->
         </main>
 
         <footer id="footer">

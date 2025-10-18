@@ -4,6 +4,10 @@ const images = document.querySelectorAll(".ideaImage");
 const titles = document.querySelectorAll(".ideaTitle");
 const authors = document.querySelectorAll(".ideaAuthor");
 
+let animationFrames = [];
+let currentScrollMode = "vertical"; // or "horizontal"
+let cloned = false; // Do not clone the innerHTML of the ul too much times
+
 let error2 = false;
 
 loadLastIdeas();
@@ -27,9 +31,15 @@ async function getLastIdeasFromDatabase() {
 
         const data = await res.json();
 
-        return data;
+        if (!data['success']) {
+            throw new Error(data['error']);
+        }
+        else {
+            return data['data'];
+        }
     } catch (error) {
         console.error(error);
+
         return null;
     }
 }
@@ -50,43 +60,79 @@ function loadData2(SQLdata) {
 
 // Autoscrolling marquee for the last ideas section
 function startAutoScroll() {
-    // Autoscroll last ideas section
-    const lastIdeas = document.getElementById("lastIdeas");
-    let scrollAmount = 0;
-    let speed = 1.5;
+    const vertical = window.innerWidth > 760;
+    currentScrollMode = vertical?"vertical":"horizontal";
+    
+    const lastIdeas1 = document.getElementById("lastIdeasVertical1");
+    const lastIdeas2 = document.getElementById("lastIdeasVertical2");
 
-    lastIdeas.innerHTML += lastIdeas.innerHTML;
+    animationFrames.forEach(frame => cancelAnimationFrame(frame));
+    animationFrames = [];
 
-    function autoScroll() {
-        scrollAmount += speed;
-
-        if (scrollAmount >= lastIdeas.scrollWidth / 2) {
-            scrollAmount = 0;
-        }
-
-        lastIdeas.scrollLeft = scrollAmount;
-        requestAnimationFrame(autoScroll);
+    if (!cloned) {
+        lastIdeas1.innerHTML += lastIdeas1.innerHTML;
+        lastIdeas2.innerHTML += lastIdeas2.innerHTML;
+        cloned = true;
     }
 
-    autoScroll();
-
-    // Autoscroll help section
-    const lastHelp = document.getElementById("lastHelp");
-    let scrollAmountHelp = lastHelp.scrollWidth / 2;
-    let speedHelp = 1.5;
-
-    lastHelp.innerHTML += lastHelp.innerHTML;
-
-    function autoScrollHelp() {
-        scrollAmountHelp -= speedHelp;
-
-        if (scrollAmountHelp < 0) {
-            scrollAmountHelp = lastHelp.scrollWidth / 2;
-        }
-
-        lastHelp.scrollLeft = scrollAmountHelp;
-        requestAnimationFrame(autoScrollHelp);
+    if (vertical) {
+        scrollVertical(lastIdeas1, true);
+        scrollVertical(lastIdeas2, false);
+    } else {
+        scrollHorizontal(lastIdeas1, false);
+        scrollHorizontal(lastIdeas2, true);
     }
 
-    autoScrollHelp();
+    function scrollVertical(lastIdeas, direction) {
+        let scrollAmount = direction?0:lastIdeas.scrollHeight / 2;
+        let speed = 1.5;
+
+        function autoScroll() {
+            scrollAmount += (direction?1:-1) * speed;
+
+            if (direction && scrollAmount >= lastIdeas.scrollHeight / 2) {
+                scrollAmount = 0;
+            } else if (!direction && scrollAmount < 0) {
+                scrollAmount = lastIdeas.scrollHeight / 2;
+            }
+
+            lastIdeas.scrollTop = scrollAmount;
+            animationFrames.push(requestAnimationFrame(autoScroll));
+        }
+
+        autoScroll();
+    }
+
+    function scrollHorizontal(lastIdeas, direction) {
+        let scrollAmount = direction?0:lastIdeas.scrollWidth / 2;
+        let speed = 1.5;
+
+        function autoScroll() {
+            scrollAmount += (direction?1:-1) * speed;
+
+            if (direction && scrollAmount >= lastIdeas.scrollWidth / 2) {
+                scrollAmount = 0;
+            } else if (!direction && scrollAmount < 0) {
+                scrollAmount = lastIdeas.scrollWidth / 2;
+            }
+
+            lastIdeas.scrollLeft = scrollAmount;
+            animationFrames.push(requestAnimationFrame(autoScroll));
+        }
+
+        autoScroll();
+    }
+}
+
+/* ============= TOGGLE WINDOW SIZE ============= */
+window.addEventListener("resize", () => {
+    toggleWindowSize();
+});
+
+function toggleWindowSize() {
+    const scrollMode = window.innerWidth>760?"vertical":"horizontal";
+
+    if (scrollMode != currentScrollMode) {
+        startAutoScroll();
+    }
 }

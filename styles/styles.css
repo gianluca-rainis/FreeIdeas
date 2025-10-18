@@ -349,10 +349,13 @@ main {
 
 /* WHAT IS FREEIDEAS SECTION */
 #whatisFreeIdeas {
-    width: 100%;
-    height: fit-content;
     align-items: center;
     background-color: rgb(214, 233, 144);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
 }
 
 #whatisFreeIdeas h2 {
@@ -360,18 +363,24 @@ main {
     padding: 20px 0 20px 0;
 }
 
-#whatisFreeIdeas #lastIdeas {
+#whatisFreeIdeas #lastIdeasVertical1, #whatisFreeIdeas #lastIdeasVertical2 {
     text-align: center;
     list-style-type: none;
     display: flex;
-    flex-direction: row;
-    position: relative;
-    width: 100%;
-    height: fit-content;
+    flex-direction: column;
     overflow: hidden;
-    white-space: nowrap;
+    width: 100%;
+    height: 100%;
     flex-wrap: nowrap;
     gap: 0;
+    max-width: fit-content;
+}
+
+#middleTextSection {
+    flex-grow: 1;
+    padding: 1rem;
+    text-align: center;
+    overflow: auto;
 }
 
 .ideaBox {
@@ -413,8 +422,9 @@ main {
 #whatisFreeIdeas #description {
     text-align: justify;
     align-items: center;
-    padding: 20px 20px 20px 80px;
+    padding: 20px 20px 20px 20px;
     font-size: 1.2em;
+    line-height: 30px;
 }
 
 /* HELP OTHER PEOPLE SECTION */
@@ -447,6 +457,7 @@ main {
 .ideaLink {
     text-decoration: none;
     color: #2c3d27;
+    width: fit-content;
 }
 
 #helpIdeas #description {
@@ -2002,6 +2013,10 @@ footer ul li a {
 }
 
 @media screen and (min-width: 901px) and (max-width: 1100px) {
+    #whatisFreeIdeas #description {
+        font-size: 1em;
+    }
+
     .navLinks {
         font-size: small;
     }
@@ -2075,6 +2090,10 @@ footer ul li a {
 }
 
 @media screen and (min-width: 761px) and (max-width: 900px) {
+    #whatisFreeIdeas {
+        height: 150vh;
+    }
+
     .navLinks {
         font-size: x-small;
     }
@@ -2207,6 +2226,33 @@ footer ul li a {
     }
 
     /* index */
+    #whatisFreeIdeas {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    #whatisFreeIdeas h2 {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    #whatisFreeIdeas #lastIdeasVertical1, #whatisFreeIdeas #lastIdeasVertical2 {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
     #whatisFreeIdeas #description, #helpIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
