@@ -427,6 +427,7 @@ main {
     padding-top: 30px;
     word-break: break-all;
     max-width: 140px;
+    max-height: 28.67px;
     overflow: hidden;
 }
 
@@ -435,6 +436,7 @@ main {
     padding-top: 10px;
     word-break: break-all;
     max-width: 140px;
+    max-height: 28.67px;
     overflow: hidden;
 }
 
