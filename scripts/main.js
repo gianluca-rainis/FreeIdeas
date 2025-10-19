@@ -66,6 +66,7 @@ function startAutoScroll() {
     const lastIdeas1 = document.getElementById("lastIdeasVertical1");
     const lastIdeas2 = document.getElementById("lastIdeasVertical2");
     const lastIdeas3 = document.getElementById("lastIdeasHorizontal");
+    const lastIdeas4 = document.getElementById("inspirationalUl");
 
     animationFrames.forEach(frame => cancelAnimationFrame(frame));
     animationFrames = [];
@@ -74,6 +75,7 @@ function startAutoScroll() {
         lastIdeas1.innerHTML += lastIdeas1.innerHTML;
         lastIdeas2.innerHTML += lastIdeas2.innerHTML;
         lastIdeas3.innerHTML += lastIdeas3.innerHTML;
+        lastIdeas4.innerHTML += lastIdeas4.innerHTML;
         cloned = true;
     }
 
@@ -86,6 +88,7 @@ function startAutoScroll() {
     }
 
     scrollHorizontal(lastIdeas3, false);
+    scrollHorizontal(lastIdeas4, true);
 
     function scrollVertical(lastIdeas, direction) {
         let scrollAmount = direction?0:lastIdeas.scrollHeight / 2;

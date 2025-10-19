@@ -339,7 +339,6 @@ header {
 }
 
 /* MAIN SECTION */
-
 main {
     width: 100%;
     height: fit-content;
@@ -390,7 +389,7 @@ main {
     height: 100%;
 }
 
-#horizzontalBarSeparatorSection #lastIdeasHorizontal {
+#horizzontalBarSeparatorSection #lastIdeasHorizontal, #inspirationalSection #inspirationalUl {
     text-align: center;
     list-style-type: none;
     display: flex;
@@ -455,7 +454,7 @@ main {
     background-color: rgb(173, 212, 32);
 }
 
-#imagesSectionHome h2 {
+#imagesSectionHome h1 {
     text-align: center;
     padding: 20px 0 20px 0;
 }
@@ -466,11 +465,49 @@ main {
     width: fit-content;
 }
 
-#imagesSectionHome #description {
+#imagesSectionHome p {
     text-align: justify;
     align-items: center;
-    padding: 20px 20px 20px 80px;
+    padding: 20px 20px 20px 30px;
     font-size: 1.2em;
+}
+
+#imagesSectionHome .imageInfoLiHome {
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    padding: 15px;
+    border-bottom: 3px solid #f8f095;
+}
+
+.lastImageInfoLi {
+    border: 0 !important;
+}
+
+#imagesSectionHome .imageInfoLiHome .imageHome {
+    width: 50%;
+}
+
+#inspirationalSection {
+    background-color: #e4c53d;
+}
+
+#inspirationalSection #inspirationalUl li {
+    height: 180px;
+    width: 296px;
+    text-align: center;
+    align-content: center;
+    padding: 0;
+}
+
+#inspirationalSection #inspirationalUl li h2 {
+    padding: 20px;
+}
+
+#sloganFreeIdeasHome {
+    text-align: center;
+    background-color: #f6ffd7;
+    padding: 10px;
 }
 
 /* FOOTER STYLE */
@@ -2273,8 +2310,7 @@ footer ul li a {
         font-size: 24px;
     }
 
-    /* footer pages */
-    .footerpage .logo {
+    .logo {
         width: 400px;
     }
 
@@ -2489,12 +2525,19 @@ footer ul li a {
         font-size: 20px;
     }
 
+    #imagesSectionHome .imageInfoLiHome {
+        flex-direction: column;
+    }
+
+    #imagesSectionHome .imageInfoLiHome .imageHome {
+        width: 80%;
+    }
+
     header h1 {
         font-size: 24px;
     }
 
-    /* footer pages */
-    .footerpage .logo {
+    .logo {
         width: 400px;
     }
 
@@ -2758,13 +2801,20 @@ footer ul li a {
         font-size: 20px;
     }
 
+    #imagesSectionHome .imageInfoLiHome {
+        flex-direction: column;
+    }
+
+    #imagesSectionHome .imageInfoLiHome .imageHome {
+        width: 80%;
+    }
+
     header h1 {
         font-size: 22px;
         text-align: center;
     }
 
-    /* footer pages */
-    .footerpage .logo {
+    .logo {
         width: 300px;
     }
 
@@ -3167,6 +3217,14 @@ footer ul li a {
     #imagesSectionHome {
         background-color: #000000;
         border-top: 1px solid #cba95c;
+    }
+
+    #imagesSectionHome .imageInfoLiHome {
+        border-color: #cba95c;
+    }
+
+    #inspirationalSection {
+        background-color: #000000;
     }
 
     .ideaLink {
