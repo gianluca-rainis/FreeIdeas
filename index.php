@@ -74,6 +74,14 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
+
+                    <a href="" class="ideaLink">
+                        <li class="ideaBox">
+                            <img src="" alt="Idea Image" class="ideaImage">
+                            <p class="ideaTitle">Title6</p>
+                            <p class="ideaAuthor">Author</p>
+                        </li>
+                    </a>
                 </ul>
 
                 <section id="middleTextSection">
@@ -135,12 +143,19 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
+
+                    <a href="" class="ideaLink">
+                        <li class="ideaBox">
+                            <img src="" alt="Idea Image" class="ideaImage">
+                            <p class="ideaTitle">Title6</p>
+                            <p class="ideaAuthor">Author</p>
+                        </li>
+                    </a>
                 </ul>
             </section>
 
-            <!-- <section id="helpIdeas">
-                <h2>Help other people realizing their ideas!</h2>
-                <ul id="lastHelp">
+            <section id="horizzontalBarSeparatorSection">
+                <ul id="lastIdeasHorizontal">
                     <a href="" class="ideaLink">
                         <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImage">
@@ -204,43 +219,16 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
-
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
-                            <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title9</p>
-                            <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
-
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
-                            <img src="" alt="Idea Image" class="ideaImage">
-                            <p class="ideaTitle">Title10</p>
-                            <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
                 </ul>
-                <p id="description">
-                    Do you have an idea that you want to bring to life, but you don't know how to do it?
-                    <br>
-                    Do you need help with your project, app, or website?
-                    <br>
-                    Do you want to collaborate with other people to realize your idea?
-                    <br>
-                    FreeIdeas is the place for you!
-                    <br>
-                    You can ask for help on your ideas, and other people can help you to bring them to life.
-                    <br>
-                    You can also help other people with their ideas, and collaborate with them to realize their projects.
-                    <br>
-                    The site is open to everyone, and you can contribute by asking for help on your own ideas or by helping others with their ideas.
-                    <br>
-                    The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
-                    <br>
-                    <strong>Join us and help bring these ideas to light!</strong>
-                </p>
-            </section> -->
+            </section>
+
+            <section id="imagesSectionHome">
+                <ul id="imagesUl">
+                    <li class="imageInfoLiHome">
+                        <img src="./images/FreeIdeas.svg" alt="Image of FreeIdeas info" class="imageHome">
+                    </li>
+                </ul>
+            </section>
         </main>
 
         <footer id="footer">

@@ -383,6 +383,26 @@ main {
     overflow: auto;
 }
 
+#horizzontalBarSeparatorSection {
+    align-items: center;
+    background-color: rgb(173, 212, 32);
+    width: 100%;
+    height: 100%;
+}
+
+#horizzontalBarSeparatorSection #lastIdeasHorizontal {
+    text-align: center;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+    max-width: fit-content;
+}
+
 .ideaBox {
     width: fit-content;
     height: fit-content;
@@ -427,31 +447,17 @@ main {
     line-height: 30px;
 }
 
-/* HELP OTHER PEOPLE SECTION */
-#helpIdeas {
+/* IMAGES HOME SECTION */
+#imagesSectionHome {
     width: 100%;
     height: fit-content;
     align-items: center;
     background-color: rgb(173, 212, 32);
 }
 
-#helpIdeas h2 {
+#imagesSectionHome h2 {
     text-align: center;
     padding: 20px 0 20px 0;
-}
-
-#helpIdeas #lastHelp {
-    text-align: center;
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    width: 100%;
-    height: fit-content;
-    overflow: hidden;
-    white-space: nowrap;
-    flex-wrap: nowrap;
-    gap: 0;
 }
 
 .ideaLink {
@@ -460,7 +466,7 @@ main {
     width: fit-content;
 }
 
-#helpIdeas #description {
+#imagesSectionHome #description {
     text-align: justify;
     align-items: center;
     padding: 20px 20px 20px 80px;
@@ -2108,7 +2114,7 @@ footer ul li a {
     }
 
     /* index */
-    #whatisFreeIdeas #description, #helpIdeas #description {
+    #whatisFreeIdeas #description {
         padding: 20px 20px 20px 20px;
     }
 
@@ -2253,13 +2259,13 @@ footer ul li a {
         gap: 0;
     }
 
-    #whatisFreeIdeas #description, #helpIdeas #description {
+    #whatisFreeIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
     }
 
-    #whatisFreeIdeas h2, #helpIdeas h2 {
+    #whatisFreeIdeas h2 {
         font-size: 20px;
     }
 
@@ -2473,13 +2479,13 @@ footer ul li a {
         gap: 0;
     }
 
-    #whatisFreeIdeas #description, #helpIdeas #description {
+    #whatisFreeIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
     }
 
-    #whatisFreeIdeas h2, #helpIdeas h2 {
+    #whatisFreeIdeas h2 {
         font-size: 20px;
     }
 
@@ -2742,13 +2748,13 @@ footer ul li a {
         gap: 0;
     }
     
-    #whatisFreeIdeas #description, #helpIdeas #description {
+    #whatisFreeIdeas #description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
     }
 
-    #whatisFreeIdeas h2, #helpIdeas h2 {
+    #whatisFreeIdeas h2 {
         font-size: 20px;
     }
 
@@ -3153,7 +3159,12 @@ footer ul li a {
         background-color: #5c4e2e;
     }
 
-    #helpIdeas {
+    #horizzontalBarSeparatorSection {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    #imagesSectionHome {
         background-color: #000000;
         border-top: 1px solid #cba95c;
     }
