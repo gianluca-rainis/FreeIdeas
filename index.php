@@ -87,19 +87,21 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 </ul>
 
                 <section id="middleTextSection">
+                    <h1>Welcome to <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a><a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>!</h1>
+
                     <h2>What is FreeIdeas?</h2>
-                    <p id="description">
-                        FreeIdeas is a platform where you can share ideas for any kind of project — creative, technical, personal, or collaborative — and where you can find inspiration for your next enterprise.
+                    <p class="description">
+                        FreeIdeas is a platform where you can share ideas for any type of project — creative, technical, personal, or collaborative — and find inspiration for your next venture.
                         <br>
-                        You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
+                        You can search for ideas, publish your own, ask for help with yours, or simply browse other people's ideas.
                         <br>
-                        The published ideas are free to use, and you can use them as you wish, without any restrictions (except for the ones mentioned in the license section).
+                        The ideas published are free and you can use them as you wish, without any restrictions (except those mentioned in the license section).
                         <br>
-                        The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
+                        The site is open to everyone, and you can contribute by publishing your own ideas or helping others with theirs.
                         <br>
-                        The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
+                        The goal of FreeIdeas is to create a community of people who share their ideas and help each other bring them to life.
                         <br>
-                        If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
+                        Whether you have an idea you want to share with the world or are looking for inspiration for your next project, FreeIdeas is the place for you.
                         <br>
                         <strong>Join us and start sharing your ideas today!</strong>
                     </p>
@@ -265,6 +267,10 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <section id="inspirationalSection">
                 <ul id="inspirationalUl">
                     <li class="ideaBox">
+                        <h2>Ideas are what move the world forward.</h2>
+                    </li>
+
+                    <li class="ideaBox">
                         <h2>Ideas deserve freedom. Not judgment. Not silence.</h2>
                     </li>
 
@@ -282,6 +288,58 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
                     <li class="ideaBox">
                         <h2>No judgments. No filters. Just ideas.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Your ideas don't need permission to exist.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Originality starts with the courage to share.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Every idea is a seed. Sharing is planting.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>There are no wrong ideas. Just untold ones.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>You don’t need an audience — just a voice.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>FreeIdeas is where thinking out loud becomes a movement.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Ideas aren’t meant to be stored. They’re meant to be set free.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Don't wait for perfect. Share what's real.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>The world doesn't need more content. It needs more ideas.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Sharing an idea is the first step toward changing something.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Some ideas are quiet. But even quiet ideas deserve to be heard.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>Free thinking isn’t just allowed. It’s celebrated.</h2>
+                    </li>
+
+                    <li class="ideaBox">
+                        <h2>This is where your thoughts stop being just yours.</h2>
                     </li>
                 </ul>
             </section>

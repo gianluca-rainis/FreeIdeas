@@ -438,7 +438,7 @@ main {
     overflow: hidden;
 }
 
-#whatisFreeIdeas #description {
+#whatisFreeIdeas .description {
     text-align: justify;
     align-items: center;
     padding: 20px 20px 20px 20px;
@@ -2056,7 +2056,7 @@ footer ul li a {
 }
 
 @media screen and (min-width: 901px) and (max-width: 1100px) {
-    #whatisFreeIdeas #description {
+    #whatisFreeIdeas .description {
         font-size: 1em;
     }
 
@@ -2151,7 +2151,7 @@ footer ul li a {
     }
 
     /* index */
-    #whatisFreeIdeas #description {
+    #whatisFreeIdeas .description {
         padding: 20px 20px 20px 20px;
     }
 
@@ -2296,7 +2296,7 @@ footer ul li a {
         gap: 0;
     }
 
-    #whatisFreeIdeas #description {
+    #whatisFreeIdeas .description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
@@ -2515,7 +2515,7 @@ footer ul li a {
         gap: 0;
     }
 
-    #whatisFreeIdeas #description {
+    #whatisFreeIdeas .description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
@@ -2791,7 +2791,7 @@ footer ul li a {
         gap: 0;
     }
     
-    #whatisFreeIdeas #description {
+    #whatisFreeIdeas .description {
         padding: 20px 20px 20px 20px;
         font-size: 15px;
         line-height: 30px;
@@ -3224,6 +3224,10 @@ footer ul li a {
     }
 
     #inspirationalSection {
+        background-color: #000000;
+    }
+
+    #sloganFreeIdeasHome {
         background-color: #000000;
     }
 

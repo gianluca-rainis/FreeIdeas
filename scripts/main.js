@@ -141,3 +141,13 @@ function toggleWindowSize() {
         startAutoScroll();
     }
 }
+
+/* Theme changer */
+new MutationObserver(() => {
+    if (document.querySelector(".logo")) {
+        document.querySelector(".logo").src = `./images/FreeIdeas${themeIsLight?"":"_Pro"}.svg`;
+    }
+}).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+});
