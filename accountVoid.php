@@ -17,6 +17,10 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <title>FreeIdeas - Account</title>
         
         <?php
+            session_start();
+            
+            global $id;
+
             if (isset($_GET['account']) && !empty($_GET['account'])) {
                 $id = $_GET['account'];
                 $canonical = "https://freeideas.duckdns.org/accountVoid.php?account=$id";
@@ -32,18 +36,61 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             ?>
         </nav>
 
+        <?php
+            include("./api/getAccountDataServer.php");
+
+            global $id;
+            global $data;
+            global $accountImage, $username, $name, $surname, $email, $description;
+
+            if (!empty($id)) {
+                loadOtherAccount();
+            } else {
+                if (isset($_SESSION['account'])) {
+                    $id = $_SESSION['account']['id'];
+                    loadOtherAccount();
+                }
+            }
+            
+            function loadOtherAccount() {
+                global $id;
+                global $data;
+                global $accountImage;
+                global $username;
+                global $name;
+                global $surname;
+                global $email;
+                global $description;
+
+                $data = getAccountData($id);
+
+                if ($data && $data['success']) {
+                    $data = $data['data'];
+
+                    $accountImage = $data['userimage'];
+                    $username = $data['username'];
+                    $name = $data['name'];
+                    $surname = $data['surname'];
+                    $email = $data['email'];
+                    $description = $data['description'];
+                } else {
+                    throw new Exception($data['error'], 1);
+                }
+            }
+        ?>
+
         <main id="accountMain">
             <aside id="accountAsideInfo">
                 <img id="modifyAccountInfo" alt="Modify account" src="./images/modify.svg">
-                <h1 id="userNameAccount"></h1>
-                <img id="userImageAccount" alt="Account image" src="">
-                <h2 id="userNameSurnameAccount"></h2>
-                <h3 id="emailAccount"></h3>
+                <h1 id="userNameAccount"><?php global $username; echo $username; ?></h1>
+                <img id="userImageAccount" alt="Account image" src="<?php global $accountImage; echo $accountImage; ?>">
+                <h2 id="userNameSurnameAccount"><?php global $name; global $surname; echo $name . " " . $surname; ?></h2>
+                <h3 id="emailAccount"><?php global $email; echo $email; ?></h3>
                 <div id="followReportAccountDiv">
                     <input type="button" id="followAccountButton" value="Follow Account">
                     <input type="button" id="reportAccountButton" value="Report Account">
                 </div>
-                <p id="descriptionAccount"></p>
+                <p id="descriptionAccount"><?php global $description; echo $description; ?></p>
             </aside>
 
             <section id="mainAccountSectionInfo">

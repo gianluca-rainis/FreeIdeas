@@ -6,21 +6,23 @@ let SQLdataGlobal = null;
 loadDinamicAccountInfoInBaseOfTheCurrentAccountPage();
 
 async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() { // If is the page of another user, load the data of the other user, else load the current logged in account page
+    const sessionData = await getSessionDataAccountFromDatabase();
+
     if (!id) {
         document.getElementById("followReportAccountDiv").style.display = "none";
         changeDataAccount();
-        ldCurrentUserAccountData();
+        ldCurrentUserAccountData(sessionData);
     }
     else {
-        const sessionData = await getSessionDataAccountFromDatabase();
-
         if (sessionData) {
             if (sessionData['id'] != id) {
                 document.getElementById("modifyAccountInfo").style.display = "none";
                 ldOtherAccountData();
             }
             else {
-                window.location.href = `./accountVoid.php`;
+                document.getElementById("followReportAccountDiv").style.display = "none";
+                changeDataAccount();
+                ldCurrentUserAccountData(sessionData);
             }
         }
         else {
@@ -256,10 +258,8 @@ async function changeDataAccount() { // Change the data of the account
 error = false; // Error variable to print only the most specific error
 tempBoolControl = false;
 
-async function ldCurrentUserAccountData() {
+async function ldCurrentUserAccountData(sessionData) {
     try {
-        const sessionData = await getSessionDataAccountFromDatabase();
-
         if (sessionData) {
             const SQLdata = await getAccountDataFromDatabase(sessionData['id']);
 
@@ -367,7 +367,7 @@ async function ldCurrentUserAccountData() {
 async function ldOtherAccountData(accountid=id) {
     const SQLdata = await getAccountDataFromDatabase(accountid);
 
-    if (SQLdata['public']==1 || !id) {
+    if (SQLdata['public'] == 1 || !id) {
         if (SQLdata) {
             loadData2(SQLdata);
         }
@@ -409,12 +409,6 @@ function loadData2(SQLdata) {
     SQLdataGlobal = SQLdata;
 
     try {
-        document.getElementById("userNameAccount").innerHTML = `${SQLdata['username']}`;
-        document.getElementById("userImageAccount").src = `${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}`;
-        document.getElementById("userNameSurnameAccount").innerHTML = `${SQLdata['name']} ${SQLdata['surname']}`;
-        document.getElementById("emailAccount").innerHTML = `${SQLdata['email']}`;
-        document.getElementById("descriptionAccount").innerHTML = `${SQLdata['description']!=null?SQLdata['description']:""}`;
-
         document.getElementById("mainDivDinamicContent").innerHTML = "";
 
         if (SQLdata['followed']) {
@@ -600,7 +594,9 @@ if (id) {
 }
 
 /* Theme changer */
-document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
+if (document.getElementById("modifyAccountInfo")) {
+    document.getElementById("modifyAccountInfo").src = `./images/modify${themeIsLight?"":"_Pro"}.svg`;
+}
 
 new MutationObserver(() => {
     if (document.getElementById("userImageAccount")) {

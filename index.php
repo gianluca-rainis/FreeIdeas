@@ -223,6 +223,22 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             <p class="ideaAuthor">Author</p>
                         </li>
                     </a>
+
+                    <a href="" class="ideaLink">
+                        <li class="ideaBox">
+                            <img src="" alt="Idea Image" class="ideaImage">
+                            <p class="ideaTitle">Title9</p>
+                            <p class="ideaAuthor">Author</p>
+                        </li>
+                    </a>
+
+                    <a href="" class="ideaLink">
+                        <li class="ideaBox">
+                            <img src="" alt="Idea Image" class="ideaImage">
+                            <p class="ideaTitle">Title10</p>
+                            <p class="ideaAuthor">Author</p>
+                        </li>
+                    </a>
                 </ul>
             </section>
 
