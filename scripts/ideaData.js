@@ -62,6 +62,7 @@ const paramsURL = new URLSearchParams(window.location.search); // The params pas
 const id = paramsURL.get("idea"); // The id of the page to load
 
 let existCurrentAccountIdeaData = false;
+let sessionDataGlobal = null;
 
 function updateQuerySelectorAll() {
     additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
@@ -91,6 +92,7 @@ main();
 async function main() {
     if (id && id > 0) {
         const SQLdata = await getIdeaDataFromDatabase();
+        sessionDataGlobal = await getSessionDataAccountFromDatabase();
 
         if (SQLdata) {
             loadData2(SQLdata);
@@ -287,7 +289,7 @@ async function loadData2(SQLdata) {
         }
         
         if (SQLdata['comment'].length != 0) { // Comments
-            const sessionData = await getSessionDataAccountFromDatabase();
+            const sessionData = sessionDataGlobal;
 
             SQLdata['comment'].forEach(row => {
                 if (row.superCommentid === null) {
@@ -395,7 +397,7 @@ async function loadData2(SQLdata) {
         // Reply comment gestor
         for (let commentReplyIndex = 0; commentReplyIndex < replyAtTheCommentButton.length; commentReplyIndex++) {
             replyAtTheCommentButton[commentReplyIndex].addEventListener("click", async () => {
-                const sessionData = await getSessionDataAccountFromDatabase();
+                const sessionData = sessionDataGlobal;
 
                 if (sessionData) {
                     const oldCommentReplyButton = replyAtTheCommentButton[commentReplyIndex];
@@ -570,7 +572,7 @@ async function toggleSavedLikedDislikedAccountIdeaData() {
 }
 
 savedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await getSessionDataAccountFromDatabase();
+    const sessionData = sessionDataGlobal;
 
     if (sessionData) {
         const currentSrc = savedIdeaImg.src;
@@ -592,7 +594,7 @@ savedIdeaButton.addEventListener("click", async () => {
 });
 
 likedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await getSessionDataAccountFromDatabase();
+    const sessionData = sessionDataGlobal;
 
     if (sessionData) {
         const currentSrc = likedIdeaImg.src;
@@ -620,7 +622,7 @@ likedIdeaButton.addEventListener("click", async () => {
 });
 
 dislikedIdeaButton.addEventListener("click", async () => {
-    const sessionData = await getSessionDataAccountFromDatabase();
+    const sessionData = sessionDataGlobal;
 
     if (sessionData) {
         const currentSrc = dislikedIdeaImg.src;
@@ -655,7 +657,7 @@ modifyOldPageIfAuthorLoggedIn();
 async function modifyOldPageIfAuthorLoggedIn() {
     try {
         const SQLdata = await getIdeaDataFromDatabase();
-        const sessionData = await getSessionDataAccountFromDatabase();
+        const sessionData = sessionDataGlobal;
 
         if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
             modifyButton.addEventListener("click", () => {
@@ -675,7 +677,7 @@ const reportIdeaButton = document.getElementById("reportIdeaButton");
 
 async function reportIdea() {
     try {
-        const sessionData = await getSessionDataAccountFromDatabase();
+        const sessionData = sessionDataGlobal;
 
         if (sessionData) {
             if (await confirm("Are you sure you want to report this idea? This action cannot be undone. Remember that reporting an idea also harms the idea's creator.")) {
@@ -728,7 +730,7 @@ const followIdeaButton = document.getElementById("followIdeaButton");
 
 async function followIdea() {
     try {
-        const sessionData = await getSessionDataAccountFromDatabase();
+        const sessionData = sessionDataGlobal;
 
         if (sessionData) {
             const formData = new FormData();
