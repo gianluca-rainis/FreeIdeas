@@ -34,7 +34,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             </h1>
         </header>
 
-        <main>
+        <main id="indexMain">
             <section id="whatisFreeIdeas">
                 <ul id="lastIdeasVertical1">
                     <a href="" class="ideaLink">

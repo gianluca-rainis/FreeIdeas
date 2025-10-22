@@ -2,33 +2,20 @@
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./accountVoid.php?account=123">)
 const id = paramsURL.get("account"); // The id of the page to load
 let SQLdataGlobal = null;
+let sessionDataGlobal = null;
 
-loadDinamicAccountInfoInBaseOfTheCurrentAccountPage();
+loadDinamicAccountInfo();
 
-async function loadDinamicAccountInfoInBaseOfTheCurrentAccountPage() { // If is the page of another user, load the data of the other user, else load the current logged in account page
+async function loadDinamicAccountInfo() { // If is the page of another user, load the data of the other user, else load the current logged in account page
     const sessionData = await getSessionDataAccountFromDatabase();
+    sessionDataGlobal = sessionData;
 
-    if (!id) {
-        document.getElementById("followReportAccountDiv").style.display = "none";
+    if (!id || (sessionData && sessionData['id'] == id)) {
         changeDataAccount();
         ldCurrentUserAccountData(sessionData);
     }
     else {
-        if (sessionData) {
-            if (sessionData['id'] != id) {
-                document.getElementById("modifyAccountInfo").style.display = "none";
-                ldOtherAccountData();
-            }
-            else {
-                document.getElementById("followReportAccountDiv").style.display = "none";
-                changeDataAccount();
-                ldCurrentUserAccountData(sessionData);
-            }
-        }
-        else {
-            document.getElementById("modifyAccountInfo").style.display = "none";
-            ldOtherAccountData();
-        }
+        ldOtherAccountData();
     }
 }
 
@@ -127,7 +114,7 @@ async function changeDataAccount() { // Change the data of the account
         });
 
         document.getElementById("dangerAreaAccountPublicPrivateAccount").addEventListener("click", async () => {
-            const sessionData = await getSessionDataAccountFromDatabase();
+            const sessionData = sessionDataGlobal;
 
             if (await confirm(`Are you sure that you want to made your account ${sessionData['public']==1?"private":"public"}? ${sessionData['public']==1?"You'll loose all your follower and the others can't see your account informations.":"The others can follow your account and can see your account informations."}`)) {
                 const data = new FormData();
@@ -172,7 +159,7 @@ async function changeDataAccount() { // Change the data of the account
         });
 
         document.getElementById("dangerAreaAccountDeleteAccount").addEventListener("click", async () => {
-            const sessionData = await getSessionDataAccountFromDatabase();
+            const sessionData = sessionDataGlobal;
 
             if (await confirm(`Are you sure that you want to delete your account? This operation cannot be undone.`)) {
                 const dataId = new FormData();
@@ -213,7 +200,7 @@ async function changeDataAccount() { // Change the data of the account
         });
 
         document.getElementById("dangerAreaAccountChangePassword").addEventListener("click", async () => {
-            const sessionData = await getSessionDataAccountFromDatabase();
+            const sessionData = sessionDataGlobal;
 
             const dataId = new FormData();
             dataId.append('email', sessionData['email']);
@@ -411,11 +398,13 @@ function loadData2(SQLdata) {
     try {
         document.getElementById("mainDivDinamicContent").innerHTML = "";
 
-        if (SQLdata['followed']) {
-            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
-        }
-        else {
-            document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#f8f095":"#cba95c"}`;
+        if (document.getElementById("followAccountButton")) {
+            if (SQLdata['followed']) {
+                document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
+            }
+            else {
+                document.getElementById("followAccountButton").style.backgroundColor = `${themeIsLight?"#f8f095":"#cba95c"}`;
+            }
         }
         
         SQLdata['saved'].forEach(element => {
@@ -503,7 +492,7 @@ const followAccountButton = document.getElementById("followAccountButton");
 
 async function followAccount() {
     try {
-        const sessionData = await getSessionDataAccountFromDatabase();
+        const sessionData = sessionDataGlobal;
 
         if (sessionData) {
             const formData = new FormData();
@@ -542,7 +531,7 @@ const reportAccountButton = document.getElementById("reportAccountButton");
 
 async function reportAccount() {
     try {
-        const sessionData = await getSessionDataAccountFromDatabase();
+        const sessionData = sessionDataGlobal;
 
         if (sessionData) {
             if (await confirm("Are you sure you want to report this account? This action cannot be undone. Remember that reporting an account harms its owner.")) {
@@ -588,7 +577,7 @@ async function reportAccount() {
     }
 }
 
-if (id) {
+if (document.getElementById("followAccountButton")) {
     reportAccountButton.addEventListener("click", reportAccount);
     followAccountButton.addEventListener("click", followAccount);
 }

@@ -1,7 +1,7 @@
 <?php
     header("Content-Type: application/json");
 
-    include("./db_connection.php");
+    include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $search = getInput($_POST["search"]);

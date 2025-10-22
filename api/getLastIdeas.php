@@ -1,7 +1,7 @@
 <?php
     header("Content-Type: application/json");
 
-    include("./db_connection.php");
+    include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
 
     try {
         $stmt = $conn->prepare("SELECT accounts.username, ideas.id, ideas.title, ideas.ideaimage FROM ideas JOIN accounts ON ideas.authorid=accounts.id ORDER BY ideas.id DESC LIMIT 22;");

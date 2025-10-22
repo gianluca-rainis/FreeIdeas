@@ -43,13 +43,17 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             global $data;
             global $accountImage, $username, $name, $surname, $email, $description;
 
-            if (!empty($id)) {
-                loadOtherAccount();
-            } else {
-                if (isset($_SESSION['account'])) {
-                    $id = $_SESSION['account']['id'];
+            try {
+                if (!empty($id)) {
                     loadOtherAccount();
+                } else {
+                    if (isset($_SESSION['account'])) {
+                        $id = $_SESSION['account']['id'];
+                        loadOtherAccount();
+                    }
                 }
+            } catch (\Throwable $th) {
+                error_log(strval($th));
             }
             
             function loadOtherAccount() {
@@ -62,34 +66,48 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 global $email;
                 global $description;
 
-                $data = getAccountData($id);
+                try {
+                    $data = getAccountData($id);
 
-                if ($data && $data['success']) {
-                    $data = $data['data'];
+                    if ($data && $data['success']) {
+                        $data = $data['data'];
 
-                    $accountImage = $data['userimage'];
-                    $username = $data['username'];
-                    $name = $data['name'];
-                    $surname = $data['surname'];
-                    $email = $data['email'];
-                    $description = $data['description'];
-                } else {
-                    throw new Exception($data['error'], 1);
+                        if ($data['public'] || (isset($_SESSION['account']) && $_SESSION['account']['id'] == $id)) {
+                            $accountImage = $data['userimage'];
+                            $username = $data['username'];
+                            $name = $data['name'];
+                            $surname = $data['surname'];
+                            $email = $data['email'];
+                            $description = $data['description'];
+                        }
+                    } else {
+                        throw new Exception($data['error'], 1);
+                    }
+                } catch (\Throwable $th) {
+                    error_log(strval($th));
                 }
             }
         ?>
 
         <main id="accountMain">
             <aside id="accountAsideInfo">
-                <img id="modifyAccountInfo" alt="Modify account" src="./images/modify.svg">
+                <?php
+                    if (empty($id) || (isset($_SESSION['account']) && $_SESSION['account']['id'] == $id)) {
+                        echo '<img id="modifyAccountInfo" alt="Modify account" src="./images/modify.svg">';
+                    }
+                ?>
                 <h1 id="userNameAccount"><?php global $username; echo $username; ?></h1>
                 <img id="userImageAccount" alt="Account image" src="<?php global $accountImage; echo $accountImage; ?>">
                 <h2 id="userNameSurnameAccount"><?php global $name; global $surname; echo $name . " " . $surname; ?></h2>
                 <h3 id="emailAccount"><?php global $email; echo $email; ?></h3>
-                <div id="followReportAccountDiv">
-                    <input type="button" id="followAccountButton" value="Follow Account">
-                    <input type="button" id="reportAccountButton" value="Report Account">
-                </div>
+                <?php
+                    if (!empty($id) && !(isset($_SESSION['account']) && $_SESSION['account']['id'] == $id)) {
+                        echo '<div id="followReportAccountDiv">
+                            <input type="button" id="followAccountButton" value="Follow Account">
+                            <input type="button" id="reportAccountButton" value="Report Account">
+                        </div>';
+                    }
+                ?>
                 <p id="descriptionAccount"><?php global $description; echo $description; ?></p>
             </aside>
 

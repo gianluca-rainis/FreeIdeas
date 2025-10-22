@@ -2,8 +2,10 @@
 const lightDarkThemeButton = document.querySelectorAll(".toggle-light-dark-theme");
 let logos = [document.getElementById("pcNavBarGhost").querySelector("#navLogo"), document.getElementById("mobileNavBarGhost").querySelector("#navLogo"), document.getElementById("footerLogo")]; // FreeIdeas logos
 
+// Dinamic logos for toggle theme
 window.location.pathname.includes("/about.php")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
 window.location.pathname.includes("/contacts.php")?logos.push(document.querySelector(".footerpage").querySelector(".logo")):null;
+window.location.pathname.includes("/index.php")?logos.push(document.getElementById("indexMain").querySelector(".logo")):null;
 
 let themeIsLight = true; // Main bool for theme control
 loadCurrentTheme();
