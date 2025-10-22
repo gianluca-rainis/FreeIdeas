@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 async function sendData(dataId) {
                                     try {
-                                        const res = await fetch(`./api/deleteAccount.php`, {
+                                        const res = await fetch(`./api/deleteAccountAdmin.php`, {
                                             credentials: "include",
                                             method: 'POST',
                                             body: dataId
