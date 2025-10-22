@@ -197,6 +197,34 @@
             deleteDataFormDb($conn, $ideasId[$i], $sql);
         }
 
+        // get comments id
+        $sql = "SELECT id FROM comments WHERE authorid=?;";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            echo json_encode(["success"=>false, "error"=>"get_comments_ids_error"]);
+            exit;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $commentsId = [];
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $commentsId[] = $row['id'];
+            }
+        }
+        
+        $stmt->close();
+
+        for ($i=0; $i < count($commentsId); $i++) { 
+            deleteAllIdsSubComments($conn, $commentsId[$i]);
+        }
+
         // accounts clear
         $sql = "DELETE FROM accounts WHERE id=?;";
         deleteDataFormDb($conn, $id, $sql);
