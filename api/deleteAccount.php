@@ -65,9 +65,9 @@
             while ($row = $result->fetch_assoc()) {
                 // add default notification
                 $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
-                $stmt = $conn->prepare($sql);
+                $stmt2 = $conn->prepare($sql);
 
-                if (!$stmt) {
+                if (!$stmt2) {
                     echo json_encode(["success"=>false, "error"=>"follow_error"]);
                     exit;
                 }
@@ -78,9 +78,9 @@
                 $titleNot = $accountInfoData['username'] . " has deleted his account.";
                 $description = "We are sorry to inform you that " . $accountInfoData['username'] . " has deleted his account. You see this notification because you were following it. You will no longer receive notifications about activity on this account.";
 
-                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
-                $stmt->execute();
-                $stmt->close();
+                $stmt2->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+                $stmt2->execute();
+                $stmt2->close();
             }
         }
         
