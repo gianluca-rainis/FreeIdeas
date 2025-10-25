@@ -409,23 +409,23 @@ function loadData2(SQLdata) {
         
         SQLdata['saved'].forEach(element => {
             document.getElementById("mainDivDinamicContent").innerHTML += `
-            <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
-                <li class="ideaBoxScr">
+            <li class="ideaBox">
+                <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLink">
                     <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                     <p class="ideaTitleSrc">${element['title']}</p>
                     <p class="ideaAuthorSrc">${element['username']}</p>
-                </li>
-            </a>`;
+                </a>
+            </li>`;
         });
 
         if (SQLdataGlobal['saved'].length == 0) {
             document.getElementById("mainDivDinamicContent").innerHTML += `
-            <a class="ideaLinkSrc">
-                <li class="ideaBoxScr">
+            <li class="ideaBox">
+                <a class="ideaLink">
                     <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
                     <p class="ideaTitleSrc">This user haven't saved any idea yet.</p>
-                </li>
-            </a>`;
+                </a>
+            </li>`;
         }
     } catch (error) {
         console.error(error);
@@ -442,23 +442,23 @@ savedAccountButton.addEventListener("click", async () => {
 
     SQLdataGlobal['saved'].forEach(element => {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
-            <li class="ideaBoxScr">
+        <li class="ideaBox">
+            <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLink">
                 <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${element['title']}</p>
                 <p class="ideaAuthorSrc">${element['username']}</p>
-            </li>
-        </a>`;
+            </a>
+        </li>`;
     });
 
     if (SQLdataGlobal['saved'].length == 0) {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a class="ideaLinkSrc">
-            <li class="ideaBoxScr">
+        <li class="ideaBox">
+            <a class="ideaLink">
                 <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">This user haven't saved any idea yet.</p>
-            </li>
-        </a>`;
+            </a>
+        </li>`;
     }
 });
 
@@ -467,23 +467,23 @@ publishedAccountButton.addEventListener("click", async () => {
 
     SQLdataGlobal['published'].forEach(element => {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLinkSrc">
-            <li class="ideaBoxScr">
+        <li class="ideaBox">
+            <a href="./ideaVoid.php?idea=${element['id']}" class="ideaLink">
                 <img src="${element['image']}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${element['title']}</p>
                 <p class="ideaAuthorSrc">${element['username']}</p>
-            </li>
-        </a>`;
+            </a>
+        </li>`;
     });
 
     if (SQLdataGlobal['published'].length == 0) {
         document.getElementById("mainDivDinamicContent").innerHTML += `
-        <a class="ideaLinkSrc">
-            <li class="ideaBoxScr">
+        <li class="ideaBox">
+            <a class="ideaLink">
                 <img src="./images/FreeIdeas.svg" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">This user haven't published any idea yet.</p>
-            </li>
-        </a>`;
+            </a>
+        </li>`;
     }
 });
 

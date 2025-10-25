@@ -1,11 +1,8 @@
-const mainIdea = document.getElementById("ideaMain"); // The main of the page
-
 const date = new Date();
 const currentdate = `${date.getFullYear()}-${(date.getMonth()+1).toString().length==2?(date.getMonth()+1):"0"+(date.getMonth()+1).toString()}-${date.getDate().toString().length==2?date.getDate():"0"+date.getDate().toString()}`;
 
 const mainIdeaImageBg = document.getElementById("ideaImageAsBackground"); // Background of the main image
 const ideaTitle = document.getElementById("title"); // Idea title
-const ideaAuthor = document.getElementById("author"); // Idea main author
 const authorAccount = document.getElementById("mainAuthorAccount"); // Idea main author link to account
 const mainDescription = document.getElementById("description"); // Description
 
@@ -26,15 +23,12 @@ let additionalInfoWithImageTitle = document.querySelectorAll(".titleImageInfo");
 let additionalInfoWithImageDescription = document.querySelectorAll(".imageInfoDescription"); // The description
 
 const downloadSection = document.getElementById("downloadSection"); // The section of the download
-// const downloadText = document.getElementById("download"); // The h3 with the text Download
 const buttonLink = document.getElementById("buttonlink"); // The a for the link of the button
 const downloadButton = document.getElementById("downloadButton"); // The button to the download
 
-const licenseSection = document.getElementById("licenseSection");
 const licensePdfEmbed = document.getElementById("licensePdfEmbed");
 
 const devLogsSection = document.getElementById("devLogsSection"); // The section with the logs
-// const logsTitleh3 = document.getElementById("logsName"); // The name of the log
 const logsListUl = document.getElementById("logsList"); // The ul of the logs
 let log = document.querySelectorAll(".log"); // The li with the log data
 let logTitleAndDataGroup = document.querySelectorAll(".logTitleAndData"); // The div with the logtitle and the data
@@ -42,8 +36,6 @@ let logTitle = document.querySelectorAll(".logTitle"); // The log title
 let logData = document.querySelectorAll(".data"); // The log data (yyyy-mm-gg)
 let logDescription = document.querySelectorAll(".logInfo"); // The p with the log content
 
-const commentSection = document.getElementById("commentSection"); // The section with all the comment data
-// const commentsTitleh3 = document.getElementById("commentsTitle"); // The comment section title
 const commentsListUl = document.getElementById("commentsList"); // The ul with all the comments
 
 let comment = document.querySelectorAll(".comment"); // The comment - IMPORTANT

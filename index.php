@@ -37,53 +37,53 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <main id="indexMain">
             <section id="whatisFreeIdeas">
                 <ul id="lastIdeasVertical1">
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title1</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                     
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title2</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title3</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title4</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title5</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title6</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                 </ul>
 
                 <section id="middleTextSection">
@@ -108,137 +108,137 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 </section>
 
                 <ul id="lastIdeasVertical2">
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title1</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                     
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title2</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title3</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title4</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title5</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title6</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                 </ul>
             </section>
 
             <section id="horizzontalBarSeparatorSection">
                 <ul id="lastIdeasHorizontal">
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title1</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                     
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title2</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title3</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title4</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title5</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title6</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title7</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title8</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title9</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
-                    <a href="" class="ideaLink">
-                        <li class="ideaBox">
+                    <li class="ideaBox">
+                        <a href="" class="ideaLink">
                             <img src="" alt="Idea Image" class="ideaImage">
                             <p class="ideaTitle">Title10</p>
                             <p class="ideaAuthor">Author</p>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                 </ul>
             </section>
 

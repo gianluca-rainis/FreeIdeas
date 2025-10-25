@@ -120,8 +120,8 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 </div>
                 
                 <ul id="mainDivDinamicContent">
-                    <!-- <a href="" class="ideaLinkSrc">
-                        <li class="ideaBoxScr">
+                    <!-- <a href="" class="ideaLink">
+                        <li class="ideaBox">
                             <img src="" alt="Idea Image" class="ideaImageSrc">
                             <p class="ideaTitleSrc">Title</p>
                             <p class="ideaAuthorSrc">Author</p>

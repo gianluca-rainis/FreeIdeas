@@ -1,4 +1,3 @@
-const main = document.getElementById("newIdeaMain");
 const newIdeaForm = document.getElementById("newIdeaForm");
 const saveNewIdea = document.getElementById("saveNewIdea");
 const cancelNewIdea = document.getElementById("cancelNewIdea");

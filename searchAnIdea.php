@@ -81,13 +81,13 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <main>
             <ul id="lastIdeasSrc">
-                <!-- <a href="" class="ideaLinkSrc">
-                    <li class="ideaBoxScr">
+                <!-- <li class="ideaBox">
+                    <a href="" class="ideaLink">
                         <img src="" alt="Idea Image" class="ideaImageSrc">
                         <p class="ideaTitleSrc">Title</p>
                         <p class="ideaAuthorSrc">Author</p>
-                    </li>
-                </a> -->
+                    </a>
+                </li> -->
             </ul>
         </main>
 

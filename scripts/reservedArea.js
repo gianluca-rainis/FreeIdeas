@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 function addChildToList(title, author, email, id, description, public, imgSrc) {
                     const childOfListIdeas = document.createElement("li");
 
-                    childOfListIdeas.classList.add("ideaBoxScr");
+                    childOfListIdeas.classList.add("ideaBox");
                     childOfListIdeas.classList.add("reservedAreaLiBoxInfo");
                     childOfListIdeas.innerHTML = `
                             <img src="${imgSrc!=null?imgSrc:"./images/FreeIdeas.svg"}" alt="Account Image" class="ideaImageSrc">
@@ -544,7 +544,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 function addChildToList(id, authorid, title, data, ideaimage, description, downloadlink) {
                     const childOfListIdeas = document.createElement("li");
 
-                    childOfListIdeas.classList.add("ideaBoxScr");
+                    childOfListIdeas.classList.add("ideaBox");
                     childOfListIdeas.classList.add("reservedAreaLiBoxInfo");
                     childOfListIdeas.innerHTML = `
                             <img src="${ideaimage!=null?ideaimage:"./images/FreeIdeas.svg"}" alt="Idea Image" class="ideaImageSrc">
@@ -869,7 +869,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 function addChildToList(id, accountid, title, description, data, status) {
                     const childOfListIdeas = document.createElement("li");
 
-                    childOfListIdeas.classList.add("ideaBoxScr");
+                    childOfListIdeas.classList.add("ideaBox");
                     childOfListIdeas.classList.add("reservedAreaLiBoxInfo");
                     childOfListIdeas.innerHTML = `
                             <p class="ideaTitleSrc">${title}</p>
@@ -942,7 +942,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("mobileNavBarReservedAreaHeader").style.display = "none";
 
             const newNotifiactionSection = document.createElement("section");
-            newNotifiactionSection.classList.add("ideaBoxScr");
+            newNotifiactionSection.classList.add("ideaBox");
             newNotifiactionSection.classList.add("reservedAreaLiBoxInfo");
             newNotifiactionSection.innerHTML = `
             <img id="saveNotificationInfoAdmin" alt="Save changes" src="./images/save.svg">
@@ -1097,7 +1097,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 function addChildToList(id, authorid, ideaid, accountid, feedback) {
                     const childOfListIdeas = document.createElement("li");
 
-                    childOfListIdeas.classList.add("ideaBoxScr");
+                    childOfListIdeas.classList.add("ideaBox");
                     childOfListIdeas.classList.add("reservedAreaLiBoxInfo");
                     childOfListIdeas.innerHTML = `
                             <p class="ideaAuthorSrc">ID: ${id}</p>

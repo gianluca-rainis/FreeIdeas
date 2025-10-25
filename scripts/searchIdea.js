@@ -8,10 +8,6 @@ let compactFilters = document.getElementById("compactFilters");
 let compactFiltersHidden = document.getElementById("compactFiltersHidden");
 
 const listOfIdeas = document.getElementById("lastIdeasSrc");
-const ideaLinkSrc = document.querySelectorAll(".ideaLinkSrc");
-const ideaImageSrc = document.querySelectorAll(".ideaImageSrc");
-const ideaTitleSrc = document.querySelectorAll(".ideaTitleSrc");
-const ideaAuthorSrc = document.querySelectorAll(".ideaAuthorSrc");
 
 let filtersData = ["", "", "", "", ""]; // Search | Type | Creativity | Status | Order
 
@@ -400,16 +396,15 @@ function loadData2(result) {
     }
 
     function addChildToList(href, title, author, imgSrc) {
-        const childOfListIdeas = document.createElement("a");
+        const childOfListIdeas = document.createElement("li");
 
-        childOfListIdeas.classList.add("ideaLinkSrc");
-        childOfListIdeas.href = href;
+        childOfListIdeas.classList.add("ideaBox");
         childOfListIdeas.innerHTML = `
-            <li class="ideaBoxScr">
+            <a class="ideaLink" href="${href}">
                 <img src="${imgSrc!=null?imgSrc:"./images/FreeIdeas.svg"}" alt="Idea Image" class="ideaImageSrc">
                 <p class="ideaTitleSrc">${title}</p>
                 <p class="ideaAuthorSrc">${author}</p>
-            </li>`;
+            </a>`;
 
         listOfIdeas.appendChild(childOfListIdeas);
     }

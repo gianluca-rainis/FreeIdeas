@@ -407,7 +407,6 @@ main {
 .ideaBox {
     width: fit-content;
     height: fit-content;
-    padding: 20px;
     margin: 10px;
     background-color: #f8f095;
     border-radius: 10px;
@@ -465,8 +464,11 @@ main {
 
 .ideaLink {
     text-decoration: none;
+    display: block;
     color: #2c3d27;
+    padding: 20px;
     width: fit-content;
+    height: fit-content;
 }
 
 #imagesSectionHome p {
@@ -800,16 +802,6 @@ footer ul li a {
     text-decoration: none;
     color: #2c3d27;
     justify-self: center;
-}
-
-.ideaBoxScr {
-    width: fit-content;
-    height: fit-content;
-    padding: 20px;
-    margin: 10px;
-    background-color: #f8f095;
-    border-radius: 10px;
-    flex: 0 0 auto;
 }
 
 .ideaImageSrc {
@@ -1739,6 +1731,7 @@ footer ul li a {
     background-color: #d31c1c !important;
     color: #ffffff;
     position: relative;
+    padding: 10px;
 }
 
 #reservedAreaHeader {
@@ -3328,10 +3321,6 @@ footer ul li a {
 
     .ideaLinkSrc {
         color: #cba95c;
-    }
-
-    .ideaBoxScr {
-        background-color: #5c4e2e;
     }
 
     .ideaImageSrc {
