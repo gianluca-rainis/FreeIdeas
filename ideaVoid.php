@@ -17,17 +17,14 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <?php
             include($_SERVER['DOCUMENT_ROOT'] . "/api/getIdeaTitle.php");
 
+            global $id;
+
             if (isset($_GET['idea']) && !empty($_GET['idea'])) {
                 $id = $_GET['idea'];
                 $title = getIdeaTitleFromDatabase($id);
 
                 echo "<title>FreeIdeas - $title</title>";
-            }
-        ?>
 
-        <?php
-            if (isset($_GET['idea']) && !empty($_GET['idea'])) {
-                $id = $_GET['idea'];
                 $canonical = "https://freeideas.duckdns.org/ideaVoid.php?idea=$id";
                 echo "<link rel=\"canonical\" href=\"$canonical\" />";
             }
@@ -41,17 +38,26 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             ?>
         </nav>
 
+        <?php
+            include($_SERVER['DOCUMENT_ROOT'] . "/api/ideaData.php");
+
+            global $id;
+            global $data;
+
+            $data = ideaData($id);
+        ?>
+
         <main id="ideaMain">
-            <div id="ideaImageAsBackground"> <!-- MAIN INFO - TITLE AND AUTHOR -->
-                <h1 id="title">Title</h1>
-                <h2 id="author"><a href="" id="mainAuthorAccount">Author</a></h2>
+            <div id="ideaImageAsBackground" style="background-image: url(<?php global $data; echo $data['idea'][0]['ideaimage'] ?>);"> <!-- MAIN INFO - TITLE AND AUTHOR -->
+                <h1 id="title"><?php global $data; echo $data['idea'][0]['title'] ?></h1>
+                <h2 id="author"><a href="<?php global $data; $accountid = $data['idea'][0]['accountId']; echo $data['idea'][0]['accountPublic']==1?"./accountVoid.php?account=$accountid":"" ?>" id="mainAuthorAccount"><?php global $data; echo $data['idea'][0]['accountName'] ?></a></h2>
             </div>
 
             <section id="ideaLikeSaveSection">
                 <ul>
-                    <li id="savedIdea"><img src="./images/saved.svg" alt="Save idea" id="savedIdeaImg"><div id="savedNumber">0</div></li>
-                    <li id="likedIdea"><img src="./images/liked.svg" alt="Like idea" id="likedIdeaImg"><div id="likedNumber">0</div></li>
-                    <li id="dislikedIdea"><img src="./images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg"><div id="dislikedNumber">0</div></li>
+                    <li id="savedIdea"><img src="./images/saved.svg" alt="Save idea" id="savedIdeaImg"><div id="savedNumber"><?php global $data; echo $data['idealabels'][0]['saves'] ?></div></li>
+                    <li id="likedIdea"><img src="./images/liked.svg" alt="Like idea" id="likedIdeaImg"><div id="likedNumber"><?php global $data; echo $data['idealabels'][0]['likes'] ?></div></li>
+                    <li id="dislikedIdea"><img src="./images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg"><div id="dislikedNumber"><?php global $data; echo $data['idealabels'][0]['dislike'] ?></div></li>
                 </ul>
                 
                 <input type="button" id="followIdeaButton" value="Follow Idea">
@@ -59,9 +65,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 <img src="./images/modify.svg" alt="Modify idea" id="modifyOldIdea">
             </section>
 
-            <p id="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-            </p> <!-- MAIN INFO - DESCRIPTION -->
+            <p id="description"> <!-- MAIN INFO - DESCRIPTION -->
+                <?php global $data; echo $data['idea'][0]['description'] ?>
+            </p>
 
             <ul id="imagesInfo"> <!-- SECOND INFO - IMAGE + INFO -->
                 <li class="imageInfoLi">

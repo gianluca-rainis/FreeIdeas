@@ -153,16 +153,6 @@ async function getFreeIdeasLicense(title, author) {
 
 async function loadData2(SQLdata) {
     try {
-        ideaTitle.innerHTML = SQLdata['idea'][0].title;
-        mainIdeaImageBg.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
-        authorAccount.innerHTML = SQLdata['idea'][0].accountName;
-        authorAccount.href = `${SQLdata['idea'][0].accountPublic==1?`./accountVoid.php?account=${SQLdata['idea'][0].accountId}`:""}`;
-        mainDescription.innerHTML = SQLdata['idea'][0].description;
-
-        savedNumber.innerHTML = SQLdata['idealabels'][0].saves;
-        likedNumber.innerHTML = SQLdata['idealabels'][0].likes;
-        dislikedNumber.innerHTML = SQLdata['idealabels'][0].dislike;
-
         if (SQLdata['accountdata'][0]) {
             if (SQLdata['accountdata'][0].saved == 1) {
                 savedIdeaImg.src = `./images/savedIdea${themeIsLight?"":"_Pro"}.svg`;
