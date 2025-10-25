@@ -10,7 +10,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 <html lang="en-US">
     <head>
         <?php 
-            include('./include/head.php');
+            include($_SERVER['DOCUMENT_ROOT'] . '/include/head.php');
         ?>
 
         <!-- Dinamic head -->
@@ -21,7 +21,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
     <body>
         <nav id="nav">
             <?php 
-                include('./include/nav.php');
+                include($_SERVER['DOCUMENT_ROOT'] . '/include/nav.php');
             ?>
         </nav>
 
@@ -206,7 +206,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <footer id="footer">
             <?php 
-                include('./include/footer.php');
+                include($_SERVER['DOCUMENT_ROOT'] . '/include/footer.php');
             ?>
         </footer>
 

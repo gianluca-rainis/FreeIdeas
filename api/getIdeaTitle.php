@@ -3,7 +3,7 @@
         SPECIAL FILE - THE FUNCTION getIdeaTitleFromDatabase($id) IS USED TO LOAD THE TITLE IN THE IDEA PAGE
     */
 
-    include(__DIR__ . "/db_connection.php");
+    include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
 
     function getIdeaTitleFromDatabase($id) {
         global $conn;
