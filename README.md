@@ -175,7 +175,7 @@ CREATE TABLE authorupdates (
 ```SQL
 CREATE TABLE comments (
     id int NOT NULL AUTO_INCREMENT,
-    authorid int NOT NULL,
+    authorid int NULL,
     data date NOT NULL,
     description varchar(10000) NOT NULL,
     ideaid int NOT NULL,
@@ -398,12 +398,12 @@ mysql> describe authorupdates;
 | data        | date           | NO   |     | NULL    |                |
 +-------------+----------------+------+-----+---------+----------------+
 
-mysql> describe comments;  
+mysql> describe comments;
 +----------------+----------------+------+-----+---------+----------------+
 | Field          | Type           | Null | Key | Default | Extra          |
 +----------------+----------------+------+-----+---------+----------------+
 | id             | int            | NO   | PRI | NULL    | auto_increment |
-| authorid       | int            | NO   | MUL | NULL    |                |
+| authorid       | int            | YES  | MUL | NULL    |                |
 | data           | date           | NO   |     | NULL    |                |
 | description    | varchar(10000) | NO   |     | NULL    |                |
 | ideaid         | int            | NO   | MUL | NULL    |                |
@@ -424,7 +424,7 @@ mysql> describe idealabels;
 | dislike    | int          | NO   |     | NULL    |                |
 +------------+--------------+------+-----+---------+----------------+
 
-mysql> describe accountideadata;          
+mysql> describe accountideadata;
 +-----------+------+------+-----+---------+----------------+
 | Field     | Type | Null | Key | Default | Extra          |
 +-----------+------+------+-----+---------+----------------+

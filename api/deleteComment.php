@@ -6,7 +6,7 @@
     session_start();
 
     $id = "";
-    $authorDeletedCommentid = 14; // Need an account named "Deleted" without profile image with id 14 to work
+    $authorDeletedCommentid = null;
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);

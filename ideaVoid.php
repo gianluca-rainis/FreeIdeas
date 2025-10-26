@@ -128,7 +128,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             $title = $data['idea'][0]['title'];
                             $author = $data['idea'][0]['accountName'];
 
-                            include($_SERVER['DOCUMENT_ROOT'] . "/api/getFreeIdeasLicensePhp.php");
+                            include($_SERVER['DOCUMENT_ROOT'] . "/api/getFreeIdeasLicenseServer.php");
 
                             $return = getFreeIdeasLicense($title, $author);
 
