@@ -1,11 +1,6 @@
 const date = new Date();
 const currentdate = `${date.getFullYear()}-${(date.getMonth()+1).toString().length==2?(date.getMonth()+1):"0"+(date.getMonth()+1).toString()}-${date.getDate().toString().length==2?date.getDate():"0"+date.getDate().toString()}`;
 
-const mainIdeaImageBg = document.getElementById("ideaImageAsBackground"); // Background of the main image
-const ideaTitle = document.getElementById("title"); // Idea title
-const authorAccount = document.getElementById("mainAuthorAccount"); // Idea main author link to account
-const mainDescription = document.getElementById("description"); // Description
-
 const savedIdeaButton = document.getElementById("savedIdea");
 const likedIdeaButton = document.getElementById("likedIdea");
 const dislikedIdeaButton = document.getElementById("dislikedIdea");
@@ -16,38 +11,12 @@ const savedNumber = document.getElementById("savedNumber");
 const likedNumber = document.getElementById("likedNumber");
 const dislikedNumber = document.getElementById("dislikedNumber");
 
-const additionalInfoWithImagesUl = document.getElementById("imagesInfo"); // The ul with the additional info with images
-let additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
-let additionalInfoWithImageImage = document.querySelectorAll(".imageInfo"); // The image
-let additionalInfoWithImageTitle = document.querySelectorAll(".titleImageInfo"); // The title
-let additionalInfoWithImageDescription = document.querySelectorAll(".imageInfoDescription"); // The description
-
-const downloadSection = document.getElementById("downloadSection"); // The section of the download
-const buttonLink = document.getElementById("buttonlink"); // The a for the link of the button
-const downloadButton = document.getElementById("downloadButton"); // The button to the download
-
-const licensePdfEmbed = document.getElementById("licensePdfEmbed");
-
-const devLogsSection = document.getElementById("devLogsSection"); // The section with the logs
-const logsListUl = document.getElementById("logsList"); // The ul of the logs
-let log = document.querySelectorAll(".log"); // The li with the log data
-let logTitleAndDataGroup = document.querySelectorAll(".logTitleAndData"); // The div with the logtitle and the data
-let logTitle = document.querySelectorAll(".logTitle"); // The log title
-let logData = document.querySelectorAll(".data"); // The log data (yyyy-mm-gg)
-let logDescription = document.querySelectorAll(".logInfo"); // The p with the log content
-
-const commentsListUl = document.getElementById("commentsList"); // The ul with all the comments
+const modifyButton = document.getElementById("modifyOldIdea");
 
 let comment = document.querySelectorAll(".comment"); // The comment - IMPORTANT
-let userInfoDiv = document.querySelectorAll(".userInfo"); // The section with the user info of the comment
-let linkToWriterAccount = document.querySelectorAll(".writerPage"); // The a with the link at the comment's writer account
 let writerImage = document.querySelectorAll(".writerImg") // The image of the writer account
-let writerUserName = document.querySelectorAll(".writerUserName"); // The username of the author
-let dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
-let commentText = document.querySelectorAll(".commentText"); // The p with the comment text
 let replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
 let deleteCommentButton = document.querySelectorAll(".deleteComment"); // Delete a comment if you have writed id
-let commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment - IT CONTAIN EVERYTHING SINCE THE comment Li
 
 // The id of the page to load
 const paramsURL = new URLSearchParams(window.location.search); // The params passed with the url ex. (<a href="./ideaVoid.php?id=123">)
@@ -57,25 +26,10 @@ let existCurrentAccountIdeaData = false;
 let sessionDataGlobal = null;
 
 function updateQuerySelectorAll() {
-    additionalInfoWithImageLi = document.querySelectorAll(".imageInfoLi"); // The li of the additional info with images
-    additionalInfoWithImageImage = document.querySelectorAll(".imageInfo"); // The image
-    additionalInfoWithImageTitle = document.querySelectorAll(".titleImageInfo"); // The title
-    additionalInfoWithImageDescription = document.querySelectorAll(".imageInfoDescription"); // The description
-    log = document.querySelectorAll(".log"); // The li with the log data
-    logTitleAndDataGroup = document.querySelectorAll(".logTitleAndData"); // The div with the logtitle and the data
-    logTitle = document.querySelectorAll(".logTitle"); // The log title
-    logData = document.querySelectorAll(".data"); // The log data (yyyy-mm-gg)
-    logDescription = document.querySelectorAll(".logInfo"); // The p with the log content
     comment = document.querySelectorAll(".comment"); // The comment - IMPORTANT
-    userInfoDiv = document.querySelectorAll(".userInfo"); // The section with the user info of the comment
-    linkToWriterAccount = document.querySelectorAll(".writerPage"); // The a with the link at the comment's writer account
     writerImage = document.querySelectorAll(".writerImg") // The image of the writer account
-    writerUserName = document.querySelectorAll(".writerUserName"); // The username of the author
-    dataComment = document.querySelectorAll(".dataWriter"); // The data of the comment (yyyy-mm-gg)
-    commentText = document.querySelectorAll(".commentText"); // The p with the comment text
     replyAtTheCommentButton = document.querySelectorAll(".replyComment"); // The text for reply at the comment
     deleteCommentButton = document.querySelectorAll(".deleteComment"); // Delete a comment if you have writed id
-    commentAtTheComment = document.querySelectorAll(".underComments"); // The comments at the comment - IT CONTAIN EVERYTHING SINCE THE comment Li
 }
 
 // LOAD DATA FROM DATABASE
@@ -124,35 +78,19 @@ async function getIdeaDataFromDatabase() {
     }
 }
 
-async function getFreeIdeasLicense(title, author) {
-    try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('author', author);
-
-        const res = await fetch(`./api/getFreeIdeasLicense.php`, {
-            credentials: "include",
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await res.json();
-
-        if (data && data['success'] == false) {
-            throw new Error(data['error']);
-        }
-
-        return data[0];
-    } catch (error) {
-        console.error(error);
-        printError(421);
-
-        return null;
-    }
-}
-
 async function loadData2(SQLdata) {
     try {
+        // Modify page if author part
+        if (sessionDataGlobal && SQLdata && (parseInt(sessionDataGlobal['id']) == parseInt(SQLdata['idea'][0].accountId))) {
+            modifyButton.addEventListener("click", () => {
+                window.location.href = `./publishAnIdea.php?idea=${id}`;
+            });
+        }
+        else {
+            modifyButton.style.display = "none";
+        }
+
+        // Load account dinamic part
         if (SQLdata['accountdata'][0]) {
             if (SQLdata['accountdata'][0].saved == 1) {
                 savedIdeaImg.src = `./images/savedIdea${themeIsLight?"":"_Pro"}.svg`;
@@ -186,150 +124,6 @@ async function loadData2(SQLdata) {
                 document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
             }
         }
-
-        if (SQLdata['idea'][0].downloadlink) { // Download link
-            buttonLink.href = SQLdata['idea'][0].downloadlink;
-            downloadButton.innerHTML = SQLdata['idea'][0].downloadlink;
-        }
-        else {
-            downloadSection.innerHTML = "";
-            downloadSection.style.display = "none";
-        }
-
-        if (SQLdata['idea'][0].license) { // License
-            licensePdfEmbed.src = SQLdata['idea'][0].license;
-        }
-        else {
-            const tempFreeIdeasLicense = await getFreeIdeasLicense(SQLdata['idea'][0].title, SQLdata['idea'][0].accountName);
-            licensePdfEmbed.src = tempFreeIdeasLicense;
-        }
-
-        if (SQLdata['info'].length != 0) { // Info with images
-            tempBoolControl = true;
-            SQLdata['info'].forEach(row => {
-                if (!tempBoolControl) {
-                    additionalInfoWithImagesUl.innerHTML += `<li class="imageInfoLi">
-                        <img src="./images/FreeIdeas.svg" alt="Additional info image" class="imageInfo">
-                        <div>
-                            <h3 class="titleImageInfo">Info</h3>
-                        
-                            <p class="imageInfoDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-
-                            Aliquam erat volutpat. Phasellus hendrerit leo massa. Ut et rutrum mi, vitae fringilla libero. Nunc ut vulputate libero, vel semper tortor. Nunc faucibus efficitur convallis. Duis malesuada odio a iaculis aliquam. Aliquam erat volutpat. Integer sodales metus in dolor congue volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In a risus eu ante sollicitudin blandit.
-
-                            Aliquam erat volutpat. Suspendisse condimentum mi nec metus finibus faucibus. Aliquam aliquet nisl nunc, a eleifend justo dapibus vitae. Pellentesque interdum dapibus libero ut dictum. Integer vitae urna eu ex tincidunt efficitur. Aenean eget sem sit amet felis pulvinar ornare. Donec diam ipsum, cursus in risus vel, vehicula pharetra purus. Etiam porta nulla in nunc pretium gravida. Nunc nunc mauris, tincidunt eget vestibulum sit amet, vestibulum eu massa. Vivamus euismod nisi id mi convallis sollicitudin.
-                            </p>
-                        </div>
-                    </li>`;
-
-                    updateQuerySelectorAll();
-                }
-                else {
-                    tempBoolControl = false;
-                }
-
-                additionalInfoWithImageTitle[additionalInfoWithImageTitle.length-1].innerHTML = row.title;
-                additionalInfoWithImageImage[additionalInfoWithImageImage.length-1].src = `${row.updtimage}`;
-                additionalInfoWithImageDescription[additionalInfoWithImageDescription.length-1].innerHTML = row.description;
-            });
-        }
-        else {
-            additionalInfoWithImagesUl.innerHTML = "";
-        }        
-
-        if (SQLdata['log'].length != 0) { // Logs
-            tempBoolControl = true;
-            SQLdata['log'].forEach(row => {
-                if (!tempBoolControl) {
-                    logsListUl.innerHTML += `<li class="log">
-                            <div class="logTitleAndData">
-                                <h4 class="logTitle">Log</h4>
-                                <div class="data">yyyy-mm-gg</div>
-                            </div>
-
-                            <p class="logInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-
-                            Aliquam erat volutpat. Phasellus hendrerit leo massa. Ut et rutrum mi, vitae fringilla libero. Nunc ut vulputate libero, vel semper tortor. Nunc faucibus efficitur convallis. Duis malesuada odio a iaculis aliquam. Aliquam erat volutpat. Integer sodales metus in dolor congue volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In a risus eu ante sollicitudin blandit.
-
-                            Aliquam erat volutpat. Suspendisse condimentum mi nec metus finibus faucibus. Aliquam aliquet nisl nunc, a eleifend justo dapibus vitae. Pellentesque interdum dapibus libero ut dictum. Integer vitae urna eu ex tincidunt efficitur. Aenean eget sem sit amet felis pulvinar ornare. Donec diam ipsum, cursus in risus vel, vehicula pharetra purus. Etiam porta nulla in nunc pretium gravida. Nunc nunc mauris, tincidunt eget vestibulum sit amet, vestibulum eu massa. Vivamus euismod nisi id mi convallis sollicitudin.
-                            </p>
-                        </li>`;
-
-                    updateQuerySelectorAll();
-                }
-                else {
-                    tempBoolControl = false;
-                }
-
-                logTitle[logTitle.length-1].innerHTML = row.title;
-                logData[logData.length-1].innerHTML = row.data;
-                logDescription[logDescription.length-1].innerHTML = row.description;
-            });
-        }
-        else {
-            devLogsSection.innerHTML = "";
-        }
-        
-        if (SQLdata['comment'].length != 0) { // Comments
-            const sessionData = sessionDataGlobal;
-
-            SQLdata['comment'].forEach(row => {
-                if (row.superCommentid === null) {
-                    commentsListUl.innerHTML += `<li class="comment">
-                            <div class="userInfo">
-                                <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
-                                    <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
-                                    <div class="writerUserName">${row.username==null?"Deleted":row.username}:</div>
-                                </a>
-
-                                <div class="dataWriter">${row.data}</div>
-                            </div>
-                            <p class="commentText">${row.description}</p>
-                            <p class="replyComment">Reply</p>
-                            ${sessionData?(row.authorid==sessionData['id']?`<p class="deleteComment">Delete</p>`:""):""}
-
-                            <ul class="underComments" data-id="${row.id}">
-                                
-                            </ul>
-                        </li>`;
-                }
-                else {
-                    commentAtTheComment.forEach(element => {
-                        if (element.dataset.id == row.superCommentid) {
-                            element.innerHTML += `<li class="comment">
-                                <div class="userInfo">
-                                    <a href="${row.public==1?`./accountVoid.php?account=${row.authorid}`:""}" class="writerPage">
-                                        <img src="${row.userimage!=null?row.userimage:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="Comment Author Account Image" class="writerImg">
-                                        <div class="writerUserName">${row.username==null?"Deleted":row.username}:</div>
-                                    </a>
-
-                                    <div class="dataWriter">${row.data}</div>
-                                </div>
-                                <p class="commentText">${row.description}</p>
-                                <p class="replyComment">Reply</p>
-                                ${sessionData?(row.authorid==sessionData['id']?'<p class="deleteComment">Delete</p>':""):""}
-
-                                <ul class="underComments" data-id="${row.id}">
-                                    
-                                </ul>
-                            </li>`;
-                        }
-                    });
-                }
-
-                updateQuerySelectorAll();
-            });
-
-            commentsListUl.innerHTML += `<li class="comment" data-value="rootComment"><p class="replyComment">Write a comment!</p></li>`;
-        }
-        else {
-            commentsListUl.innerHTML = `<li class="comment" data-value="rootComment"><p class="replyComment">Write the first comment!</p></li>`;
-
-            comment = document.querySelectorAll(".comment");
-            replyAtTheCommentButton = document.querySelectorAll(".replyComment");
-        }
-
-        updateQuerySelectorAll();
 
         // Delete comment gestor
         for (let commentDeleteIndex = 0; commentDeleteIndex < deleteCommentButton.length; commentDeleteIndex++) {
@@ -630,29 +424,6 @@ dislikedIdeaButton.addEventListener("click", async () => {
         alert("You need to login before vote a project!");
     }
 });
-
-// Modify page if author part
-const modifyButton = document.getElementById("modifyOldIdea");
-
-modifyOldPageIfAuthorLoggedIn();
-
-async function modifyOldPageIfAuthorLoggedIn() {
-    try {
-        const SQLdata = await getIdeaDataFromDatabase();
-        const sessionData = sessionDataGlobal;
-
-        if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
-            modifyButton.addEventListener("click", () => {
-                window.location.href = `./publishAnIdea.php?idea=${id}`;
-            });
-        }
-        else {
-            modifyButton.style.display = "none";
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 // Report idea
 const reportIdeaButton = document.getElementById("reportIdeaButton");

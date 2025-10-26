@@ -99,98 +99,34 @@
         $stmt->execute();
         $stmt->close();
 
-        // Send all additional info data
-        if (count($additionalInfo['titles']) != 0 && count($additionalInfo['descriptions']) != 0) {
-            $stmt = $conn->prepare("SELECT id FROM additionalinfo WHERE ideaid=?;");
-            $stmt->bind_param("i", $ideaid);
+        // Send all additional info data (delete all the old and send all the new)
+        $stmt = $conn->prepare("DELETE FROM additionalinfo WHERE ideaid=?;");
+        $stmt->bind_param("i", $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+        
+        for ($i=0; $i < count($additionalInfo['titles']); $i++) {
+            $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
+            
             $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            $idOfAdditionalInfo = [];
-
-            while ($row = $result->fetch_assoc()) {
-                $idOfAdditionalInfo[] = $row['id'];
-            }
-
             $stmt->close();
-
-            if (count($additionalInfo['titles']) != count($idOfAdditionalInfo)) {
-                for ($i=0; $i < count($idOfAdditionalInfo); $i++) { 
-                    $stmt = $conn->prepare("DELETE FROM additionalinfo WHERE id=?;");
-                    $stmt->bind_param("i", $idOfAdditionalInfo[$i]);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-
-                for ($i=0; $i < count($additionalInfo['titles']); $i++) {
-                    $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
-                    $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-            } else {
-                for ($i=0; $i < count($additionalInfo['titles']); $i++) {
-                    $stmt = $conn->prepare("UPDATE additionalinfo SET title=?, updtimage=?, description=? WHERE id=?;");
-                    $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $idOfAdditionalInfo[$i]);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-            }                
         }
 
-        // Send all author logs data
-        if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
-            for ($i=0; $i < count($logs['dates']); $i++) { 
-                $logs['dates'][$i] = getInput($logs['dates'][$i]);
-                $logs['titles'][$i] = getInput($logs['titles'][$i]);
-                $logs['descriptions'][$i] = getInput($logs['descriptions'][$i]);
-            }
-        }
-
-        if (count($logs['dates']) != 0 && count($logs['titles']) != 0 && count($logs['descriptions']) != 0) {
-            $stmt = $conn->prepare("SELECT id FROM authorupdates WHERE ideaid=?;");
-            $stmt->bind_param("i", $ideaid);
+        // Send all author logs data (delete all the old and send all the new)
+        $stmt = $conn->prepare("DELETE FROM authorupdates WHERE ideaid=?;");
+        $stmt->bind_param("i", $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+        
+        for ($i=0; $i < count($logs['dates']); $i++) {
+            $stmt = $conn->prepare("INSERT INTO authorupdates (title, description, data, ideaid) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $ideaid);
+            
             $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            $idOfLogs = [];
-
-            while ($row = $result->fetch_assoc()) {
-                $idOfLogs[] = $row['id'];
-            }
-
             $stmt->close();
-
-            if (count($logs['dates']) != count($idOfLogs)) {
-                for ($i=0; $i < count($idOfLogs); $i++) { 
-                    $stmt = $conn->prepare("DELETE FROM authorupdates WHERE id=?;");
-                    $stmt->bind_param("i", $idOfLogs[$i]);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-
-                for ($i=0; $i < count($logs['dates']); $i++) {
-                    $stmt = $conn->prepare("INSERT INTO authorupdates (title, description, data, ideaid) VALUES (?, ?, ?, ?);");
-                    $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $ideaid);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-            } else {
-                for ($i=0; $i < count($logs['dates']); $i++) {
-                    $stmt = $conn->prepare("UPDATE authorupdates SET title=?, description=?, data=? WHERE id=?;");
-                    $stmt->bind_param("sssi", $logs['titles'][$i], $logs['descriptions'][$i], $logs['dates'][$i], $idOfLogs[$i]);
-                    
-                    $stmt->execute();
-                    $stmt->close();
-                }
-            }
         }
 
         // Send idealabels
@@ -218,9 +154,9 @@
             while ($row = $result->fetch_assoc()) {
                 // add default notification
                 $sql = "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);";
-                $stmt = $conn->prepare($sql);
+                $stmt1 = $conn->prepare($sql);
 
-                if (!$stmt) {
+                if (!$stmt1) {
                     echo json_encode(["success"=>false, "error"=>"follow_error"]);
                     exit;
                 }
@@ -231,10 +167,10 @@
                 $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
                 $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
 
-                $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
+                $stmt1->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 
-                $stmt->execute();
-                $stmt->close();
+                $stmt1->execute();
+                $stmt1->close();
             }
         }
         

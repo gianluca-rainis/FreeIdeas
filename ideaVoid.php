@@ -17,6 +17,8 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <?php
             include($_SERVER['DOCUMENT_ROOT'] . "/api/getIdeaTitle.php");
 
+            session_start();
+
             global $id;
 
             if (isset($_GET['idea']) && !empty($_GET['idea'])) {
@@ -65,70 +67,201 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                 <img src="./images/modify.svg" alt="Modify idea" id="modifyOldIdea">
             </section>
 
-            <p id="description"> <!-- MAIN INFO - DESCRIPTION -->
+            <!-- MAIN INFO - DESCRIPTION -->
+            <p id="description">
                 <?php global $data; echo $data['idea'][0]['description'] ?>
             </p>
 
-            <ul id="imagesInfo"> <!-- SECOND INFO - IMAGE + INFO -->
-                <li class="imageInfoLi">
-                    <img src="./images/FreeIdeas.svg" alt="Image of additional info" class="imageInfo">
-                    <div>
-                        <h3 class="titleImageInfo">Info</h3>
-                    
-                        <p class="imageInfoDescription">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-                        </p>
-                    </div>
-                </li>
-            </ul>
+            <!-- SECOND INFO - IMAGE + INFO -->
+            <?php
+                global $data;
 
-            <section id="downloadSection">
-                <h3 id="download">External Link</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
-                <a id="buttonlink" href=""><button id="downloadButton">Download</button></a>
-            </section>
+                if (count($data['info']) != 0) {
+                    echo "<ul id='imagesInfo'>";
 
-            <section id="licenseSection">
-                <h3 id="licenseTitle">License</h3> <!-- MAIN INFO - LICENSE -->
-                <embed src="" id="licensePdfEmbed">
-            </section>
+                    for ($i=0; $i < count($data['info']); $i++) {
+                        $img = $data['info'][$i]['updtimage'];
+                        $title = $data['info'][$i]['title'];
+                        $description = $data['info'][$i]['description'];
 
-            <section id="devLogsSection">
-                <h3 id="logsName">Author's Log</h3> <!-- THIRD INFO - DEV LOGS ( ADD AFTER PUBLISHED ) -->
-                <ul id="logsList">
-                    <li class="log">
-                        <div class="logTitleAndData">
-                            <h4 class="logTitle">Log</h4>
-                            <div class="data">yyyy-mm-gg</div>
-                        </div>
-
-                        <p class="logInfo">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-                        </p>
-                    </li>
-                </ul>
-            </section>
-
-            <section id="commentSection">
-                <h3 id="commentsTitle">Comments</h3> <!-- THIRD INFO - COMMENTS ( ADD AFTER PUBLISHED ) -->
-                <ul id="commentsList">
-                    <!-- <li class="comment">
-                        <div class="userInfo">
-                            <a href="" class="writerPage">
-                                <img src="./images/user.svg" class="writerImg">
-                                <div class="writerUserName">Name:</div>
-                            </a>
-
-                            <div class="dataWriter">yyyy-mm-gg</div>
-                        </div>
-                        <p class="commentText">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac viverra erat. Etiam eget odio malesuada, condimentum justo ac, elementum leo. Quisque id nibh sed nulla facilisis tincidunt eget pretium felis. Curabitur sit amet scelerisque libero. Nulla eu mattis libero. Ut id purus eleifend, ultricies urna sit amet, semper leo. Etiam dolor felis, suscipit quis maximus aliquet, sagittis nec risus. Morbi maximus nibh quis tempor consequat. Nulla in metus odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum laoreet tincidunt eros. Suspendisse potenti.
-                        </p>
-                        <p class="replyComment">Reply</p>
-
-                        <ul class="underComments">
+                        echo "<li class='imageInfoLi'>
+                            <img src='$img' alt='Image of additional info' class='imageInfo'>
+                            <div>
+                                <h3 class='titleImageInfo'>$title</h3>
                             
-                        </ul>
-                    </li> -->
+                                <p class='imageInfoDescription'>
+                                    $description
+                                </p>
+                            </div>
+                        </li>";
+                    }
+
+                    echo "</ul>";
+                }
+            ?>
+
+            <!-- MAIN INFO - EXTERNAL LINK -->
+            <?php
+                global $data;
+
+                if ($data['idea'][0]['downloadlink']) {
+                    $link = $data['idea'][0]['downloadlink'];
+
+                    echo "<section id='downloadSection'>
+                        <h3 id='download'>External Link</h3> <!-- MAIN INFO - LINK TO DOWNLOAD -->
+                        <a id='buttonlink' href='$link'><button id='downloadButton'>$link</button></a>
+                    </section>";
+                }
+            ?>
+
+            <!-- MAIN INFO - LICENSE -->
+            <section id="licenseSection">
+                <h3 id="licenseTitle">License</h3>
+                <embed src="<?php
+                    global $data;
+
+                    try {
+                        if ($data['idea'][0]['license']) {
+                            echo $data['idea'][0]['license'];
+                        }
+                        else {
+                            $title = $data['idea'][0]['title'];
+                            $author = $data['idea'][0]['accountName'];
+
+                            include($_SERVER['DOCUMENT_ROOT'] . "/api/getFreeIdeasLicensePhp.php");
+
+                            $return = getFreeIdeasLicense($title, $author);
+
+                            if ($return['success']) {
+                                echo $return['data'];
+                            }
+                            else {
+                                error_log($return['error']);
+                            }
+                        }
+                    } catch (\Throwable $th) {
+                        error_log(strval($th));
+                    }
+                ?>" id="licensePdfEmbed">
+            </section>
+
+            <!-- THIRD INFO - DEV LOGS -->
+            <?php
+                global $data;
+
+                if (count($data['log']) != 0) {
+                    echo "<section id='devLogsSection'>
+                        <h3 id='logsName'>Author's Log</h3>
+                        <ul id='logsList'>";
+
+                    for ($i=0; $i < count($data['log']); $i++) {
+                        $title = $data['log'][$i]['title'];
+                        $date = $data['log'][$i]['data'];
+                        $description = $data['log'][$i]['description'];
+
+                        echo "<li class='log'>
+                                <div class='logTitleAndData'>
+                                    <h4 class='logTitle'>$title</h4>
+                                    <div class='data'>$date</div>
+                                </div>
+                            
+                                <p class='logInfo'>
+                                    $description
+                                </p>
+                            </div>
+                        </li>";
+                    }
+
+                    echo "</ul>
+                    </section>";
+                }
+            ?>
+
+            <section id="commentSection"> <!-- THIRD INFO - COMMENTS ( ADD AFTER PUBLISHED ) -->
+                <h3 id="commentsTitle">Comments</h3>
+                <ul id="commentsList">
+                    <?php
+                        global $data;
+
+                        if (count($data['comment']) != 0) {
+                            $indexOfRootComments = [];
+                            $indexOfSubComments = [];
+
+                            for ($i=0; $i < count($data['comment']); $i++) { 
+                                if ($data['comment'][$i]['superCommentid'] === null) {
+                                    array_push($indexOfRootComments, $i);
+                                }
+                                else {
+                                    array_push($indexOfSubComments, $i);
+                                }
+                            }
+
+                            for ($i=0; $i < count($indexOfRootComments); $i++) { // For each root comment
+                                $j = $indexOfRootComments[$i];
+
+                                echo printSubCommentRecursive($j, $indexOfSubComments); // Print all the comments
+                            }
+
+                            echo "<li class='comment' data-value='rootComment'><p class='replyComment'>Write a comment!</p></li>";
+                        }
+                        else {
+                            echo "<li class='comment' data-value='rootComment'><p class='replyComment'>Write the first comment!</p></li>";
+                        }
+
+                        function printSubCommentRecursive($superi, &$indexOfSubComments) { // Get the current supercomment index and the list of index of subcomments
+                            global $data;
+
+                            $subCommentsToPrint = [];
+
+                            foreach ($indexOfSubComments as $key => $subIndex) { // For each subcomment
+                                if ($data['comment'][$subIndex]['superCommentid'] == $data['comment'][$superi]['id']) { // If the subcomment is subcomment of the supercomment
+                                    $subCommentsToPrint[] = $subIndex; // Save the subcomment
+                                    unset($indexOfSubComments[$key]); // Delete the subcomment
+                                }
+                            }
+
+                            return printComment($superi, $subCommentsToPrint, $indexOfSubComments); // Print the current comment and the 1^st level subcomments
+                        }
+
+                        function printComment($i, $subComments, $indexOfSubComments) {
+                            global $data;
+
+                            $return = "";
+
+                            $authorid = $data['comment'][$i]['authorid'];
+                            $accountLink = $data['comment'][$i]['public']==1?"./accountVoid.php?account=$authorid":"";
+                            $accountimg = $data['comment'][$i]['userimage']!=null?$data['comment'][$i]['userimage']:"./images/user.svg";
+                            $accountUsername = $data['comment'][$i]['username']==null?'Deleted':$data['comment'][$i]['username'];
+                            $date = $data['comment'][$i]['data'];
+                            $description = $data['comment'][$i]['description'];
+                            $delete = isset($_SESSION['account'])?($authorid==$_SESSION['account']['id']?'<p class="deleteComment">Delete</p>':''):'';
+                            $id = $data['comment'][$i]['id'];
+
+                            $return = "<li class='comment'>
+                                <div class='userInfo'>
+                                    <a href='$accountLink' class='writerPage'>
+                                        <img src='$accountimg' alt='Comment Author Account Image' class='writerImg'>
+                                        <div class='writerUserName'>$accountUsername:</div>
+                                    </a>
+
+                                    <div class='dataWriter'>$date</div>
+                                </div>
+                                <p class='commentText'>$description</p>
+                                <p class='replyComment'>Reply</p>
+                                $delete
+
+                                <ul class='underComments' data-id='$id'>";
+                                
+                                foreach ($subComments as $subCommentIndex) { // For each subcomment
+                                    $return = $return . printSubCommentRecursive($subCommentIndex, $indexOfSubComments); // Recursive call for each subcomment for the sub-subcomments
+                                }
+
+                                $return = $return . "</ul>
+                            </li>";
+
+                            return $return;
+                        }
+                    ?>
                 </ul>
             </section>
         </main>
