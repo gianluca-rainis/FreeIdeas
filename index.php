@@ -26,12 +26,20 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         </nav>
 
         <header>
-            <h1>
-                A place where <strong>your</strong> 
-                <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>
-                 can be 
-                <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a>
-            </h1>
+            <div style="display: flex; flex-direction: column; width: 100%; align-items: center; padding: 20px 0 20px 0;">
+                <div style="background-color: #ffbf8f; width: 100%; margin-bottom: 15px; justify-items: center;"> <!-- Banner - add display: none; for hide -->
+                    <h1 style="width: fit-content; text-align: center; padding: 10px;">
+                        Important Notice: We have updated our Terms and Conditions and Privacy Policy. We encourage all users to review them.
+                    </h1>
+                </div>
+
+                <h1>
+                    A place where <strong>your</strong> 
+                    <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a>
+                    can be 
+                    <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a>
+                </h1>
+            </div>
         </header>
 
         <main id="indexMain">
