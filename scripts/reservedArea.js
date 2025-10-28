@@ -14,6 +14,12 @@ const loginReservedArea = document.getElementById("loginReservedArea");
 // Header const
 const ulReservedAreaHeader = document.getElementById("ulReservedAreaHeader");
 
+// Idea edit section
+let imageInfoLi = document.querySelectorAll(".imageInfoLi");
+let imageInfo = document.querySelectorAll(".imageInfo");
+let titleImageInfo = document.querySelectorAll(".titleImageInfo");
+let imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
+
 mainReservedArea();
 
 // Control if logged in yet
@@ -122,6 +128,13 @@ async function getFreeIdeasLicense(title, author) {
 
         return null;
     }
+}
+
+function updateQuerySelectorAll() {
+    imageInfoLi = document.querySelectorAll(".imageInfoLi");
+    imageInfo = document.querySelectorAll("imageInfo");
+    titleImageInfo = document.querySelectorAll("titleImageInfo");
+    imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
 }
 
 // Buttons function
@@ -635,12 +648,70 @@ document.addEventListener("DOMContentLoaded", () => {
                                         </div>
                                     </div>
                                 </div>
+                                <div id="newAdditionalInfoIdea">
+                                    <h3>Additional Information</h3>
+                                    <img src="./images/add.svg" alt="Add additional info" id="addAdditionalInfoAdmin">
+                                    <ul id="imagesInfo">
+                                        
+                                    </ul>
+                                </div>
                                 <div id="dangerAreaAccountAdmin">
                                     <label>Danger Area</label>
                                     <input type="button" value="Delete Idea" id="dangerAreaDeleteIdeaAdmin">
                                 </div>`;
-                        
+
                         reservedAreaMain.appendChild(modifyIdeaDataSection);
+
+                        sqlData['info'].forEach(element => {
+                            const liForAdditionalInfo = document.createElement("li");
+                            liForAdditionalInfo.classList = "imageInfoLi";
+                            liForAdditionalInfo.innerHTML = `
+                                <div></div>
+                                <img src="./images/delete.svg" alt="Delete additional info" class="deleteAdditionalInfoAdmin">
+                                
+                                <div>
+                                    <img class="preview" alt="Additional info image" src="${element['updtimage']?element['updtimage']:"./images/FreeIdeas.svg"}">
+                                    <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
+                                </div>
+
+                                <div style="display: flex;flex-direction: column;align-items: center;">
+                                    <textarea type="text" class="titleImageInfo" placeholder="Title" maxlength="255" required>${element['title']}</textarea>
+                                    <textarea type="text" class="imageInfoDescription" placeholder="Info" maxlength="10000" required>${element['description']}</textarea>
+                                </div>`;
+
+                            document.getElementById("imagesInfo").appendChild(liForAdditionalInfo);
+
+                            updateQuerySelectorAll();
+                        });
+
+                        document.getElementById("addAdditionalInfoAdmin").addEventListener("click", () => {
+                            const liForAdditionalInfo = document.createElement("li");
+                            liForAdditionalInfo.classList = "imageInfoLi";
+                            liForAdditionalInfo.innerHTML = `
+                                <div></div>
+                                <img src="./images/delete.svg" alt="Delete additional info" class="deleteAdditionalInfoAdmin">
+                                
+                                <div>
+                                    <img class="preview" alt="Additional info image" src="./images/FreeIdeas.svg">
+                                    <input type="file" class="imageInfo" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" required>
+                                </div>
+
+                                <div style="display: flex;flex-direction: column;align-items: center;">
+                                    <textarea type="text" class="titleImageInfo" placeholder="Title" maxlength="255" required></textarea>
+                                    <textarea type="text" class="imageInfoDescription" placeholder="Info" maxlength="10000" required></textarea>
+                                </div>`;
+
+                            document.getElementById("imagesInfo").appendChild(liForAdditionalInfo);
+
+                            updateQuerySelectorAll();
+                        });
+
+                        document.getElementById("imagesInfo").addEventListener("click", (event) => { // Delete additional info
+                            if (event.target.classList.contains("deleteAdditionalInfoAdmin")) {
+                                event.target.closest("li").remove();
+                                updateQuerySelectorAll();
+                            }
+                        });
 
                         document.getElementById("newIdealicensePdfFileAdmin").addEventListener("change", () => { // Main image gestor
                             const file = document.getElementById("newIdealicensePdfFileAdmin").files[0];
@@ -755,6 +826,36 @@ document.addEventListener("DOMContentLoaded", () => {
                                 } else {
                                     data.append('licenseData', sqlData['idea'][0].license);
                                 }
+                            }
+
+                            if (imageInfoLi && imageInfoLi.length > 0) {
+                                let arrayAdditionalInfo = [];
+
+                                const tempTitles = [];
+                                const tempDescriptions = [];
+                                const tempTypeOfFile = [];
+
+                                for (let i = 0; i < fileImage.length; i++) {
+                                    if (fileImage[i].files[0]) {
+                                        formData.append("additionalInfoImagesFile[]", fileImage[i].files[0]);
+                                        tempTypeOfFile.push("file");
+                                    }
+                                    else {
+                                        formData.append("additionalInfoImagesData[]", SQLdata['info'][i].updtimage);
+                                        tempTypeOfFile.push("data");
+                                    }
+
+                                    tempTitles.push(titleSupplemImfo[i].value);
+                                    tempDescriptions.push(descriptionSupplemImfo[i].value);
+                                }
+
+                                const additionalInfoJson = {
+                                    "titles": tempTitles,
+                                    "descriptions": tempDescriptions,
+                                    "types": tempTypeOfFile
+                                };
+
+                                data.append('additionalInfo', arrayAdditionalInfo);
                             }
 
                             async function sendData(data) {

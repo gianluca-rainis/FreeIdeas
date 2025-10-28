@@ -1953,6 +1953,30 @@ footer ul li a {
     padding: 5px;
 }
 
+#addAdditionalInfoAdmin {
+    width: 30px;
+    cursor: pointer;
+}
+
+.deleteAdditionalInfoAdmin {
+    width: 30px;
+    cursor: pointer;
+    margin-left: 90%;
+}
+
+#newAdditionalInfoIdea #imagesInfo .preview {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+#newAdditionalInfoIdea #imagesInfo .imageInfoLi {
+    background-color: transparent !important;
+}
+
+#newAdditionalInfoIdea #imagesInfo .titleImageInfo {
+    width: 100%;
+}
+
 #dangerAreaAccountAdmin {
     border: 1px solid #272727;
     margin: 10px;

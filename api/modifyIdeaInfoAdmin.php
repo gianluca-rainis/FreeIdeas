@@ -6,7 +6,9 @@
     session_start();
 
     $ideaid = $title = $authorid = $type = $creativity = $status = $saves = $likes = $dislikes = $description = $mainImage = 
-    $link = $license = $mainImageConverted = "";
+    $link = $license = $mainImageConverted = $additionalInfo = $additionalInfoImages = "";
+
+    $additionalInfoImagesConverted = [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ideaid = getInput($_POST["id"]);
@@ -20,6 +22,7 @@
         $dislikes = getInput($_POST["dislikes"]);
         $description = getInput($_POST["description"]);
         $link = getInput($_POST["link"]);
+        $additionalInfo = json_decode($_POST["additionalInfo"], true);
 
         try {
             if (isset($_FILES["mainImageFile"]) && $_FILES["mainImageFile"]['error'] === UPLOAD_ERR_OK) {
@@ -48,6 +51,41 @@
             else {
                 $license = $_POST["licenseData"]==="null"?null:$_POST["licenseData"];
             }
+
+            if (count($additionalInfo['titles']) != 0) {
+                $iFile = $iData = 0;
+
+                for ($i=0; $i < count($additionalInfo['types']); $i++) { 
+                    if ($additionalInfo['types'][$i] == "file") {
+                        if (isset($_FILES['additionalInfoImagesFile']) && count($_FILES["additionalInfoImagesFile"]['name']) > 0) {
+                            $additionalInfoImages = $_FILES['additionalInfoImagesFile'];
+
+                            $singleImage = [
+                                'name' => $additionalInfoImages['name'][$iFile],
+                                'type' => $additionalInfoImages['type'][$iFile],
+                                'tmp_name' => $additionalInfoImages['tmp_name'][$iFile],
+                                'error' => $additionalInfoImages['error'][$iFile],
+                                'size' => $additionalInfoImages['size'][$iFile],
+                            ];
+
+                            $additionalInfoImagesConverted[] = getConvertedImage($singleImage);
+
+                            $iFile++;
+                        }
+                    } else {
+                        if (isset($_POST["additionalInfoImagesData"])) {
+                            $additionalInfoImages = $_POST["additionalInfoImagesData"];
+
+                            $additionalInfoImagesConverted[] = $additionalInfoImages[$iData];
+                        }
+
+                        $iData++;
+                    }
+
+                    $additionalInfo['titles'][$i] = getInput($additionalInfo['titles'][$i]);
+                    $additionalInfo['descriptions'][$i] = getInput($additionalInfo['descriptions'][$i]);
+                }
+            }
         } catch (\Throwable $th) {
             echo json_encode(['success'=>false, 'error'=>strval($th)]);
             exit;
@@ -72,6 +110,21 @@
         
         $stmt->execute();
         $stmt->close();
+
+        // Send all additional info data (delete all the old and send all the new)
+        $stmt = $conn->prepare("DELETE FROM additionalinfo WHERE ideaid=?;");
+        $stmt->bind_param("i", $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+        
+        for ($i=0; $i < count($additionalInfo['titles']); $i++) {
+            $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
+            
+            $stmt->execute();
+            $stmt->close();
+        }
 
         // Send notification to followers
         $sql = "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;";
