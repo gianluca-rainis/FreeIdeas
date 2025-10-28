@@ -3279,6 +3279,14 @@ footer ul li a {
         color: #5c4e2e;
     }
 
+    .footerpage #faqUl .question {
+        background-color: #35290c;
+    }
+
+    .footerpage #faqUl .answer {
+        background-color: #272727;
+    }
+
     #loginArea {
         background-color: #272727;
         border: 1px solid #cba95c;
