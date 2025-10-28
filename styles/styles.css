@@ -634,6 +634,22 @@ footer ul li a {
     color: #2c3d27;
 }
 
+.footerpage #faqUl li {
+    padding-left: 20px;
+}
+
+.footerpage #faqUl .question, .footerpage #faqUl .answer {
+    background-color: #b3e403;
+    padding: 10px;
+    border: 1px solid black;
+    text-align: justify;
+    border-radius: 10px;
+}
+
+.footerpage #faqUl .answer {
+    background-color: #e9ed79;
+}
+
 /* LOGIN AREA */
 #loginArea {
     display: none;
