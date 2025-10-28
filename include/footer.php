@@ -7,6 +7,7 @@
     <li><a href="./termsOfUse.php">Terms of Use</a></li>
     <li><a href="./sitemap.xml">Sitemap</a></li>
     <li><a href="./license_info.php">License</a></li>
+    <li><a href="./faq.php">FAQ</a></li>
     <li><a href="./contacts.php">Contact Us</a></li>
     <li><a href="./about.php">About Us</a></li>
     <li><a href="./reservedArea.php">Reserved Area</a></li>
