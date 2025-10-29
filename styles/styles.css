@@ -695,6 +695,7 @@ footer ul li a {
     box-sizing: border-box;
     padding-right: 33px;
     padding-left: 10px;
+    color: black;
 }
 
 .toggle-password-visibility {
