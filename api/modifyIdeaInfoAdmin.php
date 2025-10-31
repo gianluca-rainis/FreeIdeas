@@ -6,7 +6,7 @@
     session_start();
 
     $ideaid = $title = $authorid = $type = $creativity = $status = $saves = $likes = $dislikes = $description = $mainImage = 
-    $link = $license = $mainImageConverted = $additionalInfo = $additionalInfoImages = "";
+    $link = $license = $mainImageConverted = $additionalInfo = $additionalInfoImages = $logs = "";
 
     $additionalInfoImagesConverted = [];
 
@@ -23,7 +23,14 @@
             $dislikes = getInput($_POST["dislikes"]);
             $description = getInput($_POST["description"]);
             $link = getInput($_POST["link"]);
-            $additionalInfo = json_decode($_POST["additionalInfo"], true);
+
+            if (isset($_POST["additionalInfo"]) && !empty($_POST["additionalInfo"])) {
+                $additionalInfo = json_decode($_POST["additionalInfo"], true);
+            }
+
+            if (isset($_POST["logs"]) && !empty($_POST["logs"])) {
+                $logs = json_decode($_POST["logs"], true);
+            }
         } catch (\Throwable $th) {
             echo json_encode(['success'=>false, 'error'=>strval($th)]);
             exit;
@@ -57,7 +64,7 @@
                 $license = $_POST["licenseData"]==="null"?null:$_POST["licenseData"];
             }
 
-            if (count($additionalInfo['titles']) != 0) {
+            if (isset($additionalInfo['titles']) && count($additionalInfo['titles']) != 0) {
                 $iFile = $iData = 0;
 
                 for ($i=0; $i < count($additionalInfo['types']); $i++) {
@@ -126,6 +133,21 @@
         for ($i=0; $i < count($additionalInfo['titles']); $i++) {
             $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
             $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
+            
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        // Send all logs data (delete all the old and send all the new)
+        $stmt = $conn->prepare("DELETE FROM authorupdates WHERE ideaid=?;");
+        $stmt->bind_param("i", $ideaid);
+        
+        $stmt->execute();
+        $stmt->close();
+        
+        for ($i=0; $i < count($logs['titles']); $i++) {
+            $stmt = $conn->prepare("INSERT INTO authorupdates (title, data, description, ideaid) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("sssi", $logs['titles'][$i], $logs['date'][$i], $logs['descriptions'][$i], $ideaid);
             
             $stmt->execute();
             $stmt->close();

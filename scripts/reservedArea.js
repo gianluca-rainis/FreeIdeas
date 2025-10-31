@@ -20,6 +20,7 @@ let imageInfo = document.querySelectorAll(".imageInfo");
 let titleImageInfo = document.querySelectorAll(".titleImageInfo");
 let imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
 
+let log = document.querySelectorAll(".log");
 let logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
 let dataAdmin = document.querySelectorAll(".dataAdmin");
 let logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
@@ -139,6 +140,7 @@ function updateQuerySelectorAll() {
     imageInfo = document.querySelectorAll("imageInfo");
     titleImageInfo = document.querySelectorAll("titleImageInfo");
     imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
+    log = document.querySelectorAll(".log");
     logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
     dataAdmin = document.querySelectorAll(".dataAdmin");
     logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
@@ -706,7 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <img src="./images/delete.svg" alt="Delete Log" class="deleteLogAdmin">
                                 <div class="logTitleAndData">
                                     <textarea class="logTitleAdmin" placeholder="Title" maxlength="255" required>${log.title}</textarea>
-                                    <textarea class="dataAdmin" placeholder="Date" maxlength="10" required>${log.data}</textarea>
+                                    <input type="date" class="dataAdmin" value="${log.data}" maxlength="10" required>
                                 </div>
 
                                 <textarea class="logInfoAdmin" placeholder="Description" maxlength="10000" required>${log.description}</textarea>
@@ -747,7 +749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <img src="./images/delete.svg" alt="Delete Log" class="deleteLogAdmin">
                                 <div class="logTitleAndData">
                                     <textarea class="logTitleAdmin" placeholder="Title" maxlength="255" required></textarea>
-                                    <textarea class="dataAdmin" placeholder="Date" maxlength="10" required></textarea>
+                                    <input type="date" class="dataAdmin" value="" maxlength="10" required>
                                 </div>
 
                                 <textarea class="logInfoAdmin" placeholder="Description" maxlength="10000" required></textarea>
@@ -915,6 +917,26 @@ document.addEventListener("DOMContentLoaded", () => {
                                 };
 
                                 data.append('additionalInfo', JSON.stringify(additionalInfoJson));
+                            }
+
+                            if (log && log.length > 0) {
+                                const tempTitles = [];
+                                const tempDescriptions = [];
+                                const tempDate = [];
+
+                                for (let i = 0; i < log.length; i++) {
+                                    tempTitles.push(logTitleAdmin[i].value);
+                                    tempDescriptions.push(logInfoAdmin[i].value);
+                                    tempDate.push(dataAdmin[i].value);
+                                }
+
+                                const logsJson = {
+                                    "titles": tempTitles,
+                                    "descriptions": tempDescriptions,
+                                    "date": tempDate
+                                };
+
+                                data.append('logs', JSON.stringify(logsJson));
                             }
 
                             async function sendData(data) {
