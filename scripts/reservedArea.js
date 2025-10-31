@@ -671,6 +671,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                         
                                     </ul>
                                 </div>
+                                <div id="commentsSectionAdmin">
+                                    <h3>Comments</h3>
+                                    <ul id="commentsListAdmin">
+
+                                    </ul>
+                                </div>
                                 <div id="dangerAreaAccountAdmin">
                                     <label>Danger Area</label>
                                     <input type="button" value="Delete Idea" id="dangerAreaDeleteIdeaAdmin">
@@ -718,6 +724,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             updateQuerySelectorAll();
                         });
+
+                        if (sqlData['comment'].length != 0) {
+                            const commentsListAdmin = document.getElementById("commentsListAdmin");
+
+                            let rootComments = [];
+                            let subComments = [];
+
+                            for (let i = 0; i < sqlData['comment'].length; i++) {
+                                if (sqlData['comment'][i]['superCommentid'] == null) {
+                                    rootComments.push(i);
+                                }
+                                else {
+                                    subComments.push(i);
+                                }
+                            }
+
+                            for (let i = 0; i < rootComments.length; i++) {
+                                let dataToPrint = printSubCommentRecursive(i, subComments);
+                                commentsListAdmin.innerHTML = dataToPrint;
+                            }
+
+                            function printSubCommentRecursive(superi, subComments) { // Get the current supercomment index and the list of index of subcomments
+                                let subCommentsToPrint = [];
+
+                                for (let i = 0; i < subComments.length; i++) {
+                                    if (sqlData['comment'][subComments[i]]['superCommentid'] == sqlData['comment'][superi]['id']) { // If the subcomment is subcomment of the supercomment
+                                        subCommentsToPrint.push(subComments[i]); // Save the subcomment
+                                        subComments[i] = null;
+                                    }
+                                }
+
+                                let tempArr = [];
+
+                                for (let i = 0; i < subComments.length; i++) {
+                                    if (subComments[subComments.length-1]) {
+                                        tempArr.push(subComments.pop());
+                                    }
+                                }
+
+                                subComments = tempArr;
+
+                                return printComment(superi, subCommentsToPrint, subComments); // Print the current comment and the 1^st level subcomments
+                            }
+
+                            function printComment(i, subComments, indexOfSubComments) {
+                                let returnd = "";
+
+                                let accountimg = sqlData['comment'][i]['userimage']!=null?sqlData['comment'][i]['userimage']:"./images/user.svg";
+                                let accountUsername = sqlData['comment'][i]['username']==null?'Deleted':sqlData['comment'][i]['username'];
+                                let date = sqlData['comment'][i]['data'];
+                                let description = sqlData['comment'][i]['description'];
+                                let id = sqlData['comment'][i]['id'];
+
+                                returnd = `<li class='comment'>
+                                    <div class='userInfo'>
+                                        <a href='' class='writerPage'>
+                                            <img src='${accountimg}' alt='Comment Author Account Image' class='writerImg'>
+                                            <div class='writerUserName'>${accountUsername}:</div>
+                                        </a>
+
+                                        <div class='dataWriter'>${date}</div>
+                                    </div>
+                                    <p class='commentText'>${description}</p>
+                                    <p class="deleteComment">Delete</p>
+
+                                    <ul class='underComments' data-id='${id}'>`;
+
+                                    for (let j = 0; j < subComments.length; j++) {
+                                        returnd += printSubCommentRecursive(subComments[j], indexOfSubComments);
+                                    }
+
+                                    returnd += `</ul>
+                                </li>`;
+
+                                return returnd;
+                            }
+                        }
 
                         document.getElementById("addAdditionalInfoAdmin").addEventListener("click", () => {
                             const liForAdditionalInfo = document.createElement("li");
