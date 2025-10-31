@@ -20,6 +20,10 @@ let imageInfo = document.querySelectorAll(".imageInfo");
 let titleImageInfo = document.querySelectorAll(".titleImageInfo");
 let imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
 
+let logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
+let dataAdmin = document.querySelectorAll(".dataAdmin");
+let logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
+
 mainReservedArea();
 
 // Control if logged in yet
@@ -135,6 +139,9 @@ function updateQuerySelectorAll() {
     imageInfo = document.querySelectorAll("imageInfo");
     titleImageInfo = document.querySelectorAll("titleImageInfo");
     imageInfoDescription = document.querySelectorAll(".imageInfoDescription");
+    logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
+    dataAdmin = document.querySelectorAll(".dataAdmin");
+    logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
 }
 
 // Buttons function
@@ -655,6 +662,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                         
                                     </ul>
                                 </div>
+                                <div id="newDevLogsSection">
+                                    <h3>Author's Log</h3>
+                                    <img src="./images/add.svg" alt="Add additional info" id="addLogAdmin">
+                                    <ul id="logsList">
+                                        
+                                    </ul>
+                                </div>
                                 <div id="dangerAreaAccountAdmin">
                                     <label>Danger Area</label>
                                     <input type="button" value="Delete Idea" id="dangerAreaDeleteIdeaAdmin">
@@ -684,6 +698,25 @@ document.addEventListener("DOMContentLoaded", () => {
                             updateQuerySelectorAll();
                         });
 
+                        sqlData['log'].forEach(log => {
+                            const newLi = document.createElement("li");
+                            newLi.classList.add("log");
+
+                            newLi.innerHTML += `
+                                <img src="./images/delete.svg" alt="Delete Log" class="deleteLogAdmin">
+                                <div class="logTitleAndData">
+                                    <textarea class="logTitleAdmin" placeholder="Title" maxlength="255" required>${log.title}</textarea>
+                                    <textarea class="dataAdmin" placeholder="Date" maxlength="10" required>${log.data}</textarea>
+                                </div>
+
+                                <textarea class="logInfoAdmin" placeholder="Description" maxlength="10000" required>${log.description}</textarea>
+                            `;
+
+                            document.getElementById("logsList").appendChild(newLi);
+
+                            updateQuerySelectorAll();
+                        });
+
                         document.getElementById("addAdditionalInfoAdmin").addEventListener("click", () => {
                             const liForAdditionalInfo = document.createElement("li");
                             liForAdditionalInfo.classList = "imageInfoLi";
@@ -706,8 +739,34 @@ document.addEventListener("DOMContentLoaded", () => {
                             updateQuerySelectorAll();
                         });
 
+                        document.getElementById("addLogAdmin").addEventListener("click", () => {
+                            const newLi = document.createElement("li");
+                            newLi.classList.add("log");
+
+                            newLi.innerHTML += `
+                                <img src="./images/delete.svg" alt="Delete Log" class="deleteLogAdmin">
+                                <div class="logTitleAndData">
+                                    <textarea class="logTitleAdmin" placeholder="Title" maxlength="255" required></textarea>
+                                    <textarea class="dataAdmin" placeholder="Date" maxlength="10" required></textarea>
+                                </div>
+
+                                <textarea class="logInfoAdmin" placeholder="Description" maxlength="10000" required></textarea>
+                            `;
+
+                            document.getElementById("logsList").appendChild(newLi);
+
+                            updateQuerySelectorAll();
+                        });
+
                         document.getElementById("imagesInfo").addEventListener("click", (event) => { // Delete additional info
                             if (event.target.classList.contains("deleteAdditionalInfoAdmin")) {
+                                event.target.closest("li").remove();
+                                updateQuerySelectorAll();
+                            }
+                        });
+
+                        document.getElementById("logsList").addEventListener("click", (event) => { // Delete log
+                            if (event.target.classList.contains("deleteLogAdmin")) {
                                 event.target.closest("li").remove();
                                 updateQuerySelectorAll();
                             }
