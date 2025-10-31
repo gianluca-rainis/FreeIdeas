@@ -25,6 +25,8 @@ let logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
 let dataAdmin = document.querySelectorAll(".dataAdmin");
 let logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
 
+let deleteComment = document.querySelectorAll(".deleteComment");
+
 mainReservedArea();
 
 // Control if logged in yet
@@ -144,6 +146,7 @@ function updateQuerySelectorAll() {
     logTitleAdmin = document.querySelectorAll(".logTitleAdmin");
     dataAdmin = document.querySelectorAll(".dataAdmin");
     logInfoAdmin = document.querySelectorAll(".logInfoAdmin");
+    deleteComment = document.querySelectorAll(".deleteComment");
 }
 
 // Buttons function
@@ -741,31 +744,25 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
 
                             for (let i = 0; i < rootComments.length; i++) {
-                                let dataToPrint = printSubCommentRecursive(i, subComments);
-                                commentsListAdmin.innerHTML = dataToPrint;
+                                let dataToPrint = printSubCommentRecursive(rootComments[i], subComments);
+                                commentsListAdmin.innerHTML += dataToPrint;
                             }
 
                             function printSubCommentRecursive(superi, subComments) { // Get the current supercomment index and the list of index of subcomments
                                 let subCommentsToPrint = [];
+                                let remainingSubs = [];
 
                                 for (let i = 0; i < subComments.length; i++) {
-                                    if (sqlData['comment'][subComments[i]]['superCommentid'] == sqlData['comment'][superi]['id']) { // If the subcomment is subcomment of the supercomment
-                                        subCommentsToPrint.push(subComments[i]); // Save the subcomment
-                                        subComments[i] = null;
+                                    const subIndex = subComments[i];
+
+                                    if (sqlData['comment'][subIndex]['superCommentid'] == sqlData['comment'][superi]['id']) {
+                                        subCommentsToPrint.push(subIndex);
+                                    } else {
+                                        remainingSubs.push(subIndex);
                                     }
                                 }
 
-                                let tempArr = [];
-
-                                for (let i = 0; i < subComments.length; i++) {
-                                    if (subComments[subComments.length-1]) {
-                                        tempArr.push(subComments.pop());
-                                    }
-                                }
-
-                                subComments = tempArr;
-
-                                return printComment(superi, subCommentsToPrint, subComments); // Print the current comment and the 1^st level subcomments
+                                return printComment(superi, subCommentsToPrint, remainingSubs); // Print the current comment and the 1^st level subcomments
                             }
 
                             function printComment(i, subComments, indexOfSubComments) {
@@ -800,6 +797,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 return returnd;
                             }
+
+                            updateQuerySelectorAll();
                         }
 
                         document.getElementById("addAdditionalInfoAdmin").addEventListener("click", () => {
@@ -856,6 +855,49 @@ document.addEventListener("DOMContentLoaded", () => {
                                 updateQuerySelectorAll();
                             }
                         });
+
+                        // Delete comment gestor
+                        for (let commentDeleteIndex = 0; commentDeleteIndex < deleteComment.length; commentDeleteIndex++) {
+                            deleteComment[commentDeleteIndex].addEventListener("click", async () => {
+                                const commentToDelete = deleteComment[commentDeleteIndex].closest("li");
+                                const commentToDeleteId = commentToDelete.querySelector(".underComments").dataset.id;
+
+                                const data = new FormData();
+                                        
+                                data.append('id', commentToDeleteId);
+
+                                async function sendData(data) {
+                                    try {
+                                        const res = await fetch(`./api/deleteComment.php`, {
+                                            credentials: "include",
+                                            method: 'POST',
+                                            body: data
+                                        });
+
+                                        const resp = await res.json();
+
+                                        return resp;
+                                    } catch (error) {
+                                        console.error(error);
+                                        return null;
+                                    }
+                                }
+
+                                const result = await sendData(data);
+
+                                if (result) {
+                                    if (result["success"]) {
+                                        window.location.href = `./reservedArea.php`;
+                                    }
+                                    else {
+                                        console.error(result['error']);
+                                    }
+                                }
+                                else {
+                                    console.error("FATAL_ERROR_IN_PHP");
+                                }
+                            });
+                        }
 
                         document.getElementById("newIdealicensePdfFileAdmin").addEventListener("change", () => { // Main image gestor
                             const file = document.getElementById("newIdealicensePdfFileAdmin").files[0];

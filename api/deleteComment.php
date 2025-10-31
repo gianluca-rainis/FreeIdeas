@@ -35,7 +35,12 @@
                 exit;
             }
 
-            $description = "This comment was deleted by the author.";
+            if (isset($_SESSION['administrator'])) {
+                $description = "This comment was deleted by the administrator.";
+            }
+            else {
+                $description = "This comment was deleted by the author.";
+            }
 
             $stmt->bind_param("isi", $authorDeletedCommentid, $description, $id);
             
