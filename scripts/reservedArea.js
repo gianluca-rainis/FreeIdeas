@@ -829,7 +829,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
 
                             if (imageInfoLi && imageInfoLi.length > 0) {
-                                let arrayAdditionalInfo = [];
+                                const fileImage = document.querySelectorAll(".imageInfo");
 
                                 const tempTitles = [];
                                 const tempDescriptions = [];
@@ -837,16 +837,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 for (let i = 0; i < fileImage.length; i++) {
                                     if (fileImage[i].files[0]) {
-                                        formData.append("additionalInfoImagesFile[]", fileImage[i].files[0]);
+                                        data.append("additionalInfoImagesFile[]", fileImage[i].files[0]);
                                         tempTypeOfFile.push("file");
                                     }
                                     else {
-                                        formData.append("additionalInfoImagesData[]", SQLdata['info'][i].updtimage);
+                                        data.append("additionalInfoImagesData[]", document.querySelectorAll(".preview")[i].src);
                                         tempTypeOfFile.push("data");
                                     }
 
-                                    tempTitles.push(titleSupplemImfo[i].value);
-                                    tempDescriptions.push(descriptionSupplemImfo[i].value);
+                                    tempTitles.push(document.querySelectorAll(".titleImageInfo")[i].value);
+                                    tempDescriptions.push(document.querySelectorAll(".imageInfoDescription")[i].value);
                                 }
 
                                 const additionalInfoJson = {
@@ -855,7 +855,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     "types": tempTypeOfFile
                                 };
 
-                                data.append('additionalInfo', arrayAdditionalInfo);
+                                data.append('additionalInfo', JSON.stringify(additionalInfoJson));
                             }
 
                             async function sendData(data) {

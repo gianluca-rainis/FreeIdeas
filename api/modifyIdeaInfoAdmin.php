@@ -11,18 +11,23 @@
     $additionalInfoImagesConverted = [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $ideaid = getInput($_POST["id"]);
-        $title = getInput($_POST["title"]);
-        $authorid = getInput($_POST["authorid"]);
-        $type = getInput($_POST["type"]);
-        $creativity = getInput($_POST["creativity"]);
-        $status = getInput($_POST["status"]);
-        $saves = getInput($_POST["saves"]);
-        $likes = getInput($_POST["likes"]);
-        $dislikes = getInput($_POST["dislikes"]);
-        $description = getInput($_POST["description"]);
-        $link = getInput($_POST["link"]);
-        $additionalInfo = json_decode($_POST["additionalInfo"], true);
+        try {
+            $ideaid = getInput($_POST["id"]);
+            $title = getInput($_POST["title"]);
+            $authorid = getInput($_POST["authorid"]);
+            $type = getInput($_POST["type"]);
+            $creativity = getInput($_POST["creativity"]);
+            $status = getInput($_POST["status"]);
+            $saves = getInput($_POST["saves"]);
+            $likes = getInput($_POST["likes"]);
+            $dislikes = getInput($_POST["dislikes"]);
+            $description = getInput($_POST["description"]);
+            $link = getInput($_POST["link"]);
+            $additionalInfo = json_decode($_POST["additionalInfo"], true);
+        } catch (\Throwable $th) {
+            echo json_encode(['success'=>false, 'error'=>strval($th)]);
+            exit;
+        }
 
         try {
             if (isset($_FILES["mainImageFile"]) && $_FILES["mainImageFile"]['error'] === UPLOAD_ERR_OK) {
@@ -55,7 +60,7 @@
             if (count($additionalInfo['titles']) != 0) {
                 $iFile = $iData = 0;
 
-                for ($i=0; $i < count($additionalInfo['types']); $i++) { 
+                for ($i=0; $i < count($additionalInfo['types']); $i++) {
                     if ($additionalInfo['types'][$i] == "file") {
                         if (isset($_FILES['additionalInfoImagesFile']) && count($_FILES["additionalInfoImagesFile"]['name']) > 0) {
                             $additionalInfoImages = $_FILES['additionalInfoImagesFile'];
