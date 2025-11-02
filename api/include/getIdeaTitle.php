@@ -1,5 +1,5 @@
 <?php
-    include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
+    include($_SERVER['DOCUMENT_ROOT'] . "/api/include/db_connection.php");
 
     function getIdeaTitleFromDatabase($id) {
         global $conn;
