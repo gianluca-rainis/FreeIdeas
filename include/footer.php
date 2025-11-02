@@ -6,7 +6,7 @@
 
     <ul class="footerText">
         <li>Copyright &copy; 2025 Gianluca Rainis</li>
-        <li>freeideas_site@gmail.com</li>
+        <li>freeideas.site@gmail.com</li>
     </ul>
 </section>
 <section class="footerLinksSection">
