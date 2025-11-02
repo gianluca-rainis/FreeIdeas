@@ -9,7 +9,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
 <html lang="en-US">
     <head>
-        <?php 
+        <?php
             include('./include/head.php');
         ?>
 
@@ -20,7 +20,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
     <body>
         <nav id="nav">
-            <?php 
+            <?php
                 include('./include/nav.php');
             ?>
         </nav>
@@ -93,7 +93,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         </main>
 
         <footer id="footer">
-            <?php 
+            <?php
                 include('./include/footer.php');
             ?>
         </footer>
