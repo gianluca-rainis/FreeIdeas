@@ -5,12 +5,19 @@
 
     session_start();
 
-    if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
-        echo json_encode(["success"=>false, "error"=>"cannot_get_id_with_POST"]);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+            $id = $_POST['id'];
+        }
+        else {
+            echo json_encode(["success"=>false, "error"=>"cannot_get_id_with_POST"]);
+            exit;
+        }
+    }
+    else {
+        echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
         exit;
     }
-
-    $id = $_POST['id'];
 
     $return = [];
 

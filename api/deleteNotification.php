@@ -16,6 +16,29 @@
     }
 
     try {
+        $sql = "SELECT accountid FROM notifications WHERE id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $authorId = $row['accountid'];
+
+            if (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) {
+                echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
+                exit;
+            }
+        }
+
+        $stmt->close();
+    } catch (\Throwable $th) {
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
+        exit;
+    }
+
+    try {
         $sql = "DELETE FROM notifications WHERE id=?;";
         $stmt = $conn->prepare($sql);
 

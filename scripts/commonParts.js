@@ -229,8 +229,8 @@ document.getElementById("loginAccountForm").addEventListener("submit", async fun
     try {
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("loginAccountForm").action, {
-            method: "POST",
             credentials: "include",
+            method: "POST",
             body: formData
         });
 
@@ -260,8 +260,8 @@ document.getElementById("createAccountForm").addEventListener("submit", async fu
     try {
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("createAccountForm").action, {
-            method: "POST",
             credentials: "include",
+            method: "POST",
             body: formData
         });
 
@@ -296,8 +296,8 @@ document.getElementById("forgotPassword").addEventListener("click", async () => 
             formData.append("email", email);
 
             const response = await fetch("./api/changePassword.php", {
-                method: "POST",
                 credentials: "include",
+                method: "POST",
                 body: formData
             });
 
@@ -475,8 +475,8 @@ function loadData(SQLdata) {
                             formData.append("id", idToSetStatus);
 
                             const response = await fetch(`./api/setNotificationAsRead.php`, {
-                                method: "POST",
                                 credentials: "include",
+                                method: "POST",
                                 body: formData
                             });
 
@@ -537,8 +537,8 @@ function loadData(SQLdata) {
                             formData.append("id", idToDelete);
 
                             const response = await fetch(`./api/deleteNotification.php`, {
-                                method: "POST",
                                 credentials: "include",
+                                method: "POST",
                                 body: formData
                             });
 
@@ -588,9 +588,11 @@ function loadData(SQLdata) {
             window.location.href = "./accountVoid.php";
         });
 
-        document.getElementById("sendLogoutButton").addEventListener("click", () => {
+        document.getElementById("sendLogoutButton").addEventListener("click", async () => {
             try {
-                fetch("./api/logout.php");
+                await fetch("./api/logout.php", {
+                    credentials: "include"
+                });
             } catch (error) {
                 console.error(error);
                 printError(421);
@@ -599,9 +601,11 @@ function loadData(SQLdata) {
             window.location.href = "./index.php";
         });
 
-        document.getElementById("sendLogoutButtonMobile").addEventListener("click", () => {
+        document.getElementById("sendLogoutButtonMobile").addEventListener("click", async () => {
             try {
-                fetch("./api/logout.php");
+                await fetch("./api/logout.php", {
+                    credentials: "include"
+                });
             } catch (error) {
                 console.error(error);
                 printError(421);
@@ -675,8 +679,8 @@ document.getElementById("loginAccountFormMobile").addEventListener("submit", asy
     try {
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("loginAccountFormMobile").action, {
-            method: "POST",
             credentials: "include",
+            method: "POST",
             body: formData
         });
 
@@ -705,8 +709,8 @@ document.getElementById("createAccountFormMobile").addEventListener("submit", as
     try {
         const formData = new FormData(this);
         const response = await fetch(document.getElementById("createAccountFormMobile").action, {
-            method: "POST",
             credentials: "include",
+            method: "POST",
             body: formData
         });
 

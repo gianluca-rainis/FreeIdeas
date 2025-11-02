@@ -3,6 +3,13 @@
 
     include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
 
+    session_start();
+
+    if (!isset($_SESSION['administrator'])) {
+        echo json_encode(['success'=>false, 'error'=>"administrator_not_logged_in"]);
+        exit;
+    }
+
     $search = "";
     $searchParam = "";
 

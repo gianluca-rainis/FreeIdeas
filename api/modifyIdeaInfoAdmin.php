@@ -5,6 +5,11 @@
 
     session_start();
 
+    if (!isset($_SESSION['administrator'])) {
+        echo json_encode(['success'=>false, 'error'=>"administrator_not_logged_in"]);
+        exit;
+    }
+
     $ideaid = $title = $authorid = $type = $creativity = $status = $saves = $likes = $dislikes = $description = $mainImage = 
     $link = $license = $mainImageConverted = $additionalInfo = $additionalInfoImages = $logs = "";
 

@@ -8,6 +8,14 @@
     $authorid = $followedaccountid = $followedideaid = "";
     $isNowFollowed = false;
 
+    if (isset($_SESSION['account'])) {
+        $authorid = $_SESSION['account']['id'];
+    }
+    else {
+        echo json_encode(["success"=>false, "error"=>"user_not_logged_in"]);
+        exit;
+    }
+
     try {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST['followedaccountid']) && !empty($_POST['followedaccountid'])) {
@@ -25,14 +33,6 @@
         }
         else {
             echo json_encode(['success'=>false, 'error'=>"method_not_post"]);
-            exit;
-        }
-
-        if (isset($_SESSION['account']['id'])) {
-            $authorid = $_SESSION['account']['id'];
-        }
-        else {
-            echo json_encode(["success"=>false, "error"=>"not_logged_in"]);
             exit;
         }
 

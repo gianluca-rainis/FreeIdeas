@@ -1,8 +1,4 @@
 <?php
-    /* 
-        SPECIAL FILE - THE FUNCTION getIdeaTitleFromDatabase($id) IS USED TO LOAD THE TITLE IN THE IDEA PAGE
-    */
-
     include($_SERVER['DOCUMENT_ROOT'] . "/api/db_connection.php");
 
     function getIdeaTitleFromDatabase($id) {

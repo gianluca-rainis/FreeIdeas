@@ -7,6 +7,14 @@
 
     $authorid = $ideaid = $accountid = $feedback = "";
 
+    if (!isset($_SESSION['account'])) {
+        echo json_encode(['success'=>false, 'error'=>"administrator_not_logged_in"]);
+        exit;
+    }
+    else {
+        $authorid = $_SESSION['account']['id'];
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ideaid = getInput($_POST["ideaid"]);
         $accountid = getInput($_POST["accountid"]);
@@ -18,14 +26,6 @@
     }
 
     try {
-        if (isset($_SESSION['account']['id'])) {
-            $authorid = $_SESSION['account']['id'];
-        }
-        else {
-            echo json_encode(["success"=>false, "error"=>"not_logged_in"]);
-            exit;
-        }
-        
         $sql = "INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);";
         $stmt = $conn->prepare($sql);
 

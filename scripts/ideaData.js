@@ -224,7 +224,6 @@ async function loadData2(SQLdata) {
 
                             const data = new FormData();
                             
-                            data.append('authorid', sessionData['id']);
                             data.append('data', currentdate);
                             data.append('description', document.getElementById("newCommentText").value);
                             data.append('ideaid', id);

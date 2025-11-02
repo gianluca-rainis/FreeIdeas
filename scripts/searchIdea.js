@@ -345,6 +345,7 @@ async function updateDisplaiedData() {
     async function sendData(data) {
         try {
             const res = await fetch(`./api/searchAnIdea.php`, {
+                credentials: "include",
                 method: 'POST',
                 body: data
             });

@@ -15,7 +15,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <!-- Dinamic head -->
         <?php
-            include($_SERVER['DOCUMENT_ROOT'] . "/api/getIdeaTitle.php");
+            include($_SERVER['DOCUMENT_ROOT'] . "/api/include/getIdeaTitle.php");
 
             session_start();
 
@@ -41,7 +41,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         </nav>
 
         <?php
-            include($_SERVER['DOCUMENT_ROOT'] . "/api/ideaData.php");
+            include($_SERVER['DOCUMENT_ROOT'] . "/api/include/ideaData.php");
 
             global $id;
             global $data;
@@ -128,7 +128,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             $title = $data['idea'][0]['title'];
                             $author = $data['idea'][0]['accountName'];
 
-                            include($_SERVER['DOCUMENT_ROOT'] . "/api/getFreeIdeasLicenseServer.php");
+                            include($_SERVER['DOCUMENT_ROOT'] . "/api/include/getFreeIdeasLicenseServer.php");
 
                             $return = getFreeIdeasLicense($title, $author);
 

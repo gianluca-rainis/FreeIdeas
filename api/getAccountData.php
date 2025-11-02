@@ -24,7 +24,7 @@
         $data = [];
 
         if ($row = $result->fetch_assoc()) {
-            $data["id"] = $row['id'];
+            $data['id'] = $row['id'];
             $data['email'] = $row['email'];
             $data['name'] = $row['name'];
             $data['surname'] = $row['surname'];
@@ -38,6 +38,11 @@
         }
 
         $stmt->close();
+
+        if ($data['public'] == 0 && ((!isset($_SESSION['account']) || $_SESSION['account']['id'] != $data['id']) || !isset($_SESSION['administrator']))) {
+            echo json_encode(["success"=>false, "error"=>"user_or_administrator_not_logged_in_and_account_searched_is_private"]);
+            exit;
+        }
 
         // Get saved ideas
         $stmt = $conn->prepare("SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM accountideadata JOIN ideas ON ideas.id=accountideadata.ideaid JOIN accounts ON accounts.id=ideas.authorid WHERE accountideadata.accountid=? AND accountideadata.saved=1;");

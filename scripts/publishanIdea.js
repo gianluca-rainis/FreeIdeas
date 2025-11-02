@@ -105,8 +105,8 @@ else { // If is a new idea
             formData.append("logs", JSON.stringify(logJson));
 
             const response = await fetch(newIdeaForm.action, {
-                method: "POST",
                 credentials: "include",
+                method: "POST",
                 body: formData
             });
 

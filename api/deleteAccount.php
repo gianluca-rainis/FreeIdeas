@@ -17,6 +17,11 @@
         exit;
     }
 
+    if (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $id) {
+        echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
+        exit;
+    }
+
     // Get account info
     try {
         $stmt = $conn->prepare("SELECT * FROM accounts WHERE id = ?;");

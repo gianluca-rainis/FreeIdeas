@@ -40,7 +40,6 @@ async function mainReservedArea() {
 
             try {
                 await fetch(`./api/logout.php`, {
-                    method: "POST",
                     credentials: "include"
                 });
             } catch (error) {
@@ -52,8 +51,8 @@ async function mainReservedArea() {
                 const formData = new FormData(this);
                 
                 const response = await fetch(loginReservedAreaForm.action, {
-                    method: "POST",
                     credentials: "include",
+                    method: "POST",
                     body: formData
                 });
 
@@ -189,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     data.append("search", inputSearchReservedArea.value);
 
                     const res = await fetch(`./api/getAccountDataForReservedArea.php`, {
+                        credentials: "include",
                         method: 'POST',
                         body: data
                     });
@@ -540,6 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     data.append("search", inputSearchReservedArea.value);
 
                     const res = await fetch(`./api/getIdeaDataForReservedArea.php`, {
+                        credentials: "include",
                         method: 'POST',
                         body: data
                     });
@@ -1147,6 +1148,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     data.append("search", inputSearchReservedArea.value);
 
                     const res = await fetch(`./api/getNotificationsDataForReservedArea.php`, {
+                        credentials: "include",
                         method: 'POST',
                         body: data
                     });
@@ -1375,6 +1377,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     data.append("search", inputSearchReservedArea.value);
 
                     const res = await fetch(`./api/getReportsDataForReservedArea.php`, {
+                        credentials: "include",
                         method: 'POST',
                         body: data
                     });
@@ -1476,7 +1479,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Logout
     logoutReservedAreaHeader.forEach(element => {element.addEventListener("click", async () => {
         try {
-            await fetch("./api/logout.php");
+            await fetch("./api/logout.php", {
+                credentials: "include"
+            });
             
             window.location.href = "./reservedArea.php";
         } catch (error) {

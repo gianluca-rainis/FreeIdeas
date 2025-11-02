@@ -63,7 +63,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <p>We process personal data based on:</p>
             <ul>
                 <li><strong>Contractual Necessity:</strong> To perform the Terms of Use agreement between You and the Company.</li>
-                <li><strong>Consent:</strong> For users aged 14–17 with verifiable parental consent.</li>
+                <li><strong>Consent:</strong> For users aged 14-17 with verifiable parental consent.</li>
                 <li><strong>Legitimate Interests:</strong> To ensure Service security and moderation of content.</li>
             </ul>
 
@@ -95,7 +95,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             <p>Your data is processed in Italy. Transfers outside the European Union are done in compliance with applicable data protection laws.</p>
 
             <h2>Minors</h2>
-            <p>The Service is intended for users aged 14 and older. Users aged 14–17 must obtain verifiable parental consent. Parents or guardians are responsible for the minor’s use of the Service and for any content submitted.</p>
+            <p>The Service is intended for users aged 14 and older. Users aged 14-17 must obtain verifiable parental consent. Parents or guardians are responsible for the minor’s use of the Service and for any content submitted.</p>
 
             <h2>Cookies and Tracking</h2>
             <p>The Service may use cookies and similar tracking technologies to enhance user experience, collect analytics, and improve the Service. These technologies may include:</p>

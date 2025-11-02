@@ -16,6 +16,29 @@
         exit;
     }
 
+    try {
+        $sql = "SELECT authorid FROM comments WHERE id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $authorId = $row['authorid'];
+
+            if (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) {
+                echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
+                exit;
+            }
+        }
+
+        $stmt->close();
+    } catch (\Throwable $th) {
+        echo json_encode(["success"=>false, "error"=>strval($th)]);
+        exit;
+    }
+
     if ($id === "") {
         echo json_encode(["success"=>false, "error"=>"post_data"]);
         exit;

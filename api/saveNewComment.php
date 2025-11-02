@@ -5,11 +5,16 @@
 
     session_start();
 
+    if (!isset($_SESSION['account'])) {
+        echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
+        exit;
+    }
+
     $authorid = $data = $description = $ideaid = $superCommentid = "";
-    
+
+    $authorid = $_SESSION['account']['id'];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $authorid = getInput($_POST["authorid"]);
         $data = getInput($_POST["data"]);
         $description = getInput($_POST["description"]);
         $ideaid = getInput($_POST["ideaid"]);

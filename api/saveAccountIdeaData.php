@@ -5,6 +5,11 @@
 
     session_start();
 
+    if (!isset($_SESSION['account'])) {
+        echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
+        exit;
+    }
+
     $accountId = $ideaId = $saved = $dislike = $liked = $existRow = "";
     $oldSavedAccountIdeaData = $oldLikedAccountIdeaData = $oldDislikeAccountIdeaData = "0";
 

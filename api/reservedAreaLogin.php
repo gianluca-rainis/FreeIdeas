@@ -50,15 +50,12 @@
         }
 
         $stmt->close();
+        $conn->close();
 
         if (!$foundAccount) {
-            $conn->close();
-
             echo json_encode(["success"=>false, "error"=>"account_not_found"]);
             exit;
         }
-        
-        $conn->close();
 
         echo json_encode(["success"=>true]);
         exit;

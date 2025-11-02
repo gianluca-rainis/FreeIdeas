@@ -37,7 +37,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         </nav>
 
         <?php
-            include($_SERVER['DOCUMENT_ROOT'] . "/api/getAccountDataServer.php");
+            include($_SERVER['DOCUMENT_ROOT'] . "/api/include/getAccountDataServer.php");
 
             global $id;
             global $data;
