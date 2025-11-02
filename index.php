@@ -27,9 +27,9 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <header>
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center; padding: 20px 0 20px 0;">
-                <div style="background-color: #ffbf8f; width: 100%; margin-bottom: 15px; justify-items: center;"> <!-- Banner - add display: none; for hide -->
+                <div style="background-color: #ffbf8f; width: 100%; margin-bottom: 15px; justify-items: center; display: none;"> <!-- Banner - add display: none; for hide -->
                     <h1 style="width: fit-content; text-align: center; padding: 10px; color: black;">
-                        Important Notice: We have updated our Terms and Conditions and Privacy Policy. We encourage all users to review them.
+                        BANNER TEXT
                     </h1>
                 </div>
 
