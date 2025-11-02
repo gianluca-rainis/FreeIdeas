@@ -517,6 +517,7 @@ main {
 
 /* FOOTER STYLE */
 footer {
+    display: flex;
     width: 100%;
     height: fit-content;
     justify-content: center;
@@ -528,11 +529,12 @@ footer {
 footer ul {
     list-style-type: none;
     display: flex;
+    flex-direction: column;
     gap: 20px;
     justify-content: right;
     align-items: center;
     padding: 0;
-    padding-right: 30px;
+    padding-top: 30px;
 }
 
 footer ul li a {
@@ -545,20 +547,29 @@ footer ul li a {
     margin: 0 10px;
 }
 
+.footerLinksSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 70%;
+    margin-right: 20px;
+}
+
+.footerLinksSection div {
+    text-align: center;
+}
+
 .footerTextSection {
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding: 0;
+    width: 30%;
+    margin-left: 20px;
 }
 
 .footerText {
     display: flex;
-    justify-content: right;
-    columns: 2;
-    column-gap: 30px;
-    flex-grow: 1;
-    margin-right: calc(5%);
-    margin-left: calc(10%);
+    flex-direction: column;
 }
 
 #footerLogo {
@@ -2302,11 +2313,20 @@ footer ul li a {
         padding-right: 2rem;
     }
 
-    #footer ul {
-        padding-right: 10px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-items: center;
+    #footer {
+        flex-direction: column-reverse;
+    }
+
+    .footerTextSection {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    .footerLinksSection {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
     }
 
     #githubLogo {
@@ -2521,11 +2541,22 @@ footer ul li a {
         padding-right: 2rem;
     }
 
-    #footer ul {
-        padding-right: 10px;
-        display: grid;
+    #footer {
+        flex-direction: column-reverse;
+    }
+
+    .footerTextSection {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    .footerLinksSection {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
         grid-template-columns: 1fr 1fr;
-        justify-items: center;
+        row-gap: 40px;
     }
 
     #githubLogo {
@@ -2792,12 +2823,22 @@ footer ul li a {
         top: 60px;
     }
 
-    #footer ul {
-        padding-right: 10px;
-        display: grid;
+    #footer {
+        flex-direction: column-reverse;
+    }
+
+    .footerTextSection {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    .footerLinksSection {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
         grid-template-columns: 1fr;
-        justify-items: center;
-        margin-bottom: 10px;
+        row-gap: 60px;
     }
 
     #githubLogo {
@@ -3284,6 +3325,10 @@ footer ul li a {
     footer {
         background-color: #000000;
         border-top: 1px solid #cba95c;
+    }
+
+    .footerTextSection {
+        border-color: #cba95c;
     }
 
     footer ul li a {
