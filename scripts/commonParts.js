@@ -130,8 +130,6 @@ async function setRandomLinkForRandomIdea() {
 }
 
 /* ============= LOGIN GESTOR ============= */
-let isLoginArea = true;
-
 /* PC MENU GESTOR */
 const loginButton = document.getElementById("userImage");
 const loginArea = document.getElementById("loginArea");
@@ -169,9 +167,8 @@ menuMobileButton.addEventListener("click", triggerLoginAreaForAllPlatforms);
 
 /* TOGGLE PASSWORD IMAGE */
 document.querySelectorAll(".toggle-password-visibility").forEach(element => element.addEventListener("click", () => {
-    if ((document.getElementById("passwordAreaLogin").type == "password" || !document.getElementById("passwordAreaLogin").type) || (document.getElementById("passwordAreaSignIn").type == "password" || !document.getElementById("passwordAreaSignIn").type)) {
+    if ((document.getElementById("passwordAreaLogin").type == "password" || !document.getElementById("passwordAreaLogin").type)) {
         document.getElementById("passwordAreaLogin").type = "text";
-        document.getElementById("passwordAreaSignIn").type = "text";
 
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.7904 11.9117L9.17617 10.2975C8.80858 10.4286 8.41263 10.5 8 10.5C6.067 10.5 4.5 8.933 4.5 7.00001C4.5 6.58738 4.5714 6.19143 4.70253 5.82384L2.64112 3.76243C0.938717 5.27903 0 7.00001 0 7.00001C0 7.00001 3 12.5 8 12.5C9.01539 12.5 9.9483 12.2732 10.7904 11.9117Z" fill="black"></path>
@@ -183,7 +180,6 @@ document.querySelectorAll(".toggle-password-visibility").forEach(element => elem
     }
     else {
         document.getElementById("passwordAreaLogin").type = "password";
-        document.getElementById("passwordAreaSignIn").type = "password";
 
         document.querySelectorAll(".toggle-password-visibility").forEach(element => element.innerHTML = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
@@ -192,37 +188,7 @@ document.querySelectorAll(".toggle-password-visibility").forEach(element => elem
     }
 }));
 
-/* TOGGLE LOGIN / SIGN UP AREAS */
-document.querySelectorAll(".signUp").forEach(element => element.addEventListener("click", () => {
-    if (isLoginArea) {
-        document.getElementById("loginHidden").style.display = "none";
-        document.getElementById("signUpHidden").style.display = "block";
-        document.getElementById("loginHiddenMobile").style.display = "none";
-        document.getElementById("signUpHiddenMobile").style.display = "block";
-
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        isLoginArea = false;
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "256px");
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
-    }
-    else {
-        document.getElementById("signUpHidden").style.display = "none";
-        document.getElementById("loginHidden").style.display = "block";
-        document.getElementById("signUpHiddenMobile").style.display = "none";
-        document.getElementById("loginHiddenMobile").style.display = "block";
-
-        document.getElementById("notificaions").style.display = "none";
-        document.getElementById("notificaionsMobile").style.display = "none";
-
-        isLoginArea = true;
-        document.querySelectorAll(".toggle-password-visibility").forEach(element => element.style.top = "135px");
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
-    }
-}));
-
-/* SEND FORM LOGIN/SIGN UP AREA */
+/* SEND FORM LOGIN AREA */
 document.getElementById("loginAccountForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -240,45 +206,7 @@ document.getElementById("loginAccountForm").addEventListener("submit", async fun
             window.location.href = "./index.php";
         }
         else {
-            if (!isLoginArea) {
-                console.error(data['error']);
-                printError(404);
-            }
-            else {
-                alert("Email or password are wrong");
-            }
-        }
-    } catch (error) {
-        console.error(error);
-        printError(421);
-    }
-});
-
-document.getElementById("createAccountForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    try {
-        const formData = new FormData(this);
-        const response = await fetch(document.getElementById("createAccountForm").action, {
-            credentials: "include",
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data && data['success']) {
-            window.location.href = "./index.php";
-        }
-        else {
-            console.error(data['error']);
-
-            if (!isLoginArea) {
-                printError(404);
-            }
-            else {
-                alert("Email or password are wrong");
-            }
+            alert("Email or password are wrong");
         }
     } catch (error) {
         console.error(error);
@@ -686,46 +614,11 @@ document.getElementById("loginAccountFormMobile").addEventListener("submit", asy
 
         const data = await response.json();
 
-        if (data) {
+        if (data && data['success']) {
             window.location.href = "./index.php";
         }
         else {
-            if (!isLoginArea) {
-                printError(404);
-            }
-            else {
-                alert("Email or password are wrong");
-            }
-        }
-    } catch (error) {
-        console.error(error);
-        printError(421);
-    }
-});
-
-document.getElementById("createAccountFormMobile").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    try {
-        const formData = new FormData(this);
-        const response = await fetch(document.getElementById("createAccountFormMobile").action, {
-            credentials: "include",
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data) {
-            window.location.href = "./index.php";
-        }
-        else {
-            if (!isLoginArea) {
-                printError(404);
-            }
-            else {
-                alert("Email or password are wrong");
-            }
+            alert("Email or password are wrong");
         }
     } catch (error) {
         console.error(error);
@@ -739,12 +632,7 @@ window.addEventListener("resize", () => {
 });
 
 function toggleWindowSize() {
-    if (!isLoginArea) {
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"542px":"441px");
-    }
-    else {
-        document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
-    }
+    document.querySelectorAll(".toggle-password-visibility-mobile").forEach(element => element.style.top = window.innerHeight>785?"390px":"320px");
 }
 
 toggleWindowSize();
