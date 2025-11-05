@@ -14,8 +14,8 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         ?>
 
         <!-- Dinamic head -->
-         <title>FreeIdeas - Login</title>
-        <link rel="canonical" href="https://freeideas.duckdns.org/login.php" />
+         <title>FreeIdeas - Create Account</title>
+        <link rel="canonical" href="https://freeideas.duckdns.org/createAccount.php" />
     </head>
 
     <body>
@@ -27,10 +27,13 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
 
         <main id="loginMain">
             <section>
-                <h1>Sign In</h1>
+                <h1>Create your account</h1>
                 
-                <form action="./api/login.php" method="POST">
-                    <input type="email" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" maxlength="255" id="emailLoginPage" required>
+                <form action="./api/signUp.php" method="POST">
+                    <input type="text" spellcheck="false" autocomplete="given-name" placeholder="First Name" name="firstName" maxlength="255" required>
+                    <input type="text" spellcheck="false" autocomplete="family-name" placeholder="Last Name" name="lastName" maxlength="255" required>
+                    <input type="text" spellcheck="false" autocomplete="username" placeholder="Username" name="userName" maxlength="255" required>
+                    <input type="email" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="Email" name="email" maxlength="255" required>
                     <input type="password" autocomplete="current-password" placeholder="Password" name="password" id="passwordFormInputLoginPage" required>
                 
                     <button type="button" class="toggle-password-visibility-ext">
@@ -40,12 +43,12 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                         </svg>
                     </button>
 
-                    <p><a id="forgotPasswordLoginPage">Forgot your password?</a></p>
+                    <p>By singing up you agree to our <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a></p>
 
-                    <button type="submit" id="signInLoginPageButton">Sign In</button>
+                    <button type="submit" id="signInLoginPageButton">Create Account</button>
                 </form>
 
-                <p>Don't have an account? <a href="./createAccount.php">Register!</a></p>
+                <p>Already have an account? <a href="./login.php">Sign In!</a></p>
             </section>
         </main>
 

@@ -709,13 +709,20 @@ footer ul li a {
     color: black;
 }
 
-.toggle-password-visibility {
+.toggle-password-visibility, .toggle-password-visibility-ext {
     position: absolute;
     background: none;
     border: none;
     cursor: pointer;
     top: 135px;
     right: 40px;
+}
+
+.toggle-password-visibility-ext {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
 }
 
 #sendLoginButton, #sendCreateAccountButton {
@@ -1747,14 +1754,20 @@ footer ul li a {
     text-align: center;
     padding-top: 30px;
     padding-bottom: 30px;
+    background-color: #caffa2;
 }
 
 #loginMain form {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: fit-content;
     justify-content: center;
     justify-self: center;
+    position: relative;
+}
+
+#loginMain form p {
+    width: 450px;
 }
 
 #loginMain form input {
@@ -1791,12 +1804,20 @@ footer ul li a {
 }
 
 #loginMain section {
-    width: 40%;
+    width: fit-content;
     justify-self: center;
-    background-color: #ffff90;
+    background-color: #ffffc8;
     border: 1px solid black;
     border-radius: 10px;
     padding: 20px;
+    margin: 20px;
+}
+
+#loginMain .toggle-password-visibility-ext {
+    position: absolute;
+    right: 10px;
+    z-index: 2;
+    transform: translateY(-50%);
 }
 
 #loginMain p {
@@ -2739,6 +2760,11 @@ footer ul li a {
         width: 250px;
     }
 
+    /* Login page */
+    #loginMain form p {
+        width: 300px;
+    }
+
     /* idea page */
     #ideaMain #title {
         font-size: 80px;
@@ -3097,6 +3123,15 @@ footer ul li a {
 
     #ideaMain .underComments {
         margin-left: 0;
+    }
+
+    /* Login page */
+    #loginMain .toggle-password-visibility-ext {
+        top: 215px;
+    }
+
+    #loginMain form p {
+        width: 100%;
     }
 
     /* account page */
@@ -3649,5 +3684,33 @@ footer ul li a {
 
     .hiddenNotificationData div input:hover {
         background-color: #5c4e2e;
+    }
+
+    #loginMain {
+        background-color: #000000;
+    }
+
+    #loginMain section {
+        background-color: #272727;
+    }
+
+    #loginMain a {
+        color: #ffdd8d;
+    }
+
+    #loginMain a:hover {
+        color: #5c4e2e;
+    }
+
+    #loginMain #signInLoginPageButton {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    #loginMain form input {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
     }
 }
