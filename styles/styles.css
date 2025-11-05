@@ -417,7 +417,6 @@ main {
     width: 140px;
     object-fit: contain;
     display: block;
-    background-color: #f0f0f0;
     margin: 0 auto;
     padding: 0;
 }
@@ -3390,10 +3389,6 @@ footer ul li a {
     }
 
     .ideaBox {
-        background-color: #5c4e2e;
-    }
-
-    .ideaBox .ideaImage {
         background-color: #5c4e2e;
     }
 
