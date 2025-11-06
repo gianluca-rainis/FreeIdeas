@@ -280,7 +280,7 @@ async function ldCurrentUserAccountData(sessionData) {
                 const titleTextElement = document.createElement("div");
                 const textElement = document.createElement("div");
 
-                titleTextElement.innerHTML = "You need to login before to view your account information!";
+                titleTextElement.innerHTML = "You need to <a href='./login.php'>login</a> before to view your account information!";
                 textElement.innerHTML = `Fore more information you can read our <a href="./termsOfUse.php">Terms of Use</a> and our <a href="privacyPolicy.php">Privacy Policy</a><br><br>If you have any questions you can contact us via email at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>`;
 
                 alert.style.cssText = `
