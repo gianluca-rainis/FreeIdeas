@@ -262,6 +262,13 @@ async function ldAccountData() {
     if (SQLdata) {
         loadData(SQLdata);
     }
+    else {
+        const SQLdata = await getSessionDataAdminFromDatabase();
+
+        if (SQLdata) {
+            loadData(SQLdata, true);
+        }
+    }
 }
 
 async function getSessionDataAccountFromDatabase() { // Get the data of the account saved in the session
@@ -279,22 +286,39 @@ async function getSessionDataAccountFromDatabase() { // Get the data of the acco
     }
 }
 
-function loadData(SQLdata) {
+async function getSessionDataAdminFromDatabase() { // Get the data of the account saved in the session
     try {
-        loginButton.src = SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`;
+        const res = await fetch(`./api/getSessionData.php?data=administrator`, {
+            credentials: "include"
+        });
+
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+function loadData(SQLdata, admin=false) {
+    try {
+        const userImageDisplayed = !admin?(SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`):`./images/FreeIdeas_ReservedArea.svg`;
+
+        loginButton.src = userImageDisplayed;
         document.getElementById("userName").innerHTML = SQLdata['username'];
 
         document.getElementById("pcLoginSignUpBlock").innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
-            <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
-            <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
+            <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+            <h3 style="margin-bottom: 20px">${SQLdata['name']?SQLdata['name']:""} ${SQLdata['surname']?SQLdata['surname']:""}</h3>
             <button type="submit" id="sendAccountButton">Account</button>
             <button type="submit" id="sendLogoutButton">Log Out</button>`;
 
         document.getElementById("mobileLoginSignUpBlock").innerHTML = `<h2>Welcome ${SQLdata['username']}</h2>
             <div style="align-items: center;">
-                <img src="${SQLdata['userimage']!=null?SQLdata['userimage']:`./images/user${themeIsLight?"":"_Pro"}.svg`}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
             </div>
-            <h3 style="margin-bottom: 20px">${SQLdata['name']} ${SQLdata['surname']}</h3>
+            <h3 style="margin-bottom: 20px">${SQLdata['name']?SQLdata['name']:""} ${SQLdata['surname']?SQLdata['surname']:""}</h3>
             <div style="align-items: center;">
                 <button type="submit" id="sendAccountButtonMobile">Account</button>
                 <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
@@ -506,14 +530,26 @@ function loadData(SQLdata) {
             }
         }
 
-        loadNotifications(SQLdata);
+        if (!admin) {
+            loadNotifications(SQLdata);
+        }
 
         document.getElementById("sendAccountButton").addEventListener("click", () => {
-            window.location.href = "./accountVoid.php";
+            if (!admin) {
+                window.location.href = "./accountVoid.php";
+            }
+            else {
+                window.location.href = "./reservedArea.php";
+            }
         });
 
         document.getElementById("sendAccountButtonMobile").addEventListener("click", () => {
-            window.location.href = "./accountVoid.php";
+            if (!admin) {
+                window.location.href = "./accountVoid.php";
+            }
+            else {
+                window.location.href = "./reservedArea.php";
+            }
         });
 
         document.getElementById("sendLogoutButton").addEventListener("click", async () => {

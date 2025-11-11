@@ -51,7 +51,7 @@
     function getDataFromDatabaseWithAccountInfo($conn, $id, $query) {
         try {
             if (!isset($_SESSION['account']['id'])) {
-                return [null];
+                return [];
             } else {
                 $accountId = $_SESSION['account']['id'];
             }

@@ -234,7 +234,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
                             $accountUsername = $data['comment'][$i]['username']==null?'Deleted':$data['comment'][$i]['username'];
                             $date = $data['comment'][$i]['data'];
                             $description = $data['comment'][$i]['description'];
-                            $delete = isset($_SESSION['account'])?($authorid==$_SESSION['account']['id']?'<p class="deleteComment">Delete</p>':''):'';
+                            $delete = isset($_SESSION['account'])?($authorid==$_SESSION['account']['id']?'<p class="deleteComment">Delete</p>':''):(isset($_SESSION['administrator'])?'<p class="deleteComment">Delete</p>':'');
                             $id = $data['comment'][$i]['id'];
 
                             $return = "<li class='comment'>

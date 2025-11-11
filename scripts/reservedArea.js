@@ -31,7 +31,7 @@ mainReservedArea();
 
 // Control if logged in yet
 async function mainReservedArea() {
-    if (await getAdminSessionData()) {
+    if (await getSessionDataAdminFromDatabase()) {
         accessReservedArea();
     }
     else {
@@ -79,7 +79,7 @@ async function mainReservedArea() {
 }
 
 async function accessReservedArea() {
-    const sessionData = await getAdminSessionData();
+    const sessionData = await getSessionDataAdminFromDatabase();
 
     document.querySelector("header").style.display = "flex";
 
@@ -93,20 +93,6 @@ async function accessReservedArea() {
     text.innerHTML = `Welcome <strong>${sessionData["username"]}</strong>.`;
     text.style.paddingBottom = "5%";
     reservedAreaMain.appendChild(text);
-}
-
-async function getAdminSessionData() { // Get the session data on admin info
-    try {
-        const res = await fetch(`./api/getSessionData.php?data=administrator`, {
-            credentials: "include"
-        });
-
-        const data = await res.json();
-
-        return data;
-    } catch (error) {
-        return null;
-    }
 }
 
 async function getFreeIdeasLicense(title, author) {

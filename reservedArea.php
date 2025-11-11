@@ -98,7 +98,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             ?>
         </footer>
 
-        <script src="./scripts/reservedArea.js" defer></script>
         <script src="./scripts/commonParts.js" defer></script>
+        <script src="./scripts/reservedArea.js" defer></script>
     </body>
 </html>

@@ -86,6 +86,18 @@ async function loadData2(SQLdata) {
                 window.location.href = `./publishAnIdea.php?idea=${id}`;
             });
         }
+        else if (!sessionDataGlobal) {
+            const adminSessionData = await getSessionDataAdminFromDatabase();
+
+            if (adminSessionData && SQLdata) {
+                modifyButton.addEventListener("click", () => {
+                    window.location.href = `./publishAnIdea.php?idea=${id}`;
+                });
+            }
+            else {
+                modifyButton.style.display = "none";
+            }
+        }
         else {
             modifyButton.style.display = "none";
         }
@@ -123,6 +135,9 @@ async function loadData2(SQLdata) {
             else {
                 document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#a9acf5":"#5c4e2e"}`;
             }
+        }
+        else {
+            document.getElementById("followIdeaButton").style.backgroundColor = `${themeIsLight?"#b6ffa4":"#cba95c"}`;
         }
 
         // Delete comment gestor
@@ -176,6 +191,13 @@ async function loadData2(SQLdata) {
                 const sessionData = sessionDataGlobal;
 
                 if (sessionData) {
+                    replyCommentMainGestor();
+                }
+                else {
+                    alert("You must log in before writing a comment.");
+                }
+
+                function replyCommentMainGestor() {
                     const oldCommentReplyButton = replyAtTheCommentButton[commentReplyIndex];
                     const contentToIniect = document.createElement("div");
                     contentToIniect.innerHTML = `
@@ -276,9 +298,6 @@ async function loadData2(SQLdata) {
 
                         updateQuerySelectorAll();
                     });
-                }
-                else {
-                    alert("You must log in before writing a comment.");
                 }
             });
         }

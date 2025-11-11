@@ -27,7 +27,7 @@
         if ($row = $result->fetch_assoc()) {
             $authorId = $row['authorid'];
 
-            if (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) {
+            if ((!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) && !isset($_SESSION['administrator'])) {
                 echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
                 exit;
             }
