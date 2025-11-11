@@ -38,7 +38,12 @@
         <div id="notificaions" style="display: none;">
             <h2>Notifications</h2>
             <ul class="notificationsUl">
-                
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
             </ul>
 
             <div class="hiddenNotificationData" style="display: none;">
@@ -88,7 +93,12 @@
             <div id="notificaionsMobile" style="display: none;">
                 <h2>Notifications</h2>
                 <ul class="notificationsUl">
-                    
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
+                    <li><div style="display: flex;"><strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div></div><div> </div></li>
                 </ul>
 
                 <div class="hiddenNotificationData" style="display: none;">

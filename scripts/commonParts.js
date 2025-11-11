@@ -364,6 +364,8 @@ function loadData(SQLdata, admin=false) {
 
             for (let i = 0; i < notificationsUl.length; i++) {
                 const notifUl = notificationsUl[i];
+
+                notifUl.innerHTML = "";
                 
                 notificationsShowOrder.forEach(notificationToLoad => {
                     let li = document.createElement("li");

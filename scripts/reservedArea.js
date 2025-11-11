@@ -914,7 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 async function sendData(dataId) {
                                     try {
-                                        const res = await fetch(`./api/deleteIdeaAdmin.php`, {
+                                        const res = await fetch(`./api/deleteIdea.php`, {
                                             credentials: "include",
                                             method: 'POST',
                                             body: dataId

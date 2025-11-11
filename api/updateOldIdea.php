@@ -5,7 +5,7 @@
 
     session_start();
 
-    if (!isset($_SESSION['account'])) {
+    if (!isset($_SESSION['account']) && !isset($_SESSION['administrator'])) {
         echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
         exit;
     }
@@ -150,7 +150,7 @@
             exit;
         }
 
-        $stmt->bind_param("ii", $_SESSION['account']['id'], $ideaid);
+        $stmt->bind_param("ii", $author, $ideaid);
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -169,8 +169,15 @@
                 $zero = 0; // Not read for default
                 $today = date("Y-m-d");
                 $idNot = $row['followaccountid'];
-                $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
-                $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
+
+                if (isset($_SESSION['account'])) {
+                    $titleNot = $_SESSION['account']['username'] . " has updated " . $title . "!";
+                    $description = $_SESSION['account']['username'] . " has updated " . $title . ". You can see the change in the idea's page!";
+                }
+                else {
+                    $titleNot = "The Administrator has updated " . $title . "!";
+                    $description = "The Administrator has updated " . $title . ". You can see the change in the idea's page!";
+                }
 
                 $stmt1->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
 

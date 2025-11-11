@@ -7,6 +7,7 @@
 
     $id = "";
     $title = "";
+    $authorid = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id = getInput($_POST["id"]);
@@ -27,7 +28,7 @@
         if ($row = $result->fetch_assoc()) {
             $authorId = $row['authorid'];
 
-            if (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) {
+            if ((!isset($_SESSION['account']) || $_SESSION['account']['id'] != $authorId) && !isset($_SESSION['administrator'])) {
                 echo json_encode(['success'=>false, 'error'=>"user_not_logged_in"]);
                 exit;
             }
@@ -83,7 +84,7 @@
         $stmt->close();
 
         // get the idea title for the notification
-        $sql = "SELECT title FROM ideas WHERE id=?;";
+        $sql = "SELECT title, authorid FROM ideas WHERE id=?;";
         $stmt = $conn->prepare($sql);
 
         if (!$stmt) {
@@ -98,6 +99,7 @@
 
         if ($row = $result->fetch_assoc()) {
             $title = $row['title'];
+            $authorid = $row['authorid'];
         }
         
         $stmt->close();
@@ -111,7 +113,7 @@
             exit;
         }
 
-        $stmt->bind_param("ii", $_SESSION['account']['id'], $id);
+        $stmt->bind_param("ii", $authorid, $id);
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -130,8 +132,15 @@
                 $zero = 0; // Not read for default
                 $today = date("Y-m-d");
                 $idNot = $row['followaccountid'];
-                $titleNot = $_SESSION['account']['username'] . " has deleted " . $title . ".";
-                $description = $_SESSION['account']['username'] . " has deleted " . $title . ". You can no longer visit its idea page.";
+
+                if (isset($_SESSION['administrator'])) {
+                    $titleNot = "The administrator has deleted " . $title . ".";
+                    $description = "The administrator of FreeIdeas has deleted " . $title . ". You can no longer visit its idea page.";
+                }
+                else {
+                    $titleNot = $_SESSION['account']['username'] . " has deleted " . $title . ".";
+                    $description = $_SESSION['account']['username'] . " has deleted " . $title . ". You can no longer visit its idea page.";
+                }
 
                 $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
                 $stmt->execute();
@@ -164,9 +173,16 @@
 
         $zero = 0; // Not read for default
         $today = date("Y-m-d");
-        $idNot = $_SESSION['account']['id'];
-        $titleNot = "You have deleted an idea!";
-        $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
+        $idNot = $authorid;
+
+        if (isset($_SESSION['administrator'])) {
+            $titleNot = "The administrator have deleted one of your ideas!";
+            $description = "The administrator have just deleted an idea: " . $title . "! If you want more informations about this action, feel free to contact us.";
+        }
+        else {
+            $titleNot = "You have deleted an idea!";
+            $description = "You have just deleted an old idea: " . $title . "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
+        }
 
         $stmt->bind_param("isssi", $idNot, $titleNot, $description, $today, $zero);
         $stmt->execute();
@@ -174,7 +190,7 @@
 
         /* Notifications loading */
         $stmt = $conn->prepare("SELECT * FROM notifications WHERE accountid = ?;");
-        $stmt->bind_param("i", $_SESSION['account']['id']);
+        $stmt->bind_param("i", $authorid);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -187,7 +203,9 @@
         $stmt->close();
         $conn->close();
 
-        $_SESSION['account']['notifications'] = $notifications;
+        if (isset($_SESSION['account'])) {
+            $_SESSION['account']['notifications'] = $notifications;
+        }
 
         echo json_encode(["success"=>true]);
         exit;

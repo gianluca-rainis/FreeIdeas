@@ -248,24 +248,13 @@ cancelNewIdea.addEventListener("click", () => { // Delete changes
 });
 
 /* LOGIN GESTOR */
-error = false; // Error variable to print only the most specific error
-tempBoolControl = false;
-
 ldAccountData2();
 
 async function ldAccountData2() {
     const SQLdata = await getSessionDataAccountFromDatabase();
+    const adminSessionData = await getSessionDataAdminFromDatabase();
 
-    if (SQLdata) {
-        try {
-            author.innerHTML = SQLdata['username'];
-            authorid = SQLdata['id'];
-        } catch (error) {
-            console.error(error);
-            printError(404);
-        }
-    }
-    else {
+    if (!SQLdata && !adminSessionData) {
         try {
             const main = document.querySelector("main");
             main.style.position = "relative";
@@ -359,11 +348,13 @@ async function modifyOldPageIfAuthorLoggedIn() {
     try {
         const SQLdata = await getIdeaDataFromDatabase();
         const sessionData = await getSessionDataAccountFromDatabase();
+        const adminSessionData = await getSessionDataAdminFromDatabase();
 
-        if (sessionData && SQLdata && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) {
+        if (((sessionData && (parseInt(sessionData['id']) == parseInt(SQLdata['idea'][0].accountId))) || adminSessionData) && SQLdata) {
             let parseTitle = new DOMParser().parseFromString(SQLdata['idea'][0].title, 'text/html');
 
             title.value = parseTitle.body.innerText;
+            author.innerHTML= SQLdata['idea'][0].accountName;
             description.innerHTML = SQLdata['idea'][0].description;
             mainImage.style.backgroundImage = `url(${SQLdata['idea'][0].ideaimage})`;
             getMainImage.removeAttribute("required");
@@ -468,7 +459,7 @@ async function modifyOldPageIfAuthorLoggedIn() {
                     const formData = new FormData();
                     formData.append("ideaid", id);
                     formData.append("title", title.value);
-                    formData.append("author", sessionData['id']);
+                    formData.append("author", SQLdata['idea'][0].accountId);
                     formData.append("data", currentdate);
                     formData.append("description", description.value);
 
