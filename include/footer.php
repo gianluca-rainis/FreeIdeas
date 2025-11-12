@@ -23,6 +23,7 @@
         <h4>Support</h4>
         <ul>
             <li><a href="./faq.php">FAQ</a></li>
+            <li><a href="./feedback.php">Feedback</a></li>
             <li><a href="./contacts.php">Contact Us</a></li>
         </ul>
     </div>

@@ -660,6 +660,48 @@ footer ul li a {
     background-color: #e9ed79;
 }
 
+/* FEEDBACK PAGE */
+#feedbackForm {
+    background-color: #7ddf60;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    align-items: center;
+    justify-self: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+    gap: 10px;
+}
+
+#feedbackForm textarea, #feedbackForm input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    border: 0;
+}
+
+#feedbackForm input {
+    background-color: #eeffb5;
+    cursor: pointer;
+}
+
+#feedbackForm textarea {
+    resize: vertical;
+}
+
+#feedbackTitle {
+    height: 20px;
+}
+
+#feedbackDescription {
+    height: 100px;
+}
+
+.footerpage section {
+    padding: 15px 0 15px 0;
+}
+
 /* LOGIN AREA */
 #loginArea {
     display: none;
