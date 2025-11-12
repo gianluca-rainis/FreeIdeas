@@ -29,11 +29,17 @@
     </div>
 
     <div>
+        <h4>About FreeIdeas</h4>
+        <ul>
+            <li><a href="./about.php">About Us</a></li>
+            <li><a href="./images/logo/FreeIdeas_official_logos.zip" download="">Official logos</a></li>
+        </ul>
+    </div>
+
+    <div>
         <h4>More</h4>
         <ul>
             <li><a href="./sitemap.xml">Sitemap</a></li>
-            <li><a href="./images/logo/FreeIdeas_official_logos.zip" download="">Official logos</a></li>
-            <li><a href="./about.php">About Us</a></li>
             <li><a href="./reservedArea.php">Reserved Area</a></li>
             <li><a href="https://github.com/gianluca-rainis/FreeIdeas.git"><img src="./images/github.svg" alt="GitHub Logo" id="githubLogo"></a></li>
         </ul>

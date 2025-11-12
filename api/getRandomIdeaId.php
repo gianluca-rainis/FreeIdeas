@@ -22,7 +22,7 @@
         echo json_encode($data);
         exit;
     } catch (\Throwable $th) {
-        echo json_encode(""); // Void link
+        echo json_encode([""]); // Void link
         exit;
     }
 ?>

@@ -548,7 +548,7 @@ footer ul li a {
 
 .footerLinksSection {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 70%;
     margin-right: 20px;
 }
