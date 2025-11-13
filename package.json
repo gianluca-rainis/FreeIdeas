@@ -1,20 +1,26 @@
 {
-    "name": "freeideas-frontend",
+    "name": "freeideas-nextjs",
     "version": "1.0.0",
-    "type": "module",
+    "private": true,
     "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview"
+        "dev": "next dev -p 3000",
+        "build": "next build",
+        "start": "next start -p 3000",
+        "lint": "next lint",
+        "dev-vite": "vite",
+        "build-vite": "vite build"
     },
     "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "next": "^16.0.3",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"  
     },
     "devDependencies": {
         "@types/react": "^18.2.43",
         "@types/react-dom": "^18.2.17",
         "@vitejs/plugin-react": "^4.2.1",
-        "vite": "^5.0.8"
+        "vite": "^5.0.8",
+        "eslint": "^8",
+        "eslint-config-next": "^16.0.3"
     }
 }
