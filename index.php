@@ -385,7 +385,7 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
             ?>
         </footer>
 
-        <script src="./scripts/main.js" defer></script>
         <script src="./scripts/commonParts.js" defer></script>
+        <script src="./scripts/main.js" defer></script>
     </body>
 </html>
