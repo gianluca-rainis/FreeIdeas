@@ -1,18 +1,12 @@
-<!--
-Author: Gianluca Rainis
-This project is licensed under the FreeIdeas License.
-You can find the license in the LICENSE file in the root directory of this project.
-Project: FreeIdeas
-FreeIdeas is a collection of free ideas for projects, apps, and websites that you can use to get inspired or to start your own project.
--->
-<!DOCTYPE html>
+import React from 'react'
 
-<html lang="en-US">
-    <head>
-        <meta charset="UTF-8" />
+function Head() {
+    return (
+        <>
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="shortcut icon" type="image/svg+xml" href="./images/FreeIdeas.svg" />
+        <link rel="shortcut icon" type="image/svg+xml" href="https://freeideas.duckdns.org/favicon.svg" />
         <link href="./styles/styles.css" rel="stylesheet" />
 
         <meta name="description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
@@ -39,25 +33,16 @@ FreeIdeas is a collection of free ideas for projects, apps, and websites that yo
         <meta name="twitter:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
         <meta name="twitter:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
 
-        <script type="application/ld+json">
+        {/* <script type="application/ld+json">
             {
                 "@content": "https://schema.org",
                 "@type": "WebSite",
                 "name": "FreeIdeas",
                 "url": "https://freeideas.duckdns.org"
             }
-        </script>
+        </script> */}
+        </>
+    )
+}
 
-        <!-- Dinamic head -->
-        <title>FreeIdeas</title>
-        <link rel="canonical" href="https://freeideas.duckdns.org/" />
-    </head>
-
-    <body>
-        <!-- Data injected by main.jsx -->
-
-        <script type="module" src="./src/main.jsx"></script>
-        <script src="./scripts/commonParts.js" defer></script>
-        <script src="./scripts/main.js" defer></script>
-    </body>
-</html>
+export default Head
