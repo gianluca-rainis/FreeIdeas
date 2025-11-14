@@ -1,7 +1,7 @@
 import React from 'react'
-import Head from 'next/head'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import Head from '../components/Head'
 
 const BANNERMESSAGE = "";
 const SHOWBANNER = false;
@@ -82,7 +82,7 @@ export async function getServerSideProps() {
     return {
         props: {
             ideas: mockIdeas,
-            pageTitle: "FreeIdeas - Server-Side Rendered!"
+            pageTitle: ""
         }
     }
 }
@@ -91,41 +91,7 @@ export async function getServerSideProps() {
 export default function HomePage({ ideas, pageTitle }) {
     return (
         <>
-            <Head>
-                <title>{pageTitle}</title>
-                <meta name="description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-                <meta name="author" content="Gianluca Rainis" />
-                <meta name="keywords" content="FreeIdeas, Free, Ideas" />
-                
-                {/* Open Graph */}
-                <meta property="og:url" content="https://freeideas.duckdns.org/" />
-                <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="FreeIdeas" />
-                <meta property="og:title" content={pageTitle} />
-                <meta property="og:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-                <meta property="og:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
-                
-                {/* Twitter */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={pageTitle} />
-                <meta name="twitter:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-                <meta name="twitter:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
-                
-                {/* Favicon and CSS are in _document.js */}
-                
-                {/* JSON-LD Schema */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            "@type": "WebSite",
-                            "@context": "https://schema.org",
-                            "name": "FreeIdeas",
-                            "url": "https://freeideas.duckdns.org"
-                        })
-                    }}
-                />
-            </Head>
+            <Head pageTitle={pageTitle} />
 
             <Nav />
             
