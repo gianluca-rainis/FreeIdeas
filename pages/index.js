@@ -68,20 +68,144 @@ function Banner({ message = "", show = false }) {
     )
 }
 
+// Auto-scroll effect
+function autoScrollIdeas() {
+    useEffect(() => {
+        let currentScrollMode = true;
+
+        const startAutoScroll = () => {
+            const vertical = window.innerWidth > 760;
+
+            currentScrollMode = vertical;
+
+            const lastIdeas1 = document.getElementById("lastIdeasVertical1");
+            const lastIdeas2 = document.getElementById("lastIdeasVertical2");
+            const lastIdeas3 = document.getElementById("lastIdeasHorizontal");
+            const lastIdeas4 = document.getElementById("inspirationalUl");
+
+            if (!lastIdeas1 || !lastIdeas2 || !lastIdeas3 || !lastIdeas4) {
+                return;
+            }
+
+            // Clone content for infinite scroll
+            if (!lastIdeas1.dataset.cloned) {
+                lastIdeas1.innerHTML += lastIdeas1.innerHTML;
+                lastIdeas2.innerHTML += lastIdeas2.innerHTML;  
+                lastIdeas3.innerHTML += lastIdeas3.innerHTML;
+                lastIdeas4.innerHTML += lastIdeas4.innerHTML;
+
+                lastIdeas1.dataset.cloned = "true";
+                lastIdeas2.dataset.cloned = "true";
+                lastIdeas3.dataset.cloned = "true";
+                lastIdeas4.dataset.cloned = "true";
+            }
+
+            // Scroll functions
+            function scrollVertical(element, direction) {
+                let scrollAmount = direction?0:element.scrollHeight / 2;
+                const speed = 1.5;
+
+                function autoScroll() {
+                    scrollAmount += (direction?1:-1) * speed;
+                    
+                    if (direction && scrollAmount >= element.scrollHeight / 2) {
+                        scrollAmount = 0;
+                    } else if (!direction && scrollAmount < 0) {
+                        scrollAmount = element.scrollHeight / 2;
+                    }
+                    
+                    element.scrollTop = scrollAmount;
+                    requestAnimationFrame(autoScroll);
+                }
+
+                autoScroll();
+            };
+
+            function scrollHorizontal(element, direction) {
+                let scrollAmount = direction?0:element.scrollWidth / 2;
+                const speed = 1.5;
+
+                function autoScroll() {
+                    scrollAmount += (direction?1:-1) * speed;
+                    
+                    if (direction && scrollAmount >= element.scrollWidth / 2) {
+                        scrollAmount = 0;
+                    } else if (!direction && scrollAmount < 0) {
+                        scrollAmount = element.scrollWidth / 2;
+                    }
+                    
+                    element.scrollLeft = scrollAmount;
+                    requestAnimationFrame(autoScroll);
+                }
+
+                autoScroll();
+            };
+
+            // Apply scrolling based on screen size
+            if (vertical) {
+                scrollVertical(lastIdeas1, true);
+                scrollVertical(lastIdeas2, false);
+            } else {
+                scrollHorizontal(lastIdeas1, false);
+                scrollHorizontal(lastIdeas2, true);
+            }
+
+            scrollHorizontal(lastIdeas3, false);
+            scrollHorizontal(lastIdeas4, true);
+        };
+
+        // Start after component mount
+        setTimeout(startAutoScroll, 100);
+
+        // Handle window resize
+        function handleResize() {
+            const scrollMode = window.innerWidth>760;
+
+            if (scrollMode != currentScrollMode) {
+                startAutoScroll();
+            }
+        }
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+}
+
 // Server-side rendering
 export async function getServerSideProps() {
-    // Temp simulation of the data
-    const mockIdeas = Array.from({ length: 12 }, (_, i) => ({
-        id: i + 1,
-        title: `Server-Side Idea ${i + 1}`,
-        author: `Author ${i + 1}`,
-        image: `/images/FreeIdeas.svg`
-    }));
+    let ideas = [];
+    
+    try {
+        const response = await fetch('http://localhost:8000/api/getLastIdeas.php');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Convert PHP data format to our format
+            ideas = data.data.map(phpIdea => ({
+                id: phpIdea.id,
+                title: phpIdea.title,
+                author: phpIdea.username,
+                image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
+            }));
+        } else {
+            throw new Error("PHP API error: "+data.error);
+        }
+    } catch (error) {
+        console.error('Failed to fetch ideas:', error);
+        
+        // Fallback data in case of API failure
+        ideas = Array.from({ length: 12 }, (_, i) => ({
+            id: i + 1,
+            title: `Idea ${i + 1}`,
+            author: `Author ${i + 1}`,
+            image: `./images/FreeIdeas.svg`
+        }));
+    }
 
-    // Inject data
     return {
         props: {
-            ideas: mockIdeas,
+            ideas: ideas,
             pageTitle: ""
         }
     }
@@ -89,6 +213,8 @@ export async function getServerSideProps() {
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
+    autoScrollIdeas();
+
     return (
         <>
             <Head pageTitle={pageTitle} />
@@ -110,10 +236,7 @@ export default function HomePage({ ideas, pageTitle }) {
 
             <main id="indexMain">
                 <section id="whatisFreeIdeas">
-                    <IdeaList 
-                        ideas={ideas.slice(0, 6)} 
-                        id="lastIdeasVertical1" 
-                    />
+                    <IdeaList ideas={ideas.slice(0, 6)} id="lastIdeasVertical1" />
 
                     <section id="middleTextSection">
                         <h1>
@@ -147,17 +270,11 @@ export default function HomePage({ ideas, pageTitle }) {
                         </p>
                     </section>
 
-                    <IdeaList 
-                        ideas={ideas.slice(6, 12)} 
-                        id="lastIdeasVertical2" 
-                    />
+                    <IdeaList ideas={ideas.slice(6, 12)} id="lastIdeasVertical2" />
                 </section>
 
                 <section id="horizzontalBarSeparatorSection">
-                    <IdeaList 
-                        ideas={ideas.slice(0, 10)} 
-                        id="lastIdeasHorizontal" 
-                    />
+                    <IdeaList ideas={ideas.slice(12, 22)} id="lastIdeasHorizontal" />
                 </section>
 
                 <section id="imagesSectionHome">
