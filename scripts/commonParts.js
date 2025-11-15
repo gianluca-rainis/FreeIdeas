@@ -59,7 +59,6 @@ function loadCurrentTheme() {
 }
 
 // Variables used by the load theme functions
-
 window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', event => {
     const newColorScheme = event.matches?true:false;
 

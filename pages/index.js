@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
+import { useAppContext } from '../contexts/CommonContext'
 
 const BANNERMESSAGE = "";
 const SHOWBANNER = false;
@@ -213,6 +214,8 @@ export async function getServerSideProps() {
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
+    const { themeIsLight, user } = useAppContext();
+    
     autoScrollIdeas();
 
     return (
