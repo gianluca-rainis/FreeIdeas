@@ -1,4 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { getApiUrl } from '../utils/apiConfig';
+import { handleError, getUserFriendlyErrorMessage, ValidationError } from '../utils/errorHandling';
 
 const AppContext = createContext();
 
@@ -8,10 +11,20 @@ export function AppProvider({ children }) {
     const [user, setUser] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [randomIdeaId, setRandomIdeaId] = useState(null);
+    const [showLoginArea, setShowLoginArea] = useState(false);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+    
+    const router = useRouter();
 
     /* THEME GESTOR */
-    // Update the teme
+    // Update the theme
     useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
         const savedTheme = localStorage.getItem("themeIsLight");
 
         if (savedTheme !== null) {
@@ -46,7 +59,46 @@ export function AppProvider({ children }) {
 
         setThemeIsLight(newTheme);
 
-        localStorage.setItem("themeIsLight", newTheme);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("themeIsLight", newTheme);
+        }
+    }
+
+    // Window size management
+    useEffect(() => {
+        function handleResize() {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        }
+
+        if (typeof window !== 'undefined') {
+            handleResize();
+            window.addEventListener('resize', handleResize);
+
+            return () => window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+
+    // Random idea management
+    useEffect(() => {
+        loadRandomIdea();
+    }, []);
+
+    async function loadRandomIdea() {
+        try {
+            const response = await fetch(getApiUrl('getRandomIdeaId'), {
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            setRandomIdeaId(data?data.id:null);
+        } catch (error) {
+            handleError(error, 'loadRandomIdea');
+            setRandomIdeaId(null);
+        }
     }
 
     // User management
@@ -57,16 +109,18 @@ export function AppProvider({ children }) {
     async function loadUserData() {
         setIsLoading(true);
         try {
-            let response = await fetch('/api/getSessionData.php?data=account', {
+            let response = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
                 credentials: "include"
             });
+
             let data = await response.json();
 
             if (data && data.success) {
                 setUser({ ...data, isAdmin: false });
                 setNotifications(data.notifications || []);
-            } else {
-                response = await fetch('/api/getSessionData.php?data=administrator', {
+            }
+            else {
+                response = await fetch(`${getApiUrl('getSessionData')}?data=administrator`, {
                     credentials: "include"
                 });
                 data = await response.json();
@@ -76,7 +130,9 @@ export function AppProvider({ children }) {
                 }
             }
         } catch (error) {
-            console.error('Failed to load user data:', error);
+            handleError(error, 'loadUserData');
+            setUser(null);
+            setNotifications([]);
         } finally {
             setIsLoading(false);
         }
@@ -84,42 +140,274 @@ export function AppProvider({ children }) {
 
     async function login(formData) {
         try {
-            const response = await fetch('/api/login.php', {
+            const response = await fetch(getApiUrl('login'), {
                 credentials: "include",
                 method: "POST",
                 body: formData
             });
+            
             const data = await response.json();
 
             if (data && data.success) {
                 await loadUserData();
                 return { success: true };
             }
-            return { success: false, error: "Email or password are wrong" };
+            return { 
+                success: false,
+                error: getUserFriendlyErrorMessage(data?data.error:null || "Invalid email or password")
+            };
         } catch (error) {
-            return { success: false, error: "Login failed" };
+            const errorInfo = handleError(error, 'login');
+            return { 
+                success: false,
+                error: getUserFriendlyErrorMessage(error)
+            };
         }
     }
 
     async function logout() {
         try {
-            await fetch('/api/logout.php', { credentials: "include" });
+            await fetch(getApiUrl('logout'), { credentials: "include" });
             setUser(null);
             setNotifications([]);
+            router.push('/');
         } catch (error) {
-            console.error('Logout failed:', error);
+            handleError(error, 'logout');
+            // Anche se il logout fallisce, pulisci lo stato locale
+            setUser(null);
+            setNotifications([]);
         }
     }
 
+    // Login/Navigation area management
+    function toggleLoginArea() {
+        if (!showLoginArea) {
+            setShowLoginArea(true);
+            setShowNotifications(false);
+        }
+        else {
+            setShowLoginArea(false);
+        }
+    }
+
+    function toggleNotifications() {
+        if (!showNotifications) {
+            setShowNotifications(true);
+            setShowLoginArea(true);
+        }
+        else {
+            setShowNotifications(false);
+            setShowLoginArea(false);
+        }
+    }
+
+    // Notification management
+    async function markNotificationAsRead(notificationId) {
+        try {
+            const formData = new FormData();
+            formData.append("id", notificationId);
+
+            const response = await fetch(getApiUrl('setNotificationAsRead'), {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data && data.success) {
+                setNotifications(prev => 
+                    prev.map(notif => {
+                        if (notif.id === notificationId) {
+                            return { ...notif, status: 1 };
+                        }
+                        else {
+                            return notif;
+                        }
+                    })
+                );
+            }
+            
+            return data?data.success:false;
+        } catch (error) {
+            handleError(error, 'markNotificationAsRead');
+            return false;
+        }
+    }
+
+    async function deleteNotification(notificationId) {
+        try {
+            const formData = new FormData();
+            formData.append("id", notificationId);
+
+            const response = await fetch(getApiUrl('deleteNotification'), {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data && data.success) {
+                setNotifications(prev => 
+                    prev.filter(notif => notif.id !== notificationId)
+                );
+            }
+            
+            return data?data.success:false;
+        } catch (error) {
+            handleError(error, 'deleteNotification');
+            return false;
+        }
+    }
+
+    // Forgot password functionality
+    async function forgotPassword(email) {
+        if (!email || !email.includes("@") || !email.includes(".")) {
+            throw new ValidationError("Insert a valid email", "email");
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("email", email);
+
+            const response = await fetch(getApiUrl('changePassword'), {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data && data.success) {
+                return { success: true, message: `Email sent to: ${email}` };
+            }
+            else {
+                throw new Error(data?.error || "Failed to send password reset email");
+            }
+        } catch (error) {
+            handleError(error, 'forgotPassword');
+            throw error;
+        }
+    }
+
+    // Utility functions
+    function getImagePath(imageName, useThemeVariant = true) {
+        if (useThemeVariant) {
+            return `/images/${imageName}${themeIsLight ? "" : "_Pro"}.svg`;
+        }
+
+        return `/images/${imageName}`;
+    }
+
+    function getUserImageSrc(userImage, isAdmin = false) {
+        if (isAdmin) {
+            return "/images/FreeIdeas_ReservedArea.svg";
+        }
+
+        return userImage || getImagePath("user");
+    }
+
+    // Modal state
+    const [currentModal, setCurrentModal] = useState(null);
+
+    // Custom modals
+    const showAlert = useCallback((text) => {
+        return new Promise((resolve) => {
+            setCurrentModal({
+                type: 'alert',
+                text,
+                onClose: () => {
+                    setCurrentModal(null);
+                    resolve(true);
+                }
+            });
+        });
+    }, []);
+
+    const showConfirm = useCallback((text) => {
+        return new Promise((resolve) => {
+            setCurrentModal({
+                type: 'confirm',
+                text,
+                onConfirm: () => {
+                    setCurrentModal(null);
+                    resolve(true);
+                },
+                onCancel: () => {
+                    setCurrentModal(null);
+                    resolve(false);
+                }
+            });
+        });
+    }, []);
+
+    const showPrompt = useCallback((message, defaultValue = "") => {
+        return new Promise((resolve) => {
+            setCurrentModal({
+                type: 'prompt',
+                message,
+                defaultValue,
+                onSubmit: (value) => {
+                    setCurrentModal(null);
+                    resolve(value);
+                },
+                onCancel: () => {
+                    setCurrentModal(null);
+                    resolve(null);
+                }
+            });
+        });
+    }, []);
+
+    const closeModal = useCallback(() => {
+        if (currentModal && currentModal.onCancel) {
+            currentModal.onCancel();
+        }
+        else if (currentModal && currentModal.onClose) {
+            currentModal.onClose();
+        }
+    }, [currentModal]);
+
     const value = {
+        // Theme
         themeIsLight,
         toggleTheme,
+        
+        // User and authentication
         user,
-        notifications,
         isLoading,
         login,
         logout,
-        refreshUserData: loadUserData
+        refreshUserData: loadUserData,
+        forgotPassword,
+        
+        // Notifications
+        notifications,
+        markNotificationAsRead,
+        deleteNotification,
+        
+        // UI State
+        showLoginArea,
+        showNotifications,
+        toggleLoginArea,
+        toggleNotifications,
+        windowSize,
+        
+        // Random idea
+        randomIdeaId,
+        loadRandomIdea,
+        
+        // Utilities
+        getImagePath,
+        getUserImageSrc,
+        
+        // Modals
+        currentModal,
+        showAlert,
+        showConfirm,
+        showPrompt,
+        closeModal
     };
 
     return (
