@@ -1,4 +1,4 @@
-// Tipi di errori personalizzati
+// Error types
 export class APIError extends Error {
     constructor(message, endpoint, statusCode = null) {
         super(message);
@@ -23,7 +23,7 @@ export class ValidationError extends Error {
     }
 }
 
-// Gestione errori centralizzata
+// Main handle error
 export function handleError(error, context = 'Unknown') {
     console.error(`Error in ${context}:`, error);
     
@@ -51,14 +51,14 @@ export function handleError(error, context = 'Unknown') {
         };
     }
     
-    // Errore generico
+    // Generic error
     return {
         type: 'generic',
         message: error.message || 'An unexpected error occurred'
     };
 }
 
-// Messaggi di errore user-friendly
+// Error messages
 export const ERROR_MESSAGES = {
     NETWORK_ERROR: 'Network connection problem. Please check your internet connection.',
     SERVER_ERROR: 'Server error. Please try again later.',
@@ -69,14 +69,14 @@ export const ERROR_MESSAGES = {
     UNKNOWN_ERROR: 'An unexpected error occurred. Please try again.'
 };
 
-// Helper per messaggi di errore user-friendly
+// Helper for error messages
 export function getUserFriendlyErrorMessage(error) {
     if (typeof error === 'string') {
         return error;
     }
     
     if (error.message) {
-        // Controlla se è un errore noto
+        // If is a known error
         const knownErrors = {
             'Failed to fetch': ERROR_MESSAGES.NETWORK_ERROR,
             'NetworkError': ERROR_MESSAGES.NETWORK_ERROR,

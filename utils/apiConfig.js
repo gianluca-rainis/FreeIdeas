@@ -1,6 +1,6 @@
-// Configurazione per le API
+// Configurations for the API
 const API_CONFIG = {
-    // Base URL per le API - usa percorsi relativi per Next.js
+    // Base URL for the API - relative paths for Next.js
     baseURL: typeof window !== 'undefined' ? '' : '',
     
     // Endpoints API
@@ -14,7 +14,7 @@ const API_CONFIG = {
         changePassword: '/api/changePassword.php'
     },
     
-    // Opzioni di default per fetch
+    // Default options for the fetch
     defaultOptions: {
         credentials: 'include',
         headers: {
@@ -23,12 +23,12 @@ const API_CONFIG = {
     }
 };
 
-// Helper function per costruire URL completi
+// Helper function to build the URL
 export function getApiUrl(endpoint) {
     return `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
 }
 
-// Helper function per fetch con configurazione di default
+// Helper function for fetch with default configurations
 export async function apiCall(endpoint, options = {}) {
     const url = getApiUrl(endpoint);
     const finalOptions = {

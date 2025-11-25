@@ -14,14 +14,14 @@ export function LoginForm({ onClose }) {
     const { handleLogin, handleForgotPassword } = useAuth();
     const { themeIsLight } = useAppContext();
 
-    const handleChange = (e) => {
+    function handleChange(e) {
         setFormData(prev => ({
             ...prev,
             [e.target.name]: e.target.value
         }));
     };
 
-    const handleSubmit = async (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
         setIsSubmitting(true);
 
@@ -38,7 +38,7 @@ export function LoginForm({ onClose }) {
         setIsSubmitting(false);
     };
 
-    const handleForgotPasswordClick = async () => {
+    async function handleForgotPasswordClick() {
         if (!formData.email) {
             // Focus email input if empty
             if (document.getElementById('emailAreaLogin')) {

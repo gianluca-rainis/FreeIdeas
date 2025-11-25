@@ -168,12 +168,10 @@ export function AppProvider({ children }) {
     async function logout() {
         try {
             await fetch(getApiUrl('logout'), { credentials: "include" });
-            setUser(null);
-            setNotifications([]);
             router.push('/');
         } catch (error) {
             handleError(error, 'logout');
-            // Anche se il logout fallisce, pulisci lo stato locale
+        } finally {
             setUser(null);
             setNotifications([]);
         }

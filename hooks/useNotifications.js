@@ -24,23 +24,24 @@ export function useNotifications() {
         return new Date(b.data) - new Date(a.data);
     });
 
-    const handleNotificationClick = async (notification) => {
+    async function handleNotificationClick(notification) {
         if (notification.status === 0) {
             await markNotificationAsRead(notification.id);
         }
     };
 
-    const handleDeleteNotification = async (notificationId) => {
+    async function handleDeleteNotification(notificationId) {
         await deleteNotification(notificationId);
     };
 
-    const toggleNotificationPanel = () => {
+    function toggleNotificationPanel() {
         toggleNotifications();
     };
 
     // Get notification image source based on unread count
-    const getNotificationImageSrc = (themeIsLight) => {
+    function getNotificationImageSrc(themeIsLight) {
         const basePath = unreadCount > 0 ? 'notifications_active' : 'notifications';
+        
         return `/images/${basePath}${themeIsLight ? '' : '_Pro'}.svg`;
     };
 

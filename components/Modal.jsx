@@ -62,7 +62,7 @@ export function PromptModal({ message, defaultValue, onSubmit, onCancel }) {
     const { themeIsLight } = useAppContext();
     const [value, setValue] = useState(defaultValue || '');
 
-    const handleSubmit = (e) => {
+    function handleSubmit(e) {
         e.preventDefault();
         onSubmit(value);
     };

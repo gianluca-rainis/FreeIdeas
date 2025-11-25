@@ -57,10 +57,10 @@ export function useModals() {
     }, []);
 
     const closeModal = useCallback(() => {
-        if (currentModal?.onCancel) {
+        if (currentModal?currentModal.onCancel:false) {
             currentModal.onCancel();
         }
-        else if (currentModal?.onClose) {
+        else if (currentModal?currentModal.onClose:false) {
             currentModal.onClose();
         }
         else {

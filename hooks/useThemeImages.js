@@ -6,32 +6,32 @@ export function useThemeImages() {
     const router = useRouter();
 
     // Get logo source based on current route and theme
-    const getLogoSrc = () => {
+    function getLogoSrc() {
         return getImagePath('FreeIdeas');
     };
 
     // Get GitHub logo source
-    const getGithubLogoSrc = () => {
+    function getGithubLogoSrc() {
         return themeIsLight ? '/images/github.svg' : '/images/github-white.svg';
     };
 
     // Get menu icon for mobile
-    const getMobileMenuSrc = () => {
+    function getMobileMenuSrc() {
         return getImagePath('menu');
     };
 
     // Get theme toggle button source
-    const getThemeToggleSrc = () => {
+    function getThemeToggleSrc() {
         return themeIsLight ? '/images/sun-dark.svg' : '/images/sun-light.svg';
     };
 
     // Get back button source
-    const getBackButtonSrc = () => {
+    function getBackButtonSrc() {
         return getImagePath('back');
     };
 
     // Get page-specific images
-    const getPageSpecificImages = () => {
+    function getPageSpecificImages() {
         const currentPath = router.pathname;
         
         const images = {};

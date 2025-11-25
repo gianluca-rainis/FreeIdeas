@@ -4,7 +4,9 @@ import { AlertModal, ConfirmModal, PromptModal } from './Modal';
 export function ModalProvider() {
     const { currentModal } = useAppContext();
 
-    if (!currentModal) return null;
+    if (!currentModal) {
+        return null;
+    }
 
     switch (currentModal.type) {
         case 'alert':

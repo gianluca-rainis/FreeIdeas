@@ -3,15 +3,15 @@ import { useState } from 'react';
 export function usePasswordVisibility(initialVisible = false) {
     const [isVisible, setIsVisible] = useState(initialVisible);
 
-    const toggleVisibility = () => {
+    function toggleVisibility() {
         setIsVisible(prev => !prev);
     };
 
-    const getInputType = () => {
+    function getInputType() {
         return isVisible?'text':'password';
     };
 
-    const getToggleIcon = () => {
+    function getToggleIcon() {
         if (isVisible) {
             // Eye with slash (hidden)
             return (

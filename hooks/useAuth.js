@@ -13,7 +13,7 @@ export function useAuth() {
     } = useAppContext();
     const router = useRouter();
 
-    const handleLogin = async (formData) => {
+    async function handleLogin(formData) {
         try {
             const result = await login(formData);
             if (result.success) {
@@ -33,11 +33,11 @@ export function useAuth() {
         }
     };
 
-    const handleLogout = async () => {
+    async function handleLogout() {
         await logout();
     };
 
-    const handleForgotPassword = async (email) => {
+    async function handleForgotPassword(email) {
         try {
             const result = await forgotPassword(email);
             await showAlert(result.message);
@@ -50,7 +50,7 @@ export function useAuth() {
         }
     };
 
-    const redirectToAccount = () => {
+    function redirectToAccount() {
         if (user && user.isAdmin) {
             router.push('/reservedArea');
         }
