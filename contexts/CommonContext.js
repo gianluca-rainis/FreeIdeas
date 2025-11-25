@@ -322,16 +322,50 @@ export function AppProvider({ children }) {
         else {
             setShowLoginArea(false);
         }
+
+        toggleLoginNotifications();
     }
 
     function toggleNotifications() {
         if (!showNotifications) {
             setShowNotifications(true);
-            setShowLoginArea(true);
+            setShowLoginArea(false);
         }
         else {
             setShowNotifications(false);
-            setShowLoginArea(false);
+        }
+
+        toggleLoginNotifications();
+    }
+
+    function toggleLoginNotifications() {
+        if (showLoginArea) {
+            document.getElementById("loginArea").style.display = "block";
+            document.getElementById("mobileMenuHidden").style.display = "flex";
+
+            document.getElementById("pcLoginSignUpBlock").style.display = "block";
+            document.getElementById("mobileLoginSignUpBlock").style.display = "block";
+        }
+        else {
+            document.getElementById("loginArea").style.display = "none";
+            document.getElementById("mobileMenuHidden").style.display = "none";
+        }
+        
+        if (showNotifications) {
+            document.getElementById("notificaionsMobile").style.display = "block";
+            document.getElementById("notificaions").style.display = "block";
+
+            document.getElementById("pcLoginSignUpBlock").style.display = "block";
+            document.getElementById("mobileLoginSignUpBlock").style.display = "block";
+        }
+        else {
+            document.getElementById("notificaionsMobile").style.display = "none";
+            document.getElementById("notificaions").style.display = "none";
+        }
+
+        if (!showLoginArea && !showNotifications) {
+            document.getElementById("pcLoginSignUpBlock").style.display = "none";
+            document.getElementById("mobileLoginSignUpBlock").style.display = "none";
         }
     }
 

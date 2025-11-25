@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useAppContext } from '../contexts/CommonContext'
 
 export default function Nav({ randomId=0 }) {
-    const { themeIsLight, toggleTheme, getImagePath } = useAppContext();
+    const { themeIsLight, toggleTheme, getImagePath, toggleNotifications } = useAppContext();
 
     return (
         <>
@@ -17,7 +17,7 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
                         <li><Link href={`/ideaVoid?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
+                        <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
                         <li id="userImageLi"><img src="/images/user.svg" alt="User image" id="userImage" /><p id="userName">Login</p></li>
                     </ul>
                     <div id="loginArea">
@@ -65,7 +65,7 @@ export default function Nav({ randomId=0 }) {
                     </ul>
                     <ul className="navLinks">
                         <li id="themeImageLiMobile"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
+                        <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
                         <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" /></li>
                     </ul>
                     <div id="mobileMenuHidden">
