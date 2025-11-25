@@ -214,7 +214,7 @@ export async function getServerSideProps() {
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
-    const { themeIsLight, user } = useAppContext();
+    const { themeIsLight, user, randomIdeaId } = useAppContext();
     
     autoScrollIdeas();
 
@@ -222,7 +222,7 @@ export default function HomePage({ ideas, pageTitle }) {
         <>
             <Head pageTitle={pageTitle} />
 
-            <Nav />
+            <Nav randomId={randomIdeaId} />
             
             <header>
                 <div style={{

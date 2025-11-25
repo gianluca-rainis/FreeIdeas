@@ -108,6 +108,7 @@ export function AppProvider({ children }) {
 
     async function loadUserData() {
         setIsLoading(true);
+        
         try {
             let response = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
                 credentials: "include"

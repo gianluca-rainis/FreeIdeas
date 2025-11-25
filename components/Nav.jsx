@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-export default function Nav() {
+export default function Nav({ randomId=0 }) {
     return (
         <>
             <nav>
@@ -10,9 +10,9 @@ export default function Nav() {
                         <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li><Link href="/search" className="navText">Search an Idea</Link></li>
-                        <li><Link href="/publish" className="navText">Publish an Idea</Link></li>
-                        <li><a href="#" className="navText" id="randomIdeaA">Random Idea</a></li>
+                        <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
+                        <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
+                        <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src="/images/sun-dark.svg" alt="Toggle Theme" className="toggle-light-dark-theme" /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
                         <li id="userImageLi"><img src="/images/user.svg" alt="User image" id="userImage" /><p id="userName">Login</p></li>
@@ -67,9 +67,9 @@ export default function Nav() {
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
-                            <li><Link href="/search" className="navText">Search an Idea</Link></li>
-                            <li><Link href="/publish" className="navText">Publish an Idea</Link></li>
-                            <li><a href="#" className="navText" id="randomIdeaAMobile">Random Idea</a></li>
+                            <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
+                            <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
+                            <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
                         </ul>
 
                         <div id="loginAreaMobile">
