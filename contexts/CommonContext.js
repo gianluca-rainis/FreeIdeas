@@ -50,6 +50,9 @@ export function AppProvider({ children }) {
     useEffect(() => {
         if (typeof document !== 'undefined') {
             document.documentElement.setAttribute("data-theme", themeIsLight?"light":"dark");
+            
+            // Update all theme-related elements whenever theme changes
+            updateThemeElements(themeIsLight);
         }
     }, [themeIsLight]);
 
@@ -61,6 +64,136 @@ export function AppProvider({ children }) {
 
         if (typeof window !== 'undefined') {
             localStorage.setItem("themeIsLight", newTheme);
+            
+            // Update all theme-related elements
+            updateThemeElements(newTheme);
+        }
+    }
+    
+    // Function to update all theme-related elements
+    function updateThemeElements(isLight) {
+        if (typeof document === 'undefined') {
+            return;
+        }
+        
+        try {
+            // Update toggle theme buttons
+            const lightDarkThemeButtons = document.querySelectorAll(".toggle-light-dark-theme");
+            lightDarkThemeButtons.forEach(button => {
+                if (button) {
+                    button.src = isLight ? "/images/sun-dark.svg" : "/images/sun-light.svg";
+                }
+            });
+
+            // Update GitHub logo
+            const githubLogo = document.getElementById("githubLogo");
+            if (githubLogo) {
+                githubLogo.src = isLight ? "./images/github.svg" : "./images/github-white.svg";
+            }
+
+            // Update FreeIdeas logos
+            const logos = [
+                document.getElementById("pcNavBarGhost")?.querySelector("#navLogo"),
+                document.getElementById("mobileNavBarGhost")?.querySelector("#navLogo"),
+                document.getElementById("footerLogo")
+            ].filter(Boolean);
+
+            // Add dynamic logos based on current page
+            if (window.location.pathname.includes("/about.php")) {
+                const aboutLogo = document.querySelector(".footerpage")?.querySelector(".logo");
+                if (aboutLogo) {
+                    logos.push(aboutLogo);
+                }
+            }
+
+            if (window.location.pathname.includes("/contacts.php")) {
+                const contactsLogo = document.querySelector(".footerpage")?.querySelector(".logo");
+                if (contactsLogo) {
+                    logos.push(contactsLogo);
+                }
+            }
+
+            if (window.location.pathname.includes("/index.php") || window.location.pathname === "/") {
+                const indexLogo = document.getElementById("indexMain")?.querySelector(".logo");
+                if (indexLogo) {
+                    logos.push(indexLogo);
+                }
+            }
+
+            logos.forEach(logo => {
+                if (logo) {
+                    logo.src = `./images/FreeIdeas${isLight ? "" : "_Pro"}.svg`;
+                }
+            });
+
+            // Update mobile menu icon
+            const menuMobile = document.getElementById("mobileNavBarGhost")?.querySelector("#menuMobile");
+            if (menuMobile) {
+                menuMobile.src = `./images/menu${isLight ? "" : "_Pro"}.svg`;
+            }
+
+            // Update user image (if it's the default user icon)
+            const userImage = document.getElementById("userImage");
+            if (userImage && userImage.src.includes("/images/user")) {
+                userImage.src = `./images/user${isLight ? "" : "_Pro"}.svg`;
+            }
+
+            // Update notification back image
+            const notificationBackImage = document.getElementById("notificationBackImage");
+            if (notificationBackImage) {
+                notificationBackImage.src = `./images/back${isLight ? "" : "_Pro"}.svg`;
+            }
+
+            // Update notification icons
+            const notificationImgs = document.querySelectorAll(".notificationsImg");
+            notificationImgs.forEach(element => {
+                if (element.src.includes("/images/notifications_active")) {
+                    element.src = `./images/notifications_active${isLight ? "" : "_Pro"}.svg`;
+                } else if (element.src.includes("/images/notifications")) {
+                    element.src = `./images/notifications${isLight ? "" : "_Pro"}.svg`;
+                }
+            });
+
+            // Update page-specific icons
+            if (window.location.href.includes("/publishAnIdea.php")) {
+                const addAdditionalInfo = document.getElementById("addAdditionalInfo");
+                const addLog = document.getElementById("addLog");
+                const cancelNewIdea = document.getElementById("cancelNewIdea");
+                
+                if (addAdditionalInfo) {
+                    addAdditionalInfo.src = `./images/add${isLight ? "" : "_Pro"}.svg`;
+                }
+
+                if (addLog) {
+                    addLog.src = `./images/add${isLight ? "" : "_Pro"}.svg`;
+                }
+
+                if (cancelNewIdea) {
+                    cancelNewIdea.src = `./images/delete${isLight ? "" : "_Pro"}.svg`;
+                }
+            }
+
+            if (window.location.href.includes("/accountVoid.php")) {
+                const publishedAccount = document.getElementById("publishedAccount");
+                const savedAccount = document.getElementById("savedAccount");
+                
+                if (publishedAccount?.children.item(0)) {
+                    publishedAccount.children.item(0).src = `./images/publish${isLight ? "" : "_Pro"}.svg`;
+                }
+
+                if (savedAccount?.children.item(0)) {
+                    savedAccount.children.item(0).src = `./images/saved${isLight ? "" : "_Pro"}.svg`;
+                }
+            }
+
+            if (window.location.href.includes("/ideaVoid.php")) {
+                const modifyOldIdea = document.getElementById("modifyOldIdea");
+                if (modifyOldIdea) {
+                    modifyOldIdea.src = `./images/modify${isLight ? "" : "_Pro"}.svg`;
+                }
+            }
+        } catch (error) {
+            console.error('Error updating theme elements:', error);
         }
     }
 
@@ -108,7 +241,7 @@ export function AppProvider({ children }) {
 
     async function loadUserData() {
         setIsLoading(true);
-        
+
         try {
             let response = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
                 credentials: "include"
@@ -169,10 +302,12 @@ export function AppProvider({ children }) {
     async function logout() {
         try {
             await fetch(getApiUrl('logout'), { credentials: "include" });
+            setUser(null);
+            setNotifications([]);
             router.push('/');
         } catch (error) {
             handleError(error, 'logout');
-        } finally {
+            // Anche se il logout fallisce, pulisci lo stato locale
             setUser(null);
             setNotifications([]);
         }

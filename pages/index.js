@@ -11,7 +11,7 @@ const SHOWBANNER = false;
 function IdeaCard({ idea }) {
     return (
         <li className="ideaBox">
-            <a href={`/idea/${idea.id}`} className="ideaLink">
+            <a href={`/ideaVoid?idea=${idea.id}`} className="ideaLink">
                 <img src={idea.image || "/images/FreeIdeas.svg"} alt="Idea Image" className="ideaImage" />
                 <p className="ideaTitle">{idea.title}</p>
                 <p className="ideaAuthor">{idea.author}</p>

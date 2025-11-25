@@ -1,7 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
+import { useAppContext } from '../contexts/CommonContext'
 
 export default function Nav({ randomId=0 }) {
+    const { themeIsLight, toggleTheme, getImagePath } = useAppContext();
+
     return (
         <>
             <nav>
@@ -10,10 +13,10 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
-                        <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
-                        <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
-                        <li id="themeImageLi"><img src="/images/sun-dark.svg" alt="Toggle Theme" className="toggle-light-dark-theme" /></li>
+                        <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
+                        <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
+                        <li><Link href={`/ideaVoid?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
+                        <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
                         <li id="userImageLi"><img src="/images/user.svg" alt="User image" id="userImage" /><p id="userName">Login</p></li>
                     </ul>
@@ -61,15 +64,15 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li id="themeImageLiMobile"><img src="/images/sun-dark.svg" alt="Toggle Theme" className="toggle-light-dark-theme" /></li>
+                        <li id="themeImageLiMobile"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
                         <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" /></li>
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
-                            <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
-                            <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
-                            <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
+                            <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
+                            <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
+                            <li><Link href={`/ideaVoid?idea=${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
                         </ul>
 
                         <div id="loginAreaMobile">
