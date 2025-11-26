@@ -314,32 +314,8 @@ export function AppProvider({ children }) {
         }
     }
 
-    // Login/Navigation area management
-    function toggleLoginArea() {
-        if (!showLoginArea) {
-            setShowLoginArea(true);
-            setShowNotifications(false);
-        }
-        else {
-            setShowLoginArea(false);
-        }
-
-        toggleLoginNotifications();
-    }
-
-    function toggleNotifications() {
-        if (!showNotifications) {
-            setShowNotifications(true);
-            setShowLoginArea(false);
-        }
-        else {
-            setShowNotifications(false);
-        }
-
-        toggleLoginNotifications();
-    }
-
-    function toggleLoginNotifications() {
+    // useEffect to handle UI updates when login/notification states change
+    useEffect(() => {
         if (typeof document === 'undefined') {
             return;
         }
@@ -352,6 +328,7 @@ export function AppProvider({ children }) {
             const notificaionsMobile = document.getElementById("notificaionsMobile");
             const notificaions = document.getElementById("notificaions");
 
+            // Handle login area visibility
             if (showLoginArea) {
                 if (pcLoginSignUpBlock) {
                     pcLoginSignUpBlock.style.display = "block";
@@ -379,6 +356,7 @@ export function AppProvider({ children }) {
                 }
             }
             
+            // Handle notifications visibility
             if (showNotifications) {
                 if (notificaionsMobile) {
                     notificaionsMobile.style.display = "block";
@@ -406,6 +384,7 @@ export function AppProvider({ children }) {
                 }
             }
 
+            // Hide everything if both are false
             if (!showLoginArea && !showNotifications) {
                 if (loginArea) {
                     loginArea.style.display = "none";
@@ -416,7 +395,28 @@ export function AppProvider({ children }) {
                 }
             }
         } catch (error) {
-            console.error('Error in toggleLoginNotifications:', error);
+            console.error('Error in login/notification UI update:', error);
+        }
+    }, [showLoginArea, showNotifications]);
+
+    // Login/Navigation area management
+    function toggleLoginArea() {
+        if (!showLoginArea) {
+            setShowLoginArea(true);
+            setShowNotifications(false);
+        }
+        else {
+            setShowLoginArea(false);
+        }
+    }
+
+    function toggleNotifications() {
+        if (!showNotifications) {
+            setShowNotifications(true);
+            setShowLoginArea(false);
+        }
+        else {
+            setShowNotifications(false);
         }
     }
 
