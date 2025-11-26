@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { useAppContext } from '../contexts/CommonContext'
+import { PasswordInput } from './PasswordInput';
 
 export default function Nav({ randomId=0 }) {
     const { themeIsLight, toggleTheme, getImagePath, toggleNotifications, toggleLoginArea } = useAppContext();
@@ -27,14 +28,9 @@ export default function Nav({ randomId=0 }) {
                                 <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
                                 <form action="/api/login.php" method="POST" id="loginAccountForm">
                                     <input type="email" id="emailAreaLogin" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" required />
-                                    <input type="password" id="passwordAreaLogin" autoComplete="current-password" placeholder="Password" name="password" required />
-                                
-                                    <button type="button" className="toggle-password-visibility">
-                                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                                            <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                                        </svg>
-                                    </button>
+                                    
+                                    <PasswordInput id={"passwordAreaLogin"} name={"password"} placeholder={"Password"} autoComplete='current-password' required />
+
                                     <p><a id="forgotPassword">Forgot your password?</a></p>
                                     <button type="submit" id="sendLoginButton">Sign In</button>
                                 </form>
@@ -82,14 +78,9 @@ export default function Nav({ randomId=0 }) {
                                     <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
                                     <form action="/api/login.php" method="POST" id="loginAccountFormMobile">
                                         <input type="email" id="emailAreaLoginMobile" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" required />
-                                        <input type="password" id="passwordAreaLoginMobile" autoComplete="current-password" placeholder="Password" name="password" required />
-                                    
-                                        <button type="button" className="toggle-password-visibility-mobile">
-                                            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
-                                                <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
-                                            </svg>
-                                        </button>
+                                        
+                                        <PasswordInput id={"passwordAreaLoginMobile"} name={"password"} placeholder={"Password"} autoComplete='current-password' required />
+
                                         <p><a id="forgotPassword">Forgot your password?</a></p>
                                         <button type="submit" id="sendLoginButtonMobile">Sign In</button>
                                     </form>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { getApiUrl } from '../utils/apiConfig';
+import { PasswordInput } from '../components/PasswordInput';
 import { handleError, getUserFriendlyErrorMessage, ValidationError } from '../utils/errorHandling';
 
 const AppContext = createContext();
