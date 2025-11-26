@@ -14,7 +14,7 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
+                        <li><Link href="/searchAnIdea.html" className="navText">Search an Idea</Link></li>
                         <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
                         <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
@@ -66,7 +66,7 @@ export default function Nav({ randomId=0 }) {
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
-                            <li><Link href="/searchAnIdea.php" className="navText">Search an Idea</Link></li>
+                            <li><Link href="/searchAnIdea.html" className="navText">Search an Idea</Link></li>
                             <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
                             <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
                         </ul>
