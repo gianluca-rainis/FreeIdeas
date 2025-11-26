@@ -8,6 +8,8 @@ const AppContext = createContext();
 
 export function AppProvider({ children }) {
     // Save global variables and set the functions to update their values
+    const [bannerMessage, setBannerMessage] = useState("");
+    const [showBanner, setBannerVisibility] = useState(false);
     const [themeIsLight, setThemeIsLight] = useState(true);
     const [user, setUser] = useState(null);
     const [notifications, setNotifications] = useState([]);
@@ -18,6 +20,12 @@ export function AppProvider({ children }) {
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
     
     const router = useRouter();
+
+    /* BANNER */
+    useEffect(() => {
+        setBannerMessage("");
+        setBannerVisibility(false);
+    }, []);
 
     /* THEME GESTOR */
     // Update the theme
@@ -590,6 +598,10 @@ export function AppProvider({ children }) {
     }, [currentModal]);
 
     const value = {
+        // Banner
+        bannerMessage,
+        showBanner,
+
         // Theme
         themeIsLight,
         toggleTheme,

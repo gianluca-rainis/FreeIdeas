@@ -4,9 +4,6 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
-const BANNERMESSAGE = "";
-const SHOWBANNER = false;
-
 // Internal functions
 function IdeaCard({ idea }) {
     return (
@@ -214,7 +211,7 @@ export async function getServerSideProps() {
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
-    const { themeIsLight, user, randomIdeaId } = useAppContext();
+    const { themeIsLight, user, randomIdeaId, bannerMessage, showBanner } = useAppContext();
     
     autoScrollIdeas();
 
@@ -232,7 +229,7 @@ export default function HomePage({ ideas, pageTitle }) {
                     alignItems: 'center',
                     padding: '20px 0 20px 0'
                 }}>
-                    <Banner message={BANNERMESSAGE} show={SHOWBANNER} />
+                    <Banner message={bannerMessage} show={showBanner} />
                     <ColoredTitle />
                 </div>
             </header>
