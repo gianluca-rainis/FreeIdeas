@@ -286,6 +286,7 @@ export function AppProvider({ children }) {
                 await loadUserData();
                 return { success: true };
             }
+
             return { 
                 success: false,
                 error: getUserFriendlyErrorMessage(data?data.error:null || "Invalid email or password")
@@ -339,33 +340,83 @@ export function AppProvider({ children }) {
     }
 
     function toggleLoginNotifications() {
-        if (showLoginArea) {
-            document.getElementById("loginArea").style.display = "block";
-            document.getElementById("mobileMenuHidden").style.display = "flex";
-
-            document.getElementById("pcLoginSignUpBlock").style.display = "block";
-            document.getElementById("mobileLoginSignUpBlock").style.display = "block";
-        }
-        else {
-            document.getElementById("loginArea").style.display = "none";
-            document.getElementById("mobileMenuHidden").style.display = "none";
-        }
-        
-        if (showNotifications) {
-            document.getElementById("notificaionsMobile").style.display = "block";
-            document.getElementById("notificaions").style.display = "block";
-
-            document.getElementById("pcLoginSignUpBlock").style.display = "block";
-            document.getElementById("mobileLoginSignUpBlock").style.display = "block";
-        }
-        else {
-            document.getElementById("notificaionsMobile").style.display = "none";
-            document.getElementById("notificaions").style.display = "none";
+        if (typeof document === 'undefined') {
+            return;
         }
 
-        if (!showLoginArea && !showNotifications) {
-            document.getElementById("pcLoginSignUpBlock").style.display = "none";
-            document.getElementById("mobileLoginSignUpBlock").style.display = "none";
+        try {
+            const loginArea = document.getElementById("loginArea");
+            const mobileMenuHidden = document.getElementById("mobileMenuHidden");
+            const pcLoginSignUpBlock = document.getElementById("pcLoginSignUpBlock");
+            const mobileLoginSignUpBlock = document.getElementById("mobileLoginSignUpBlock");
+            const notificaionsMobile = document.getElementById("notificaionsMobile");
+            const notificaions = document.getElementById("notificaions");
+
+            if (showLoginArea) {
+                if (pcLoginSignUpBlock) {
+                    pcLoginSignUpBlock.style.display = "block";
+                }
+                
+                if (mobileLoginSignUpBlock) {
+                    mobileLoginSignUpBlock.style.display = "block";
+                }
+                
+                if (loginArea) {
+                    loginArea.style.display = "block";
+                }
+
+                if (mobileMenuHidden) {
+                    mobileMenuHidden.style.display = "flex";
+                }
+            }
+            else {
+                if (pcLoginSignUpBlock) {
+                    pcLoginSignUpBlock.style.display = "none";
+                }
+
+                if (mobileLoginSignUpBlock) {
+                    mobileLoginSignUpBlock.style.display = "none";
+                }
+            }
+            
+            if (showNotifications) {
+                if (notificaionsMobile) {
+                    notificaionsMobile.style.display = "block";
+                }
+
+                if (notificaions) {
+                    notificaions.style.display = "block";
+                }
+
+                if (loginArea) {
+                    loginArea.style.display = "block";
+                }
+
+                if (mobileMenuHidden) {
+                    mobileMenuHidden.style.display = "flex";
+                }
+            }
+            else {
+                if (notificaionsMobile) {
+                    notificaionsMobile.style.display = "none";
+                }
+
+                if (notificaions) {
+                    notificaions.style.display = "none";
+                }
+            }
+
+            if (!showLoginArea && !showNotifications) {
+                if (loginArea) {
+                    loginArea.style.display = "none";
+                }
+
+                if (mobileMenuHidden) {
+                    mobileMenuHidden.style.display = "none";
+                }
+            }
+        } catch (error) {
+            console.error('Error in toggleLoginNotifications:', error);
         }
     }
 
