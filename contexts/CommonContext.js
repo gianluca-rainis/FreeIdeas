@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { getApiUrl } from '../utils/apiConfig';
-import { PasswordInput } from '../components/PasswordInput';
 import { handleError, getUserFriendlyErrorMessage, ValidationError } from '../utils/errorHandling';
 
 const AppContext = createContext();
@@ -20,6 +19,18 @@ export function AppProvider({ children }) {
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
     
     const router = useRouter();
+
+    // Logout function (moved from useAuth to avoid circular dependency)
+    async function handleLogout() {
+        try {
+            await fetch(getApiUrl('logout'), { credentials: "include" });
+        } catch (error) {
+            console.error(error);
+        }
+        
+        // Redirect
+        window.location.href = "/";
+    }
 
     /* BANNER */
     useEffect(() => {
@@ -108,21 +119,21 @@ export function AppProvider({ children }) {
             ].filter(Boolean);
 
             // Add dynamic logos based on current page
-            if (window.location.pathname.includes("/about.php")) {
+            if (window.location.pathname.includes("/about")) {
                 const aboutLogo = document.querySelector(".footerpage")?.querySelector(".logo");
                 if (aboutLogo) {
                     logos.push(aboutLogo);
                 }
             }
 
-            if (window.location.pathname.includes("/contacts.php")) {
+            if (window.location.pathname.includes("/contacts")) {
                 const contactsLogo = document.querySelector(".footerpage")?.querySelector(".logo");
                 if (contactsLogo) {
                     logos.push(contactsLogo);
                 }
             }
 
-            if (window.location.pathname.includes("/index.php") || window.location.pathname === "/") {
+            if (window.location.pathname.includes("/index") || window.location.pathname === "/") {
                 const indexLogo = document.getElementById("indexMain")?.querySelector(".logo");
                 if (indexLogo) {
                     logos.push(indexLogo);
@@ -137,34 +148,39 @@ export function AppProvider({ children }) {
 
             // Update mobile menu icon
             const menuMobile = document.getElementById("mobileNavBarGhost")?.querySelector("#menuMobile");
+
             if (menuMobile) {
                 menuMobile.src = `./images/menu${isLight ? "" : "_Pro"}.svg`;
             }
 
             // Update user image (if it's the default user icon)
             const userImage = document.getElementById("userImage");
+
             if (userImage && userImage.src.includes("/images/user")) {
                 userImage.src = `./images/user${isLight ? "" : "_Pro"}.svg`;
             }
 
             // Update notification back image
             const notificationBackImage = document.getElementById("notificationBackImage");
+
             if (notificationBackImage) {
                 notificationBackImage.src = `./images/back${isLight ? "" : "_Pro"}.svg`;
             }
 
             // Update notification icons
             const notificationImgs = document.querySelectorAll(".notificationsImg");
+
             notificationImgs.forEach(element => {
                 if (element.src.includes("/images/notifications_active")) {
                     element.src = `./images/notifications_active${isLight ? "" : "_Pro"}.svg`;
-                } else if (element.src.includes("/images/notifications")) {
+                }
+                else if (element.src.includes("/images/notifications")) {
                     element.src = `./images/notifications${isLight ? "" : "_Pro"}.svg`;
                 }
             });
 
             // Update page-specific icons
-            if (window.location.href.includes("/publishAnIdea.php")) {
+            if (window.location.href.includes("/publishAnIdea")) {
                 const addAdditionalInfo = document.getElementById("addAdditionalInfo");
                 const addLog = document.getElementById("addLog");
                 const cancelNewIdea = document.getElementById("cancelNewIdea");
@@ -182,7 +198,7 @@ export function AppProvider({ children }) {
                 }
             }
 
-            if (window.location.href.includes("/accountVoid.php")) {
+            if (window.location.href.includes("/accountVoid")) {
                 const publishedAccount = document.getElementById("publishedAccount");
                 const savedAccount = document.getElementById("savedAccount");
                 
@@ -195,7 +211,7 @@ export function AppProvider({ children }) {
                 }
             }
 
-            if (window.location.href.includes("/ideaVoid.php")) {
+            if (window.location.href.includes("/ideaVoid")) {
                 const modifyOldIdea = document.getElementById("modifyOldIdea");
                 if (modifyOldIdea) {
                     modifyOldIdea.src = `./images/modify${isLight ? "" : "_Pro"}.svg`;
@@ -245,81 +261,184 @@ export function AppProvider({ children }) {
 
     // User management
     useEffect(() => {
-        loadUserData();
+        ldAccountData();
     }, []);
 
-    async function loadUserData() {
+    async function ldAccountData() {
         setIsLoading(true);
+        
+        const SQLdata = await getSessionDataAccountFromDatabase();
+        
+        if (SQLdata) {
+            loadData(SQLdata, false);
+        }
+        else {
+            const adminSQLdata = await getSessionDataAdminFromDatabase();
+            
+            if (adminSQLdata) {
+                loadData(adminSQLdata, true);
+            }
+            else {
+                setUser(null);
+                setNotifications([]);
+            }
+        }
+        
+        setIsLoading(false);
+    }
 
+    async function getSessionDataAccountFromDatabase() {
         try {
-            let response = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
+            const res = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
                 credentials: "include"
             });
 
-            let data = await response.json();
+            const data = await res.json();
 
-            if (data && data.success) {
-                setUser({ ...data, isAdmin: false });
-                setNotifications(data.notifications || []);
-            }
-            else {
-                response = await fetch(`${getApiUrl('getSessionData')}?data=administrator`, {
-                    credentials: "include"
-                });
-                data = await response.json();
-
-                if (data && data.success) {
-                    setUser({ ...data, isAdmin: true });
-                }
-            }
+            return data && data.id ? data : null;
         } catch (error) {
-            handleError(error, 'loadUserData');
-            setUser(null);
-            setNotifications([]);
-        } finally {
-            setIsLoading(false);
+            console.error(error);
+            return null;
         }
     }
 
-    async function login(formData) {
+    async function getSessionDataAdminFromDatabase() {
         try {
-            const response = await fetch(getApiUrl('login'), {
-                credentials: "include",
-                method: "POST",
-                body: formData
+            const res = await fetch(`${getApiUrl('getSessionData')}?data=administrator`, {
+                credentials: "include"
+            });
+
+            const data = await res.json();
+
+            return data && data.id ? data : null;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    function loadData(SQLdata, admin=false) {
+        try {
+            // Set React state
+            setUser({ 
+                ...SQLdata, 
+                isAdmin: admin,
+                userimage: SQLdata.userimage,
+                username: SQLdata.username,
+                name: SQLdata.name,
+                surname: SQLdata.surname
             });
             
-            const data = await response.json();
-
-            if (data && data.success) {
-                await loadUserData();
-                return { success: true };
+            if (!admin) {
+                setNotifications(SQLdata.notifications || []);
+                // Load notifications into the UI
+                setTimeout(() => loadNotifications(SQLdata), 100);
+            }
+            else {
+                setNotifications([]);
             }
 
-            return { 
-                success: false,
-                error: getUserFriendlyErrorMessage(data?data.error:null || "Invalid email or password")
-            };
+            // Update DOM directly
+            updateUserUI(SQLdata, admin);
         } catch (error) {
-            const errorInfo = handleError(error, 'login');
-            return { 
-                success: false,
-                error: getUserFriendlyErrorMessage(error)
-            };
+            console.error(error);
+            setUser(null);
+            setNotifications([]);
         }
     }
 
-    async function logout() {
+    function updateUserUI(SQLdata, admin=false) {
         try {
-            await fetch(getApiUrl('logout'), { credentials: "include" });
-            setUser(null);
-            setNotifications([]);
-            router.push('/');
+            const userImageDisplayed = !admin 
+                ? (SQLdata.userimage != null ? SQLdata.userimage : `./images/user${themeIsLight ? "" : "_Pro"}.svg`)
+                : `./images/FreeIdeas_ReservedArea.svg`;
+
+            // Update user image in navigation
+            const loginButton = document.getElementById("userImage");
+
+            if (loginButton) {
+                loginButton.src = userImageDisplayed;
+            }
+
+            // Update username display
+            const userNameElement = document.getElementById("userName");
+
+            if (userNameElement) {
+                userNameElement.innerHTML = SQLdata.username;
+            }
+
+            // Update PC login block
+            const pcLoginSignUpBlock = document.getElementById("pcLoginSignUpBlock");
+
+            if (pcLoginSignUpBlock) {
+                pcLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
+                    <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
+                    <button type="submit" id="sendAccountButton">Account</button>
+                    <button type="submit" id="sendLogoutButton">Log Out</button>`;
+            }
+
+            // Update mobile login block
+            const mobileLoginSignUpBlock = document.getElementById("mobileLoginSignUpBlock");
+
+            if (mobileLoginSignUpBlock) {
+                mobileLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
+                    <div style="align-items: center;">
+                        <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                    </div>
+                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
+                    <div style="align-items: center;">
+                        <button type="submit" id="sendAccountButtonMobile">Account</button>
+                        <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
+                    </div>`;
+            }
+
+            // Add event listeners for buttons
+            setTimeout(() => {
+                const sendAccountButton = document.getElementById("sendAccountButton");
+
+                if (sendAccountButton) {
+                    sendAccountButton.addEventListener("click", () => {
+                        if (!admin) {
+                            window.location.href = "/accountVoid";
+                        }
+                        else {
+                            window.location.href = "/reservedArea";
+                        }
+                    });
+                }
+
+                const sendAccountButtonMobile = document.getElementById("sendAccountButtonMobile");
+
+                if (sendAccountButtonMobile) {
+                    sendAccountButtonMobile.addEventListener("click", () => {
+                        if (!admin) {
+                            window.location.href = "/accountVoid";
+                        }
+                        else {
+                            window.location.href = "/reservedArea";
+                        }
+                    });
+                }
+
+                const sendLogoutButton = document.getElementById("sendLogoutButton");
+
+                if (sendLogoutButton) {
+                    sendLogoutButton.addEventListener("click", async () => {
+                        await handleLogout();
+                    });
+                }
+
+                const sendLogoutButtonMobile = document.getElementById("sendLogoutButtonMobile");
+
+                if (sendLogoutButtonMobile) {
+                    sendLogoutButtonMobile.addEventListener("click", async () => {
+                        await handleLogout();
+                    });
+                }
+            }, 100);
         } catch (error) {
-            handleError(error, 'logout');
-            // Anche se il logout fallisce, pulisci lo stato locale
-            setUser(null);
-            setNotifications([]);
+            console.error(error);
         }
     }
 
@@ -408,25 +527,145 @@ export function AppProvider({ children }) {
         }
     }, [showLoginArea, showNotifications]);
 
-    // Login/Navigation area management
-    function toggleLoginArea() {
-        if (!showLoginArea) {
-            setShowLoginArea(true);
-            setShowNotifications(false);
+    // Event handlers for notifications only
+    useEffect(() => {
+        if (typeof document === 'undefined') {
+            return;
         }
-        else {
-            setShowLoginArea(false);
+
+        // Notification buttons
+        const notificationImgs = document.querySelectorAll(".notificationsImg");
+
+        const notificationHandlers = new Map();
+
+        notificationImgs.forEach(element => {
+            function handleNotificationClick() {
+                setShowNotifications(prev => !prev);
+                setShowLoginArea(false);
+            };
+
+            notificationHandlers.set(element, handleNotificationClick);
+            element.addEventListener("click", handleNotificationClick);
+        });
+
+        // Cleanup
+        return () => {
+            notificationHandlers.forEach((handler, element) => {
+                element.removeEventListener("click", handler);
+            });
+        };
+    }, []);
+
+
+
+    // Load notifications when they change
+    useEffect(() => {
+        if (user && !user.isAdmin && notifications.length > 0) {
+            setTimeout(() => loadNotifications({ notifications }), 100);
+        }
+    }, [notifications, user, themeIsLight]);
+
+    // Load notifications for users (not admins)
+    function loadNotifications(SQLdata) {
+        try {
+            const notificationPc = document.querySelectorAll(".notificationsImg");
+            let numNewNotifications = 0;
+            let notificationsShowOrder = [];
+
+            // Order by date (oldest to newest)
+            function orderByData(array) {
+                return array.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+
+            // Order by unread first
+            function orderByNotReaded(array) {
+                return array.sort((a, b) => a.status - b.status);
+            }
+
+            notificationsShowOrder = orderByData(SQLdata.notifications || []);
+            notificationsShowOrder = orderByNotReaded(notificationsShowOrder);
+
+            // Count new notifications
+            notificationsShowOrder.forEach(notification => {
+                if (notification.status === 0) {
+                    numNewNotifications++;
+                }
+            });
+
+            // Update notification icons if there are new notifications
+            if (numNewNotifications > 0) {
+                notificationPc.forEach(element => {
+                    element.src = `./images/notifications_active${themeIsLight ? "" : "_Pro"}.svg`;
+                });
+            }
+
+            // Load notification data into UI
+            const notificationsUl = document.querySelectorAll(".notificationsUl");
+
+            notificationsUl.forEach(ul => {
+                ul.innerHTML = ""; // Clear existing notifications
+                
+                notificationsShowOrder.forEach(notification => {
+                    const li = document.createElement("li");
+
+                    li.innerHTML = `
+                        <div class="notification-item ${notification.status === 0 ? 'unread' : 'read'}">
+                            <p>${notification.message}</p>
+                            <small>${notification.date}</small>
+                            <div class="notification-actions">
+                                ${notification.status === 0 ? `<button data-notification-id="${notification.id}" class="mark-read-btn">Mark as Read</button>` : ''}
+                                <button data-notification-id="${notification.id}" class="delete-notification-btn">Delete</button>
+                            </div>
+                        </div>
+                    `;
+
+                    ul.appendChild(li);
+                });
+
+                // Add event listeners for notification buttons
+                ul.querySelectorAll('.mark-read-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const notificationId = parseInt(e.target.dataset.notificationId);
+                        await markNotificationAsRead(notificationId);
+                    });
+                });
+
+                ul.querySelectorAll('.delete-notification-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const notificationId = parseInt(e.target.dataset.notificationId);
+                        await deleteNotification(notificationId);
+                    });
+                });
+            });
+
+        } catch (error) {
+            console.error('Error loading notifications:', error);
         }
     }
 
+    // Login/Navigation area management
+    function toggleLoginArea() {
+        setShowLoginArea(prev => {
+            const newValue = !prev;
+
+            if (newValue) {
+                setShowNotifications(false);
+            }
+
+            return newValue;
+        });
+    }
+
     function toggleNotifications() {
-        if (!showNotifications) {
-            setShowNotifications(true);
-            setShowLoginArea(false);
-        }
-        else {
-            setShowNotifications(false);
-        }
+        setShowNotifications(prev => {
+            const newValue = !prev;
+
+            if (newValue) {
+                setShowLoginArea(false);
+            }
+
+            return newValue;
+        });
     }
 
     // Notification management
@@ -486,36 +725,6 @@ export function AppProvider({ children }) {
         } catch (error) {
             handleError(error, 'deleteNotification');
             return false;
-        }
-    }
-
-    // Forgot password functionality
-    async function forgotPassword(email) {
-        if (!email || !email.includes("@") || !email.includes(".")) {
-            throw new ValidationError("Insert a valid email", "email");
-        }
-
-        try {
-            const formData = new FormData();
-            formData.append("email", email);
-
-            const response = await fetch(getApiUrl('changePassword'), {
-                credentials: "include",
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (data && data.success) {
-                return { success: true, message: `Email sent to: ${email}` };
-            }
-            else {
-                throw new Error(data?.error || "Failed to send password reset email");
-            }
-        } catch (error) {
-            handleError(error, 'forgotPassword');
-            throw error;
         }
     }
 
@@ -609,15 +818,13 @@ export function AppProvider({ children }) {
         // User and authentication
         user,
         isLoading,
-        login,
-        logout,
-        refreshUserData: loadUserData,
-        forgotPassword,
+        refreshUserData: ldAccountData,
         
         // Notifications
         notifications,
         markNotificationAsRead,
         deleteNotification,
+        loadNotifications,
         
         // UI State
         showLoginArea,

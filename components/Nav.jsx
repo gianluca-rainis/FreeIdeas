@@ -2,9 +2,26 @@ import React from 'react'
 import Link from 'next/link'
 import { useAppContext } from '../contexts/CommonContext'
 import { PasswordInput } from './PasswordInput';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Nav({ randomId=0 }) {
-    const { themeIsLight, toggleTheme, getImagePath, toggleNotifications, toggleLoginArea } = useAppContext();
+    const { 
+        themeIsLight, 
+        toggleTheme, 
+        getImagePath, 
+        toggleNotifications
+    } = useAppContext();
+    
+    const { 
+        user,
+        loginData,
+        isSubmitting,
+        handleLoginChange,
+        handleLoginSubmit,
+        handleLogout,
+        handleForgotPassword,
+        handleUserImageClick
+    } = useAuth();
 
     return (
         <>
@@ -19,21 +36,60 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href={`/ideaVoid/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
-                        <li id="userImageLi"><img src="/images/user.svg" alt="User image" id="userImage" onClick={toggleLoginArea} style={{cursor: 'pointer'}} /><p id="userName">Login</p></li>
+                        <li id="userImageLi">
+                            <img 
+                                src={user ? (user.userimage || "/images/user.svg") : "/images/user.svg"} 
+                                alt="User image" 
+                                id="userImage" 
+                                onClick={handleUserImageClick} 
+                                style={{cursor: 'pointer'}} 
+                            />
+                            <p id="userName">{user ? (user.username?user.username:"") : "Login"}</p>
+                        </li>
                     </ul>
                     <div id="loginArea">
                         <div id="pcLoginSignUpBlock">
                             <div id="loginHidden">
-                                <h2>Sign In</h2>
-                                <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
-                                <form action="/api/login.php" method="POST" id="loginAccountForm">
-                                    <input type="email" id="emailAreaLogin" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" required />
-                                    
-                                    <PasswordInput id={"passwordAreaLogin"} name={"password"} placeholder={"Password"} autoComplete='current-password' required />
+                                {user ? (
+                                    <div>
+                                        <h2>Welcome, {user.username}!</h2>
+                                        <button onClick={handleLogout}>Logout</button>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h2>Sign In</h2>
+                                        <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
+                                        <form onSubmit={handleLoginSubmit} id="loginAccountForm">
+                                            <input 
+                                                type="email" 
+                                                id="emailAreaLogin" 
+                                                autoComplete="email" 
+                                                spellCheck="false" 
+                                                autoCapitalize="off" 
+                                                placeholder="Email" 
+                                                name="email" 
+                                                value={loginData.email}
+                                                onChange={handleLoginChange}
+                                                required 
+                                            />
+                                            
+                                            <PasswordInput 
+                                                id={"passwordAreaLogin"} 
+                                                name={"password"} 
+                                                placeholder={"Password"} 
+                                                autoComplete='current-password' 
+                                                value={loginData.password}
+                                                onChange={handleLoginChange}
+                                                required 
+                                            />
 
-                                    <p><a id="forgotPassword">Forgot your password?</a></p>
-                                    <button type="submit" id="sendLoginButton">Sign In</button>
-                                </form>
+                                            <p><a onClick={handleForgotPassword} style={{cursor: 'pointer'}} id="forgotPassword">Forgot your password?</a></p>
+                                            <button type="submit" id="sendLoginButton" disabled={isSubmitting}>
+                                                {isSubmitting ? 'Signing In...' : 'Sign In'}
+                                            </button>
+                                        </form>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -62,7 +118,7 @@ export default function Nav({ randomId=0 }) {
                     <ul className="navLinks">
                         <li id="themeImageLiMobile"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} style={{cursor: 'pointer'}} /></li>
-                        <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" onClick={toggleLoginArea} style={{cursor: 'pointer'}} /></li>
+                        <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" onClick={handleUserImageClick} style={{cursor: 'pointer'}} /></li>
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
@@ -74,16 +130,46 @@ export default function Nav({ randomId=0 }) {
                         <div id="loginAreaMobile">
                             <div id="mobileLoginSignUpBlock">
                                 <div id="loginHiddenMobile">
-                                    <h2>Sign In</h2>
-                                    <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
-                                    <form action="/api/login.php" method="POST" id="loginAccountFormMobile">
-                                        <input type="email" id="emailAreaLoginMobile" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" required />
-                                        
-                                        <PasswordInput id={"passwordAreaLoginMobile"} name={"password"} placeholder={"Password"} autoComplete='current-password' required />
+                                    {user ? (
+                                        <div>
+                                            <h2>Welcome, {user.username}!</h2>
+                                            <button onClick={handleLogout}>Logout</button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <h2>Sign In</h2>
+                                            <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
+                                            <form onSubmit={handleLoginSubmit} id="loginAccountFormMobile">
+                                                <input 
+                                                    type="email" 
+                                                    id="emailAreaLoginMobile" 
+                                                    autoComplete="email" 
+                                                    spellCheck="false" 
+                                                    autoCapitalize="off" 
+                                                    placeholder="Email" 
+                                                    name="email" 
+                                                    value={loginData.email}
+                                                    onChange={handleLoginChange}
+                                                    required 
+                                                />
+                                                
+                                                <PasswordInput 
+                                                    id={"passwordAreaLoginMobile"} 
+                                                    name={"password"} 
+                                                    placeholder={"Password"} 
+                                                    autoComplete='current-password' 
+                                                    value={loginData.password}
+                                                    onChange={handleLoginChange}
+                                                    required 
+                                                />
 
-                                        <p><a id="forgotPassword">Forgot your password?</a></p>
-                                        <button type="submit" id="sendLoginButtonMobile">Sign In</button>
-                                    </form>
+                                                <p><a onClick={handleForgotPassword} style={{cursor: 'pointer'}} id="forgotPassword">Forgot your password?</a></p>
+                                                <button type="submit" id="sendLoginButtonMobile" disabled={isSubmitting}>
+                                                    {isSubmitting ? 'Signing In...' : 'Sign In'}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
