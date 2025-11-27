@@ -570,7 +570,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                         />
                         <h2 id="author">
                             <a id="mainAuthorAccount">
-                                {user ? (user.name && user.surname ? `${user.name} ${user.surname}` : user.username) : 'Author'}
+                                {user && user.username ? user.username : 'Author'}
                             </a>
                         </h2>
                     </div>

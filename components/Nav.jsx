@@ -8,8 +8,7 @@ export default function Nav({ randomId=0 }) {
     const { 
         themeIsLight, 
         toggleTheme, 
-        getImagePath, 
-        toggleNotifications
+        getImagePath
     } = useAppContext();
     
     const { 
@@ -35,7 +34,7 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
                         <li><Link href={`/ideaVoid/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
+                        <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" /></li>
                         <li id="userImageLi">
                             <img 
                                 src={user ? (user.userimage || "/images/user.svg") : "/images/user.svg"} 
@@ -117,7 +116,7 @@ export default function Nav({ randomId=0 }) {
                     </ul>
                     <ul className="navLinks">
                         <li id="themeImageLiMobile"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} style={{cursor: 'pointer'}} /></li>
+                        <li id="notificationImageLiMobile"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" style={{cursor: 'pointer'}} /></li>
                         <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" onClick={handleUserImageClick} style={{cursor: 'pointer'}} /></li>
                     </ul>
                     <div id="mobileMenuHidden">
