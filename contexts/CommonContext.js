@@ -556,8 +556,6 @@ export function AppProvider({ children }) {
         };
     }, []);
 
-
-
     // Load notifications when they change
     useEffect(() => {
         if (user && !user.isAdmin && notifications.length > 0) {
@@ -607,35 +605,156 @@ export function AppProvider({ children }) {
                 
                 notificationsShowOrder.forEach(notification => {
                     const li = document.createElement("li");
+                    let dataETitle = document.createElement("div");
+                    let content = document.createElement("div");
 
-                    li.innerHTML = `
-                        <div class="notification-item ${notification.status === 0 ? 'unread' : 'read'}">
-                            <p>${notification.message}</p>
-                            <small>${notification.date}</small>
-                            <div class="notification-actions">
-                                ${notification.status === 0 ? `<button data-notification-id="${notification.id}" class="mark-read-btn">Mark as Read</button>` : ''}
-                                <button data-notification-id="${notification.id}" class="delete-notification-btn">Delete</button>
-                            </div>
-                        </div>
-                    `;
+                    dataETitle.innerHTML = `<strong>${notification.title}</strong> &nbsp; - &nbsp; <div style="color: grey;">${notification.data}</div>`;
+                    dataETitle.style.display = "flex";
+                    content.innerHTML = `${notification.description.substring(0, 30)}...`;
+                    content.dataset.fullDescription = notification.description;
+
+                    li.appendChild(dataETitle);
+                    li.appendChild(content);
+
+                    if (notification.status == 0) {
+                        li.classList = "unReadNotification";
+                    }
+
+                    li.dataset.notificationId = notification.id;
 
                     ul.appendChild(li);
                 });
 
                 // Add event listeners for notification buttons
-                ul.querySelectorAll('.mark-read-btn').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        const notificationId = parseInt(e.target.dataset.notificationId);
-                        await markNotificationAsRead(notificationId);
-                    });
-                });
+                ul.querySelectorAll("li").forEach(li => li.addEventListener("click", () => {
+                    ul.style.display = "none";
+                    document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "block");
 
-                ul.querySelectorAll('.delete-notification-btn').forEach(btn => {
-                    btn.addEventListener('click', async (e) => {
-                        const notificationId = parseInt(e.target.dataset.notificationId);
-                        await deleteNotification(notificationId);
+                    document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = `
+                        <h3 style="display: flex; justify-content: center;">${li.querySelectorAll("div")[0].querySelector("strong").innerText} &nbsp; - &nbsp; <div style="color: grey;">${li.querySelectorAll("div")[0].querySelector("div").innerText}</div></h3>
+                        <br>
+                        <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <img id="notificationBackImage" src="./images/back${themeIsLight?"":"_Pro"}.svg">
+                            <input type="button" id="notificationDeleteButton" value="Delete">
+                        </div>
+                    `);
+
+                    /* Back button */
+                    document.getElementById("notificationBackImage").addEventListener("click", async () => {
+                        ul.style.display = "block";
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
+
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
+
+                        const idToSetStatus = li.dataset.notificationId;
+
+                        li.classList = ``;
+
+                        if (document.querySelectorAll("unReadNotification").length == 0) {
+                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                        }
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idToSetStatus);
+
+                            const response = await fetch(getApiUrl('setNotificationAsRead'), {
+                                credentials: "include",
+                                method: "POST",
+                                body: formData
+                            });
+
+                            const data = await response.json();
+
+                            if (data) {
+                                if (!data['success']) {
+                                    console.error(data['error']);
+                                }
+                            }
+                            else {
+                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
                     });
-                });
+
+                    /* Delete button */
+                    document.getElementById("notificationDeleteButton").addEventListener("click", async () => {
+                        ul.style.display = "block";
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
+                        
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
+
+                        const idToDelete = li.dataset.notificationId;
+
+                        li.remove();
+
+                        if (document.querySelectorAll("unReadNotification").length == 0) {
+                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                        }
+
+                        if (notificationsShowOrder.length < 6 || (ul[0].querySelectorAll("li").length < 6)) {
+                            for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
+                                let linew = document.createElement("li");
+                                let dataETitle = document.createElement("div");
+                                let content = document.createElement("div");
+
+                                dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
+                                dataETitle.style.display = "flex";
+                                content.innerHTML = ` `;
+
+                                linew.appendChild(dataETitle);
+                                linew.appendChild(content);
+
+                                ul.appendChild(linew);
+                            }
+                        }
+
+                        try {
+                            const formData = new FormData();
+                            formData.append("id", idToDelete);
+
+                            const response = await fetch(getApiUrl('deleteNotification'), {
+                                credentials: "include",
+                                method: "POST",
+                                body: formData
+                            });
+
+                            const data = await response.json();
+
+                            if (data) {
+                                if (!data['success']) {
+                                    console.error(data['error']);
+                                }
+                            }
+                            else {
+                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    });
+                }));
+
+                // Padding for the notifications
+                if (notificationsShowOrder.length < 6) {
+                    for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
+                        let li = document.createElement("li");
+                        let dataETitle = document.createElement("div");
+                        let content = document.createElement("div");
+
+                        dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
+                        dataETitle.style.display = "flex";
+                        content.innerHTML = ` `;
+
+                        li.appendChild(dataETitle);
+                        li.appendChild(content);
+
+                        ul.appendChild(li);
+                    }
+                }
             });
 
         } catch (error) {
@@ -666,66 +785,6 @@ export function AppProvider({ children }) {
 
             return newValue;
         });
-    }
-
-    // Notification management
-    async function markNotificationAsRead(notificationId) {
-        try {
-            const formData = new FormData();
-            formData.append("id", notificationId);
-
-            const response = await fetch(getApiUrl('setNotificationAsRead'), {
-                credentials: "include",
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-            
-            if (data && data.success) {
-                setNotifications(prev => 
-                    prev.map(notif => {
-                        if (notif.id === notificationId) {
-                            return { ...notif, status: 1 };
-                        }
-                        else {
-                            return notif;
-                        }
-                    })
-                );
-            }
-            
-            return data?data.success:false;
-        } catch (error) {
-            handleError(error, 'markNotificationAsRead');
-            return false;
-        }
-    }
-
-    async function deleteNotification(notificationId) {
-        try {
-            const formData = new FormData();
-            formData.append("id", notificationId);
-
-            const response = await fetch(getApiUrl('deleteNotification'), {
-                credentials: "include",
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-            
-            if (data && data.success) {
-                setNotifications(prev => 
-                    prev.filter(notif => notif.id !== notificationId)
-                );
-            }
-            
-            return data?data.success:false;
-        } catch (error) {
-            handleError(error, 'deleteNotification');
-            return false;
-        }
     }
 
     // Utility functions
@@ -822,8 +881,6 @@ export function AppProvider({ children }) {
         
         // Notifications
         notifications,
-        markNotificationAsRead,
-        deleteNotification,
         loadNotifications,
         
         // UI State
