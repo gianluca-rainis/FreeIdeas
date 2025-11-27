@@ -23,7 +23,7 @@ function IdeaList({ ideas }) {
     return (
         <ul id="lastIdeasSrc">
             {ideas.map((idea, index) => (
-                <IdeaCard key={`idea-${index}`} link={idea.id} imgSrc={idea.image} title={idea.title} author={idea.author} />
+                <IdeaCard key={`idea-${index}`} link={idea.link} imgSrc={idea.image} title={idea.title} author={idea.author} />
             ))}
         </ul>
     )
@@ -72,38 +72,45 @@ export default function SearchAnIdeaPage({ pageTitle }) {
             
             if (data.success) {
                 const ideasData = data.data;
+                let mappedIdeas = [];
                 
                 if (ideasData.format == "mono") {
-                    setIdeas(ideasData.data.map(phpIdea => ({
-                        link: `/ideaVoid/${phpIdea.id}`,
-                        title: phpIdea.title,
-                        author: phpIdea.username,
+                    mappedIdeas = ideasData.data.map(phpIdea => ({
+                        link: `/idea/${phpIdea.id}`,
+                        title: phpIdea.title || 'Untitled',
+                        author: phpIdea.username || 'Unknown',
                         image: phpIdea.ideaimage || "/images/FreeIdeas.svg"
-                    })));
+                    }));
                 }
                 else if (ideasData.format == "double") {
-                    setIdeas(ideasData.data.data.map(phpIdea => ({
+                    // Merge accounts and ideas
+                    const accounts = ideasData.data.data.map(phpIdea => ({
                         link: `/accountVoid/${phpIdea.id}`,
-                        title: phpIdea.title,
-                        author: phpIdea.username,
+                        title: `${phpIdea.name || ''} ${phpIdea.surname || ''}`.trim() || phpIdea.username || 'Unknown User',
+                        author: phpIdea.username || 'unknown',
+                        image: phpIdea.userimage || "/images/FreeIdeas.svg"
+                    }));
+                    
+                    const ideas = ideasData.subdata.data.map(phpIdea => ({
+                        link: `/idea/${phpIdea.id}`,
+                        title: phpIdea.title || 'Untitled',
+                        author: phpIdea.username || 'Unknown',
                         image: phpIdea.ideaimage || "/images/FreeIdeas.svg"
-                    })));
-
-                    setIdeas(ideasData.subdata.data.map(phpIdea => ({
-                        link: `/ideaVoid/${phpIdea.id}`,
-                        title: phpIdea.title,
-                        author: phpIdea.username,
-                        image: phpIdea.ideaimage || "/images/FreeIdeas.svg"
-                    })));
+                    }));
+                    
+                    mappedIdeas = [...accounts, ...ideas];
                 }
-                else if (ideasData.format == "void") {
-                    setIdeas(ideasData.data.map(phpIdea => ({
-                        link: `/ideaVoid/${phpIdea.id}`,
-                        title: phpIdea.title,
-                        author: phpIdea.username,
+                else {
+                    // Default case (void or unknown format)
+                    mappedIdeas = ideasData.data.map(phpIdea => ({
+                        link: `/idea/${phpIdea.id}`,
+                        title: phpIdea.title || 'Untitled',
+                        author: phpIdea.username || 'Unknown',
                         image: phpIdea.ideaimage || "/images/FreeIdeas.svg"
-                    })));
+                    }));
                 }
+                
+                setIdeas(mappedIdeas);
             }
             else {
                 throw new Error("PHP API error: " + data.error);
@@ -133,7 +140,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
             
-            <header>
+            <header style={{padding: "20px 0 20px 0"}}>
                 <input type="search" placeholder="Search" id="search" onChange={searchIdeas} />
 
                 <ul id="allFilters">

@@ -14,9 +14,9 @@ export default function Nav({ randomId=0 }) {
                         <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li><Link href="/searchAnIdea.html" className="navText">Search an Idea</Link></li>
-                        <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
-                        <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
+                        <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
+                        <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
+                        <li><Link href={`/ideaVoid/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
                         <li id="userImageLi"><img src="/images/user.svg" alt="User image" id="userImage" onClick={toggleLoginArea} style={{cursor: 'pointer'}} /><p id="userName">Login</p></li>

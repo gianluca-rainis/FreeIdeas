@@ -885,7 +885,7 @@ footer ul li a {
     width: 238px;
     object-fit: contain;
     display: block;
-    background-color: #f0f0f0;
+    background-color: transparent;
     margin: 0 auto;
     padding: 0;
 }
