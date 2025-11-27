@@ -570,9 +570,13 @@ export function AppProvider({ children }) {
             let numNewNotifications = 0;
             let notificationsShowOrder = [];
 
-            // Order by date (oldest to newest)
+            // Order by date
             function orderByData(array) {
-                return array.sort((a, b) => new Date(a.date) - new Date(b.date));
+                return array.sort((a, b) => {
+                    let dateA = new Date(a['data']);
+                    let dateB = new Date(b['data']);
+                    return dateB - dateA;
+                });
             }
 
             // Order by unread first
@@ -678,6 +682,9 @@ export function AppProvider({ children }) {
                         } catch (error) {
                             console.error(error);
                         }
+
+                        // Reload user data to get updated notifications
+                        ldAccountData();
                     });
 
                     /* Delete button */
@@ -695,7 +702,7 @@ export function AppProvider({ children }) {
                             notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
                         }
 
-                        if (notificationsShowOrder.length < 6 || (ul[0].querySelectorAll("li").length < 6)) {
+                        if (notificationsShowOrder.length < 6) {
                             for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
                                 let linew = document.createElement("li");
                                 let dataETitle = document.createElement("div");
@@ -735,6 +742,9 @@ export function AppProvider({ children }) {
                         } catch (error) {
                             console.error(error);
                         }
+
+                        // Reload user data to get updated notifications
+                        ldAccountData();
                     });
                 }));
 
