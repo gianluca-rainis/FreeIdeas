@@ -108,7 +108,8 @@ function autoScrollIdeas() {
                     
                     if (direction && scrollAmount >= element.scrollHeight / 2) {
                         scrollAmount = 0;
-                    } else if (!direction && scrollAmount < 0) {
+                    }
+                    else if (!direction && scrollAmount < 0) {
                         scrollAmount = element.scrollHeight / 2;
                     }
                     
@@ -128,7 +129,8 @@ function autoScrollIdeas() {
                     
                     if (direction && scrollAmount >= element.scrollWidth / 2) {
                         scrollAmount = 0;
-                    } else if (!direction && scrollAmount < 0) {
+                    }
+                    else if (!direction && scrollAmount < 0) {
                         scrollAmount = element.scrollWidth / 2;
                     }
                     
@@ -143,7 +145,8 @@ function autoScrollIdeas() {
             if (vertical) {
                 scrollVertical(lastIdeas1, true);
                 scrollVertical(lastIdeas2, false);
-            } else {
+            }
+            else {
                 scrollHorizontal(lastIdeas1, false);
                 scrollHorizontal(lastIdeas2, true);
             }
@@ -186,7 +189,8 @@ export async function getServerSideProps() {
                 author: phpIdea.username,
                 image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
             }));
-        } else {
+        }
+        else {
             throw new Error("PHP API error: "+data.error);
         }
     } catch (error) {
