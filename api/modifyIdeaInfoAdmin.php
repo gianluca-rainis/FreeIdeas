@@ -135,12 +135,14 @@
         $stmt->execute();
         $stmt->close();
         
-        for ($i=0; $i < count($additionalInfo['titles']); $i++) {
-            $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
-            $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
-            
-            $stmt->execute();
-            $stmt->close();
+        if (isset($additionalInfo['titles']) && !empty($additionalInfo['titles'])) {
+            for ($i=0; $i < count($additionalInfo['titles']); $i++) {
+                $stmt = $conn->prepare("INSERT INTO additionalinfo (title, updtimage, description, ideaid) VALUES (?, ?, ?, ?);");
+                $stmt->bind_param("sssi", $additionalInfo['titles'][$i], $additionalInfoImagesConverted[$i], $additionalInfo['descriptions'][$i], $ideaid);
+                
+                $stmt->execute();
+                $stmt->close();
+            }
         }
 
         // Send all logs data (delete all the old and send all the new)
