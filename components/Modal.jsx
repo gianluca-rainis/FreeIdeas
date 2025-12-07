@@ -30,11 +30,9 @@ export function Modal({ children, isOpen, onClose }) {
 }
 
 export function AlertModal({ text, onClose }) {
-    const { themeIsLight } = useAppContext();
-
     return (
         <Modal isOpen={true} onClose={onClose}>
-            <div className={`${styles.content} ${themeIsLight ? styles.light : styles.dark}`}>
+            <div className={`${styles.content}`}>
                 <div className={styles.text}>{text}</div>
                 <button className={`${styles.button} ${styles.primaryButton}`} onClick={onClose}>Ok</button>
             </div>
@@ -43,11 +41,9 @@ export function AlertModal({ text, onClose }) {
 }
 
 export function ConfirmModal({ text, onConfirm, onCancel }) {
-    const { themeIsLight } = useAppContext();
-
     return (
         <Modal isOpen={true} onClose={onCancel}>
-            <div className={`${styles.content} ${themeIsLight ? styles.light : styles.dark}`}>
+            <div className={`${styles.content}`}>
                 <div className={styles.text}>{text}</div>
                 <div className={styles.buttonGroup}>
                     <button className={`${styles.button} ${styles.primaryButton}`} onClick={onConfirm}> Yes</button>
@@ -59,7 +55,6 @@ export function ConfirmModal({ text, onConfirm, onCancel }) {
 }
 
 export function PromptModal({ message, defaultValue, onSubmit, onCancel }) {
-    const { themeIsLight } = useAppContext();
     const [value, setValue] = useState(defaultValue || '');
 
     function handleSubmit(e) {
@@ -69,7 +64,7 @@ export function PromptModal({ message, defaultValue, onSubmit, onCancel }) {
 
     return (
         <Modal isOpen={true} onClose={onCancel}>
-            <div className={`${styles.content} ${styles.promptContent} ${themeIsLight ? styles.light : styles.dark}`}>
+            <div className={`${styles.content} ${styles.promptContent}`}>
                 <div className={styles.text}>{message}</div>
                 <form onSubmit={handleSubmit}>
                     <textarea
