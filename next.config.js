@@ -27,11 +27,6 @@ const nextConfig = {
             }
         ];
     },
-  
-    // Support static files
-    publicRuntimeConfig: {
-        staticFolder: '/static',
-    },
 }
 
 module.exports = nextConfig
