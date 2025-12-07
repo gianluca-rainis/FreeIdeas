@@ -51,7 +51,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-    };
+    }
 
     // Handle hydration
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             }
             
             setLoading(false);
-        };
+        }
         
         checkAuthAndLoadData();
     }, [id, user, isHydrated]);
@@ -148,7 +148,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             await showAlert('Error loading idea data. Please try again.');
             router.push('/');
         }
-    };
+    }
 
     // Handle main image change
     function handleMainImageChange(e) {
@@ -165,7 +165,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
             reader.readAsDataURL(file);
         }
-    };
+    }
 
     // Handle license file change
     function handleLicenseFileChange(e) {
@@ -175,13 +175,17 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             setLicensePdfFile(file);
             setFormData(prev => ({ ...prev, licenseDefaultLicense: false }));
         }
-    };
+    }
 
     // Handle license checkbox change
     function handleLicenseCheckboxChange(e) {
         if (e.target.checked) {
             setLicensePdfFile(null);
             setFormData(prev => ({ ...prev, licenseDefaultLicense: true }));
+
+            if (document.getElementById("licensePdfFile")) {
+                document.getElementById("licensePdfFile").value = "";
+            }
         }
         else if (!licensePdfFile) {
             showAlert("Your idea must have a license!");
@@ -190,7 +194,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                 setFormData(prev => ({ ...prev, licenseDefaultLicense: true }));
             }, 0);
         }
-    };
+    }
 
     // Add additional info
     function addAdditionalInfo() {
@@ -201,19 +205,19 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             imagePreview: '/images/FreeIdeas.svg',
             imageFile: null
         }]);
-    };
+    }
 
     // Remove additional info
     function removeAdditionalInfo(id) {
         setAdditionalInfos(prev => prev.filter(info => info.id !== id));
-    };
+    }
 
     // Update additional info
     function updateAdditionalInfo(id, field, value) {
         setAdditionalInfos(prev => prev.map(info => 
             info.id === id ? { ...info, [field]: value } : info
         ));
-    };
+    }
 
     // Handle additional info image change
     function handleAdditionalInfoImageChange(id, file) {
@@ -227,7 +231,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
             reader.readAsDataURL(file);
         }
-    };
+    }
 
     // Add log
     function addLog() {
@@ -237,19 +241,19 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             description: '',
             date: getCurrentDate()
         }]);
-    };
+    }
 
     // Remove log
     function removeLog(id) {
         setLogs(prev => prev.filter(log => log.id !== id));
-    };
+    }
 
     // Update log
     function updateLog(id, field, value) {
         setLogs(prev => prev.map(log => 
             log.id === id ? { ...log, [field]: value } : log
         ));
-    };
+    }
 
     // Handle form submission
     async function handleSubmit(e) {
@@ -370,11 +374,13 @@ export default function PublishAnIdeaPage({ pageTitle }) {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     // Handle delete idea (only in edit mode)
     async function handleDeleteIdea() {
-        if (!isEditMode) return;
+        if (!isEditMode) {
+            return;
+        }
         
         const confirmed = await showConfirm("Are you sure that you want to delete this idea? This operation cannot be undone.");
         
@@ -406,12 +412,12 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                 setLoading(false);
             }
         }
-    };
+    }
 
     // Handle cancel
     function handleCancel() {
         router.push('/publishAnIdea');
-    };
+    }
 
     // Don't render anything until hydrated to prevent hydration mismatch
     if (!isHydrated) {

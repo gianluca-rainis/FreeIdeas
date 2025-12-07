@@ -36,11 +36,11 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
 
     // Close dropdown when scroll
     useEffect(() => {
-        const handleScroll = () => {
+        function handleScroll() {
             if (showDropdown) {
                 setShowDropdown(false);
             }
-        };
+        }
 
         if (showDropdown) {
             document.addEventListener('scroll', handleScroll);
@@ -49,15 +49,15 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
         return () => document.removeEventListener('scroll', handleScroll);
     }, [showDropdown]);
 
-    const handleFilterClick = (filterType, value) => {
+    function handleFilterClick(filterType, value) {
         onFilterChange(filterType, value);
         // Close after select
         setOpenSection(null);
-    };
+    }
 
-    const toggleSection = (section) => {
+    function toggleSection(section) {
         setOpenSection(openSection === section ? null : section);
-    };
+    }
 
     const filterOptions = {
         type: ['All', 'Technological Innovation', 'Environmental Sustainability', 'Education & Learning', 'Business & Startups', 'Art & Design', 'Social & Community', 'Health & Wellness', 'Travel & Experiences', 'Games & Entertainment'],
@@ -373,13 +373,13 @@ export default function SearchAnIdeaPage({ pageTitle }) {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     // Resize window gestor
     useEffect(() => {
-        const handleResize = () => {
+        function handleResize() {
             setWindowWidth(window.innerWidth);
-        };
+        }
 
         // Set initial width (call twice for mobile layout fix)
         handleResize();
@@ -390,22 +390,22 @@ export default function SearchAnIdeaPage({ pageTitle }) {
     }, []);
 
     // Change filters gestor
-    const handleFilterChange = (filterType, value) => {
+    function handleFilterChange(filterType, value) {
         setFilters(prev => {
             const newFilters = { ...prev, [filterType]: value };
             // Trigger search with new filters
             setTimeout(() => searchIdeasWithFilters(newFilters), 0);
             return newFilters;
         });
-    };
+    }
 
-    const handleSearchChange = (value) => {
+    function handleSearchChange(value) {
         setFilters(prev => {
             const newFilters = { ...prev, search: value };
             setTimeout(() => searchIdeasWithFilters(newFilters), 300); // Debounce
             return newFilters;
         });
-    };
+    }
 
     // Load initial ideas
     useEffect(() => {
