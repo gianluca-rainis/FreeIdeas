@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import { useRouter } from 'next/router';
 import { getApiUrl } from '../utils/apiConfig';
 import { handleError, getUserFriendlyErrorMessage, ValidationError } from '../utils/errorHandling';
+import { useThemeImages } from '../hooks/useThemeImages';
 
 const AppContext = createContext();
 
@@ -9,7 +10,6 @@ export function AppProvider({ children }) {
     // Save global variables and set the functions to update their values
     const [bannerMessage, setBannerMessage] = useState("");
     const [showBanner, setBannerVisibility] = useState(false);
-    const [themeIsLight, setThemeIsLight] = useState(true);
     const [user, setUser] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +17,12 @@ export function AppProvider({ children }) {
     const [showLoginArea, setShowLoginArea] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+    const {
+        themeIsLight,
+        toggleTheme,
+        getImagePath,
+        getUserImageSrc
+    } = useThemeImages();
     
     const router = useRouter();
 
@@ -37,190 +43,6 @@ export function AppProvider({ children }) {
         setBannerMessage("");
         setBannerVisibility(false);
     }, []);
-
-    /* THEME GESTOR */
-    // Update the theme
-    useEffect(() => {
-        if (typeof window === 'undefined') {
-            return;
-        }
-
-        const savedTheme = localStorage.getItem("themeIsLight");
-
-        if (savedTheme !== null) {
-            setThemeIsLight(savedTheme === "true");
-        }
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-
-        function handleChange(e) {
-            const newTheme = e.matches;
-
-            setThemeIsLight(newTheme);
-
-            localStorage.setItem("themeIsLight", newTheme);
-        }
-
-        mediaQuery.addEventListener('change', handleChange);
-
-        return () => mediaQuery.removeEventListener('change', handleChange);
-    }, []);
-
-    // Update the theme in the document
-    useEffect(() => {
-        if (typeof document !== 'undefined') {
-            document.documentElement.setAttribute("data-theme", themeIsLight?"light":"dark");
-            
-            // Update all theme-related elements whenever theme changes
-            updateThemeElements(themeIsLight);
-        }
-    }, [themeIsLight]);
-
-    // Toggle the theme
-    function toggleTheme() {
-        const newTheme = !themeIsLight;
-
-        setThemeIsLight(newTheme);
-
-        if (typeof window !== 'undefined') {
-            localStorage.setItem("themeIsLight", newTheme);
-            
-            // Update all theme-related elements
-            updateThemeElements(newTheme);
-        }
-    }
-    
-    // Function to update all theme-related elements
-    function updateThemeElements(isLight) {
-        if (typeof document === 'undefined') {
-            return;
-        }
-        
-        try {
-            // Update toggle theme buttons
-            const lightDarkThemeButtons = document.querySelectorAll(".toggle-light-dark-theme");
-            lightDarkThemeButtons.forEach(button => {
-                if (button) {
-                    button.src = isLight ? "/images/sun-dark.svg" : "/images/sun-light.svg";
-                }
-            });
-
-            // Update GitHub logo
-            const githubLogo = document.getElementById("githubLogo");
-            if (githubLogo) {
-                githubLogo.src = isLight ? "./images/github.svg" : "./images/github-white.svg";
-            }
-
-            // Update FreeIdeas logos
-            const logos = [
-                document.getElementById("pcNavBarGhost")?.querySelector("#navLogo"),
-                document.getElementById("mobileNavBarGhost")?.querySelector("#navLogo"),
-                document.getElementById("footerLogo")
-            ].filter(Boolean);
-
-            // Add dynamic logos based on current page
-            if (window.location.pathname.includes("/about")) {
-                const aboutLogo = document.querySelector(".footerpage")?.querySelector(".logo");
-                if (aboutLogo) {
-                    logos.push(aboutLogo);
-                }
-            }
-
-            if (window.location.pathname.includes("/contacts")) {
-                const contactsLogo = document.querySelector(".footerpage")?.querySelector(".logo");
-                if (contactsLogo) {
-                    logos.push(contactsLogo);
-                }
-            }
-
-            if (window.location.pathname.includes("/index") || window.location.pathname === "/") {
-                const indexLogo = document.getElementById("indexMain")?.querySelector(".logo");
-                if (indexLogo) {
-                    logos.push(indexLogo);
-                }
-            }
-
-            logos.forEach(logo => {
-                if (logo) {
-                    logo.src = `./images/FreeIdeas${isLight ? "" : "_Pro"}.svg`;
-                }
-            });
-
-            // Update mobile menu icon
-            const menuMobile = document.getElementById("mobileNavBarGhost")?.querySelector("#menuMobile");
-
-            if (menuMobile) {
-                menuMobile.src = `./images/menu${isLight ? "" : "_Pro"}.svg`;
-            }
-
-            // Update user image (if it's the default user icon)
-            const userImage = document.getElementById("userImage");
-
-            if (userImage && userImage.src.includes("/images/user")) {
-                userImage.src = `./images/user${isLight ? "" : "_Pro"}.svg`;
-            }
-
-            // Update notification back image
-            const notificationBackImage = document.getElementById("notificationBackImage");
-
-            if (notificationBackImage) {
-                notificationBackImage.src = `./images/back${isLight ? "" : "_Pro"}.svg`;
-            }
-
-            // Update notification icons
-            const notificationImgs = document.querySelectorAll(".notificationsImg");
-
-            notificationImgs.forEach(element => {
-                if (element.src.includes("/images/notifications_active")) {
-                    element.src = `./images/notifications_active${isLight ? "" : "_Pro"}.svg`;
-                }
-                else if (element.src.includes("/images/notifications")) {
-                    element.src = `./images/notifications${isLight ? "" : "_Pro"}.svg`;
-                }
-            });
-
-            // Update page-specific icons
-            if (window.location.href.includes("/publishAnIdea")) {
-                const addAdditionalInfo = document.getElementById("addAdditionalInfo");
-                const addLog = document.getElementById("addLog");
-                const cancelNewIdea = document.getElementById("cancelNewIdea");
-                
-                if (addAdditionalInfo) {
-                    addAdditionalInfo.src = `./images/add${isLight ? "" : "_Pro"}.svg`;
-                }
-
-                if (addLog) {
-                    addLog.src = `./images/add${isLight ? "" : "_Pro"}.svg`;
-                }
-
-                if (cancelNewIdea) {
-                    cancelNewIdea.src = `./images/delete${isLight ? "" : "_Pro"}.svg`;
-                }
-            }
-
-            if (window.location.href.includes("/accountVoid")) {
-                const publishedAccount = document.getElementById("publishedAccount");
-                const savedAccount = document.getElementById("savedAccount");
-                
-                if (publishedAccount?.children.item(0)) {
-                    publishedAccount.children.item(0).src = `./images/publish${isLight ? "" : "_Pro"}.svg`;
-                }
-
-                if (savedAccount?.children.item(0)) {
-                    savedAccount.children.item(0).src = `./images/saved${isLight ? "" : "_Pro"}.svg`;
-                }
-            }
-
-            if (window.location.href.includes("/ideaVoid")) {
-                const modifyOldIdea = document.getElementById("modifyOldIdea");
-                if (modifyOldIdea) {
-                    modifyOldIdea.src = `./images/modify${isLight ? "" : "_Pro"}.svg`;
-                }
-            }
-        } catch (error) {
-            console.error('Error updating theme elements:', error);
-        }
-    }
 
     // Window size management
     useEffect(() => {
@@ -527,35 +349,6 @@ export function AppProvider({ children }) {
         }
     }, [showLoginArea, showNotifications]);
 
-    // Event handlers for notifications only
-    useEffect(() => {
-        if (typeof document === 'undefined') {
-            return;
-        }
-
-        // Notification buttons
-        const notificationImgs = document.querySelectorAll(".notificationsImg");
-
-        const notificationHandlers = new Map();
-
-        notificationImgs.forEach(element => {
-            function handleNotificationClick() {
-                setShowNotifications(prev => !prev);
-                setShowLoginArea(false);
-            };
-
-            notificationHandlers.set(element, handleNotificationClick);
-            element.addEventListener("click", handleNotificationClick);
-        });
-
-        // Cleanup
-        return () => {
-            notificationHandlers.forEach((handler, element) => {
-                element.removeEventListener("click", handler);
-            });
-        };
-    }, []);
-
     // Load notifications when they change
     useEffect(() => {
         if (user && !user.isAdmin && notifications.length > 0) {
@@ -795,23 +588,6 @@ export function AppProvider({ children }) {
 
             return newValue;
         });
-    }
-
-    // Utility functions
-    function getImagePath(imageName, useThemeVariant = true) {
-        if (useThemeVariant) {
-            return `/images/${imageName}${themeIsLight ? "" : "_Pro"}.svg`;
-        }
-
-        return `/images/${imageName}`;
-    }
-
-    function getUserImageSrc(userImage, isAdmin = false) {
-        if (isAdmin) {
-            return "/images/FreeIdeas_ReservedArea.svg";
-        }
-
-        return userImage || getImagePath("user");
     }
 
     // Modal state
