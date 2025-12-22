@@ -1244,7 +1244,8 @@ footer ul li a {
 .comment {
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 30px
+    margin-left: 30px;
+    text-align: left;
 }
 
 .userInfo {

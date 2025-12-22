@@ -3,6 +3,9 @@ import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import Head from '../../components/Head'
 import { useAppContext } from '../../contexts/CommonContext'
+import { useThemeImages } from '../../hooks/useThemeImages'
+import { useModals } from '../../hooks/useModals'
+import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -26,10 +29,10 @@ export async function getServerSideProps(context) {
             pageTitle = ideaData['idea'][0]['title'];
         }
         else {
-            throw new Error("PHP API error: " + data.error);
+            throw new Error(data.error);
         }
     } catch (error) {
-        console.error('Failed to fetch ideas:', error);
+        console.error('Failed to fetch ideas: '+error);
     }
 
     return {
@@ -108,24 +111,97 @@ function PrintDevLogs({ ideaData }) {
     return null;
 }
 
-function PrintComments({ ideaData }) {
-    if (!ideaData || !ideaData['comment']) {
+function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, showAlert, ideaId }) {
+    const [replyingToCommentId, setReplyingToCommentId] = useState(null);
+    const [replyText, setReplyText] = useState('');
+
+    const getCurrentDate = () => {
+        const date = new Date();
+        return `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    };
+
+    async function handleReplyClick(commentId = null) {
+        if (!sessionData) {
+            await showAlert("You must log in before writing a comment.");
+            return;
+        }
+        
+        setReplyingToCommentId(commentId);
+        setReplyText('');
+    }
+
+    async function handleSaveReply(superCommentId) {
+        if (replyText.trim() === '') {
+            await showAlert("The comment can't be empty!");
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('data', getCurrentDate());
+            formData.append('description', replyText);
+            formData.append('ideaid', ideaId);
+            formData.append('superCommentid', superCommentId || '');
+
+            const res = await fetch(`/api/saveNewComment.php`, {
+                credentials: "include",
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data['success']) {
+                window.location.href = `/idea/${ideaId}`;
+            }
+            else {
+                throw new Error(data['error']);
+            }
+        } catch (error) {
+            console.error(error);
+            await showAlert("Error saving comment");
+        }
+    }
+
+    function handleCancelReply() {
+        setReplyingToCommentId(null);
+        setReplyText('');
+    }
+
+    if (!ideaData || !ideaData['comment'] || ideaData['comment'].length == 0) {
         return (
-            <li className='comment' data-value='rootComment'>
-                <p className='replyComment'>Write the first comment!</p>
-            </li>
+            <>
+                <li className='comment' data-value='rootComment'>
+                    <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write the first comment!</p>
+                </li>
+                
+                {replyingToCommentId === null && sessionData && (
+                    <li className='comment'>
+                        <div className='userInfo'>
+                            <a href={`/account/${sessionData['id']}`} className='writerPage'>
+                                <img src={sessionData['userimage'] || `/images/user${themeIsLight?"":"_Pro"}.svg`} alt="Your image" className='writerImg' />
+                                <div className='writerUserName'>{sessionData['username']}:</div>
+                            </a>
+                            <div className='dataWriter'>{getCurrentDate()}</div>
+                        </div>
+                        <textarea 
+                            value={replyText} 
+                            onChange={(e) => setReplyText(e.target.value)}
+                            placeholder='Write your comment...'
+                            maxLength='10000'
+                            style={{ width: '100%', minHeight: '80px' }}
+                        />
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <p onClick={() => handleSaveReply('')} style={{ cursor: 'pointer' }}>Save</p>
+                            <p onClick={handleCancelReply} style={{ cursor: 'pointer' }}>Cancel</p>
+                        </div>
+                    </li>
+                )}
+            </>
         );
     }
 
-    if (ideaData['comment'].length == 0) {
-        return (
-            <li className='comment' data-value='rootComment'>
-                <p className='replyComment'>Write the first comment!</p>
-            </li>
-        );
-    }
-
-    const printSubCommentRecursive = (superi, indexOfSubComments) => {
+    function printSubCommentRecursive(superi, indexOfSubComments) {
         let subCommentsToPrint = [];
 
         for (let i = indexOfSubComments.length - 1; i >= 0; i--) {
@@ -138,34 +214,67 @@ function PrintComments({ ideaData }) {
         return printComment(superi, subCommentsToPrint, indexOfSubComments);
     }
 
-    const printComment = (i, subComments, indexOfSubComments) => {
+    function printComment(i, subComments, indexOfSubComments) {
         let authorid = ideaData['comment'][i]['authorid'];
         let accountLink = ideaData['comment'][i]['public'] == 1 ? `./accountVoid.php?account=${authorid}` : "";
-        let accountimg = ideaData['comment'][i]['userimage'] != null ? ideaData['comment'][i]['userimage'] : "./images/user.svg";
+        let accountimg = ideaData['comment'][i]['userimage'] != null ? ideaData['comment'][i]['userimage'] : `/images/user${themeIsLight?"":"_Pro"}.svg`;
         let accountUsername = ideaData['comment'][i]['username'] == null ? 'Deleted' : ideaData['comment'][i]['username'];
         let date = ideaData['comment'][i]['data'];
         let description = ideaData['comment'][i]['description'];
         let id = ideaData['comment'][i]['id'];
 
+        const canDelete = sessionData && (sessionData.id == authorid || sessionData.is_admin);
+
         return (
-            <li key={id} className='comment'>
-                <div className='userInfo'>
-                    <a href={accountLink} className='writerPage'>
-                        <img src={accountimg} alt='Comment Author Account Image' className='writerImg' />
-                        <div className='writerUserName'>{accountUsername}:</div>
-                    </a>
+            <React.Fragment key={id}>
+                <li className='comment'>
+                    <div className='userInfo'>
+                        <a href={accountLink} className='writerPage'>
+                            <img src={accountimg} alt='Comment Author Account Image' className='writerImg' />
+                            <div className='writerUserName'>{accountUsername}:</div>
+                        </a>
 
-                    <div className='dataWriter'>{date}</div>
-                </div>
-                <p className='commentText'>{description}</p>
-                <p className='replyComment'>Reply</p>
+                        <div className='dataWriter'>{date}</div>
+                    </div>
+                    <p className='commentText'>{description}</p>
+                    <p className='replyComment' onClick={() => handleReplyClick(id)} style={{ cursor: 'pointer' }}>Reply</p>
 
-                <ul className='underComments' data-id={id}>
-                    {
-                        subComments.map(subCommentIndex => printSubCommentRecursive(subCommentIndex, indexOfSubComments))
-                    }
-                </ul>
-            </li>
+                    {canDelete && (
+                        <p className='deleteComment' onClick={() => onDeleteComment(id)} style={{ cursor: 'pointer', color: '#ff6b6b' }}>
+                            Delete
+                        </p>
+                    )}
+
+                    <ul className='underComments' data-id={id}>
+                        {
+                            subComments.map(subCommentIndex => printSubCommentRecursive(subCommentIndex, indexOfSubComments))
+                        }
+                    </ul>
+                </li>
+
+                {replyingToCommentId === id && sessionData && (
+                    <li className='comment' style={{ marginLeft: '20px' }}>
+                        <div className='userInfo'>
+                            <a href={`/account/${sessionData['id']}`} className='writerPage'>
+                                <img src={sessionData['userimage'] || `/images/user${themeIsLight?"":"_Pro"}.svg`} alt="Your user image" className='writerImg' />
+                                <div className='writerUserName'>{sessionData['username']}:</div>
+                            </a>
+                            <div className='dataWriter'>{getCurrentDate()}</div>
+                        </div>
+                        <textarea 
+                            value={replyText} 
+                            onChange={(e) => setReplyText(e.target.value)}
+                            placeholder='Write your reply...'
+                            maxLength='10000'
+                            style={{ width: '90%', maxWidth: '90%', minHeight: '80px' }}
+                        />
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <p id='saveComment' onClick={() => handleSaveReply(id)}>Save</p>
+                            <p id='deleteComment' onClick={handleCancelReply}>Cancel</p>
+                        </div>
+                    </li>
+                )}
+            </React.Fragment>
         );
     }
 
@@ -185,7 +294,7 @@ function PrintComments({ ideaData }) {
         <>
             {indexOfRootComments.map(j => printSubCommentRecursive(j, [...indexOfSubComments]))}
             <li className='comment' data-value='rootComment'>
-                <p className='replyComment'>Write a comment!</p>
+                <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write a comment!</p>
             </li>
         </>
     );
@@ -220,7 +329,7 @@ function LicenseSection({ ideaData }) {
                         setLicenseUrl(data[0]);
                     }
                     else {
-                        console.error('License API error: '+data['error']);
+                        console.error('License API error: '+data);
                     }
                 }
             } catch (error) {
@@ -246,6 +355,230 @@ function LicenseSection({ ideaData }) {
 // Main
 export default function IdeaPage({ ideaData, pageTitle }) {
     const { randomIdeaId } = useAppContext();
+    const { themeIsLight } = useThemeImages();
+    const { currentModal, showAlert, showConfirm, showPrompt, closeModal } = useModals();
+    
+    // State management
+    const [sessionData, setSessionData] = useState(null);
+    const [savedState, setSavedState] = useState(false);
+    const [likedState, setLikedState] = useState(false);
+    const [dislikedState, setDislikedState] = useState(false);
+    const [followState, setFollowState] = useState(false);
+    const [existCurrentAccountIdeaData, setExistCurrentAccountIdeaData] = useState(false);
+
+    // Load session data
+    useEffect(() => {
+        const loadSessionData = async () => {
+            try {
+                const res = await fetch(`/api/getSessionData.php?data=account`, {
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+
+                setSessionData(data && data.id?data:null);
+            } catch (error) {
+                console.error('Failed to load session data: '+error);
+            }
+        };
+
+        loadSessionData();
+    }, []);
+
+    // Load account idea data (saved, liked, disliked state)
+    useEffect(() => {
+        if (!ideaData || !sessionData) {
+            return;
+        }
+
+        if (ideaData['accountdata'] && ideaData['accountdata'][0]) {
+            setSavedState(ideaData['accountdata'][0].saved == 1);
+            setLikedState(ideaData['accountdata'][0].liked == 1);
+            setDislikedState(ideaData['accountdata'][0].dislike == 1);
+            setExistCurrentAccountIdeaData(true);
+        }
+
+        if (ideaData['followAccountData'] && ideaData['followAccountData'].length > 0) {
+            setFollowState(true);
+        }
+    }, [ideaData, sessionData]);
+
+    // Toggle saved/liked/disliked
+    async function toggleSavedLikedDisliked(type) {
+        if (!sessionData) {
+            await showAlert("You need to login before vote a project!");
+            return;
+        }
+
+        let newSaved = savedState;
+        let newLiked = likedState;
+        let newDisliked = dislikedState;
+
+        if (type === 'save') {
+            newSaved = !savedState;
+
+            setSavedState(!savedState);
+        }
+        else if (type === 'like') {
+            if (likedState) {
+                newLiked = false;
+            }
+            else {
+                newLiked = true;
+                newDisliked = false;
+            }
+
+            setLikedState(newLiked);
+            setDislikedState(newDisliked);
+        }
+        else if (type === 'dislike') {
+            if (dislikedState) {
+                newDisliked = false;
+            }
+            else {
+                newDisliked = true;
+                newLiked = false;
+            }
+
+            setDislikedState(newDisliked);
+            setLikedState(newLiked);
+        }
+
+        // Send to server
+        try {
+            const formData = new FormData();
+            formData.append("ideaid", ideaData['idea'][0].id);
+            formData.append("saved", newSaved?"1":"0");
+            formData.append("dislike", newDisliked?"1":"0");
+            formData.append("liked", newLiked?"1":"0");
+            formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
+
+            const res = await fetch(`/api/saveAccountIdeaData.php`, {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (!data['success']) {
+                throw new Error(data['error']);
+            }
+
+            setExistCurrentAccountIdeaData(true);
+        } catch (error) {
+            console.error('Error saving idea data: '+error);
+        }
+    }
+
+    // Report idea
+    async function handleReportIdea() {
+        if (!sessionData) {
+            await showAlert("You must login before you can report an idea!");
+            return;
+        }
+
+        const confirmed = await showConfirm("Are you sure you want to report this idea? This action cannot be undone. Remember that reporting an idea also harms the idea's creator.");
+        
+        if (!confirmed) {
+            return;
+        }
+
+        const feedback = await showPrompt("Please tell us why you think this content is inappropriate.");
+        
+        if (feedback === null || feedback === "") {
+            if (feedback !== null) {
+                await showAlert("The feedback cannot be empty.");
+            }
+
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("ideaid", ideaData['idea'][0].id);
+            formData.append("feedback", feedback);
+            formData.append("accountid", null);
+
+            const res = await fetch(`/api/reportIdeaAccount.php`, {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data['success']) {
+                await showAlert("The idea was successfully reported.");
+            }
+            else {
+                throw new Error(data['error']);
+            }
+        } catch (error) {
+            console.error('Error reporting idea: '+error);
+        }
+    }
+
+    // Follow idea
+    async function handleFollowIdea() {
+        if (!sessionData) {
+            await showAlert("You must login before you can follow an idea!");
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("followedideaid", ideaData['idea'][0].id);
+
+            const res = await fetch(`/api/followAccountIdea.php`, {
+                credentials: "include",
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data['success']) {
+                setFollowState(data["isNowFollowed"]);
+            }
+            else {
+                throw new Error(data['error']);
+            }
+        } catch (error) {
+            console.error('Error following idea: '+error);
+        }
+    }
+
+    // Delete comment
+    async function handleDeleteComment(commentId) {
+        const confirmed = await showConfirm("Are you sure you want to delete the comment?");
+        
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('id', commentId);
+
+            const res = await fetch(`/api/deleteComment.php`, {
+                credentials: "include",
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data["success"]) {
+                window.location.reload();
+            }
+            else {
+                throw new Error(data['error']);
+            }
+        } catch (error) {
+            console.error('Error deleting comment: '+error);
+        }
+    }
 
     if (!ideaData) {
         return (
@@ -278,23 +611,61 @@ export default function IdeaPage({ ideaData, pageTitle }) {
 
                 <section id="ideaLikeSaveSection">
                     <ul>
-                        <li id="savedIdea">
-                            <img src="/images/saved.svg" alt="Save idea" id="savedIdeaImg" />
+                        <li id="savedIdea" onClick={() => toggleSavedLikedDisliked('save')}>
+                            <img 
+                                src={savedState ? `/images/savedIdea${themeIsLight?"":"_Pro"}.svg` : `/images/saved${themeIsLight?"":"_Pro"}.svg`} 
+                                alt="Save idea" 
+                                id="savedIdeaImg" 
+                                style={{ cursor: 'pointer' }}
+                            />
                             <div id="savedNumber">{ideaData['idealabels'][0]['saves']}</div>
                         </li>
-                        <li id="likedIdea">
-                            <img src="/images/liked.svg" alt="Like idea" id="likedIdeaImg" />
+                        <li id="likedIdea" onClick={() => toggleSavedLikedDisliked('like')}>
+                            <img 
+                                src={likedState ? `/images/likedIdea${themeIsLight?"":"_Pro"}.svg` : `/images/liked${themeIsLight?"":"_Pro"}.svg`} 
+                                alt="Like idea" 
+                                id="likedIdeaImg" 
+                                style={{ cursor: 'pointer' }}
+                            />
                             <div id="likedNumber">{ideaData['idealabels'][0]['likes']}</div>
                         </li>
-                        <li id="dislikedIdea">
-                            <img src="/images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg" />
+                        <li id="dislikedIdea" onClick={() => toggleSavedLikedDisliked('dislike')}>
+                            <img 
+                                src={dislikedState ? `/images/dislikedIdea${themeIsLight?"":"_Pro"}.svg` : `/images/disliked${themeIsLight?"":"_Pro"}.svg`} 
+                                alt="Dislike idea" 
+                                id="dislikedIdeaImg" 
+                                style={{ cursor: 'pointer' }}
+                            />
                             <div id="dislikedNumber">{ideaData['idealabels'][0]['dislike']}</div>
                         </li>
                     </ul>
                     
-                    <input type="button" id="followIdeaButton" value="Follow Idea" />
-                    <input type="button" id="reportIdeaButton" value="Report Idea" />
-                    <img src="/images/modify.svg" alt="Modify idea" id="modifyOldIdea" />
+                    <input 
+                        type="button" 
+                        id="followIdeaButton" 
+                        value="Follow Idea"
+                        onClick={handleFollowIdea}
+                        style={{
+                            backgroundColor: followState ? `${themeIsLight?"#a9acf5":"#5c4e2e"}` : `${themeIsLight?"#b6ffa4":"#cba95c"}`
+                        }}
+                    />
+                    <input 
+                        type="button" 
+                        id="reportIdeaButton" 
+                        value="Report Idea"
+                        onClick={handleReportIdea}
+                    />
+                    <img 
+                        src="/images/modify.svg" 
+                        alt="Modify idea" 
+                        id="modifyOldIdea"
+                        onClick={() => {
+                            if (sessionData && sessionData.id == ideaData['idea'][0].accountId) {
+                                window.location.href = `/publishAnIdea/${ideaData['idea'][0].id}`;
+                            }
+                        }}
+                        style={{ cursor: 'pointer', display: (sessionData && sessionData.id == ideaData['idea'][0].accountId)?"block":"none" }}
+                    />
                 </section>
 
                 <p id="description">
@@ -312,10 +683,14 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                 <section id="commentSection">
                     <h3 id="commentsTitle">Comments</h3>
                     <ul id="commentsList">
-                        <PrintComments ideaData={ideaData} />
+                        <PrintComments ideaData={ideaData} onDeleteComment={handleDeleteComment} sessionData={sessionData} themeIsLight={themeIsLight} showAlert={showAlert} ideaId={ideaData['idea'][0].id} />
                     </ul>
                 </section>
             </main>
+
+            {currentModal?.type === 'alert' && <AlertModal text={currentModal.text} onClose={currentModal.onClose} />}
+            {currentModal?.type === 'confirm' && <ConfirmModal text={currentModal.text} onConfirm={currentModal.onConfirm} onCancel={currentModal.onCancel} />}
+            {currentModal?.type === 'prompt' && <PromptModal message={currentModal.message} defaultValue={currentModal.defaultValue} onSubmit={currentModal.onSubmit} onCancel={currentModal.onCancel} />}
 
             <Footer />
         </>

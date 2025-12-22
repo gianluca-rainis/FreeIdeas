@@ -45,9 +45,9 @@ export function ConfirmModal({ text, onConfirm, onCancel }) {
         <Modal isOpen={true} onClose={onCancel}>
             <div className={`${styles.content}`}>
                 <div className={styles.text}>{text}</div>
-                <div className={styles.buttonGroup}>
-                    <button className={`${styles.button} ${styles.primaryButton}`} onClick={onConfirm}> Yes</button>
-                    <button className={`${styles.button} ${styles.secondaryButton}`} onClick={onCancel}>No</button>
+                <div className={styles.buttonGroup} style={{ display: 'flex', gap: '10px', justifyContent: 'center', position: 'absolute', width: '100%' }}>
+                    <button className={`${styles.button} ${styles.primaryButton}`} onClick={onConfirm} style={{ flex: 1, position: 'static' }}>Yes</button>
+                    <button className={`${styles.button} ${styles.secondaryButton}`} onClick={onCancel} style={{ flex: 1, position: 'static' }}>No</button>
                 </div>
             </div>
         </Modal>
@@ -66,17 +66,18 @@ export function PromptModal({ message, defaultValue, onSubmit, onCancel }) {
         <Modal isOpen={true} onClose={onCancel}>
             <div className={`${styles.content} ${styles.promptContent}`}>
                 <div className={styles.text}>{message}</div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{width: '100%', height: 'fit-content', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <textarea
                         className={styles.textarea}
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                         maxLength={10000}
                         autoFocus
+                        style={{ width: '90%', margin: '0 auto' }}
                     />
-                    <div className={styles.buttonGroup}>
-                        <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>Send</button>
-                        <button type="button" className={`${styles.button} ${styles.secondaryButton}`} onClick={onCancel}>Cancel</button>
+                    <div className={styles.buttonGroup} style={{ display: 'flex', gap: '10px', justifyContent: 'center', position: 'absolute', width: '100%' }}>
+                        <button type="submit" className={`${styles.button} ${styles.primaryButton}`} style={{ flex: 1, position: 'static' }}>Send</button>
+                        <button type="button" className={`${styles.button} ${styles.secondaryButton}`} onClick={onCancel} style={{ flex: 1, position: 'static' }}>Cancel</button>
                     </div>
                 </form>
             </div>

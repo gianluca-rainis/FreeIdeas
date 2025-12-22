@@ -49,6 +49,28 @@ export function useThemeImages() {
         updateThemeElements(themeIsLight);
     }, [router.pathname, themeIsLight]);
 
+    // Listen to external theme changes (e.g., from toggle buttons)
+    useEffect(() => {
+        if (typeof document === 'undefined') {
+            return;
+        }
+
+        const observer = new MutationObserver(() => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const isLight = currentTheme === 'light';
+            
+            // Only update state if the data-theme actually changed
+            setThemeIsLight(isLight);
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
     function toggleTheme() {
         setThemeIsLight((prev) => {
             const next = !prev;
@@ -154,7 +176,7 @@ export function useThemeImages() {
                 }
             }
 
-            if (window.location.href.includes('/ideaVoid')) {
+            if (window.location.href.includes('/idea')) {
                 swapSrc('#modifyOldIdea', '/images/modify.svg', '/images/modify_Pro.svg');
             }
         } catch (error) {
@@ -214,7 +236,7 @@ export function useThemeImages() {
             images.savedAccount = getImagePath('saved');
         }
 
-        if (currentPath.includes('/ideaVoid')) {
+        if (currentPath.includes('/idea')) {
             images.modifyOldIdea = getImagePath('modify');
         }
 
