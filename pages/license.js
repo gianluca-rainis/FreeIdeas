@@ -4,6 +4,15 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
+// Server-side rendering for initial data
+export async function getServerSideProps() {
+    return {
+        props: {
+            pageTitle: "License"
+        }
+    }
+}
+
 // Main
 export default function LicensePage({pageTitle}) {
     const { randomIdeaId } = useAppContext();

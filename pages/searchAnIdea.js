@@ -6,6 +6,15 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
+// Server-side rendering for initial data
+export async function getServerSideProps() {
+    return {
+        props: {
+            pageTitle: "Search an Idea"
+        }
+    }
+}
+
 // Internal functions
 function IdeaCard({ link, imgSrc, title, author }) {
     return (
@@ -187,15 +196,6 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
     );
 }
 
-// Server-side rendering for initial data
-export async function getServerSideProps() {
-    return {
-        props: {
-            pageTitle: "Search an Idea"
-        }
-    }
-}
-
 // Main
 export default function SearchAnIdeaPage({ pageTitle }) {
     const { themeIsLight, user, randomIdeaId, bannerMessage, showBanner } = useAppContext();
@@ -290,7 +290,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
         }
     }
 
-    // Search base (per compatibilità)
+    // Search base
     async function searchIdeas() {
         setLoading(true);
 

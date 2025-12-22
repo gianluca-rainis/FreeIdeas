@@ -4,6 +4,46 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
+// Server-side rendering
+export async function getServerSideProps() {
+    let ideas = [];
+    
+    try {
+        const response = await fetch('http://localhost:8000/api/getLastIdeas.php');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Convert PHP data format to our format
+            ideas = data.data.map(phpIdea => ({
+                id: phpIdea.id,
+                title: phpIdea.title,
+                author: phpIdea.username,
+                image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
+            }));
+        }
+        else {
+            throw new Error("PHP API error: "+data.error);
+        }
+    } catch (error) {
+        console.error('Failed to fetch ideas:', error);
+        
+        // Fallback data in case of API failure
+        ideas = Array.from({ length: 12 }, (_, i) => ({
+            id: i + 1,
+            title: `Idea ${i + 1}`,
+            author: `Author ${i + 1}`,
+            image: `./images/FreeIdeas.svg`
+        }));
+    }
+
+    return {
+        props: {
+            ideas: ideas,
+            pageTitle: ""
+        }
+    }
+}
+
 // Internal functions
 function IdeaCard({ idea }) {
     return (
@@ -171,46 +211,6 @@ function autoScrollIdeas() {
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-}
-
-// Server-side rendering
-export async function getServerSideProps() {
-    let ideas = [];
-    
-    try {
-        const response = await fetch('http://localhost:8000/api/getLastIdeas.php');
-        const data = await response.json();
-        
-        if (data.success) {
-            // Convert PHP data format to our format
-            ideas = data.data.map(phpIdea => ({
-                id: phpIdea.id,
-                title: phpIdea.title,
-                author: phpIdea.username,
-                image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
-            }));
-        }
-        else {
-            throw new Error("PHP API error: "+data.error);
-        }
-    } catch (error) {
-        console.error('Failed to fetch ideas:', error);
-        
-        // Fallback data in case of API failure
-        ideas = Array.from({ length: 12 }, (_, i) => ({
-            id: i + 1,
-            title: `Idea ${i + 1}`,
-            author: `Author ${i + 1}`,
-            image: `./images/FreeIdeas.svg`
-        }));
-    }
-
-    return {
-        props: {
-            ideas: ideas,
-            pageTitle: ""
-        }
-    }
 }
 
 // Main

@@ -4,6 +4,15 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
+// Server-side rendering for initial data
+export async function getServerSideProps() {
+    return {
+        props: {
+            pageTitle: "Terms of Use"
+        }
+    }
+}
+
 // Main
 export default function TermsOfUsePage({pageTitle}) {
     const { randomIdeaId } = useAppContext();
