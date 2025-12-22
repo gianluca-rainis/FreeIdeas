@@ -30,7 +30,6 @@ export function useAuth() {
             const data = await response.json();
 
             if (data && data.success) {
-                window.location.href = "/";
                 return { success: true };
             }
             else {

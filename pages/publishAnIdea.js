@@ -561,7 +561,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                     <div 
                         id="ideaImageAsBackground"
                         style={{
-                            backgroundImage: mainImagePreview ? `url(${mainImagePreview})` : 'none'
+                            backgroundImage: mainImagePreview ? `url(${mainImagePreview})` : ''
                         }}
                     >
                         <input 

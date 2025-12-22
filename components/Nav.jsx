@@ -52,8 +52,11 @@ export default function Nav({ randomId=0 }) {
                             <div id="loginHidden">
                                 {user ? (
                                     <div>
-                                        <h2>Welcome, {user.username}!</h2>
-                                        <button onClick={handleLogout}>Logout</button>
+                                        <h2>Welcome </h2>
+                                        <img alt="User Image" style={{width: "60px", height: "60px", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
+                                        <h3 style={{marginBottom: "20px"}}></h3>
+                                        <button type="submit" id="sendAccountButton">Account</button>
+                                        <button type="submit" id="sendLogoutButton">Log Out</button>
                                     </div>
                                 ) : (
                                     <div>
@@ -132,8 +135,15 @@ export default function Nav({ randomId=0 }) {
                                 <div id="loginHiddenMobile">
                                     {user ? (
                                         <div>
-                                            <h2>Welcome, {user.username}!</h2>
-                                            <button onClick={handleLogout}>Logout</button>
+                                            <h2>Welcome </h2>
+                                            <div style={{alignItems: "center"}}>
+                                                <img alt="User Image" style={{width: "100px", height: "100px", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
+                                            </div>
+                                            <h3 style={{marginBottom: "20px"}}></h3>
+                                            <div style={{alignItems: "center"}}>
+                                                <button type="submit" id="sendAccountButtonMobile">Account</button>
+                                                <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div>

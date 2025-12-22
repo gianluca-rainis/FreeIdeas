@@ -19,8 +19,8 @@ export default function Footer() {
                     <div>
                         <h4>Legal</h4>
                         <ul>
-                            <li><Link href="/privacy">Privacy Policy</Link></li>
-                            <li><Link href="/terms">Terms of Use</Link></li>
+                            <li><Link href="/privacyPolicy">Privacy Policy</Link></li>
+                            <li><Link href="/termsOfUse">Terms of Use</Link></li>
                             <li><Link href="/license">License</Link></li>
                         </ul>
                     </div>
@@ -30,7 +30,7 @@ export default function Footer() {
                         <ul>
                             <li><Link href="/faq">FAQ</Link></li>
                             <li><Link href="/feedback">Feedback</Link></li>
-                            <li><Link href="/contact">Contact Us</Link></li>
+                            <li><Link href="/contacts">Contact Us</Link></li>
                         </ul>
                     </div>
 
@@ -45,7 +45,6 @@ export default function Footer() {
                     <div>
                         <h4>More</h4>
                         <ul>
-                            <li><a href="/sitemap.xml">Sitemap</a></li>
                             <li><Link href="/admin">Reserved Area</Link></li>
                             <li><a href="https://github.com/gianluca-rainis/FreeIdeas.git">
                                 <img src="/images/github.svg" alt="GitHub Logo" id="githubLogo" />
