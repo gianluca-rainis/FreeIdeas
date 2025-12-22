@@ -82,7 +82,7 @@ export function useThemeImages() {
                 btn.src = isLight ? '/images/sun-dark.svg' : '/images/sun-light.svg';
             });
 
-            swapSrc('#githubLogo', './images/github.svg', './images/github-white.svg');
+            swapSrc('#githubLogo', '/images/github.svg', '/images/github-white.svg');
 
             const logos = [
                 document.getElementById('pcNavBarGhost')?.querySelector('#navLogo'),
@@ -116,19 +116,19 @@ export function useThemeImages() {
 
             logos.forEach((logo) => {
                 if (logo) {
-                    logo.src = `./images/FreeIdeas${isLight ? '' : '_Pro'}.svg`;
+                    logo.src = `/images/FreeIdeas${isLight ? '' : '_Pro'}.svg`;
                 }
             });
 
-            swapSrc('#mobileNavBarGhost #menuMobile', './images/menu.svg', './images/menu_Pro.svg');
+            swapSrc('#mobileNavBarGhost #menuMobile', '/images/menu.svg', '/images/menu_Pro.svg');
 
             const userImage = document.getElementById('userImage');
 
             if (userImage && userImage.src.includes('/images/user')) {
-                userImage.src = `./images/user${isLight ? '' : '_Pro'}.svg`;
+                userImage.src = `/images/user${isLight ? '' : '_Pro'}.svg`;
             }
 
-            swapSrc('#notificationBackImage', './images/back.svg', './images/back_Pro.svg');
+            swapSrc('#notificationBackImage', '/images/back.svg', '/images/back_Pro.svg');
 
             document.querySelectorAll('.notificationsImg').forEach((element) => {
                 const isActive = element.src.includes('/images/notifications_active');
@@ -136,9 +136,9 @@ export function useThemeImages() {
             });
 
             if (window.location.href.includes('/publishAnIdea')) {
-                swapSrc('#addAdditionalInfo', './images/add.svg', './images/add_Pro.svg');
-                swapSrc('#addLog', './images/add.svg', './images/add_Pro.svg');
-                swapSrc('#cancelNewIdea', './images/delete.svg', './images/delete_Pro.svg');
+                swapSrc('#addAdditionalInfo', '/images/add.svg', '/images/add_Pro.svg');
+                swapSrc('#addLog', '/images/add.svg', '/images/add_Pro.svg');
+                swapSrc('#cancelNewIdea', '/images/delete.svg', '/images/delete_Pro.svg');
             }
 
             if (window.location.href.includes('/accountVoid')) {
@@ -146,16 +146,16 @@ export function useThemeImages() {
                 const savedAccount = document.getElementById('savedAccount');
 
                 if (publishedAccount?.children.item(0)) {
-                    publishedAccount.children.item(0).src = `./images/publish${isLight ? '' : '_Pro'}.svg`;
+                    publishedAccount.children.item(0).src = `/images/publish${isLight ? '' : '_Pro'}.svg`;
                 }
 
                 if (savedAccount?.children.item(0)) {
-                    savedAccount.children.item(0).src = `./images/saved${isLight ? '' : '_Pro'}.svg`;
+                    savedAccount.children.item(0).src = `/images/saved${isLight ? '' : '_Pro'}.svg`;
                 }
             }
 
             if (window.location.href.includes('/ideaVoid')) {
-                swapSrc('#modifyOldIdea', './images/modify.svg', './images/modify_Pro.svg');
+                swapSrc('#modifyOldIdea', '/images/modify.svg', '/images/modify_Pro.svg');
             }
         } catch (error) {
             console.error('Error updating theme elements:', error);

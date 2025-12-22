@@ -3,7 +3,6 @@ import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import Head from '../../components/Head'
 import { useAppContext } from '../../contexts/CommonContext'
-import { getApiUrl } from '../../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -63,7 +62,7 @@ function PrintAdditionalInfo({ ideaData }) {
             </ul>
         );
     }
-    
+
     return null;
 }
 
@@ -217,11 +216,11 @@ function LicenseSection({ ideaData }) {
 
                     const data = await response.json();
 
-                    if (data['success']) {
-                        setLicenseUrl(data['data']);
+                    if (data && data[0]) {
+                        setLicenseUrl(data[0]);
                     }
                     else {
-                        throw new Error(data['error']);
+                        console.error('License API error: '+data['error']);
                     }
                 }
             } catch (error) {
@@ -230,7 +229,7 @@ function LicenseSection({ ideaData }) {
         }
 
         getLicense();
-    }, [ideaData]);
+    }, [ideaData?.idea?.[0]?.license, ideaData?.idea?.[0]?.title, ideaData?.idea?.[0]?.accountName]);
 
     if (!licenseUrl) {
         return null;
@@ -280,22 +279,22 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                 <section id="ideaLikeSaveSection">
                     <ul>
                         <li id="savedIdea">
-                            <img src="./images/saved.svg" alt="Save idea" id="savedIdeaImg" />
+                            <img src="/images/saved.svg" alt="Save idea" id="savedIdeaImg" />
                             <div id="savedNumber">{ideaData['idealabels'][0]['saves']}</div>
                         </li>
                         <li id="likedIdea">
-                            <img src="./images/liked.svg" alt="Like idea" id="likedIdeaImg" />
+                            <img src="/images/liked.svg" alt="Like idea" id="likedIdeaImg" />
                             <div id="likedNumber">{ideaData['idealabels'][0]['likes']}</div>
                         </li>
                         <li id="dislikedIdea">
-                            <img src="./images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg" />
+                            <img src="/images/disliked.svg" alt="Dislike idea" id="dislikedIdeaImg" />
                             <div id="dislikedNumber">{ideaData['idealabels'][0]['dislike']}</div>
                         </li>
                     </ul>
                     
                     <input type="button" id="followIdeaButton" value="Follow Idea" />
                     <input type="button" id="reportIdeaButton" value="Report Idea" />
-                    <img src="./images/modify.svg" alt="Modify idea" id="modifyOldIdea" />
+                    <img src="/images/modify.svg" alt="Modify idea" id="modifyOldIdea" />
                 </section>
 
                 <p id="description">
