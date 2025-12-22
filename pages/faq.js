@@ -57,7 +57,7 @@ export default function FaqPage({pageTitle}) {
                         <div className="question">Can I post any kind of idea?</div>
                         <div className="answer">
                             Generally yes — creative, technical, personal, or collaborative ideas are all welcome. 
-                            However, you must follow our <a href="./termsOfUse.php">Terms of Use</a> and avoid illegal, offensive, or copyrighted content if you don’t own the rights.
+                            However, you must follow our <a href="./termsOfUse">Terms of Use</a> and avoid illegal, offensive, or copyrighted content if you don’t own the rights.
                         </div>
                     </li>
                     <li>
@@ -78,7 +78,7 @@ export default function FaqPage({pageTitle}) {
                         <div className="answer">
                             FreeIdeas is designed for everyone — creators, developers, and thinkers of all ages. 
                             However, to comply with privacy and data protection laws, users under 18 must have verifiable parental consent before creating an account or posting content. 
-                            Parents or guardians can contact us for more information as described in our <a href="./privacyPolicy.php">Privacy Policy</a>.
+                            Parents or guardians can contact us for more information as described in our <a href="./privacyPolicy">Privacy Policy</a>.
                         </div>
                     </li>
                     <li>

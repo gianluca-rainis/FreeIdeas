@@ -29,8 +29,8 @@ export default function FeedbackPage({pageTitle}) {
                 <section>
                     <p>All feedback submitted in this section is anonymous and cannot be traced back to the person or account that posted it. We encourage you to submit only relevant and appropriate feedback.</p>
                     <p>By submitting feedback, you help us improve FreeIdeas. Please be as detailed as possible in your descriptions.</p>
-                    <p>Please remember that by sending us feedback you agree to the <a href="./termsOfUse.php">Terms of Use</a> and <a href="./privacyPolicy.php">Privacy Policy</a>.</p>
-                    <p>You can also give us feedback by <a href="./contacts.php">contacting us</a> using the methods described in the appropriate section.</p>
+                    <p>Please remember that by sending us feedback you agree to the <a href="./termsOfUse">Terms of Use</a> and <a href="./privacyPolicy">Privacy Policy</a>.</p>
+                    <p>You can also give us feedback by <a href="./contacts">contacting us</a> using the methods described in the appropriate section.</p>
                 </section>
             </main>
 
