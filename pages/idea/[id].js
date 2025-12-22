@@ -63,6 +63,7 @@ function PrintAdditionalInfo({ ideaData }) {
             </ul>
         );
     }
+    
     return null;
 }
 
@@ -77,6 +78,7 @@ function PrintDownloadLink({ ideaData }) {
             </section>
         );
     }
+    
     return null;
 }
 
@@ -194,7 +196,7 @@ function LicenseSection({ ideaData }) {
     const [licenseUrl, setLicenseUrl] = useState(null);
 
     useEffect(() => {
-        const getLicense = async () => {
+        async function getLicense() {
             try {
                 if (ideaData && ideaData['idea'][0]['license']) {
                     setLicenseUrl(ideaData['idea'][0]['license']);
@@ -225,12 +227,14 @@ function LicenseSection({ ideaData }) {
             } catch (error) {
                 console.error(error);
             }
-        };
+        }
 
         getLicense();
     }, [ideaData]);
 
-    if (!licenseUrl) return null;
+    if (!licenseUrl) {
+        return null;
+    }
 
     return (
         <section id="licenseSection">
