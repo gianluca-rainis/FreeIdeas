@@ -116,7 +116,7 @@ function PrintDevLogs({ ideaData }) {
 }
 
 function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, showAlert, ideaId }) {
-    const [replyingToCommentId, setReplyingToCommentId] = useState(null);
+    const [replyingToCommentId, setReplyingToCommentId] = useState(undefined);
     const [replyText, setReplyText] = useState('');
 
     const getCurrentDate = () => {
@@ -168,18 +168,14 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
     }
 
     function handleCancelReply() {
-        setReplyingToCommentId(null);
+        setReplyingToCommentId(undefined);
         setReplyText('');
     }
 
     if (!ideaData || !ideaData['comment'] || ideaData['comment'].length == 0) {
         return (
             <>
-                <li className='comment' data-value='rootComment'>
-                    <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write the first comment!</p>
-                </li>
-                
-                {replyingToCommentId === null && sessionData && (
+                {(replyingToCommentId === null && sessionData && (
                     <li className='comment'>
                         <div className='userInfo'>
                             <a href={`/account/${sessionData['id']}`} className='writerPage'>
@@ -193,12 +189,16 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
                             onChange={(e) => setReplyText(e.target.value)}
                             placeholder='Write your comment...'
                             maxLength='10000'
-                            style={{ width: '100%', minHeight: '80px' }}
+                            style={{ width: '90%', maxWidth: '90%', minHeight: '80px' }}
                         />
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <p onClick={() => handleSaveReply('')} style={{ cursor: 'pointer' }}>Save</p>
-                            <p onClick={handleCancelReply} style={{ cursor: 'pointer' }}>Cancel</p>
+                            <p id='saveComment' onClick={() => handleSaveReply('')}>Save</p>
+                            <p id='deleteComment' onClick={handleCancelReply}>Cancel</p>
                         </div>
+                    </li>
+                )) || (
+                    <li className='comment' data-value='rootComment'>
+                        <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write the first comment!</p>
                     </li>
                 )}
             </>
@@ -253,31 +253,31 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
                         {
                             subComments.map(subCommentIndex => printSubCommentRecursive(subCommentIndex, indexOfSubComments))
                         }
+
+                        {replyingToCommentId === id && sessionData && (
+                            <li className='comment' style={{ marginLeft: '20px' }}>
+                                <div className='userInfo'>
+                                    <a href={`/account/${sessionData['id']}`} className='writerPage'>
+                                        <img src={sessionData['userimage'] || `/images/user${themeIsLight?"":"_Pro"}.svg`} alt="Your user image" className='writerImg' />
+                                        <div className='writerUserName'>{sessionData['username']}:</div>
+                                    </a>
+                                    <div className='dataWriter'>{getCurrentDate()}</div>
+                                </div>
+                                <textarea 
+                                    value={replyText} 
+                                    onChange={(e) => setReplyText(e.target.value)}
+                                    placeholder='Write your reply...'
+                                    maxLength='10000'
+                                    style={{ width: '90%', maxWidth: '90%', minHeight: '80px' }}
+                                />
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <p id='saveComment' onClick={() => handleSaveReply(id)}>Save</p>
+                                    <p id='deleteComment' onClick={handleCancelReply}>Cancel</p>
+                                </div>
+                            </li>
+                        )}
                     </ul>
                 </li>
-
-                {replyingToCommentId === id && sessionData && (
-                    <li className='comment' style={{ marginLeft: '20px' }}>
-                        <div className='userInfo'>
-                            <a href={`/account/${sessionData['id']}`} className='writerPage'>
-                                <img src={sessionData['userimage'] || `/images/user${themeIsLight?"":"_Pro"}.svg`} alt="Your user image" className='writerImg' />
-                                <div className='writerUserName'>{sessionData['username']}:</div>
-                            </a>
-                            <div className='dataWriter'>{getCurrentDate()}</div>
-                        </div>
-                        <textarea 
-                            value={replyText} 
-                            onChange={(e) => setReplyText(e.target.value)}
-                            placeholder='Write your reply...'
-                            maxLength='10000'
-                            style={{ width: '90%', maxWidth: '90%', minHeight: '80px' }}
-                        />
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <p id='saveComment' onClick={() => handleSaveReply(id)}>Save</p>
-                            <p id='deleteComment' onClick={handleCancelReply}>Cancel</p>
-                        </div>
-                    </li>
-                )}
             </React.Fragment>
         );
     }
@@ -297,9 +297,33 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
     return (
         <>
             {indexOfRootComments.map(j => printSubCommentRecursive(j, [...indexOfSubComments]))}
-            <li className='comment' data-value='rootComment'>
-                <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write a comment!</p>
-            </li>
+            
+            {(replyingToCommentId === null && sessionData && (
+                <li className='comment'>
+                    <div className='userInfo'>
+                        <a href={`/account/${sessionData['id']}`} className='writerPage'>
+                            <img src={sessionData['userimage'] || `/images/user${themeIsLight?"":"_Pro"}.svg`} alt="Your image" className='writerImg' />
+                            <div className='writerUserName'>{sessionData['username']}:</div>
+                        </a>
+                        <div className='dataWriter'>{getCurrentDate()}</div>
+                    </div>
+                    <textarea 
+                        value={replyText} 
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder='Write your comment...'
+                        maxLength='10000'
+                        style={{ width: '90%', maxWidth: '90%', minHeight: '80px' }}
+                    />
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <p id='saveComment' onClick={() => handleSaveReply('')}>Save</p>
+                        <p id='deleteComment' onClick={handleCancelReply}>Cancel</p>
+                    </div>
+                </li>
+            )) || (
+                <li className='comment' data-value='rootComment'>
+                    <p className='replyComment' onClick={() => handleReplyClick(null)} style={{ cursor: 'pointer' }}>Write a comment!</p>
+                </li>
+            )}
         </>
     );
 }
