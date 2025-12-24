@@ -1,23 +1,55 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
+import Nav from '../../components/Nav'
+import Footer from '../../components/Footer'
+import Head from '../../components/Head'
+import { useAppContext } from '../../contexts/CommonContext'
 
 // Server-side rendering for initial data
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+    let ideaData = null;
+    let pageTitle = 'Edit an Idea - ';
+    
+    try {
+        const formData = new FormData();
+        formData.append("id", id);
+
+        // Send cookies read session in php
+        const cookieHeader = context.req?.headers?.cookie ?? '';
+
+        const response = await fetch('http://localhost:8000/api/data.php', {
+            method: "POST",
+            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+            body: formData
+        });
+
+        const data = await response.json();
+        
+        if (data && data.success !== false) {
+            ideaData = data;
+            pageTitle += ideaData['idea'][0]['title'];
+        }
+        else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        console.error('Failed to fetch ideas: '+error);
+    }
+
     return {
         props: {
-            pageTitle: "Publish an Idea"
+            id: id,
+            ideaData: ideaData,
+            pageTitle: pageTitle
         }
     }
 }
 
 // Main
-export default function PublishAnIdeaPage({ pageTitle }) {
-    const { themeIsLight, user, randomIdeaId, showAlert } = useAppContext();
+export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
+    const { themeIsLight, user, randomIdeaId, showAlert, showConfirm } = useAppContext();
     const router = useRouter();
     
     // State management
@@ -52,6 +84,82 @@ export default function PublishAnIdeaPage({ pageTitle }) {
     useEffect(() => {
         setIsHydrated(true);
     }, []);
+
+    // Check if user is logged in and load existing idea data if editing
+    useEffect(() => {
+        if (!isHydrated) {
+            return;
+        }
+        
+        async function checkAuthAndLoadData() {
+            try {
+                setLoading(true);
+            
+                // If editing an existing idea, load data
+                if (id && user && ideaData && id == ideaData['idea'][0]['id'] && (parseInt(user.id) === parseInt(ideaData['idea'][0]['accountId']) || user.isAdmin)) {
+                    await loadExistingIdeaData();
+                }
+                
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        checkAuthAndLoadData();
+    }, [id, user, ideaData, isHydrated]);
+
+    // Load existing idea data for editing
+    async function loadExistingIdeaData() {
+        try {
+            if (ideaData) {
+                // Helper to decode HTML entities
+                function decodeHtmlEntities(text) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(text, 'text/html');
+                    return doc.documentElement.textContent;
+                };
+                
+                setFormData({
+                    title: decodeHtmlEntities(ideaData.idea[0].title),
+                    description: ideaData.idea[0].description,
+                    typeProject: decodeHtmlEntities(ideaData.idealabels[0].type),
+                    creativityType: decodeHtmlEntities(ideaData.idealabels[0].creativity),
+                    statusProject: decodeHtmlEntities(ideaData.idealabels[0].status),
+                    buttonlink: ideaData.idea[0].downloadlink || '',
+                    licenseDefaultLicense: !ideaData.idea[0].license || ideaData.idea[0].license === 'default'
+                });
+
+                setLicensePdfFile(ideaData.idea[0].license?ideaData.idea[0].license:null);
+                
+                setMainImagePreview(ideaData.idea[0].ideaimage);
+                
+                // Load additional info
+                if (ideaData.info && ideaData.info.length > 0) {
+                    setAdditionalInfos(ideaData.info.map(info => ({
+                        id: Date.now() + Math.random(),
+                        title: info.title,
+                        description: info.description,
+                        imagePreview: info.updtimage,
+                        imageFile: null
+                    })));
+                }
+                
+                // Load logs
+                if (ideaData.log && ideaData.log.length > 0) {
+                    setLogs(ideaData.log.map(log => ({
+                        id: Date.now() + Math.random(),
+                        title: log.title,
+                        description: log.description,
+                        date: log.data
+                    })));
+                }
+            }
+        } catch (error) {
+            console.error('Error loading idea data:', error);
+            await showAlert('Error loading idea data. Please try again.');
+        }
+    }
 
     // Handle main image change
     function handleMainImageChange(e) {
@@ -166,13 +274,16 @@ export default function PublishAnIdeaPage({ pageTitle }) {
         try {
             const submitFormData = new FormData();
             
-            submitFormData.append("author", user.id);
+            submitFormData.append("ideaid", id);
+            submitFormData.append("author", ideaData.idea[0].accountId);
             
-            if (!mainImageFile) {
-                throw new Error("Main image is required");
+            if (mainImageFile) {
+                submitFormData.append("mainImageFile", mainImageFile);
             }
-
-            submitFormData.append("mainImage", mainImageFile);
+            else {
+                submitFormData.append("mainImageData", ideaData.idea[0].ideaimage);
+            }
+            
             submitFormData.append("title", formData.title);
             submitFormData.append("data", getCurrentDate());
             submitFormData.append("description", formData.description);
@@ -186,13 +297,14 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             const additionalInfoDescriptions = [];
             const additionalInfoTypes = [];
 
-            additionalInfos.forEach((info, index) => {
+            additionalInfos.forEach((info) => {
                 if (info.imageFile) {
-                    submitFormData.append("additionalInfoImages[]", info.imageFile);
+                    submitFormData.append("additionalInfoImagesFile[]", info.imageFile);
                     additionalInfoTypes.push("file");
                 }
                 else {
-                    throw new Error("All additional info items must have an image");
+                    submitFormData.append("additionalInfoImagesData[]", info.imagePreview);
+                    additionalInfoTypes.push("data");
                 }
 
                 additionalInfoTitles.push(info.title);
@@ -201,7 +313,8 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
             const additionalInfoJson = {
                 titles: additionalInfoTitles,
-                descriptions: additionalInfoDescriptions
+                descriptions: additionalInfoDescriptions,
+                types: additionalInfoTypes
             };
 
             submitFormData.append("additionalInfo", JSON.stringify(additionalInfoJson));
@@ -209,6 +322,9 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             // Handle license
             if (licensePdfFile) {
                 submitFormData.append("license", licensePdfFile);
+            }
+            else if (!formData.licenseDefaultLicense) {
+                submitFormData.append("license", ideaData.idea[0].license);
             }
 
             // Handle logs
@@ -225,7 +341,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/saveNewIdea.php', {
+            const response = await fetch('/api/updateOldIdea.php', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData
@@ -234,7 +350,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             const data = await response.json();
 
             if (data && data.success) {
-                router.push('/');
+                router.push(`/idea/${id}`);
             }
             else {
                 throw new Error(data?.error || "Failed to save idea");
@@ -244,6 +360,40 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             await showAlert('Failed to save idea. Please try again.');
         } finally {
             setLoading(false);
+        }
+    }
+
+    // Handle delete idea (only in edit mode)
+    async function handleDeleteIdea() {
+        const confirmed = await showConfirm("Are you sure that you want to delete this idea? This operation cannot be undone.");
+        
+        if (confirmed) {
+            try {
+                setLoading(true);
+
+                const deleteFormData = new FormData();
+                deleteFormData.append('id', id);
+
+                const response = await fetch('/api/deleteIdea.php', {
+                    credentials: "include",
+                    method: 'POST',
+                    body: deleteFormData
+                });
+
+                const data = await response.json();
+                
+                if (data && data.success) {
+                    router.push('/publishAnIdea');
+                }
+                else {
+                    throw new Error(data?.error || "Failed to delete idea");
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                await showAlert('Failed to delete idea. Please try again.');
+            } finally {
+                setLoading(false);
+            }
         }
     }
 
@@ -419,7 +569,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                         type="file" 
                         id="mainImage" 
                         accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" 
-                        required
+                        required={false}
                         onChange={handleMainImageChange}
                         disabled={loading}
                     />
@@ -640,7 +790,14 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                         <input 
                             type="submit" 
                             id="saveNewIdea" 
-                            value={"Publish"}
+                            value={"Update"}
+                            disabled={loading}
+                        />
+                        <input 
+                            type="button" 
+                            id="deleteOldIdea" 
+                            value="Delete idea"
+                            onClick={handleDeleteIdea}
                             disabled={loading}
                         />
                         <img 
