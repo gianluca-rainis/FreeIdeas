@@ -112,6 +112,8 @@ export function useAuth() {
 
                 setLoginData({ email: '', password: '' }); // Reset form
 
+                window.location.href = window.location.href;
+
                 return { success: true };
             }
             else {

@@ -17,8 +17,12 @@ export async function getServerSideProps(context) {
         const formData = new FormData();
         formData.append("id", id);
 
+        // Send cookies read session in php
+        const cookieHeader = context.req?.headers?.cookie ?? '';
+
         const response = await fetch('http://localhost:8000/api/data.php', {
             method: "POST",
+            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
         });
 
@@ -365,6 +369,9 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     const [dislikedState, setDislikedState] = useState(false);
     const [followState, setFollowState] = useState(false);
     const [existCurrentAccountIdeaData, setExistCurrentAccountIdeaData] = useState(false);
+    const [savesCount, setSavesCount] = useState(ideaData?.idealabels?.[0]?.saves ?? 0);
+    const [likesCount, setLikesCount] = useState(ideaData?.idealabels?.[0]?.likes ?? 0);
+    const [dislikesCount, setDislikesCount] = useState(ideaData?.idealabels?.[0]?.dislike ?? 0);
 
     // Load session data
     useEffect(() => {
@@ -410,6 +417,13 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             return;
         }
 
+        const prevSaved = savedState;
+        const prevLiked = likedState;
+        const prevDisliked = dislikedState;
+        const prevSavesCount = savesCount;
+        const prevLikesCount = likesCount;
+        const prevDislikesCount = dislikesCount;
+
         let newSaved = savedState;
         let newLiked = likedState;
         let newDisliked = dislikedState;
@@ -417,15 +431,24 @@ export default function IdeaPage({ ideaData, pageTitle }) {
         if (type === 'save') {
             newSaved = !savedState;
 
-            setSavedState(!savedState);
+            setSavedState(newSaved);
+            setSavesCount(prev => prev + (savedState ? -1 : 1));
         }
         else if (type === 'like') {
             if (likedState) {
                 newLiked = false;
+
+                setLikesCount(prev => prev - 1);
             }
             else {
                 newLiked = true;
                 newDisliked = false;
+
+                setLikesCount(prev => prev + 1);
+
+                if (dislikedState) {
+                    setDislikesCount(prev => prev - 1);
+                }
             }
 
             setLikedState(newLiked);
@@ -434,10 +457,18 @@ export default function IdeaPage({ ideaData, pageTitle }) {
         else if (type === 'dislike') {
             if (dislikedState) {
                 newDisliked = false;
+
+                setDislikesCount(prev => prev - 1);
             }
             else {
                 newDisliked = true;
                 newLiked = false;
+
+                setDislikesCount(prev => prev + 1);
+
+                if (likedState) {
+                    setLikesCount(prev => prev - 1);
+                }
             }
 
             setDislikedState(newDisliked);
@@ -467,6 +498,14 @@ export default function IdeaPage({ ideaData, pageTitle }) {
 
             setExistCurrentAccountIdeaData(true);
         } catch (error) {
+            // If error don't update
+            setSavedState(prevSaved);
+            setLikedState(prevLiked);
+            setDislikedState(prevDisliked);
+            setSavesCount(prevSavesCount);
+            setLikesCount(prevLikesCount);
+            setDislikesCount(prevDislikesCount);
+            
             console.error('Error saving idea data: '+error);
         }
     }
@@ -618,7 +657,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                                 id="savedIdeaImg" 
                                 style={{ cursor: 'pointer' }}
                             />
-                            <div id="savedNumber">{ideaData['idealabels'][0]['saves']}</div>
+                            <div id="savedNumber">{savesCount}</div>
                         </li>
                         <li id="likedIdea" onClick={() => toggleSavedLikedDisliked('like')}>
                             <img 
@@ -627,7 +666,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                                 id="likedIdeaImg" 
                                 style={{ cursor: 'pointer' }}
                             />
-                            <div id="likedNumber">{ideaData['idealabels'][0]['likes']}</div>
+                            <div id="likedNumber">{likesCount}</div>
                         </li>
                         <li id="dislikedIdea" onClick={() => toggleSavedLikedDisliked('dislike')}>
                             <img 
@@ -636,7 +675,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                                 id="dislikedIdeaImg" 
                                 style={{ cursor: 'pointer' }}
                             />
-                            <div id="dislikedNumber">{ideaData['idealabels'][0]['dislike']}</div>
+                            <div id="dislikedNumber">{dislikesCount}</div>
                         </li>
                     </ul>
                     
