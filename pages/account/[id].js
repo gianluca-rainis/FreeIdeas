@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import { useThemeImages } from '../hooks/useThemeImages'
+import Nav from '../../components/Nav'
+import Footer from '../../components/Footer'
+import Head from '../../components/Head'
+import { useAppContext } from '../../contexts/CommonContext'
+import { useThemeImages } from '../../hooks/useThemeImages'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {

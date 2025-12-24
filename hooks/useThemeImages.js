@@ -176,25 +176,25 @@ export function useThemeImages() {
                 }
 
                 if (document.getElementById("modifyAccountInfo")) {
-                    document.getElementById("modifyAccountInfo").src = `/images/modify${themeIsLight?"":"_Pro"}.svg`;
+                    document.getElementById("modifyAccountInfo").src = `/images/modify${isLight?"":"_Pro"}.svg`;
                 }
 
                 if (document.getElementById("userImageAccount")) {
                     if (document.getElementById("userImageAccount").src.includes("/images/user")) {
-                        document.getElementById("userImageAccount").src = `/images/user${themeIsLight?"":"_Pro"}.svg`;
+                        document.getElementById("userImageAccount").src = `/images/user${isLight?"":"_Pro"}.svg`;
                     }
                 }
 
                 if (document.getElementById("modifyAccountInfo")) {
-                    document.getElementById("modifyAccountInfo").src = `/images/modify${themeIsLight?"":"_Pro"}.svg`;
+                    document.getElementById("modifyAccountInfo").src = `/images/modify${isLight?"":"_Pro"}.svg`;
                 }
 
                 if (document.getElementById("saveAccountInfo")) {
-                    document.getElementById("saveAccountInfo").src=`/images/save${themeIsLight?"":"_Pro"}.svg`;
+                    document.getElementById("saveAccountInfo").src=`/images/save${isLight?"":"_Pro"}.svg`;
                 }
 
                 if (document.getElementById("cancelAccountInfo")) {
-                    document.getElementById("cancelAccountInfo").src=`/images/delete${themeIsLight?"":"_Pro"}.svg`;
+                    document.getElementById("cancelAccountInfo").src=`/images/delete${isLight?"":"_Pro"}.svg`;
                 }
             }
 
