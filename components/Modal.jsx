@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAppContext } from '../contexts/CommonContext';
 import styles from '../styles/Modal.module.css';
 
 export function Modal({ children, isOpen, onClose }) {

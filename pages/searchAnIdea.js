@@ -331,7 +331,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                 else if (ideasData.format == "double") {
                     // Merge accounts and ideas
                     const accounts = ideasData.data.data.map(phpIdea => ({
-                        link: `/accountVoid/${phpIdea.id}`,
+                        link: `/account/${phpIdea.id}`,
                         title: `${phpIdea.name || ''} ${phpIdea.surname || ''}`.trim() || phpIdea.username || 'Unknown User',
                         author: phpIdea.username || 'unknown',
                         image: phpIdea.userimage || "/images/FreeIdeas.svg"

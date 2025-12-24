@@ -163,7 +163,7 @@ export function useThemeImages() {
                 swapSrc('#cancelNewIdea', '/images/delete.svg', '/images/delete_Pro.svg');
             }
 
-            if (window.location.href.includes('/accountVoid')) {
+            if (window.location.href.includes('/account')) {
                 const publishedAccount = document.getElementById('publishedAccount');
                 const savedAccount = document.getElementById('savedAccount');
 
@@ -173,6 +173,28 @@ export function useThemeImages() {
 
                 if (savedAccount?.children.item(0)) {
                     savedAccount.children.item(0).src = `/images/saved${isLight ? '' : '_Pro'}.svg`;
+                }
+
+                if (document.getElementById("modifyAccountInfo")) {
+                    document.getElementById("modifyAccountInfo").src = `/images/modify${themeIsLight?"":"_Pro"}.svg`;
+                }
+
+                if (document.getElementById("userImageAccount")) {
+                    if (document.getElementById("userImageAccount").src.includes("/images/user")) {
+                        document.getElementById("userImageAccount").src = `/images/user${themeIsLight?"":"_Pro"}.svg`;
+                    }
+                }
+
+                if (document.getElementById("modifyAccountInfo")) {
+                    document.getElementById("modifyAccountInfo").src = `/images/modify${themeIsLight?"":"_Pro"}.svg`;
+                }
+
+                if (document.getElementById("saveAccountInfo")) {
+                    document.getElementById("saveAccountInfo").src=`/images/save${themeIsLight?"":"_Pro"}.svg`;
+                }
+
+                if (document.getElementById("cancelAccountInfo")) {
+                    document.getElementById("cancelAccountInfo").src=`/images/delete${themeIsLight?"":"_Pro"}.svg`;
                 }
             }
 
@@ -231,7 +253,7 @@ export function useThemeImages() {
             images.cancelNewIdea = getImagePath('delete');
         }
 
-        if (currentPath.includes('/accountVoid')) {
+        if (currentPath.includes('/account')) {
             images.publishedAccount = getImagePath('publish');
             images.savedAccount = getImagePath('saved');
         }

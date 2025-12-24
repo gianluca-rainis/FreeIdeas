@@ -130,7 +130,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                     licenseDefaultLicense: !ideaData.idea[0].license || ideaData.idea[0].license === 'default'
                 });
 
-                setLicensePdfFile(ideaData.idea[0].license?ideaData.idea[0].license:null);
+                setLicensePdfFile(null);
                 
                 setMainImagePreview(ideaData.idea[0].ideaimage);
                 
@@ -320,10 +320,10 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             submitFormData.append("additionalInfo", JSON.stringify(additionalInfoJson));
 
             // Handle license
-            if (licensePdfFile) {
+            if (licensePdfFile instanceof File) {
                 submitFormData.append("license", licensePdfFile);
             }
-            else if (!formData.licenseDefaultLicense) {
+            else {
                 submitFormData.append("license", ideaData.idea[0].license);
             }
 

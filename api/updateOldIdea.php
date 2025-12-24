@@ -48,6 +48,9 @@
 
                 $license = getConvertedPdf($license);
             }
+            elseif (isset($_POST["license"])) {
+                $license = $_POST['license'];
+            }
             else {
                 $license = null;
             }

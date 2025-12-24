@@ -172,8 +172,8 @@ export function AppProvider({ children }) {
     function updateUserUI(SQLdata, admin=false) {
         try {
             const userImageDisplayed = !admin 
-                ? (SQLdata.userimage != null ? SQLdata.userimage : `./images/user${themeIsLight ? "" : "_Pro"}.svg`)
-                : `./images/FreeIdeas_ReservedArea.svg`;
+                ? (SQLdata.userimage != null ? SQLdata.userimage : `/images/user${themeIsLight ? "" : "_Pro"}.svg`)
+                : `/images/FreeIdeas_ReservedArea.svg`;
 
             // Update user image in navigation
             const loginButton = document.getElementById("userImage");
@@ -222,7 +222,7 @@ export function AppProvider({ children }) {
                 if (sendAccountButton) {
                     sendAccountButton.addEventListener("click", () => {
                         if (!admin) {
-                            window.location.href = "/accountVoid";
+                            window.location.href = "/account";
                         }
                         else {
                             window.location.href = "/reservedArea";
@@ -235,7 +235,7 @@ export function AppProvider({ children }) {
                 if (sendAccountButtonMobile) {
                     sendAccountButtonMobile.addEventListener("click", () => {
                         if (!admin) {
-                            window.location.href = "/accountVoid";
+                            window.location.href = "/account";
                         }
                         else {
                             window.location.href = "/reservedArea";
@@ -390,7 +390,7 @@ export function AppProvider({ children }) {
             // Update notification icons if there are new notifications
             if (numNewNotifications > 0) {
                 notificationPc.forEach(element => {
-                    element.src = `./images/notifications_active${themeIsLight ? "" : "_Pro"}.svg`;
+                    element.src = `/images/notifications_active${themeIsLight ? "" : "_Pro"}.svg`;
                 });
             }
 
@@ -432,7 +432,7 @@ export function AppProvider({ children }) {
                         <br>
                         <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
                         <div style="display: flex; justify-content: center; align-items: center;">
-                            <img id="notificationBackImage" src="./images/back${themeIsLight?"":"_Pro"}.svg">
+                            <img id="notificationBackImage" src="/images/back${themeIsLight?"":"_Pro"}.svg">
                             <input type="button" id="notificationDeleteButton" value="Delete">
                         </div>
                     `);
@@ -449,7 +449,7 @@ export function AppProvider({ children }) {
                         li.classList = ``;
 
                         if (document.querySelectorAll("unReadNotification").length == 0) {
-                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                            notificationPc.forEach(element => element.src = `/images/notifications${themeIsLight?"":"_Pro"}.svg`);
                         }
 
                         try {
@@ -492,7 +492,7 @@ export function AppProvider({ children }) {
                         li.remove();
 
                         if (document.querySelectorAll("unReadNotification").length == 0) {
-                            notificationPc.forEach(element => element.src = `./images/notifications${themeIsLight?"":"_Pro"}.svg`);
+                            notificationPc.forEach(element => element.src = `/images/notifications${themeIsLight?"":"_Pro"}.svg`);
                         }
 
                         if (notificationsShowOrder.length < 6) {

@@ -220,7 +220,7 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
 
     function printComment(i, subComments, indexOfSubComments) {
         let authorid = ideaData['comment'][i]['authorid'];
-        let accountLink = ideaData['comment'][i]['public'] == 1 ? `./accountVoid.php?account=${authorid}` : "";
+        let accountLink = ideaData['comment'][i]['public'] == 1 ? `/account/${authorid}` : "";
         let accountimg = ideaData['comment'][i]['userimage'] != null ? ideaData['comment'][i]['userimage'] : `/images/user${themeIsLight?"":"_Pro"}.svg`;
         let accountUsername = ideaData['comment'][i]['username'] == null ? 'Deleted' : ideaData['comment'][i]['username'];
         let date = ideaData['comment'][i]['data'];
@@ -399,7 +399,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
 
     // Load session data
     useEffect(() => {
-        const loadSessionData = async () => {
+        async function loadSessionData() {
             try {
                 const res = await fetch(`/api/getSessionData.php?data=account`, {
                     credentials: "include"
@@ -411,7 +411,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             } catch (error) {
                 console.error('Failed to load session data: '+error);
             }
-        };
+        }
 
         loadSessionData();
     }, []);
@@ -666,7 +666,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                 <div id="ideaImageAsBackground" style={{ backgroundImage: `url(${ideaData['idea'][0]['ideaimage']})` }}>
                     <h1 id="title">{pageTitle}</h1>
                     <h2 id="author">
-                        <a href={ideaData['idea'][0]['accountPublic'] == 1 ? `./account/${ideaData['idea'][0]['accountId']}` : ""} id="mainAuthorAccount">
+                        <a href={ideaData['idea'][0]['accountPublic'] == 1 ? `/account/${ideaData['idea'][0]['accountId']}` : ""} id="mainAuthorAccount">
                             {ideaData['idea'][0]['accountName']}
                         </a>
                     </h2>

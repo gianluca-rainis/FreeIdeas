@@ -7,32 +7,27 @@
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/index.php</loc>
-    <priority>1.00</priority>
-  </url>
-
-  <url>
-    <loc>https://freeideas.duckdns.org/searchAnIdea.php</loc>
+    <loc>https://freeideas.duckdns.org/searchAnIdea</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/publishAnIdea.php</loc>
+    <loc>https://freeideas.duckdns.org/publishAnIdea</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/ideaVoid.php</loc>
+    <loc>https://freeideas.duckdns.org/idea/</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/accountVoid.php</loc>
+    <loc>https://freeideas.duckdns.org/account</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/reservedArea.php</loc>
+    <loc>https://freeideas.duckdns.org/reservedArea</loc>
     <priority>0.80</priority>
   </url>
 
@@ -42,27 +37,27 @@
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/termsOfUse.php</loc>
+    <loc>https://freeideas.duckdns.org/termsOfUse</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/privacyPolicy.php</loc>
+    <loc>https://freeideas.duckdns.org/privacyPolicy</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/license_info.php</loc>
+    <loc>https://freeideas.duckdns.org/license</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/contacts.php</loc>
+    <loc>https://freeideas.duckdns.org/contacts</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/about.php</loc>
+    <loc>https://freeideas.duckdns.org/about</loc>
     <priority>0.50</priority>
   </url>
 </urlset>

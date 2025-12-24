@@ -160,7 +160,7 @@ export function useAuth() {
             router.push('/reservedArea');
         }
         else {
-            router.push('/accountVoid');
+            router.push('/account');
         }
     }
 
