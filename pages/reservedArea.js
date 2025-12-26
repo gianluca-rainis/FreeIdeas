@@ -3,6 +3,11 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
+import WelcomeView from '../components/reserved/WelcomeView'
+import AccountsView from '../components/reserved/AccountsView'
+import IdeasView from '../components/reserved/IdeasView'
+import NotificationsView from '../components/reserved/NotificationsView'
+import ReportsView from '../components/reserved/ReportsView'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -38,8 +43,31 @@ export async function getServerSideProps(context) {
 
 // Main
 export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
-    const { randomIdeaId, showAlert } = useAppContext();
+    const { randomIdeaId, showAlert, showConfirm, showPrompt } = useAppContext();
     const [activeView, setActiveView] = useState('welcome');
+
+    function handleViewChange(view) {
+        setActiveView(view);
+
+        const mobileNavBar = document.getElementById("mobileNavBarReservedAreaHeader");
+
+        if (mobileNavBar) {
+            mobileNavBar.style.display = "none";
+        }
+    }
+
+    async function handleLogout() {
+        try {
+            await fetch("/api/logout.php", {
+                credentials: "include"
+            });
+            
+            window.location.href = "/reservedArea";
+        } catch (error) {
+            console.error(error);
+            await showAlert("Error logging out");
+        }
+    }
 
     useEffect(() => {
         const form = document.getElementById("loginReservedAreaForm");
@@ -118,77 +146,6 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
         return () => menuReservedArea.removeEventListener("click", toggleMobileNavBar);
     }, []);
 
-    // View handlers
-    useEffect(() => {
-        const accountsBtns = document.querySelectorAll(".accountsReservedAreaHeader");
-        const ideasBtns = document.querySelectorAll(".ideasReservedAreaHeader");
-        const notificationsBtns = document.querySelectorAll(".notificationsReservedAreaHeader");
-        const reportsBtns = document.querySelectorAll(".reportsReservedAreaHeader");
-        const mobileNavBar = document.getElementById("mobileNavBarReservedAreaHeader");
-
-        function handleViewChange(view) {
-            setActiveView(view);
-
-            if (mobileNavBar) {
-                mobileNavBar.style.display = "none";
-            }
-        }
-
-        function accountsListener() {
-            handleViewChange('accounts');
-        }
-
-        function ideasListener() {
-            handleViewChange('ideas');
-        }
-
-        function notificationsListener() {
-            handleViewChange('notifications');
-        }
-
-        function reportsListener() {
-            handleViewChange('reports');
-        }
-
-        accountsBtns.forEach(btn => btn.addEventListener("click", accountsListener));
-        ideasBtns.forEach(btn => btn.addEventListener("click", ideasListener));
-        notificationsBtns.forEach(btn => btn.addEventListener("click", notificationsListener));
-        reportsBtns.forEach(btn => btn.addEventListener("click", reportsListener));
-
-        return () => {
-            accountsBtns.forEach(btn => btn.removeEventListener("click", accountsListener));
-            ideasBtns.forEach(btn => btn.removeEventListener("click", ideasListener));
-            notificationsBtns.forEach(btn => btn.removeEventListener("click", notificationsListener));
-            reportsBtns.forEach(btn => btn.removeEventListener("click", reportsListener));
-        };
-    }, []);
-
-    // Logout handler
-    useEffect(() => {
-        const logoutReservedAreaHeader = document.querySelectorAll(".logoutReservedAreaHeader");
-
-        if (logoutReservedAreaHeader.length === 0) {
-            return undefined;
-        }
-
-        async function logout() {
-            try {
-                await fetch("/api/logout.php", {
-                    credentials: "include"
-                });
-                
-                window.location.href = "/reservedArea";
-            } catch (error) {
-                console.error(error);
-                await showAlert("Error logging out");
-            }
-        }
-
-        logoutReservedAreaHeader.forEach(element => element.addEventListener("click", logout));
-
-        return () => logoutReservedAreaHeader.forEach(element => element.removeEventListener("click", logout));
-    }, [showAlert]);
-
     return (
         <>
             <Head pageTitle={pageTitle} />
@@ -203,21 +160,21 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                     </a>
 
                     <ul id="ulReservedAreaHeader">
-                        <li className="liReservedAreaHeaderExt"><button className="accountsReservedAreaHeader">Accounts</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="ideasReservedAreaHeader">Ideas</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="notificationsReservedAreaHeader">Notifications</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="reportsReservedAreaHeader">Reports</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="logoutReservedAreaHeader">Logout</button></li>
+                        <li className="liReservedAreaHeaderExt"><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
+                        <li className="liReservedAreaHeaderExt"><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
+                        <li className="liReservedAreaHeaderExt"><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
+                        <li className="liReservedAreaHeaderExt"><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
+                        <li className="liReservedAreaHeaderExt"><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
                         <li className="liReservedAreaHeaderRed"><img src="/images/menuReservedArea.svg" id="menuReservedArea" /></li>
                     </ul>
 
                     <div id="mobileNavBarReservedAreaHeader">
                         <ul>
-                            <li><button className="accountsReservedAreaHeader">Accounts</button></li>
-                            <li><button className="ideasReservedAreaHeader">Ideas</button></li>
-                            <li><button className="notificationsReservedAreaHeader">Notifications</button></li>
-                            <li><button className="reportsReservedAreaHeader">Reports</button></li>
-                            <li><button className="logoutReservedAreaHeader">Logout</button></li>
+                            <li><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
+                            <li><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
+                            <li><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
+                            <li><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
+                            <li><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
                         </ul>
                     </div>
                 </header>
@@ -271,55 +228,19 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                     :
                     <>
                         {activeView === 'welcome' && (
-                            <div>
-                                <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
-                                <h1 style={{paddingBottom: "5%"}}>Welcome {adminSessionData.username}</h1>
-                            </div>
+                            <WelcomeView username={adminSessionData.username} />
                         )}
                         {activeView === 'accounts' && (
-                            <div>
-                                <section id="searchSectionInReservedArea">
-                                    <input type="search" placeholder="Search" id="searchReservedArea" />
-                                </section>
-
-                                <ul>
-
-                                </ul>
-                            </div>
+                            <AccountsView showAlert={showAlert} showConfirm={showConfirm} showPrompt={showPrompt} />
                         )}
                         {activeView === 'ideas' && (
-                            <div>
-                                <section id="searchSectionInReservedArea">
-                                    <input type="search" placeholder="Search" id="searchReservedArea" />
-                                </section>
-
-                                <ul>
-
-                                </ul>
-                            </div>
+                            <IdeasView showAlert={showAlert} showConfirm={showConfirm} />
                         )}
                         {activeView === 'notifications' && (
-                            <div>
-                                <section id="searchSectionInReservedArea">
-                                    <input type="search" placeholder="Search" id="searchReservedArea" />
-                                    <img src='/images/add.svg' alt='Create notification' id='createNotificationReservedArea' />
-                                </section>
-
-                                <ul>
-
-                                </ul>
-                            </div>
+                            <NotificationsView showAlert={showAlert} showConfirm={showConfirm} />
                         )}
                         {activeView === 'reports' && (
-                            <div>
-                                <section id="searchSectionInReservedArea">
-                                    <input type="search" placeholder="Search" id="searchReservedArea" />
-                                </section>
-
-                                <ul>
-
-                                </ul>
-                            </div>
+                            <ReportsView showAlert={showAlert} showConfirm={showConfirm} />
                         )}
                     </>
                 }

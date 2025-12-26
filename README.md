@@ -57,11 +57,13 @@ Users and contributors are strongly encouraged to review the full license in [LI
 **All previous versions of the FreeIdeas License are considered governed by the latest published version of the FreeIdeas License.**
 
 ## ֎ AI Disclaimer
-THE AI WAS USED IN THIS PROJECT ONLY IN THE DEBUG PHASE.
+AI WAS USED IN THIS PROJECT IN THE DEBUG PHASE AND AS AN ASSISTANT FOR THE MIGRATION PROCESS (PHP/JS TO NEXT.JS/REACT).
 
-NO TYPE OF AI WAS USED FOR THE DESIGN, DEVELOPMENT OR ACTUAL IMPLEMENTATION FOR THIS PROJECT.
+NO AI WAS USED IN THE DESIGN OF THE SITE OR ITS CONCEPTION.
 
-EVERITHING WAS DEVELOPED BY THE AUTHOR.
+AI USE WAS LIMITED TO ESSENTIAL CASES.
+
+EVERYTHING WAS DEVELOPED BY THE AUTHOR.
 
 ## Logos
 FreeIdeas has two official logos:

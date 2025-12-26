@@ -4,6 +4,10 @@
     include($_SERVER['DOCUMENT_ROOT'] . "/api/include/db_connection.php");
 
     session_start();
+    session_unset();
+    session_destroy();
+    
+    session_start();
 
     $username = $password1 = $password2 = $password3 = $password4 = $password5 = "";
 
