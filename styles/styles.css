@@ -885,7 +885,7 @@ footer ul li a {
     width: 238px;
     object-fit: contain;
     display: block;
-    background-color: #f0f0f0;
+    background-color: transparent;
     margin: 0 auto;
     padding: 0;
 }
@@ -1244,7 +1244,8 @@ footer ul li a {
 .comment {
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 30px
+    margin-left: 30px;
+    text-align: left;
 }
 
 .userInfo {
@@ -2150,6 +2151,7 @@ footer ul li a {
 
 #loginReservedAreaForm {
     width: 500px;
+    justify-self: center;
 }
 
 #saveAccountInfoAdmin, #cancelAccountInfoAdmin, #saveNotificationInfoAdmin, #cancelNotificaitonInfoAdmin, #saveIdeaInfoAdmin, #cancelIdeaInfoAdmin {

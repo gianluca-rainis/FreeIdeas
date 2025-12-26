@@ -3,6 +3,8 @@
 
     include($_SERVER['DOCUMENT_ROOT'] . "/api/include/db_connection.php");
 
+    $sql = $sqlEnd = "";
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $search = getInput($_POST["search"]);
         $type = getInput($_POST["type"]);

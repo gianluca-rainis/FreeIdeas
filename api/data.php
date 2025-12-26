@@ -52,7 +52,8 @@
         try {
             if (!isset($_SESSION['account']['id'])) {
                 return [];
-            } else {
+            }
+            else {
                 $accountId = $_SESSION['account']['id'];
             }
             

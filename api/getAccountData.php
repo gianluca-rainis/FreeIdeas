@@ -39,7 +39,12 @@
 
         $stmt->close();
 
-        if ($data['public'] == 0 && ((!isset($_SESSION['account']) || $_SESSION['account']['id'] != $data['id']) || !isset($_SESSION['administrator']))) {
+        if (!$data) {
+            echo json_encode(["success"=>false, "error"=>"account_not_found"]);
+            exit;
+        }
+
+        if ($data['public'] == 0 && (!isset($_SESSION['account']) || $_SESSION['account']['id'] != $data['id']) && !isset($_SESSION['administrator'])) {
             echo json_encode(["success"=>false, "error"=>"user_or_administrator_not_logged_in_and_account_searched_is_private"]);
             exit;
         }
