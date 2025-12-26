@@ -33,7 +33,7 @@ export default function Nav({ randomId=0 }) {
                     <ul className="navLinks">
                         <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
                         <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
-                        <li><Link href={`/ideaVoid/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
+                        <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
                         <li id="userImageLi">
