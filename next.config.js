@@ -2,6 +2,7 @@
 const nextConfig = {
     basePath: '', // No prefixs
     trailingSlash: false,
+    allowedHosts: ['freeideas.duckdns.org'],
     
     // Asset optimization
     images: {
