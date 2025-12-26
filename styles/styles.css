@@ -2151,6 +2151,7 @@ footer ul li a {
 
 #loginReservedAreaForm {
     width: 500px;
+    justify-self: center;
 }
 
 #saveAccountInfoAdmin, #cancelAccountInfoAdmin, #saveNotificationInfoAdmin, #cancelNotificaitonInfoAdmin, #saveIdeaInfoAdmin, #cancelIdeaInfoAdmin {

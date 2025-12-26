@@ -45,7 +45,7 @@ export default function Footer() {
                     <div>
                         <h4>More</h4>
                         <ul>
-                            <li><Link href="/admin">Reserved Area</Link></li>
+                            <li><Link href="/reservedArea">Reserved Area</Link></li>
                             <li><a href="https://github.com/gianluca-rainis/FreeIdeas.git">
                                 <img src="/images/github.svg" alt="GitHub Logo" id="githubLogo" />
                             </a></li>
