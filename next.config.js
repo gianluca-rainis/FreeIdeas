@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',
     basePath: '', // No prefixs
     trailingSlash: false,
     
@@ -10,7 +9,7 @@ const nextConfig = {
     },
     
     // Server config
-    /* async rewrites() {
+    async rewrites() {
         return [
             // Proxy for PHP API
             {
@@ -27,7 +26,7 @@ const nextConfig = {
                 destination: 'http://localhost:8000/styles/:path*', 
             }
         ];
-    }, */
+    },
 }
 
 module.exports = nextConfig
