@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
@@ -39,6 +39,7 @@ export async function getServerSideProps(context) {
 // Main
 export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
     const { randomIdeaId, showAlert } = useAppContext();
+    const [activeView, setActiveView] = useState('welcome');
 
     useEffect(() => {
         const form = document.getElementById("loginReservedAreaForm");
@@ -116,6 +117,77 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
         return () => menuReservedArea.removeEventListener("click", toggleMobileNavBar);
     }, []);
+
+    // View handlers
+    useEffect(() => {
+        const accountsBtns = document.querySelectorAll(".accountsReservedAreaHeader");
+        const ideasBtns = document.querySelectorAll(".ideasReservedAreaHeader");
+        const notificationsBtns = document.querySelectorAll(".notificationsReservedAreaHeader");
+        const reportsBtns = document.querySelectorAll(".reportsReservedAreaHeader");
+        const mobileNavBar = document.getElementById("mobileNavBarReservedAreaHeader");
+
+        function handleViewChange(view) {
+            setActiveView(view);
+
+            if (mobileNavBar) {
+                mobileNavBar.style.display = "none";
+            }
+        }
+
+        function accountsListener() {
+            handleViewChange('accounts');
+        }
+
+        function ideasListener() {
+            handleViewChange('ideas');
+        }
+
+        function notificationsListener() {
+            handleViewChange('notifications');
+        }
+
+        function reportsListener() {
+            handleViewChange('reports');
+        }
+
+        accountsBtns.forEach(btn => btn.addEventListener("click", accountsListener));
+        ideasBtns.forEach(btn => btn.addEventListener("click", ideasListener));
+        notificationsBtns.forEach(btn => btn.addEventListener("click", notificationsListener));
+        reportsBtns.forEach(btn => btn.addEventListener("click", reportsListener));
+
+        return () => {
+            accountsBtns.forEach(btn => btn.removeEventListener("click", accountsListener));
+            ideasBtns.forEach(btn => btn.removeEventListener("click", ideasListener));
+            notificationsBtns.forEach(btn => btn.removeEventListener("click", notificationsListener));
+            reportsBtns.forEach(btn => btn.removeEventListener("click", reportsListener));
+        };
+    }, []);
+
+    // Logout handler
+    useEffect(() => {
+        const logoutReservedAreaHeader = document.querySelectorAll(".logoutReservedAreaHeader");
+
+        if (logoutReservedAreaHeader.length === 0) {
+            return undefined;
+        }
+
+        async function logout() {
+            try {
+                await fetch("/api/logout.php", {
+                    credentials: "include"
+                });
+                
+                window.location.href = "/reservedArea";
+            } catch (error) {
+                console.error(error);
+                await showAlert("Error logging out");
+            }
+        }
+
+        logoutReservedAreaHeader.forEach(element => element.addEventListener("click", logout));
+
+        return () => logoutReservedAreaHeader.forEach(element => element.removeEventListener("click", logout));
+    }, [showAlert]);
 
     return (
         <>
@@ -197,10 +269,59 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                         </form>
                     </div>
                     :
-                    <div>
-                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" style={{margin: "0", width: "70%"}} />
-                        <h1 style={{paddingBottom: "5%"}}>Welcome {adminSessionData.username}</h1>
-                    </div>
+                    <>
+                        {activeView === 'welcome' && (
+                            <div>
+                                <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                                <h1 style={{paddingBottom: "5%"}}>Welcome {adminSessionData.username}</h1>
+                            </div>
+                        )}
+                        {activeView === 'accounts' && (
+                            <div>
+                                <section id="searchSectionInReservedArea">
+                                    <input type="search" placeholder="Search" id="searchReservedArea" />
+                                </section>
+
+                                <ul>
+
+                                </ul>
+                            </div>
+                        )}
+                        {activeView === 'ideas' && (
+                            <div>
+                                <section id="searchSectionInReservedArea">
+                                    <input type="search" placeholder="Search" id="searchReservedArea" />
+                                </section>
+
+                                <ul>
+
+                                </ul>
+                            </div>
+                        )}
+                        {activeView === 'notifications' && (
+                            <div>
+                                <section id="searchSectionInReservedArea">
+                                    <input type="search" placeholder="Search" id="searchReservedArea" />
+                                    <img src='/images/add.svg' alt='Create notification' id='createNotificationReservedArea' />
+                                </section>
+
+                                <ul>
+
+                                </ul>
+                            </div>
+                        )}
+                        {activeView === 'reports' && (
+                            <div>
+                                <section id="searchSectionInReservedArea">
+                                    <input type="search" placeholder="Search" id="searchReservedArea" />
+                                </section>
+
+                                <ul>
+
+                                </ul>
+                            </div>
+                        )}
+                    </>
                 }
             </main>
 
