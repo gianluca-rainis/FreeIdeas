@@ -6,7 +6,7 @@ import { useAppContext } from '../contexts/CommonContext'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
-    let loggedInAsAdmin = false;
+    let adminSessionData = false;
     let pageTitle = 'Reserved Area';
     const cookieHeader = context.req?.headers?.cookie ?? '';
 
@@ -22,7 +22,7 @@ export async function getServerSideProps(context) {
             throw new Error("Unable to get admin session data.");
         }
         else {
-            loggedInAsAdmin = true;
+            adminSessionData = data;
         }
     } catch (error) {
         console.error('Failed to load session data: '+error);
@@ -30,14 +30,14 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            loggedInAsAdmin: loggedInAsAdmin,
+            adminSessionData: adminSessionData,
             pageTitle: pageTitle
         }
     }
 }
 
 // Main
-export default function ReservedAreaPage({ loggedInAsAdmin, pageTitle }) {
+export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
     const { randomIdeaId, showAlert } = useAppContext();
 
     useEffect(() => {
@@ -83,6 +83,40 @@ export default function ReservedAreaPage({ loggedInAsAdmin, pageTitle }) {
         return () => form.removeEventListener("submit", handleSubmit);
     }, [showAlert]);
 
+    // Toggle size
+    useEffect(() => {
+        const mobileNavBar = document.getElementById("mobileNavBarReservedAreaHeader");
+
+        function toggleWindowSize() {
+            if (window.innerWidth > 760 && mobileNavBar) {
+                mobileNavBar.style.display = "none";
+            }
+        }
+
+        toggleWindowSize();
+        window.addEventListener("resize", toggleWindowSize);
+
+        return () => window.removeEventListener("resize", toggleWindowSize);
+    }, []);
+
+    // Menu for mobile
+    useEffect(() => {
+        const menuReservedArea = document.getElementById("menuReservedArea");
+        const mobileNavBar = document.getElementById("mobileNavBarReservedAreaHeader");
+
+        if (!menuReservedArea || !mobileNavBar) {
+            return undefined;
+        }
+
+        function toggleMobileNavBar() {
+            mobileNavBar.style.display = mobileNavBar.style.display == "block" ? "none" : "block";
+        }
+
+        menuReservedArea.addEventListener("click", toggleMobileNavBar);
+
+        return () => menuReservedArea.removeEventListener("click", toggleMobileNavBar);
+    }, []);
+
     return (
         <>
             <Head pageTitle={pageTitle} />
@@ -90,7 +124,7 @@ export default function ReservedAreaPage({ loggedInAsAdmin, pageTitle }) {
             <Nav randomId={randomIdeaId} />
 
             {
-                loggedInAsAdmin?
+                adminSessionData?
                 <header id="reservedAreaHeader">
                     <a href="/reservedArea">
                         <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
@@ -120,7 +154,7 @@ export default function ReservedAreaPage({ loggedInAsAdmin, pageTitle }) {
 
             <main id="reservedAreaMain">
                 {
-                    !loggedInAsAdmin?
+                    !adminSessionData?
                     <div>
                         <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
 
@@ -162,7 +196,11 @@ export default function ReservedAreaPage({ loggedInAsAdmin, pageTitle }) {
                             </ul>
                         </form>
                     </div>
-                    :null
+                    :
+                    <div>
+                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" style={{margin: "0", width: "70%"}} />
+                        <h1 style={{paddingBottom: "5%"}}>Welcome {adminSessionData.username}</h1>
+                    </div>
                 }
             </main>
 
