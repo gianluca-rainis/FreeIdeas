@@ -7,7 +7,6 @@ import { useAppContext } from '../../contexts/CommonContext'
 import { useThemeImages } from '../../hooks/useThemeImages'
 import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -153,7 +152,7 @@ export default function AccountPage({ accountData, pageTitle }) {
 
     function renderIdeas(items) {
         const router = useRouter();
-        
+
         if (!items || items.length === 0) {
             return (
                 <li className="ideaBox">
