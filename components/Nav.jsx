@@ -148,7 +148,7 @@ export default function Nav({ randomId=0 }) {
                                     ) : (
                                         <div>
                                             <h2>Sign In</h2>
-                                            <p>Don't have an account? <Link className="signUp" href="/register" prefetch>Register!</Link></p>
+                                            <p>Don't have an account? <Link className="signUp" href="/createAccount" prefetch>Register!</Link></p>
                                             <form onSubmit={handleLoginSubmit} id="loginAccountFormMobile">
                                                 <input 
                                                     type="email" 
