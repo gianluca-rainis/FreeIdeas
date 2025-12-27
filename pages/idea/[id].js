@@ -6,12 +6,18 @@ import { useAppContext } from '../../contexts/CommonContext'
 import { useThemeImages } from '../../hooks/useThemeImages'
 import { useModals } from '../../hooks/useModals'
 import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
     const { id } = context.query;
     let ideaData = null;
     let pageTitle = 'Idea';
+    
+    // Cache SSR response briefly to improve perceived speed
+    if (context.res) {
+        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    }
     
     try {
         const formData = new FormData();
@@ -20,11 +26,11 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetch('http://localhost:8000/api/data.php', {
+        const response = await fetchWithTimeout('/api/data.php', {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
-        });
+        }, 800);
 
         const data = await response.json();
         

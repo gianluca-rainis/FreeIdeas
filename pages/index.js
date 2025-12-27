@@ -3,13 +3,19 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
+import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 
 // Server-side rendering
-export async function getServerSideProps() {
+export async function getServerSideProps({ res }) {
     let ideas = [];
     
+    // Cache SSR response briefly to improve perceived speed
+    if (res) {
+        res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    }
+
     try {
-        const response = await fetch('http://localhost:8000/api/getLastIdeas.php');
+        const response = await fetchWithTimeout('/api/getLastIdeas.php', {}, 800);
         const data = await response.json();
         
         if (data.success) {

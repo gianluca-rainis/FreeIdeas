@@ -8,6 +8,7 @@ import AccountsView from '../components/reserved/AccountsView'
 import IdeasView from '../components/reserved/IdeasView'
 import NotificationsView from '../components/reserved/NotificationsView'
 import ReportsView from '../components/reserved/ReportsView'
+import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -15,11 +16,16 @@ export async function getServerSideProps(context) {
     let pageTitle = 'Reserved Area';
     const cookieHeader = context.req?.headers?.cookie ?? '';
 
+    // Cache SSR response briefly to improve perceived speed
+    if (context.res) {
+        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    }
+
     try {
-        const res = await fetch(`http://localhost:8000/api/getSessionData.php?data=administrator`, {
+        const res = await fetchWithTimeout(`/api/getSessionData.php?data=administrator`, {
             credentials: "include",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined
-        });
+        }, 800);
 
         const data = await res.json();
 

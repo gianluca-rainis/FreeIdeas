@@ -5,6 +5,7 @@ import Footer from '../../components/Footer'
 import Head from '../../components/Head'
 import { useAppContext } from '../../contexts/CommonContext'
 import { useThemeImages } from '../../hooks/useThemeImages'
+import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -13,12 +14,17 @@ export async function getServerSideProps(context) {
     let pageTitle = 'Account';
     const cookieHeader = context.req?.headers?.cookie ?? '';
 
+    // Cache SSR response briefly to improve perceived speed
+    if (context.res) {
+        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    }
+
     if (!id) {
         try {
-            const res = await fetch(`http://localhost:8000/api/getSessionData.php?data=account`, {
+            const res = await fetchWithTimeout(`/api/getSessionData.php?data=account`, {
                 credentials: "include",
                 headers: cookieHeader ? { cookie: cookieHeader } : undefined
-            });
+            }, 800);
 
             const data = await res.json();
 
@@ -37,11 +43,11 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetch('http://localhost:8000/api/getAccountData.php', {
+        const response = await fetchWithTimeout('/api/getAccountData.php', {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
-        });
+        }, 800);
 
         const data = await response.json();
         
