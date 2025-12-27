@@ -20,17 +20,20 @@ export async function getServerSideProps(context) {
     }
     
     try {
-        const formData = new FormData();
-        formData.append("id", id);
+        const body = new URLSearchParams();
+        body.append("id", id);
 
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('/api/data.php', {
+        const response = await fetchWithTimeout('http://localhost:8000/api/data.php', {
             method: "POST",
-            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
-            body: formData
-        }, 800);
+            headers: {
+                ...(cookieHeader ? { cookie: cookieHeader } : {}),
+                'Accept': 'application/json'
+            },
+            body
+        }, 2000);
 
         const data = await response.json();
         

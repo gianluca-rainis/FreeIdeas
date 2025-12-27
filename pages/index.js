@@ -5,6 +5,7 @@ import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // Server-side rendering
 export async function getServerSideProps({ res }) {
@@ -16,21 +17,24 @@ export async function getServerSideProps({ res }) {
     }
 
     try {
-        const response = await fetchWithTimeout('/api/getLastIdeas.php', {}, 800);
+        const response = await fetchWithTimeout('http://localhost:8000/api/getLastIdeas.php', {
+            headers: { 'Accept': 'application/json' }
+        }, 2000);
+
         const data = await response.json();
         
-        if (data.success) {
-            // Convert PHP data format to our format
-            ideas = data.data.map(phpIdea => ({
-                id: phpIdea.id,
-                title: phpIdea.title,
-                author: phpIdea.username,
-                image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
-            }));
+        const sourceList = Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : []);
+
+        if (!sourceList || sourceList.length === 0) {
+            throw new Error("Empty ideas list");
         }
-        else {
-            throw new Error("PHP API error: "+data.error);
-        }
+
+        ideas = sourceList.map(phpIdea => ({
+            id: phpIdea.id,
+            title: phpIdea.title,
+            author: phpIdea.username,
+            image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
+        }));
     } catch (error) {
         console.error('Failed to fetch ideas:', error);
         
@@ -43,6 +47,19 @@ export async function getServerSideProps({ res }) {
         }));
     }
 
+    // Ensure at least 22 items for all UI slices
+    if (ideas.length < 22) {
+        const fill = [];
+
+        for (let i = ideas.length; i < 22; i++) {
+            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: `./images/FreeIdeas.svg` };
+            
+            fill.push({ ...base, id: base.id ?? i + 1 });
+        }
+
+        ideas = ideas.concat(fill);
+    }
+
     return {
         props: {
             ideas: ideas,
@@ -53,9 +70,15 @@ export async function getServerSideProps({ res }) {
 
 // Internal functions
 function IdeaCard({ idea }) {
+    const router = useRouter();
+    
     return (
         <li className="ideaBox">
-            <Link href={`/idea/${idea.id}`} className="ideaLink" prefetch>
+            <Link 
+                href={`/idea/${idea.id}`} 
+                className="ideaLink" 
+                onMouseEnter={() => router.prefetch(`/idea/${idea.id}`)}
+            >
                 <img src={idea.image || "/images/FreeIdeas.svg"} alt="Idea Image" className="ideaImage" />
                 <p className="ideaTitle">{idea.title}</p>
                 <p className="ideaAuthor">{idea.author}</p>
@@ -222,7 +245,7 @@ function autoScrollIdeas() {
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
-    const { themeIsLight, user, randomIdeaId, bannerMessage, showBanner } = useAppContext();
+    const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
     
     autoScrollIdeas();
 

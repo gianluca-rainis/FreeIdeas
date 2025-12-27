@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { getApiUrl } from '../utils/apiConfig';
-import { handleError, getUserFriendlyErrorMessage, ValidationError } from '../utils/errorHandling';
+import { handleError } from '../utils/errorHandling';
 import { useThemeImages } from '../hooks/useThemeImages';
 
 const AppContext = createContext();
@@ -62,11 +62,7 @@ export function AppProvider({ children }) {
     }, []);
 
     // Random idea management
-    useEffect(() => {
-        loadRandomIdea();
-    }, []);
-
-    async function loadRandomIdea() {
+    const loadRandomIdea = useCallback(async () => {
         try {
             const response = await fetch(getApiUrl('getRandomIdeaId'), {
                 credentials: "include"
@@ -74,12 +70,28 @@ export function AppProvider({ children }) {
 
             const data = await response.json();
 
-            setRandomIdeaId(data?data.id:null);
+            setRandomIdeaId(data?data.id:0);
         } catch (error) {
             handleError(error, 'loadRandomIdea');
-            setRandomIdeaId(null);
+            setRandomIdeaId(0);
         }
-    }
+    }, []);
+
+    // First random idea load
+    useEffect(() => {
+        loadRandomIdea();
+    }, [loadRandomIdea]);
+
+    // Set new random idea when navigated
+    useEffect(() => {
+        const handler = () => loadRandomIdea();
+
+        router.events.on('routeChangeComplete', handler);
+
+        return () => {
+            router.events.off('routeChangeComplete', handler);
+        };
+    }, [router, loadRandomIdea]);
 
     // User management
     useEffect(() => {

@@ -125,9 +125,9 @@ export default function Nav({ randomId=0 }) {
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
-                            <li><Link href="/searchAnIdea" className="navText" prefetch>Search an Idea</Link></li>
-                            <li><Link href="/publishAnIdea" className="navText" prefetch>Publish an Idea</Link></li>
-                            <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaAMobile" prefetch>Random Idea</Link></li>
+                               <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
+                               <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
+                               <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
                         </ul>
 
                         <div id="loginAreaMobile">
