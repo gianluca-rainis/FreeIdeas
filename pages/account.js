@@ -6,6 +6,7 @@ import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import { useThemeImages } from '../hooks/useThemeImages'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
+import Link from 'next/link'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -163,11 +164,11 @@ export default function AccountPage({ accountData, pageTitle }) {
 
         return items.map((item) => (
             <li className="ideaBox" key={`${selectedTab}-${item.id}`}>
-                <a href={`/idea/${item.id}`} className="ideaLink">
+                <Link href={`/idea/${item.id}`} className="ideaLink" prefetch>
                     <img src={item.image} alt="Idea Image" className="ideaImageSrc" />
                     <p className="ideaTitleSrc">{item.title}</p>
                     <p className="ideaAuthorSrc">{item.username}</p>
-                </a>
+                </Link>
             </li>
         ));
     }

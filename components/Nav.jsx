@@ -28,12 +28,12 @@ export default function Nav({ randomId=0 }) {
             <nav>
                 <div id="pcNavBarGhost">
                     <ul className="navLogo">
-                        <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
+                        <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
-                        <li><Link href="/searchAnIdea" className="navText">Search an Idea</Link></li>
-                        <li><Link href="/publishAnIdea" className="navText">Publish an Idea</Link></li>
-                        <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaA">Random Idea</Link></li>
+                        <li><Link href="/searchAnIdea" className="navText" prefetch>Search an Idea</Link></li>
+                        <li><Link href="/publishAnIdea" className="navText" prefetch>Publish an Idea</Link></li>
+                        <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaA" prefetch>Random Idea</Link></li>
                         <li id="themeImageLi"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
                         <li id="notificationImageLi"><img src="/images/notifications.svg" alt="Notifications" className="notificationsImg" onClick={toggleNotifications} /></li>
                         <li id="userImageLi">
@@ -61,7 +61,7 @@ export default function Nav({ randomId=0 }) {
                                 ) : (
                                     <div>
                                         <h2>Sign In</h2>
-                                        <p>Don't have an account? <Link className="signUp" href="/createAccount">Register!</Link></p>
+                                        <p>Don't have an account? <Link className="signUp" href="/createAccount" prefetch>Register!</Link></p>
                                         <form onSubmit={handleLoginSubmit} id="loginAccountForm">
                                             <input 
                                                 type="email" 
@@ -116,7 +116,7 @@ export default function Nav({ randomId=0 }) {
 
                 <div id="mobileNavBarGhost">
                     <ul className="navLogo">
-                        <li><Link href="/"><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
+                        <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
                     </ul>
                     <ul className="navLinks">
                         <li id="themeImageLiMobile"><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className="toggle-light-dark-theme" onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
@@ -125,9 +125,9 @@ export default function Nav({ randomId=0 }) {
                     </ul>
                     <div id="mobileMenuHidden">
                         <ul id="mobileNavLinks">
-                            <li><Link href="/searchAnIdea.html" className="navText">Search an Idea</Link></li>
-                            <li><Link href="/publishAnIdea.php" className="navText">Publish an Idea</Link></li>
-                            <li><Link href={`/ideaVoid.php?idea=${randomId}`} className="navText" id="randomIdeaAMobile">Random Idea</Link></li>
+                            <li><Link href="/searchAnIdea" className="navText" prefetch>Search an Idea</Link></li>
+                            <li><Link href="/publishAnIdea" className="navText" prefetch>Publish an Idea</Link></li>
+                            <li><Link href={`/idea/${randomId}`} className="navText" id="randomIdeaAMobile" prefetch>Random Idea</Link></li>
                         </ul>
 
                         <div id="loginAreaMobile">
@@ -148,7 +148,7 @@ export default function Nav({ randomId=0 }) {
                                     ) : (
                                         <div>
                                             <h2>Sign In</h2>
-                                            <p>Don't have an account? <Link className="signUp" href="/register">Register!</Link></p>
+                                            <p>Don't have an account? <Link className="signUp" href="/register" prefetch>Register!</Link></p>
                                             <form onSubmit={handleLoginSubmit} id="loginAccountFormMobile">
                                                 <input 
                                                     type="email" 

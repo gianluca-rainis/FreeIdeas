@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
+import Link from 'next/link'
 
 // Server-side rendering
 export async function getServerSideProps({ res }) {
@@ -54,11 +55,11 @@ export async function getServerSideProps({ res }) {
 function IdeaCard({ idea }) {
     return (
         <li className="ideaBox">
-            <a href={`/idea/${idea.id}`} className="ideaLink">
+            <Link href={`/idea/${idea.id}`} className="ideaLink" prefetch>
                 <img src={idea.image || "/images/FreeIdeas.svg"} alt="Idea Image" className="ideaImage" />
                 <p className="ideaTitle">{idea.title}</p>
                 <p className="ideaAuthor">{idea.author}</p>
-            </a>
+            </Link>
         </li>
     )
 }
