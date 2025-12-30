@@ -11,7 +11,7 @@ export default function Footer() {
                     </Link>
 
                     <ul className="footerText">
-                        <li>Copyright &copy; 2025 Gianluca Rainis</li>
+                        <li>Copyright &copy; 2025-{new Date().getFullYear()} Gianluca Rainis</li>
                         <li>freeideas.site@gmail.com</li>
                     </ul>
                 </section>
