@@ -84,6 +84,17 @@ You can find the two official logos in the `/images/logo/` folder.
 
 For full details about the use of logos and the official references policy, see the **FreeIdeas License**.
 
+## Dependencies
+```bash
+npm install mysql2
+```
+```bash
+npm install bcrypt
+```
+```bash
+npm install iron-session
+```
+
 ## 🛢 DataBase structure
 ### Accounts
 ```SQL
