@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
         // Check if the account exists
         const accounts = await query(
-            'SELECT * FROM accounts WHERE email=?',
+            'SELECT * FROM accounts WHERE email=?;',
             [sanitizedEmail]
         );
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
 
         // Load notifications
         const notifications = await query(
-            'SELECT * FROM notifications WHERE accountid=?',
+            'SELECT * FROM notifications WHERE accountid=?;',
             [account.id]
         );
 
