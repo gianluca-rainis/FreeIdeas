@@ -1,0 +1,104 @@
+import { getIronSession } from 'iron-session';
+import { query } from '../../lib/db_connection';
+import { sessionOptions } from '../../lib/session';
+
+function getInput(data) {
+    return String(data).trim();
+}
+
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ success: false, error: 'Method not allowed' });
+    }
+
+    try {
+        const { id } = req.body;
+        const session = await getIronSession(req, res, sessionOptions);
+        let data = {};
+
+        if (!id) {
+            return res.status(400).json({ success: false, error: 'Id required' });
+        }
+
+        const sanitizedId = getInput(id);
+
+        const account = await query(
+            'SELECT * FROM accounts WHERE id=?;',
+            [sanitizedId]
+        );
+
+        if (account.length === 0) {
+            return res.status(401).json({ success: false, error: 'not_found_account_in_database' });
+        }
+        
+        data['id'] = account[0]['id'];
+        data['email'] = account[0]['email'];
+        data['name'] = account[0]['name'];
+        data['surname'] = account[0]['surname'];
+        data['userimage'] = account[0]['userimage'];
+        data['description'] = account[0]['description'];
+        data['username'] = account[0]['username'];
+        data['public'] = account[0]['public'];
+
+        if (data['public'] == 0 && (!session.account || session.account.id != data.id) && !session.administrator) {
+            return res.status(401).json({ success: false, error: 'user_or_administrator_not_logged_in_and_account_searched_is_private' });
+        }
+
+        // Get saved ideas
+        const savedIdeas = await query(
+            'SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM accountideadata JOIN ideas ON ideas.id=accountideadata.ideaid JOIN accounts ON accounts.id=ideas.authorid WHERE accountideadata.accountid=? AND accountideadata.saved=1;',
+            [sanitizedId]
+        );
+
+        data['saved'] = [];
+        let indexForSaved = 0;
+
+        savedIdeas.forEach(ideaSaved => {
+            data['saved'][indexForSaved] = {};
+            data['saved'][indexForSaved]['id'] = ideaSaved['id'];
+            data['saved'][indexForSaved]['title'] = ideaSaved['title'];
+            data['saved'][indexForSaved]['image'] = ideaSaved['ideaimage'];
+            data['saved'][indexForSaved]['username'] = ideaSaved['username'];
+
+            indexForSaved++;
+        });
+
+        // Get published ideas
+        const publishedIdeas = await query(
+            'SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.authorid=? ORDER BY ideas.data DESC;',
+            [sanitizedId]
+        );
+
+        data['published'] = [];
+        indexForSaved = 0;
+
+        publishedIdeas.forEach(ideaPublished => {
+            data['published'][indexForSaved] = {};
+            data['published'][indexForSaved]['id'] = ideaPublished['id'];
+            data['published'][indexForSaved]['title'] = ideaPublished['title'];
+            data['published'][indexForSaved]['image'] = ideaPublished['ideaimage'];
+            data['published'][indexForSaved]['username'] = ideaPublished['username'];
+
+            indexForSaved++;
+        });
+
+        // If logged in check follow
+        if (session.account) {
+            const followData = await query(
+                'SELECT * FROM follow WHERE follow.followaccountid=? AND follow.followedaccountid=?;',
+                [session.account.id, sanitizedId]
+            );
+
+            data['followed'] = false;
+
+            if (followData.length != 0) {
+                data['followed'] = true;
+            }
+        }
+
+        return res.status(200).json({ success: true, data: data });
+    } catch (error) {
+        console.error('Error: ', error);
+        return res.status(500).json({ success: false, error: String(error) });
+    }
+}
