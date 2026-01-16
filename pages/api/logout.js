@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({});
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
