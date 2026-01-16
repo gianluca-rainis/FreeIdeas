@@ -67,9 +67,8 @@ export default async function handler(req, res) {
         await session.save();
 
         return res.status(200).json({ success: true, data: accountData });
-
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Error:', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
