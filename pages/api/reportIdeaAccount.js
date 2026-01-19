@@ -28,10 +28,14 @@ export default async function handler(req, res) {
         const sanitizedFeedback = getInput(feedback);
 
         // Create the new report
-        await query(
+        const newReport = await query(
             'INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);',
             [session.account.id, sanitizedIdeaId, sanitizedAccountId, sanitizedFeedback]
         );
+
+        if (!newReport) {
+            return res.status(401).json({ success: false, error: 'Error creating the new report' });
+        }
 
         // Control if the author have done too much reports on the same thing
         const getReports = await query(
@@ -41,10 +45,14 @@ export default async function handler(req, res) {
 
         // If the same author have report the same account/idea more than 5 times, report the author
         if (getReports && getReports.length > 5) {
-            await query(
+            const authorReport = await query(
                 'INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);',
                 [1, null, session.account.id, "The user have reported too much times the same account/idea. This is an auto-generated report."]
             );
+
+            if (!authorReport) {
+                return res.status(401).json({ success: false, error: 'Error creating author report' });
+            }
         }
 
         return res.status(200).json({ success: true });

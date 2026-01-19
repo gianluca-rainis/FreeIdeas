@@ -28,11 +28,11 @@ export default async function handler(req, res) {
         );
 
         if (notification.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_notification_in_database' });
+            return res.status(401).json({ success: false, error: 'Notification not found in the database' });
         }
 
         if (!session.account || session.account.id != notification[0].accoutId) {
-            return res.status(401).json({ success: false, error: 'user_not_logged_in' });
+            return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         // Delete
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         );
 
         if (!deleteNotification) {
-            return res.status(401).json({ success: false, error: 'error_deleting_notification' });
+            return res.status(401).json({ success: false, error: 'Error deleting notification' });
         }
 
         const accountNotifications = await query(

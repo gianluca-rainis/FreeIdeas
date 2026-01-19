@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         );
 
         if (ideas.length === 0) {
-            return res.status(401).json({ success: false, error: 'cannot_get_last_ideas' });
+            return res.status(401).json({ success: false, error: 'Cannot get last ideas' });
         }
 
         return res.status(200).json({ success: true, data: ideas });

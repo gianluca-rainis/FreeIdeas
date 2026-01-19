@@ -33,14 +33,18 @@ export default async function handler(req, res) {
         );
 
         if (accountCheck.length > 0) {
-            return res.status(401).json({ success: false, error: 'found_account_in_database' });
+            return res.status(401).json({ success: false, error: 'Already exist an account with the same email' });
         }
 
         // Create the account
-        await query(
+        const newAccount = await query(
             'INSERT INTO accounts (email, password, name, surname, username, public) VALUES (?, ?, ?, ?, ?, ?);',
             [sanitizedEmail, bcrypt.hash(password), sanitizedFirstName, sanitizedLastName, sanitizedUsername, 0]
         );
+
+        if (!newAccount) {
+            return res.status(401).json({ success: false, error: 'Error creating the account' });
+        }
 
         // Check if the account exists
         const accounts = await query(
@@ -49,7 +53,7 @@ export default async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_account_in_database' });
+            return res.status(401).json({ success: false, error: 'Account not found in database' });
         }
 
         const account = accounts[0];
@@ -61,7 +65,7 @@ export default async function handler(req, res) {
         passwordMatch = await bcrypt.compare(password, account.password);
 
         if (!passwordMatch) {
-            return res.status(401).json({ success: false, error: 'password_does_not_match' });
+            return res.status(401).json({ success: false, error: 'Wrong password' });
         }
 
         // Load default notification
@@ -69,10 +73,14 @@ export default async function handler(req, res) {
         const description = "Welcome to FreeIdeas, "+account.username+"! We're thrilled to welcome you to our community! We hope you enjoy your stay. If you have any questions or concerns, please visit the Contact Us section of this website!";
         const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
 
-        await query(
+        const defaultNotification = await query(
             'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
             [account.id, title, description, today, 0]
         );
+
+        if (!defaultNotification) {
+            return res.status(401).json({ success: false, error: 'Error creating the default notification' });
+        }
 
         // Load notifications
         const notifications = await query(

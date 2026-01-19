@@ -28,11 +28,11 @@ export default async function handler(req, res) {
         );
 
         if (notification.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_notification_in_database' });
+            return res.status(401).json({ success: false, error: 'Notification not found in database' });
         }
 
         if (!session.account || session.account.id != notification[0].accoutId) {
-            return res.status(401).json({ success: false, error: 'user_not_logged_in' });
+            return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         // Update
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         );
 
         if (!updateNotification) {
-            return res.status(401).json({ success: false, error: 'error_setting_notification_as_read' });
+            return res.status(401).json({ success: false, error: 'Error setting the notification as read' });
         }
 
         const accountNotifications = await query(

@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         );
 
         if (account.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_account_in_database' });
+            return res.status(401).json({ success: false, error: 'Account not found in database' });
         }
         
         data['id'] = account[0]['id'];
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         data['public'] = account[0]['public'];
 
         if (data['public'] == 0 && (!session.account || session.account.id != data.id) && !session.administrator) {
-            return res.status(401).json({ success: false, error: 'user_or_administrator_not_logged_in_and_account_searched_is_private' });
+            return res.status(401).json({ success: false, error: 'User or administrator not logged in and the account is private' });
         }
 
         // Get saved ideas

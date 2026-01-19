@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_account_in_database' });
+            return res.status(401).json({ success: false, error: 'Account not found in database' });
         }
 
         const bcrypt = require('bcrypt');
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
         });
 
         if (!foundAccount) {
-            return res.status(401).json({ success: false, error: 'account_not_found' });
+            return res.status(401).json({ success: false, error: 'Account not found' });
         }
         
         await session.save();

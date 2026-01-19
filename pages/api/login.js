@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(401).json({ success: false, error: 'not_found_account_in_database' });
+            return res.status(401).json({ success: false, error: 'Account not found' });
         }
 
         const account = accounts[0];
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         passwordMatch = await bcrypt.compare(password, account.password);
 
         if (!passwordMatch) {
-            return res.status(401).json({ success: false, error: 'password_does_not_match' });
+            return res.status(401).json({ success: false, error: 'Wrong password' });
         }
 
         // Load notifications
