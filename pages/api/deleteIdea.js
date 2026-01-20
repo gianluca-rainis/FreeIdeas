@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         );
 
         if (idea.length === 0) {
-            return res.status(401).json({ success: false, error: 'Idea not found in the database' });
+            return res.status(404).json({ success: false, error: 'Idea not found in the database' });
         }
 
         if ((!session.account || session.account.id != ides[0].authorid) && !session.administrator) {
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 
         // Delete some data
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM authorupdates WHERE ideaid=?;",
                 [sanitizedId]
             );
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
         }
 
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM reports WHERE ideaid=?;",
                 [sanitizedId]
             );
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
         }
 
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM additionalinfo WHERE ideaid=?;",
                 [sanitizedId]
             );
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
         }
 
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM idealabels WHERE ideaid=?;",
                 [sanitizedId]
             );
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
         }
 
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM accountideadata WHERE ideaid=?;",
                 [sanitizedId]
             );
@@ -93,7 +93,7 @@ export default async function handler(req, res) {
 
         // Delete comments
         {
-            let result = await query(
+            const result = await query(
                 "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;",
                 [sanitizedId]
             );
@@ -110,7 +110,7 @@ export default async function handler(req, res) {
 
         // Prepare the notifications for the followers
         {
-            let result = await query(
+            const result = await query(
                 "SELECT title, authorid FROM ideas WHERE id=?;",
                 [sanitizedId]
             );
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
 
         // Delete followers
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM follow WHERE followedideaid=?;",
                 [sanitizedId]
             );
@@ -164,7 +164,7 @@ export default async function handler(req, res) {
 
         // Delete the idea
         {
-            let result = await query(
+            const result = await query(
                 "DELETE FROM ideas WHERE id=?;",
                 [sanitizedId]
             );
@@ -174,7 +174,7 @@ export default async function handler(req, res) {
             }
         }
 
-        // Create the default notification
+        // Create the default notification (to the author)
         {
             let titleNot = "";
             let description = "";
@@ -188,7 +188,7 @@ export default async function handler(req, res) {
                 description = "You have just deleted an old idea: " + title + "! We're sorry you've decided to remove one of your amazing ideas. If you encountered any issues, feel free to contact us.";
             }
 
-            let result = await query(
+            const result = await query(
                 "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
                 [session.account.id, titleNot, description, today, 0]
             );
@@ -198,8 +198,8 @@ export default async function handler(req, res) {
             }
         }
 
-        if (session.account) {
-            let result = await query(
+        if (session.account && session.account.id == authorId) {
+            const result = await query(
                 "SELECT * FROM notifications WHERE accountid=?;",
                 [session.account.id]
             );
@@ -218,8 +218,8 @@ export default async function handler(req, res) {
 
 async function deleteAllIdsSubComments(id) {
     try {
-        let result = await query(
-            "SELECT * FROM comments WHERE superCommentid=?;",
+        const result = await query(
+            "SELECT id FROM comments WHERE superCommentid=?;",
             [id]
         );
 
@@ -230,7 +230,7 @@ async function deleteAllIdsSubComments(id) {
 
         // This is the deeper (id comment)
         // Delete the subcomment
-        result = await query(
+        await query(
             "DELETE FROM comments WHERE id=?;",
             [id]
         );
