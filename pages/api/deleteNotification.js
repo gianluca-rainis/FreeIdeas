@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
         // Check if the notification exists
         const notification = await query(
-            'SELECT accountid FROM notifications WHERE id=?',
+            'SELECT accountid FROM notifications WHERE id=?;',
             [sanitizedId]
         );
 
