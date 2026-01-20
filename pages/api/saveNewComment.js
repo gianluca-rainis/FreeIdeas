@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         const session = await getIronSession(req, res, sessionOptions);
 
         if (!date || !description || !ideaId || !superCommentId) {
-            return res.status(400).json({ success: false, error: 'Not filled al the required fields' });
+            return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
         if (!session || (!session.account && !session.administrator)) {

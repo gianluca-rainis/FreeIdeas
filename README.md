@@ -94,6 +94,9 @@ npm install bcrypt
 ```bash
 npm install iron-session
 ```
+```bash
+npm install nodemailer
+```
 
 ## 🛢 DataBase structure
 ### Accounts
