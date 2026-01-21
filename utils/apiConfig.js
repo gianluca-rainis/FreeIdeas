@@ -5,20 +5,20 @@ const API_CONFIG = {
     
     // Endpoints API
     endpoints: {
-        getSessionData: '/api/getSessionData.php',
-        getRandomIdeaId: '/api/getRandomIdeaId.php',
-        login: '/api/login.php',
-        logout: '/api/logout.php',
-        setNotificationAsRead: '/api/setNotificationAsRead.php',
-        deleteNotification: '/api/deleteNotification.php',
-        changePassword: '/api/changePassword.php'
+        getSessionData: '/api/getSessionData',
+        getRandomIdeaId: '/api/getRandomIdeaId',
+        login: '/api/login',
+        logout: '/api/logout',
+        setNotificationAsRead: '/api/setNotificationAsRead',
+        deleteNotification: '/api/deleteNotification',
+        changePassword: '/api/changePassword'
     },
     
     // Default options for the fetch
     defaultOptions: {
         credentials: 'include',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
         }
     }
 };
