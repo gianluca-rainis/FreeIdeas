@@ -170,7 +170,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('id', accountId);
 
-            const res = await fetch('/api/deleteAccountAdmin.php', {
+            const res = await fetch('/api/deleteAccount.php', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
