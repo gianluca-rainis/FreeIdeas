@@ -25,7 +25,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch('/api/getNotificationsDataForReservedArea.php', {
+                const res = await fetch('/api/getNotificationsDataForReservedArea', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',
@@ -92,7 +92,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
             formData.append('description', newDescription);
             formData.append('status', newStatus ? 1 : 0);
 
-            const res = await fetch(`/api/createNewNotificationAdmin.php`, {
+            const res = await fetch(`/api/createNewNotificationAdmin`, {
                 credentials: 'include',
                 method: 'POST',
                 body: formData
@@ -121,7 +121,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append("id", id);
 
-                const res = await fetch(`/api/deleteNotificationAdmin.php`, {
+                const res = await fetch(`/api/deleteNotificationAdmin`, {
                     credentials: "include",
                     method: "POST",
                     body: formData

@@ -22,7 +22,7 @@ export async function getServerSideProps(context) {
 
     if (!id) {
         try {
-            const res = await fetchWithTimeout(`/api/getSessionData.php?data=account`, {
+            const res = await fetchWithTimeout(`/api/getSessionData?data=account`, {
                 credentials: "include",
                 headers: cookieHeader ? { cookie: cookieHeader } : undefined
             }, 800);
@@ -44,7 +44,7 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('/api/getAccountData.php', {
+        const response = await fetchWithTimeout('/api/getAccountData', {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
@@ -98,7 +98,7 @@ export default function AccountPage({ accountData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch(`/api/getSessionData.php?data=account`, {
+                const res = await fetch(`/api/getSessionData?data=account`, {
                     credentials: "include"
                 });
 
@@ -191,7 +191,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const formData = new FormData();
             formData.append('followedaccountid', accountData.id);
 
-            const res = await fetch(`/api/followAccountIdea.php`, {
+            const res = await fetch(`/api/followAccountIdea`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -241,7 +241,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             formData.append('feedback', feedback);
             formData.append('accountid', accountData.id);
 
-            const res = await fetch(`/api/reportIdeaAccount.php`, {
+            const res = await fetch(`/api/reportIdeaAccount`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -295,7 +295,7 @@ export default function AccountPage({ accountData, pageTitle }) {
                 data.append('image', formValues.imageFile);
             }
 
-            const res = await fetch(`/api/modifyAccountInfo.php`, {
+            const res = await fetch(`/api/modifyAccountInfo`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -330,7 +330,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('description', formValues.description || '');
             data.append('public', nextPublic);
 
-            const res = await fetch(`/api/modifyAccountInfo.php`, {
+            const res = await fetch(`/api/modifyAccountInfo`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -365,7 +365,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('email', sessionData.email);
 
-            const res = await fetch(`/api/changePassword.php`, {
+            const res = await fetch(`/api/changePassword`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -403,7 +403,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('id', sessionData.id);
 
-            const res = await fetch(`/api/deleteAccount.php`, {
+            const res = await fetch(`/api/deleteAccount`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data

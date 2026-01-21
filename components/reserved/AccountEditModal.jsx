@@ -22,7 +22,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 const fd = new FormData();
                 fd.append('id', accountId);
 
-                const res = await fetch('/api/getAccountData.php', {
+                const res = await fetch('/api/getAccountData', {
                     credentials: 'include',
                     method: 'POST',
                     body: fd
@@ -70,7 +70,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 fd.append('userimage', formData.userimage);
             }
 
-            const res = await fetch('/api/modifyAccountInfo.php', {
+            const res = await fetch('/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -106,7 +106,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('description', formData.description);
             fd.append('public', formData.public==0?1:0);
 
-            const res = await fetch('/api/modifyAccountInfo.php', {
+            const res = await fetch('/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -142,7 +142,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('id', accountId);
             fd.append('newPassword', newPassword);
 
-            const res = await fetch('/api/changePassword.php', {
+            const res = await fetch('/api/changePassword', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -170,7 +170,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('id', accountId);
 
-            const res = await fetch('/api/deleteAccount.php', {
+            const res = await fetch('/api/deleteAccount', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd

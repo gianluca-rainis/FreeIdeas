@@ -223,7 +223,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
             formData.append("status", (customFilters.status !== "All") ? customFilters.status : "");
             formData.append("order", (customFilters.order !== "All") ? customFilters.order : "");
 
-            const response = await fetch('/api/searchAnIdea.php', {
+            const response = await fetch('/api/searchAnIdea', {
                 credentials: "include",
                 method: 'POST',
                 body: formData
@@ -308,7 +308,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
             formData.append("status", statusFilter?(statusFilter.value!="All"?statusFilter.value:""):"");
             formData.append("order", orderFilter?(orderFilter.value!="All"?orderFilter.value:""):"");
 
-            const response = await fetch('/api/searchAnIdea.php', {
+            const response = await fetch('/api/searchAnIdea', {
                 credentials: "include",
                 method: 'POST',
                 body: formData

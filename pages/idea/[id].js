@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('http://localhost:8000/api/data.php', {
+        const response = await fetchWithTimeout('/api/data', {
             method: "POST",
             headers: {
                 ...(cookieHeader ? { cookie: cookieHeader } : {}),
@@ -156,7 +156,7 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
             formData.append('ideaid', ideaId);
             formData.append('superCommentid', superCommentId || '');
 
-            const res = await fetch(`/api/saveNewComment.php`, {
+            const res = await fetch(`/api/saveNewComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData
@@ -354,7 +354,7 @@ function LicenseSection({ ideaData }) {
                     formData.append("title", title);
                     formData.append("author", author);
 
-                    const response = await fetch("/api/getFreeIdeasLicense.php", {
+                    const response = await fetch("/api/getFreeIdeasLicense", {
                         credentials: "include",
                         method: "POST",
                         body: formData
@@ -410,7 +410,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch(`/api/getSessionData.php?data=account`, {
+                const res = await fetch(`/api/getSessionData?data=account`, {
                     credentials: "include"
                 });
 
@@ -517,7 +517,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("liked", newLiked?"1":"0");
             formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
 
-            const res = await fetch(`/api/saveAccountIdeaData.php`, {
+            const res = await fetch(`/api/saveAccountIdeaData`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -572,7 +572,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("feedback", feedback);
             formData.append("accountid", null);
 
-            const res = await fetch(`/api/reportIdeaAccount.php`, {
+            const res = await fetch(`/api/reportIdeaAccount`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -602,7 +602,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append("followedideaid", ideaData['idea'][0].id);
 
-            const res = await fetch(`/api/followAccountIdea.php`, {
+            const res = await fetch(`/api/followAccountIdea`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -633,7 +633,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append('id', commentId);
 
-            const res = await fetch(`/api/deleteComment.php`, {
+            const res = await fetch(`/api/deleteComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData

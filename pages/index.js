@@ -17,7 +17,7 @@ export async function getServerSideProps({ res }) {
     }
 
     try {
-        const response = await fetchWithTimeout('http://localhost:8000/api/getLastIdeas.php', {
+        const response = await fetchWithTimeout('/api/getLastIdeas', {
             headers: { 'Accept': 'application/json' }
         }, 2000);
 

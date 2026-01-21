@@ -126,7 +126,7 @@ export default function CreateAccountPage({pageTitle}) {
                 <section>
                     <h1>Create your account</h1>
                     
-                    <form action="./api/signUp.php" method="POST" ref={formRef}>
+                    <form action="./api/signUp" method="POST" ref={formRef}>
                         <input type="text" spellCheck="false" autoComplete="given-name" placeholder="First Name" name="firstName" maxLength="255" required />
                         <input type="text" spellCheck="false" autoComplete="family-name" placeholder="Last Name" name="lastName" maxLength="255" required />
                         <input type="text" spellCheck="false" autoComplete="username" placeholder="Username" name="userName" maxLength="255" required />

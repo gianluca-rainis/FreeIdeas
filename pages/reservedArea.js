@@ -22,7 +22,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const res = await fetchWithTimeout(`/api/getSessionData.php?data=administrator`, {
+        const res = await fetchWithTimeout(`/api/getSessionData?data=administrator`, {
             credentials: "include",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined
         }, 800);
@@ -64,7 +64,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
     async function handleLogout() {
         try {
-            await fetch("/api/logout.php", {
+            await fetch("/api/logout", {
                 credentials: "include"
             });
             
@@ -199,7 +199,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                             <hr />
                         </div>
 
-                        <form action="/api/reservedAreaLogin.php" method="POST" id="loginReservedAreaForm">
+                        <form action="/api/reservedAreaLogin" method="POST" id="loginReservedAreaForm">
                             <ul style={{width: "auto"}}>
                                 <li>
                                     <label htmlFor="usernameReservedArea">Username:</label>

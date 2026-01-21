@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('/api/data.php', {
+        const response = await fetchWithTimeout('/api/data', {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
@@ -347,7 +347,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/updateOldIdea.php', {
+            const response = await fetch('/api/updateOldIdea', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData
@@ -380,7 +380,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                 const deleteFormData = new FormData();
                 deleteFormData.append('id', id);
 
-                const response = await fetch('/api/deleteIdea.php', {
+                const response = await fetch('/api/deleteIdea', {
                     credentials: "include",
                     method: 'POST',
                     body: deleteFormData

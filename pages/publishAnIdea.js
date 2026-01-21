@@ -225,7 +225,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/saveNewIdea.php', {
+            const response = await fetch('/api/saveNewIdea', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData
