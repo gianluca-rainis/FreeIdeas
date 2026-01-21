@@ -99,11 +99,11 @@ export default async function handler(req, res) {
         }
 
         // Add the default notification
+        const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+        
         {
             let titleNot = "";
             let descNot = "";
-
-            const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
 
             if (session.administrator) {
                 titleNot = "IMPORTANT: Your account info was updated by the Admin!";
@@ -117,6 +117,62 @@ export default async function handler(req, res) {
             await query(
                 "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
                 [id, titleNot, descNot, today, 0]
+            );
+        }
+
+        if (ispublic == 1) {
+            const followers = await query(
+                "SELECT followaccountid FROM follow WHERE followedaccountid=?;",
+                [id]
+            );
+
+            followers.forEach(async follower => {
+                let titleNot = "";
+                let descNot = "";
+
+                if (session.administrator) {
+                    titleNot = "The administrator has updated " + username + "'s account information.";
+                    descNot = "The administrator has updated " + username + "'s account information. Visit his account page to see the changes!";
+                }
+                else {
+                    titleNot = username + " has updated his account information.";
+                    descNot = username + " has updated his account information. Visit his account page to see the changes!";
+                }
+
+                await query(
+                    "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
+                    [follower.followaccountid, titleNot, descNot, today, 0]
+                );
+            });
+        }
+        else {
+            const followers = await query(
+                "SELECT followaccountid FROM follow WHERE followedaccountid=?;",
+                [id]
+            );
+
+            followers.forEach(async follower => {
+                let titleNot = "";
+                let descNot = "";
+
+                if (session.administrator) {
+                    titleNot = "The administrator has made " + username + "'s account private.";
+                    descNot = "The administrator has updated " + username + "'s account information. Now his account is set to private. You can no longer visit his account page and you will no longer receive notifications regarding activity on this account.";
+                }
+                else {
+                    titleNot = username + " has made his account private.";
+                    descNot = username + " has updated his account information. Now his account is set to private. You can no longer visit his account page and you will no longer receive notifications regarding activity on this account.";
+                }
+
+                await query(
+                    "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
+                    [follower.followaccountid, titleNot, descNot, today, 0]
+                );
+            });
+
+            await query(
+                "DELETE FROM follow WHERE followedaccountid=?;",
+                [id]
             );
         }
 
