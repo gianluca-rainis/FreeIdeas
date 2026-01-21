@@ -70,7 +70,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 fd.append('userimage', formData.userimage);
             }
 
-            const res = await fetch('/api/modifyAccountInfoAdmin.php', {
+            const res = await fetch('/api/modifyAccountInfo.php', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -106,7 +106,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('description', formData.description);
             fd.append('public', formData.public==0?1:0);
 
-            const res = await fetch('/api/modifyAccountInfoAdmin.php', {
+            const res = await fetch('/api/modifyAccountInfo.php', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
