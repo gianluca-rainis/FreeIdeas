@@ -97,6 +97,9 @@ npm install iron-session
 ```bash
 npm install nodemailer
 ```
+```bash
+npm install formidable sharp
+```
 
 ## 🛢 DataBase structure
 ### Accounts

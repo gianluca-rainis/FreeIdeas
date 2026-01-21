@@ -174,7 +174,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
             submitFormData.append("mainImage", mainImageFile);
             submitFormData.append("title", formData.title);
-            submitFormData.append("data", getCurrentDate());
+            submitFormData.append("date", getCurrentDate());
             submitFormData.append("description", formData.description);
             submitFormData.append("type", formData.typeProject);
             submitFormData.append("creativity", formData.creativityType);
@@ -234,7 +234,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             const data = await response.json();
 
             if (data && data.success) {
-                router.push('/');
+                router.push('/idea/'+data.ideaId);
             }
             else {
                 throw new Error(data?.error || "Failed to save idea");
