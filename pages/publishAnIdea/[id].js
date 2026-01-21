@@ -291,7 +291,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             }
             
             submitFormData.append("title", formData.title);
-            submitFormData.append("data", getCurrentDate());
+            submitFormData.append("date", getCurrentDate());
             submitFormData.append("description", formData.description);
             submitFormData.append("type", formData.typeProject);
             submitFormData.append("creativity", formData.creativityType);
