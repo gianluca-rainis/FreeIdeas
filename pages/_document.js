@@ -6,9 +6,6 @@ export default function Document() {
             <Head>
                 {/* Favicon */}
                 <link rel="shortcut icon" type="image/svg+xml" href="/images/FreeIdeas.svg" />
-                
-                {/* CSS */}
-                <link href="/styles/styles.css" rel="stylesheet" />
             </Head>
             <body>
                 <Main />

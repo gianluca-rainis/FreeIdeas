@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // Server-side rendering
-export async function getServerSideProps({ res }) {
+export async function getServerSideProps({ req, res }) {
     let ideas = [];
     
     // Cache SSR response briefly to improve perceived speed
@@ -17,8 +17,10 @@ export async function getServerSideProps({ res }) {
     }
 
     try {
-        const response = await fetchWithTimeout('/api/getLastIdeas', {
-            headers: { 'Accept': 'application/json' }
+        const baseUrl = process.env.SITE_URL || `http://${req?.headers?.host}`;
+
+        const response = await fetchWithTimeout(`${baseUrl}/api/getLastIdeas`, {
+            headers: { Accept: 'application/json' }
         }, 2000);
 
         const data = await response.json();

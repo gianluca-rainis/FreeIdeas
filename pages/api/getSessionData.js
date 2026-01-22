@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { data } = req.body;
+        const { data } = req.query;
         const session = await getIronSession(req, res, sessionOptions);
         let ret = null;
 
