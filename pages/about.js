@@ -40,7 +40,7 @@ export default function AboutPage({pageTitle}) {
                 <p>
                     Thank you for visiting FreeIdeas, and we hope you find something that inspires you!
                 </p>
-                <img src="./images/FreeIdeas.svg" alt="FreeIdeas Logo" className ="logo" />
+                <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className ="logo" />
             </main>
 
             <Footer />

@@ -983,7 +983,7 @@ footer ul li a {
 
 /* main block */
 #ideaMain #ideaImageAsBackground {
-    background-image: url("../images/FreeIdeas.svg");
+    background-image: url("/images/FreeIdeas.svg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1238,7 +1238,7 @@ footer ul li a {
 
 #commentsList {
     padding-bottom: 10px;
-    list-style-image: url("../images/commentTag.svg");
+    list-style-image: url("/images/commentTag.svg");
 }
 
 .comment {
@@ -1308,7 +1308,7 @@ footer ul li a {
 
 .underComments {
     margin-left: 20px;
-    list-style-image: url("../images/commentTag.svg");
+    list-style-image: url("/images/commentTag.svg");
     border-left: 1px solid #2c3d27;
 }
 
@@ -1590,7 +1590,7 @@ footer ul li a {
 
 /* main block */
 #newIdeaMain #ideaImageAsBackground {
-    background-image: url("../images/FreeIdeas.svg");
+    background-image: url("/images/FreeIdeas.svg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -3699,11 +3699,11 @@ footer ul li a {
     }
 
     #commentsList {
-        list-style-image: url("../images/commentTag_Pro.svg");
+        list-style-image: url("/images/commentTag_Pro.svg");
     }
 
     .underComments {
-        list-style-image: url("../images/commentTag_Pro.svg");
+        list-style-image: url("/images/commentTag_Pro.svg");
     }
 
     .notificationsUl li {

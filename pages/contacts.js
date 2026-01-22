@@ -31,7 +31,7 @@ export default function ContactsPage({pageTitle}) {
                 <p>
                     You can contact us via email at: <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>
                 </p>
-                <img src="./images/FreeIdeas.svg" alt="FreeIdeas Logo" className="logo" />
+                <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className="logo" />
             </main>
 
             <Footer />

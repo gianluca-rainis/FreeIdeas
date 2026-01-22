@@ -33,7 +33,7 @@ export async function getServerSideProps({ res }) {
             id: phpIdea.id,
             title: phpIdea.title,
             author: phpIdea.username,
-            image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
+            image: phpIdea.ideaimage || "/images/FreeIdeas.svg"
         }));
     } catch (error) {
         console.error('Failed to fetch ideas:', error);
@@ -43,7 +43,7 @@ export async function getServerSideProps({ res }) {
             id: i + 1,
             title: `Idea ${i + 1}`,
             author: `Author ${i + 1}`,
-            image: `./images/FreeIdeas.svg`
+            image: `/images/FreeIdeas.svg`
         }));
     }
 
@@ -52,7 +52,7 @@ export async function getServerSideProps({ res }) {
         const fill = [];
 
         for (let i = ideas.length; i < 22; i++) {
-            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: `./images/FreeIdeas.svg` };
+            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: `/images/FreeIdeas.svg` };
             
             fill.push({ ...base, id: base.id ?? i + 1 });
         }
