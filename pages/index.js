@@ -161,8 +161,12 @@ function Banner({ message = "", show = false }) {
 }
 
 // Auto-scroll effect
-function autoScrollIdeas() {
+function autoScrollIdeas(imagesReady) {
     useEffect(() => {
+        if (!imagesReady) {
+            return;
+        }
+
         let currentScrollMode = true;
 
         const startAutoScroll = () => {
@@ -264,15 +268,14 @@ function autoScrollIdeas() {
         window.addEventListener("resize", handleResize);
 
         return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    }, [imagesReady]);
 }
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
     const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
     const [images, setImages] = React.useState({});
-    
-    autoScrollIdeas();
+    const [imagesReady, setImagesReady] = React.useState(false);
 
     // Fetch all images once on mount
     React.useEffect(() => {
@@ -295,11 +298,15 @@ export default function HomePage({ ideas, pageTitle }) {
                 }
             } catch (error) {
                 console.error('Could not load images: '+error);
+            } finally {
+                setImagesReady(true);
             }
         }
 
         loadAllImages();
     }, []);
+
+    autoScrollIdeas(imagesReady);
 
     return (
         <>
