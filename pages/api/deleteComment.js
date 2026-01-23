@@ -1,19 +1,17 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { id } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Comment not found in the database' });
         }
 
-        if (!session.account || (session.account.id != authorId[0].authorid && !session.administrator)) {
+        if (!req.session.account || (req.session.account.id != authorId[0].authorid && !req.session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -41,7 +39,7 @@ export default async function handler(req, res) {
         else {
             let description = "";
 
-            if (session.administrator) {
+            if (req.session.administrator) {
                 description = "This comment was deleted by the administrator.";
             }
             else {
@@ -60,6 +58,8 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);
 
 // Control if the comment have subcomments
 async function controlIfHaveSubcomments(id) {

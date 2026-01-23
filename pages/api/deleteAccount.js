@@ -1,6 +1,5 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
@@ -32,14 +31,13 @@ async function deleteAllIdsSubComments(id) {
     return;
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { id } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
@@ -47,7 +45,7 @@ export default async function handler(req, res) {
 
         const sanitizedId = getInput(id);
 
-        if (!session || ((!session.account || session.account.id != sanitizedId) && !session.administrator)) {
+        if (!req.session || ((!req.session.account || req.session.account.id != sanitizedId) && !req.session.administrator)) {
             return res.status(400).json({ success: false, error: 'User not authorized' });
         }
 
@@ -68,7 +66,7 @@ export default async function handler(req, res) {
             let titleNot = "";
             let description = "";
 
-            if (session.administrator) {
+            if (req.session.administrator) {
                 titleNot = accountUsername + "'s account has been deleted by the administrator.";
                 description = "We are sorry to inform you that " + accountUsername + "'s account has beed deleted by the FreeIdeas administrator, due to a violation of our Terms and Conditions. You see this notification because you were following it. You will no longer receive notifications about activity on this account.";
             }
@@ -181,8 +179,8 @@ export default async function handler(req, res) {
             [sanitizedId]
         );
 
-        if (session && session.account) {
-            session.destroy();
+        if (req.session && req.session.account) {
+            req.session.destroy();
         }
 
         return res.status(200).json({ success: true });

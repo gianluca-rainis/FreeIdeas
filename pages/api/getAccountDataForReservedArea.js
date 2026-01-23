@@ -1,22 +1,20 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { search } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
         let data = {};
 
-        if (!session || !session.administrator) {
+        if (!req.session || !req.session.administrator) {
             return res.status(401).json({ success: false, error: 'Administrator not logged in' });
         }
 
@@ -53,3 +51,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: String(error) });
     }
 }
+
+export default withSession(handler);
