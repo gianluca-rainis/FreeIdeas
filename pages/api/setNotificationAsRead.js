@@ -1,19 +1,17 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const { id } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
+        const { notificationId } = req.body;
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Notification not found in database' });
         }
 
-        if (!session.account || session.account.id != notification[0].accoutId) {
+        if (!req.session.account || req.session.account.id != notification[0].accoutId) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -47,7 +45,7 @@ export default async function handler(req, res) {
 
         const accountNotifications = await query(
             'SELECT * FROM notifications WHERE accountid=?;',
-            [session.account.id]
+            [req.session.account.id]
         );
 
         let notif = [];
@@ -56,9 +54,7 @@ export default async function handler(req, res) {
             notif.push(accountNotification);
         });
         
-        session.account.notifications = notif;
-
-        await session.save();
+        req.session.account.notifications = notif;
 
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -66,3 +62,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

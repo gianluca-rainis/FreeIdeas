@@ -100,6 +100,9 @@ npm install nodemailer
 ```bash
 npm install formidable sharp
 ```
+```bash
+npm install express-session connect-mysql2
+```
 
 ## 🛢 DataBase structure
 ### Accounts

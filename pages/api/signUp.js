@@ -1,19 +1,21 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
-        session.destroy();
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Session destroy error: ', err);
+            }
+        });
 
         const { firstName, lastName, email, password, username } = req.body;
 
@@ -102,8 +104,7 @@ export default async function handler(req, res) {
         };
 
         // Save session
-        session.account = accountData;
-        await session.save();
+        req.session.account = accountData;
 
         return res.status(200).json({ success: true, data: accountData });
 
@@ -112,3 +113,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

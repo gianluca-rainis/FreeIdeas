@@ -1,18 +1,28 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false, // Disable parsing
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const { email, password } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const email = getInput(fields.email?.[0] || '');
+        const password = getInput(fields.password?.[0] || '');
 
         if (!email || !password) {
             return res.status(400).json({ success: false, error: 'Email and password required' });
@@ -27,7 +37,7 @@ export default async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(401).json({ success: false, error: 'Account not found' });
+            return res.status(400).json({ success: false, error: 'Account not found' });
         }
 
         const account = accounts[0];
@@ -36,7 +46,11 @@ export default async function handler(req, res) {
         let passwordMatch = false;
         
         const bcrypt = require('bcrypt');
-        passwordMatch = await bcrypt.compare(password, account.password);
+
+        // Convert $2y$ (PHP) to $2b$ (Node.js bcrypt)
+        const hashToCompare = account.password.replace(/^\$2y\$/, '$2b$');
+        
+        passwordMatch = await bcrypt.compare(password, hashToCompare);
 
         if (!passwordMatch) {
             return res.status(401).json({ success: false, error: 'Wrong password' });
@@ -61,14 +75,14 @@ export default async function handler(req, res) {
             notifications: notifications
         };
 
-        // Save session
-        const session = await getIronSession(req, res, sessionOptions);
-        session.account = accountData;
-        await session.save();
-
+        // Save session con Redis
+        req.session.account = accountData;
+        
         return res.status(200).json({ success: true, data: accountData });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

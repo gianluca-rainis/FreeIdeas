@@ -1,6 +1,5 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
 
 function getInput(data) {
@@ -53,15 +52,13 @@ async function getConvertedPdf(file) {
     }
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
-
-        if (!session || !session.account) {
+        if (!req.session || !req.session.account) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -130,7 +127,7 @@ export default async function handler(req, res) {
         // Save in DB
         const insertIdea = await query(
             'INSERT INTO ideas (authorid, title, data, ideaimage, description, downloadlink, license) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [session.account.id, title, date, mainImageConverted, description, link || null, licenseConverted]
+            [req.session.account.id, title, date, mainImageConverted, description, link || null, licenseConverted]
         );
 
         const ideaId = insertIdea.insertId;
@@ -200,11 +197,11 @@ export default async function handler(req, res) {
 
         session.account.notifications = result;
 
-        await session.save();
-
         return res.status(200).json({ success: true, ideaId: ideaId });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

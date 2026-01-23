@@ -1,25 +1,23 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { ideaid, saved, dislike, liked, existRowYet } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!ideaid || !saved || !dislike || !liked || !existRowYet) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
-        if (!session || !session.account) {
+        if (!req.session || !req.session.account) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
@@ -38,7 +36,7 @@ export default async function handler(req, res) {
         if (sanitizedExistRowYet == "1") {
             const oldAccountIdeaData = await query(
                 'SELECT saved, liked, dislike FROM accountideadata WHERE accountid=? AND ideaid=?;',
-                [session.account.id, sanitizedIdeaId]
+                [req.session.account.id, sanitizedIdeaId]
             );
 
             oldSaved = oldAccountIdeaData[0].saved;
@@ -53,7 +51,7 @@ export default async function handler(req, res) {
 
         await query(
             sql,
-            [sanitizedSaved, sanitizedDislike, sanitizedLiked, session.account.id, sanitizedIdeaId]
+            [sanitizedSaved, sanitizedDislike, sanitizedLiked, req.session.account.id, sanitizedIdeaId]
         );
 
         const getIdeaLabels = await query(
@@ -76,3 +74,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

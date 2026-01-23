@@ -1,6 +1,5 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
 
 function getInput(data) {
@@ -53,15 +52,13 @@ async function getConvertedPdf(file) {
     }
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
-
-        if (!session || (!session.account && !session.administrator)) {
+        if (!req.session || (!req.session.account && !req.session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -194,9 +191,9 @@ export default async function handler(req, res) {
                 let titleNot = "";
                 let descrNot = "";
 
-                if (session.account) {
-                    titleNot = session.account.username + " has updated " + title + "!";
-                    descrNot = session.account.username + " has updated " + title + ". You can see the change in the idea's page!";
+                if (req.session.account) {
+                    titleNot = req.session.account.username + " has updated " + title + "!";
+                    descrNot = req.session.account.username + " has updated " + title + ". You can see the change in the idea's page!";
                 }
                 else {
                     titleNot = "The Administrator has updated " + title + "!";
@@ -216,3 +213,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

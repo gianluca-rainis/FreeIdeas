@@ -12,6 +12,9 @@
     },
     "dependencies": {
         "bcrypt": "^6.0.0",
+        "connect-redis": "^9.0.0",
+        "express-mysql-session": "^3.0.3",
+        "express-session": "^1.19.0",
         "formidable": "^3.5.4",
         "iron-session": "^8.0.4",
         "mysql2": "^3.16.0",
@@ -19,6 +22,7 @@
         "nodemailer": "^7.0.12",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
+        "redis": "^5.10.0",
         "sharp": "^0.34.5"
     },
     "devDependencies": {

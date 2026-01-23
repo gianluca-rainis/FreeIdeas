@@ -1,32 +1,30 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { date, description, ideaId, superCommentId } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!date || !description || !ideaId || !superCommentId) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
-        if (!session || (!session.account && !session.administrator)) {
+        if (!req.session || (!req.session.account && !req.session.administrator)) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
         let authorId = null;
 
-        if (session.account) {
-            authorId = session.account.id;
+        if (req.session.account) {
+            authorId = req.session.account.id;
         }
 
         const sanitizedDate = getInput(date);
@@ -50,3 +48,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);
