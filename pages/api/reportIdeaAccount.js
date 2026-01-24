@@ -21,11 +21,11 @@ async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const ideaId = getInput(fields.ideaId?.[0]) || '';
-        const accountId = getInput(fields.accountId?.[0]) || '';
+        const ideaId = getInput(fields.ideaid?.[0]) || null;
+        const accountId = getInput(fields.accountid?.[0]) || null;
         const feedback = getInput(fields.feedback?.[0]) || '';
 
-        if (!ideaId || !accountId || !feedback) {
+        if ((!ideaId && !accountId) || !feedback) {
             return res.status(400).json({ success: false, error: 'Idea id, account id and feedback required' });
         }
 

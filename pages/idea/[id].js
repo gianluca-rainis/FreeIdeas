@@ -366,8 +366,8 @@ function LicenseSection({ ideaData }) {
 
                     const data = await response.json();
 
-                    if (data && data[0]) {
-                        setLicenseUrl(data[0]);
+                    if (data && data.license) {
+                        setLicenseUrl(data.license);
                     }
                     else {
                         console.error('License API error: '+data);

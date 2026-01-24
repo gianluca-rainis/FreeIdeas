@@ -36,12 +36,14 @@ async function handler(req, res) {
         if (account.length === 0) {
             return res.status(401).json({ success: false, error: 'Account not found in database' });
         }
+
+        const userImage = account[0]['userimage']?Buffer.from(account[0]['userimage']).toString():null;
         
         data['id'] = account[0]['id'];
         data['email'] = account[0]['email'];
         data['name'] = account[0]['name'];
         data['surname'] = account[0]['surname'];
-        data['userimage'] = account[0]['userimage'];
+        data['userimage'] = userImage;
         data['description'] = account[0]['description'];
         data['username'] = account[0]['username'];
         data['public'] = account[0]['public'];
@@ -60,10 +62,12 @@ async function handler(req, res) {
         let indexForSaved = 0;
 
         savedIdeas.forEach(ideaSaved => {
+            const image = ideaSaved['ideaimage']?Buffer.from(ideaSaved['ideaimage']).toString():null;
+
             data['saved'][indexForSaved] = {};
             data['saved'][indexForSaved]['id'] = ideaSaved['id'];
             data['saved'][indexForSaved]['title'] = ideaSaved['title'];
-            data['saved'][indexForSaved]['image'] = ideaSaved['ideaimage'];
+            data['saved'][indexForSaved]['image'] = image;
             data['saved'][indexForSaved]['username'] = ideaSaved['username'];
 
             indexForSaved++;
@@ -79,10 +83,12 @@ async function handler(req, res) {
         indexForSaved = 0;
 
         publishedIdeas.forEach(ideaPublished => {
+            const image = ideaPublished['ideaimage']?Buffer.from(ideaPublished['ideaimage']).toString():null;
+            
             data['published'][indexForSaved] = {};
             data['published'][indexForSaved]['id'] = ideaPublished['id'];
             data['published'][indexForSaved]['title'] = ideaPublished['title'];
-            data['published'][indexForSaved]['image'] = ideaPublished['ideaimage'];
+            data['published'][indexForSaved]['image'] = image;
             data['published'][indexForSaved]['username'] = ideaPublished['username'];
 
             indexForSaved++;

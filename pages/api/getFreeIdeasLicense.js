@@ -21,8 +21,8 @@ export default async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const title = fields.title?.[0] || '';
-        const author = fields.author?.[0] || '';
+        const title = getInput(fields.title?.[0]) || '';
+        const author = getInput(fields.author?.[0]) || '';
 
         if (!title || !author) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });

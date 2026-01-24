@@ -22,10 +22,13 @@ export async function getServerSideProps(context) {
 
     if (!id) {
         try {
-            const res = await fetchWithTimeout(`/api/getSessionData?data=account`, {
-                credentials: "include",
-                headers: cookieHeader ? { cookie: cookieHeader } : undefined
-            }, 800);
+            const hostHeader = context.req?.headers?.host;
+            const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
+            const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
+                method: 'GET',
+                headers: cookieHeader ? { cookie: cookieHeader } : {}
+            }, 1000);
 
             const data = await res.json();
 
@@ -38,17 +41,17 @@ export async function getServerSideProps(context) {
     }
     
     try {
+        const hostHeader = context.req?.headers?.host;
+        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
         const formData = new FormData();
         formData.append("id", id);
 
-        // Send cookies read session in php
-        const cookieHeader = context.req?.headers?.cookie ?? '';
-
-        const response = await fetchWithTimeout('/api/getAccountData', {
+        const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
             method: "POST",
-            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+            headers: cookieHeader ? { cookie: cookieHeader } : {},
             body: formData
-        }, 800);
+        }, 1000);
 
         const data = await response.json();
         
@@ -134,11 +137,14 @@ export default function AccountPage({ accountData, pageTitle }) {
         }
     }, [accountData]);
 
-    if (!accountData) {
-        useEffect(() => {
+    // Redirect to home if account not found
+    useEffect(() => {
+        if (accountData === null && typeof window !== 'undefined') {
             router.push("/");
-        }, []);
+        }
+    }, [accountData, router]);
 
+    if (!accountData) {
         return (
             <>
                 <Head pageTitle={pageTitle} />
@@ -222,7 +228,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             return;
         }
 
-        const feedback = showPrompt('Please tell us why you think this account is inappropriate.');
+        const feedback = await showPrompt('Please tell us why you think this account is inappropriate.');
 
         if (!feedback) {
             return;

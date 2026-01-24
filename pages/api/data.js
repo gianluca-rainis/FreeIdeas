@@ -37,6 +37,20 @@ async function handler(req, res) {
         ret['accountdata'] = req.session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [id, req.session.account.id]):[]; // Labels
         ret['followAccountData'] = req.session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, req.session.account.id]):[]; // Follow
 
+        ret['comment'].forEach(comment => {
+            const image = comment.userimage?Buffer.from(comment.userimage).toString():null;
+            comment.userimage = image;
+            
+            // Convert date to YYYY-MM-DD
+            if (comment.data instanceof Date) {
+                const year = comment.data.getFullYear();
+                const month = String(comment.data.getMonth() + 1).padStart(2, '0');
+                const day = String(comment.data.getDate()).padStart(2, '0');
+
+                comment.data = `${year}-${month}-${day}`;
+            }
+        });
+
         return res.status(200).json(ret);
     } catch (error) {
         console.error('Error: ', error);

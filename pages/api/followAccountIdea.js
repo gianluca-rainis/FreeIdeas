@@ -21,9 +21,9 @@ async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const followedaccountid = getInput(fields.followedaccountid?.[0]) || '';
-        const followedideaid = getInput(fields.followedideaid?.[0]) || '';
-        let data = {};
+        const followedaccountid = fields.followedaccountid?.[0] || '';
+        const followedideaid = fields.followedideaid?.[0] || '';
+        let data = [];
         let isNowFollowed = false;
 
         if (!followedaccountid && !followedideaid) {
