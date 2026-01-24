@@ -5,62 +5,6 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ success: false, error: 'Method not allowed' });
-    }
-
-    try {
-        const { id } = req.body;
-
-        if (!id) {
-            return res.status(400).json({ success: false, error: 'Id required' });
-        }
-
-        const sanitizedId = getInput(id);
-
-        // Check if the user is authorized
-        const authorId = await query(
-            'SELECT authorid FROM comments WHERE id=?;',
-            [sanitizedId]
-        );
-
-        if (authorId.length === 0) {
-            return res.status(401).json({ success: false, error: 'Comment not found in the database' });
-        }
-
-        if (!req.session.account || (req.session.account.id != authorId[0].authorid && !req.session.administrator)) {
-            return res.status(401).json({ success: false, error: 'User not logged in' });
-        }
-
-        if (!controlIfHaveSubcomments(sanitizedId)) {
-            deleteCommentAndSuperCommentsWithoutSubComments(sanitizedId);
-        }
-        else {
-            let description = "";
-
-            if (req.session.administrator) {
-                description = "This comment was deleted by the administrator.";
-            }
-            else {
-                description = "This comment was deleted by the author.";
-            }
-
-            await query(
-                "UPDATE comments SET authorid=?, description=? WHERE id=?;",
-                [null, description, sanitizedId]
-            );
-        }
-
-        return res.status(200).json({ success: true });
-    } catch (error) {
-        console.error('Error: ', error);
-        return res.status(500).json({ success: false, error: 'Internal server error' });
-    }
-}
-
-export default withSession(handler);
-
 // Control if the comment have subcomments
 async function controlIfHaveSubcomments(id) {
     let ret = false;
@@ -123,3 +67,59 @@ async function deleteCommentAndSuperCommentsWithoutSubComments(id) {
         deleteCommentAndSuperCommentsWithoutSubComments(superCommentId);
     }
 }
+
+async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ success: false, error: 'Method not allowed' });
+    }
+
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ success: false, error: 'Id required' });
+        }
+
+        const sanitizedId = getInput(id);
+
+        // Check if the user is authorized
+        const authorId = await query(
+            'SELECT authorid FROM comments WHERE id=?;',
+            [sanitizedId]
+        );
+
+        if (authorId.length === 0) {
+            return res.status(401).json({ success: false, error: 'Comment not found in the database' });
+        }
+
+        if (!req.session.account || (req.session.account.id != authorId[0].authorid && !req.session.administrator)) {
+            return res.status(401).json({ success: false, error: 'User not logged in' });
+        }
+
+        if (!controlIfHaveSubcomments(sanitizedId)) {
+            deleteCommentAndSuperCommentsWithoutSubComments(sanitizedId);
+        }
+        else {
+            let description = "";
+
+            if (req.session.administrator) {
+                description = "This comment was deleted by the administrator.";
+            }
+            else {
+                description = "This comment was deleted by the author.";
+            }
+
+            await query(
+                "UPDATE comments SET authorid=?, description=? WHERE id=?;",
+                [null, description, sanitizedId]
+            );
+        }
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error: ', error);
+        return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+}
+
+export default withSession(handler);

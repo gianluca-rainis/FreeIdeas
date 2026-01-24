@@ -1,19 +1,17 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { email } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!email) {
             return res.status(400).json({ success: false, error: 'Email is required' });
@@ -30,11 +28,11 @@ export default async function handler(req, res) {
         let idIfNoSession = accountInfo[0].id;
         let tempid;
 
-        if (!session || !session.account) {
+        if (!req.session || !req.session.account) {
             tempid = idIfNoSession;
         }
         else {
-            tempid = session.account.id;
+            tempid = req.session.account.id;
         }
 
         {
@@ -49,13 +47,13 @@ export default async function handler(req, res) {
             );
         }
 
-        if (session && session.account) {
+        if (req.session && req.session.account) {
             const loadNotific = await query(
                 'SELECT * FROM notifications WHERE accountid=?;',
                 [tempid]
             );
 
-            session.account.notifications = loadNotific;
+            req.session.account.notifications = loadNotific;
         }
 
         // EMAIL
@@ -110,3 +108,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

@@ -92,9 +92,6 @@ npm install mysql2
 npm install bcrypt
 ```
 ```bash
-npm install iron-session
-```
-```bash
 npm install nodemailer
 ```
 ```bash

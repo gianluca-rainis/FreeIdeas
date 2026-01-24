@@ -5,6 +5,31 @@ function getInput(data) {
     return String(data).trim();
 }
 
+async function deleteAllIdsSubComments(id) {
+    try {
+        const result = await query(
+            "SELECT id FROM comments WHERE superCommentid=?;",
+            [id]
+        );
+
+        // Delete all the subcomments
+        result.forEach(row => {
+            deleteAllIdsSubComments(row.id);
+        });
+
+        // This is the deeper (id comment)
+        // Delete the subcomment
+        await query(
+            "DELETE FROM comments WHERE id=?;",
+            [id]
+        );
+    } catch (error) {
+        console.error('Error: ', error);
+    }
+    
+    return;
+}
+
 async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -213,28 +238,3 @@ async function handler(req, res) {
 }
 
 export default withSession(handler);
-
-async function deleteAllIdsSubComments(id) {
-    try {
-        const result = await query(
-            "SELECT id FROM comments WHERE superCommentid=?;",
-            [id]
-        );
-
-        // Delete all the subcomments
-        result.forEach(row => {
-            deleteAllIdsSubComments(row.id);
-        });
-
-        // This is the deeper (id comment)
-        // Delete the subcomment
-        await query(
-            "DELETE FROM comments WHERE id=?;",
-            [id]
-        );
-    } catch (error) {
-        console.error('Error: ', error);
-    }
-    
-    return;
-}

@@ -167,20 +167,20 @@ async function handler(req, res) {
 
             await query(
                 'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
-                [session.account.id, titleNot, descrNot, today, 0]
+                [req.session.account.id, titleNot, descrNot, today, 0]
             );
         }
 
         // Send notification to followers
         const followers = await query(
             'SELECT followaccountid FROM follow WHERE followedaccountid=?;',
-            [session.account.id]
+            [req.session.account.id]
         );
 
         if (followers) {
             followers.forEach(async follower => {
-                const titleNot = session.account.username + " has published a new idea!";
-                const descrNot = session.account.username + " has published a new idea! The idea's title is " + title + ". You can see it in the last ideas, search it or see it from the account page of " + session.account.username + "!";
+                const titleNot = req.session.account.username + " has published a new idea!";
+                const descrNot = req.session.account.username + " has published a new idea! The idea's title is " + title + ". You can see it in the last ideas, search it or see it from the account page of " + req.session.account.username + "!";
                 
                 await query(
                     'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
@@ -192,10 +192,10 @@ async function handler(req, res) {
         // Reload notifications
         const result = await query(
             "SELECT * FROM notifications WHERE accountid=?;",
-            [session.account.id]
+            [req.session.account.id]
         );
 
-        session.account.notifications = result;
+        req.session.account.notifications = result;
 
         return res.status(200).json({ success: true, ideaId: ideaId });
     } catch (error) {

@@ -12,7 +12,6 @@ async function handler(req, res) {
 
     try {
         const { id } = req.body;
-        let data = {};
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });

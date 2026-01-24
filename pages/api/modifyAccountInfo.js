@@ -1,6 +1,5 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
 
 export const config = {
@@ -39,27 +38,25 @@ async function getConvertedImage(file) {
     }
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
-
-        if (!session || (!session.account && !session.administrator)) {
+        if (!req.session || (!req.session.account && !req.session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         const form = formidable();
         const [fields, files] = await form.parse(req);
 
-        const id = getInput(fields.id?.[0] || session.account.id);
+        const id = getInput(fields.id?.[0] || req.session.account.id);
         const firstName = getInput(fields.firstName?.[0] || '');
         const lastName = getInput(fields.lastName?.[0] || '');
         const description = getInput(fields.description?.[0] || '');
         const username = getInput(fields.username?.[0] || '');
-        const email = getInput(fields.email?.[0] || session.account.email);
+        const email = getInput(fields.email?.[0] || req.session.account.email);
         const ispublic = getInput(fields.public?.[0] || '');
         let image = null;
 
@@ -81,7 +78,7 @@ export default async function handler(req, res) {
             );
         }
 
-        if (session.account) {
+        if (req.session.account) {
             const accountData = {
                 id: id,
                 email: email,
@@ -94,8 +91,8 @@ export default async function handler(req, res) {
                 notifications: notifications
             };
 
-            session.account = accountData;
-            await session.save();
+            req.session.account = accountData;
+            await req.session.save();
         }
 
         // Add the default notification
@@ -105,7 +102,7 @@ export default async function handler(req, res) {
             let titleNot = "";
             let descNot = "";
 
-            if (session.administrator) {
+            if (req.session.administrator) {
                 titleNot = "IMPORTANT: Your account info was updated by the Admin!";
                 descNot = "Your account info was updated by the Admin! For more information about this changes contact us.";
             }
@@ -130,7 +127,7 @@ export default async function handler(req, res) {
                 let titleNot = "";
                 let descNot = "";
 
-                if (session.administrator) {
+                if (req.session.administrator) {
                     titleNot = "The administrator has updated " + username + "'s account information.";
                     descNot = "The administrator has updated " + username + "'s account information. Visit his account page to see the changes!";
                 }
@@ -155,7 +152,7 @@ export default async function handler(req, res) {
                 let titleNot = "";
                 let descNot = "";
 
-                if (session.administrator) {
+                if (req.session.administrator) {
                     titleNot = "The administrator has made " + username + "'s account private.";
                     descNot = "The administrator has updated " + username + "'s account information. Now his account is set to private. You can no longer visit his account page and you will no longer receive notifications regarding activity on this account.";
                 }
@@ -182,3 +179,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

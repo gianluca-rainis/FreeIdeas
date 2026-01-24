@@ -1,19 +1,17 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { followedaccountid, followedideaid } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
         let data = {};
         let isNowFollowed = false;
 
@@ -24,7 +22,7 @@ export default async function handler(req, res) {
         const sanitizedFollowedAccountId = followedaccountid?getInput(followedaccountid):null;
         const sanitizedFollowedIdeaId = followedideaid?getInput(followedideaid):null;
 
-        if (!session.account) {
+        if (!req.session.account) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -43,7 +41,7 @@ export default async function handler(req, res) {
         // Get follows
         const getFollows = await query(
             sql,
-            [session.account.id, idNotNull]
+            [req.session.account.id, idNotNull]
         );
 
         if (getFollows.length != 0) {
@@ -55,7 +53,7 @@ export default async function handler(req, res) {
         if (data.length == 0) {
             const followNow = await query(
                 "INSERT INTO follow (followaccountid, followedaccountid, followedideaid) VALUES (?, ?, ?);",
-                [session.account.id, sanitizedFollowedAccountId, sanitizedFollowedIdeaId]
+                [req.session.account.id, sanitizedFollowedAccountId, sanitizedFollowedIdeaId]
             );
 
             if (!followNow) {
@@ -76,7 +74,7 @@ export default async function handler(req, res) {
 
             const deleteFollows = await query(
                 sql,
-                [session.account.id, idNotNull]
+                [req.session.account.id, idNotNull]
             );
 
             if (!deleteFollows) {
@@ -92,3 +90,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

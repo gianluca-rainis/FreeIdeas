@@ -1,12 +1,11 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
@@ -14,8 +13,7 @@ export default async function handler(req, res) {
     try {
         const { username, password1, password2, password3, password4, password5 } = req.body;
 
-        const session = await getIronSession(req, res, sessionOptions);
-        session.destroy();
+        req.session.destroy();
 
         if (!username || !password1 || !password2 || !password3 || !password4 || !password5) {
             return res.status(400).json({ success: false, error: 'Username and 5 passwords required' });
@@ -44,8 +42,8 @@ export default async function handler(req, res) {
             let passwordMatch5 = await bcrypt.compare(password5, account.password5);
 
             if (passwordMatch1 && passwordMatch2 && passwordMatch3 && passwordMatch4 && passwordMatch5) {
-                session.administrator['id'] = account['id'];
-                session.administrator['username'] = account['username'];
+                req.session.administrator['id'] = account['id'];
+                req.session.administrator['username'] = account['username'];
                 
                 foundAccount = true;
             }
@@ -54,8 +52,6 @@ export default async function handler(req, res) {
         if (!foundAccount) {
             return res.status(401).json({ success: false, error: 'Account not found' });
         }
-        
-        await session.save();
 
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -63,3 +59,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);

@@ -13,11 +13,11 @@ async function handler(req, res) {
     try {
         const { notificationId } = req.body;
 
-        if (!id) {
+        if (!notificationId) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        const sanitizedId = getInput(id);
+        const sanitizedId = getInput(notificationId);
 
         // Check if the notification exists and the user can set it as read
         const notification = await query(

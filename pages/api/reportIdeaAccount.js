@@ -1,25 +1,23 @@
-import { getIronSession } from 'iron-session';
 import { query } from '../../lib/db_connection';
-import { sessionOptions } from '../../lib/session';
+import { withSession } from '../../lib/withSession';
 
 function getInput(data) {
     return String(data).trim();
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
         const { ideaId, accountId, feedback } = req.body;
-        const session = await getIronSession(req, res, sessionOptions);
 
         if (!ideaId || !accountId || !feedback) {
             return res.status(400).json({ success: false, error: 'Idea id, account id and feedback required' });
         }
 
-        if (!session || !session.account) {
+        if (!req.session || !req.session.account) {
             return res.status(400).json({ success: false, error: 'Account not logged in' });
         }
 
@@ -30,7 +28,7 @@ export default async function handler(req, res) {
         // Create the new report
         const newReport = await query(
             'INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);',
-            [session.account.id, sanitizedIdeaId, sanitizedAccountId, sanitizedFeedback]
+            [req.session.account.id, sanitizedIdeaId, sanitizedAccountId, sanitizedFeedback]
         );
 
         if (!newReport) {
@@ -40,14 +38,14 @@ export default async function handler(req, res) {
         // Control if the author have done too much reports on the same thing
         const getReports = await query(
             'SELECT * FROM reports WHERE authorid=? AND ideaid=? AND accountid=?;',
-            [session.account.id, sanitizedIdeaId, sanitizedAccountId]
+            [req.session.account.id, sanitizedIdeaId, sanitizedAccountId]
         );
 
         // If the same author have report the same account/idea more than 5 times, report the author
         if (getReports && getReports.length > 5) {
             const authorReport = await query(
                 'INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);',
-                [1, null, session.account.id, "The user have reported too much times the same account/idea. This is an auto-generated report."]
+                [1, null, req.session.account.id, "The user have reported too much times the same account/idea. This is an auto-generated report."]
             );
 
             if (!authorReport) {
@@ -61,3 +59,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
+
+export default withSession(handler);
