@@ -10,7 +10,8 @@ import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
-    const { id } = context.query;
+    const rawId = context.query?.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
     let ideaData = null;
     let pageTitle = 'Idea';
     
@@ -26,7 +27,10 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('/api/data', {
+        const hostHeader = context.req?.headers?.host;
+        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
+        const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",
             headers: {
                 ...(cookieHeader ? { cookie: cookieHeader } : {}),
@@ -37,12 +41,12 @@ export async function getServerSideProps(context) {
 
         const data = await response.json();
         
-        if (data && data.success !== false) {
+        if (data && Array.isArray(data?.idea) && data.idea.length > 0) {
             ideaData = data;
-            pageTitle = ideaData['idea'][0]['title'];
+            pageTitle = data.idea[0]?.title || 'Idea';
         }
         else {
-            throw new Error(data.error);
+            throw new Error(data?.error || 'Idea not found');
         }
     } catch (error) {
         console.error('Failed to fetch ideas: '+error);
@@ -82,9 +86,9 @@ function PrintAdditionalInfo({ ideaData }) {
     return null;
 }
 
-function PrintDownloadLink({ ideaData }) {
-    if (ideaData && ideaData['idea'][0]['downloadlink']) {
-        const link = ideaData['idea'][0]['downloadlink'];
+function PrintDownloadLink({ idea }) {
+    if (idea?.downloadlink) {
+        const link = idea.downloadlink;
 
         return (
             <section id='downloadSection'>
@@ -394,6 +398,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     const { randomIdeaId } = useAppContext();
     const { themeIsLight } = useThemeImages();
     const { currentModal, showAlert, showConfirm, showPrompt, closeModal } = useModals();
+    const idea = ideaData?.idea?.[0] || null;
     
     // State management
     const [sessionData, setSessionData] = useState(null);
@@ -652,7 +657,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
         }
     }
 
-    if (!ideaData) {
+    if (!idea) {
         return (
             <>
                 <Head pageTitle="Idea not found" />

@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -74,18 +81,19 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0]) || '';
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        const sanitizedId = getInput(id);
-
         // Check if the user is authorized
         const authorId = await query(
             'SELECT authorid FROM comments WHERE id=?;',
-            [sanitizedId]
+            [id]
         );
 
         if (authorId.length === 0) {
@@ -96,8 +104,8 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
-        if (!controlIfHaveSubcomments(sanitizedId)) {
-            deleteCommentAndSuperCommentsWithoutSubComments(sanitizedId);
+        if (!controlIfHaveSubcomments(id)) {
+            deleteCommentAndSuperCommentsWithoutSubComments(id);
         }
         else {
             let description = "";
@@ -111,7 +119,7 @@ async function handler(req, res) {
 
             await query(
                 "UPDATE comments SET authorid=?, description=? WHERE id=?;",
-                [null, description, sanitizedId]
+                [null, description, id]
             );
         }
 

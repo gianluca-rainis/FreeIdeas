@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,15 @@ async function handler(req, res) {
     }
 
     try {
-        const { username, password1, password2, password3, password4, password5 } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const username = getInput(fields.username?.[0]) || '';
+        const password1 = fields.password1?.[0] || '';
+        const password2 = fields.password2?.[0] || '';
+        const password3 = fields.password3?.[0] || '';
+        const password4 = fields.password4?.[0] || '';
+        const password5 = fields.password5?.[0] || '';
 
         req.session.destroy();
 
@@ -19,12 +34,10 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Username and 5 passwords required' });
         }
 
-        const sanitizedUsername = getInput(username);
-
         // Check if the account exists
         const accounts = await query(
             'SELECT * FROM reservedareaaccounts WHERE username=?;',
-            [sanitizedUsername]
+            [username]
         );
 
         if (accounts.length === 0) {
@@ -42,9 +55,9 @@ async function handler(req, res) {
             let passwordMatch5 = await bcrypt.compare(password5, account.password5);
 
             if (passwordMatch1 && passwordMatch2 && passwordMatch3 && passwordMatch4 && passwordMatch5) {
-                req.session.administrator['id'] = account['id'];
-                req.session.administrator['username'] = account['username'];
-                
+                req.session.administrator = req.session.administrator || {};
+                req.session.administrator.id = account.id;
+                req.session.administrator.username = account.username;
                 foundAccount = true;
             }
         });

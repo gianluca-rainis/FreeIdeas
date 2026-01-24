@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,14 @@ async function handler(req, res) {
     }
 
     try {
-        const { title, accountId, date, description, status } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const title = getInput(fields.title?.[0]) || '';
+        const accountId = getInput(fields.accountId?.[0]) || '';
+        const date = getInput(fields.date?.[0]) || '';
+        const description = getInput(fields.description?.[0]) || '';
+        const status = getInput(fields.status?.[0]) || '';
 
         if (!title || !accountId || !date || !description || !status) {
             return res.status(400).json({ success: false, error: 'Not filled al the required fields' });
@@ -21,16 +35,10 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Administrator not logged in' });
         }
 
-        const sanitizedTitle = getInput(title);
-        const sanitizedAccountId = getInput(accountId);
-        const sanitizedDate = getInput(date);
-        const sanitizedDescription = getInput(description);
-        const sanitizedStatus = getInput(status);
-
         // Create the notification
         const createNotif = await query(
             'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
-            [sanitizedAccountId, sanitizedTitle, sanitizedDescription, sanitizedDate, sanitizedStatus]
+            [accountId, title, description, date, status]
         );
 
         if (!createNotif) {

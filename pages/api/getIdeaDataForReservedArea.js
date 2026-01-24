@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,8 +18,11 @@ async function handler(req, res) {
     }
 
     try {
-        const { search } = req.body;
-        let data = {};
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const search = fields.search?.[0] || '';
+        let data = [];
 
         if (!req.session || !req.session.administrator) {
             return res.status(401).json({ success: false, error: 'Administrator not logged in' });

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
@@ -359,7 +358,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                 setIdeas(mappedIdeas);
             }
             else {
-                throw new Error("PHP API error: " + data.error);
+                throw new Error("API error: " + data.error);
             }
         } catch (error) {
             console.error('Failed to fetch ideas:', error);

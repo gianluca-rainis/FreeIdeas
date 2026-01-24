@@ -1,4 +1,11 @@
 import { query } from '../../lib/db_connection';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false, // Disable parsing
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -10,17 +17,14 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { search, type, creativity, status, order } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
 
-        if (!search || !type || !creativity || !status || !order) {
-            return res.status(400).json({ success: false, error: 'Not given all the required data' });
-        }
-
-        const sanitizedSearch = getInput(search);
-        const sanitizedType = getInput(type);
-        const sanitizedCreativity = getInput(creativity);
-        const sanitizedStatus = getInput(status);
-        const sanitizedOrder = getInput(order);
+        const search = getInput(fields.search?.[0] || '');
+        const type = getInput(fields.type?.[0] || '');
+        const creativity = getInput(fields.creativity?.[0] || '');
+        const status = getInput(fields.status?.[0] || '');
+        const order = getInput(fields.order?.[0] || '');
 
         let sql = "";
         let sqlEnd = "";
@@ -30,31 +34,31 @@ export default async function handler(req, res) {
         let result;
         let output = {};
 
-        if (sanitizedSearch != "" && sanitizedType == "" && sanitizedCreativity == "" && sanitizedStatus == "" && sanitizedOrder == "") {
+        if (search != "" && type == "" && creativity == "" && status == "" && order == "") {
             sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?) AND accounts.public=1;";
             typeOfQuery = "account";
-            searchParam = "%" + sanitizedSearch + "%";
+            searchParam = "%" + search + "%";
 
             result = await query(
                 sql,
                 [searchParam, searchParam, searchParam]
             );
         }
-        else if (!(sanitizedSearch == "" && sanitizedType == "" && sanitizedCreativity == "" && sanitizedStatus == "")) {
-            if (sanitizedOrder == "") {
+        else if (!(search == "" && type == "" && creativity == "" && status == "")) {
+            if (order == "") {
                 sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
                 sqlEnd = ";";
             }
             else {
-                if (sanitizedOrder == "Most voted") {
+                if (order == "Most voted") {
                     sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username, idealabels.likes FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
                     sqlEnd = " ORDER BY idealabels.likes;";
                 }
-                else if (sanitizedOrder == "Newest") {
+                else if (order == "Newest") {
                     sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
                     sqlEnd = " ORDER BY ideas.data DESC;";
                 }
-                else if (sanitizedOrder == "Most discussed") {
+                else if (order == "Most discussed") {
                     sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username, COUNT(comments.ideaid) AS comment_num FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id LEFT JOIN comments ON comments.ideaid=ideas.id";
                     sqlEnd = " GROUP BY ideas.id ORDER BY comment_num DESC;";
                 }
@@ -63,7 +67,7 @@ export default async function handler(req, res) {
             let controlFirstTemp = true;
             let params = [];
 
-            if (sanitizedType != "") {
+            if (type != "") {
                 if (controlFirstTemp) {
                     sql += " WHERE ";
                     controlFirstTemp = false;
@@ -73,10 +77,10 @@ export default async function handler(req, res) {
                 }
 
                 sql += "idealabels.type=?";
-                params.push(sanitizedType);
+                params.push(type);
             }
 
-            if (sanitizedCreativity != "") {
+            if (creativity != "") {
                 if (controlFirstTemp) {
                     sql += " WHERE ";
                     controlFirstTemp = false;
@@ -86,10 +90,10 @@ export default async function handler(req, res) {
                 }
 
                 sql += "idealabels.creativity=?";
-                params.push(sanitizedCreativity);
+                params.push(creativity);
             }
 
-            if (sanitizedStatus != "") {
+            if (status != "") {
                 if (controlFirstTemp) {
                     sql += " WHERE ";
                     controlFirstTemp = false;
@@ -99,10 +103,10 @@ export default async function handler(req, res) {
                 }
 
                 sql += "idealabels.status=?";
-                params.push(sanitizedStatus);
+                params.push(status);
             }
 
-            if (sanitizedSearch != "") {
+            if (search != "") {
                 if (controlFirstTemp) {
                     sql += " WHERE ";
                     controlFirstTemp = false;
@@ -113,8 +117,8 @@ export default async function handler(req, res) {
 
                 sql += "(accounts.username LIKE ? OR ideas.title LIKE ?)";
                 
-                params.push("%" + sanitizedSearch + "%");
-                params.push("%" + sanitizedSearch + "%");
+                params.push("%" + search + "%");
+                params.push("%" + search + "%");
             }
 
             sql += sqlEnd;
@@ -127,17 +131,17 @@ export default async function handler(req, res) {
             );
         }
         else {
-            if (sanitizedOrder == "") {
+            if (order == "") {
                 sql = "SELECT accounts.username, recentIdeas.* FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id;";
             }
             else {
-                if (sanitizedOrder == "Most voted") {
+                if (order == "Most voted") {
                     sql = "SELECT accounts.username, recentIdeas.*, idealabels.likes FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id JOIN idealabels ON idealabels.ideaid=recentIdeas.id ORDER BY idealabels.likes;";
                 }
-                else if (sanitizedOrder == "Newest") {
+                else if (order == "Newest") {
                     sql = "SELECT accounts.username, recentIdeas.* FROM (SELECT id, authorid, title, ideaimage, data FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id ORDER BY recentIdeas.data DESC;";
                 }
-                else if (sanitizedOrder == "Most discussed") {
+                else if (order == "Most discussed") {
                     sql = "SELECT accounts.username, recentIdeas.*, COUNT(comments.ideaid) AS comment_num FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id LEFT JOIN comments ON comments.ideaid=recentIdeas.id GROUP BY recentIdeas.id ORDER BY comment_num DESC;";
                 }
             }
@@ -153,11 +157,19 @@ export default async function handler(req, res) {
         if (result) {
             output = {data: result, type: typeOfQuery, format: "mono"};
 
-            if (sanitizedSearch != "" && sanitizedType == "" && sanitizedCreativity == "" && sanitizedStatus == "" && sanitizedOrder == "") {
+            output.data.forEach(idea => {
+                idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+            });
+
+            output.data.forEach(account => {
+                account.userimage = account.userimage?Buffer.from(account.userimage).toString():null;
+            });
+
+            if (search != "" && type == "" && creativity == "" && status == "" && order == "") {
                 sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.title LIKE ?;";
                 typeOfQuery = "ideas";
 
-                searchParam = "%" + sanitizedSearch + "%";
+                searchParam = "%" + search + "%";
 
                 result = await query(
                     sql,
@@ -165,6 +177,10 @@ export default async function handler(req, res) {
                 );
 
                 if (result) {
+                    result.forEach(idea => {
+                        idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+                    });
+
                     output = {data: {data: output.data, type: output.type}, subdata: {data: result, type: typeOfQuery}, format: "double"};
                 }
             }
@@ -172,7 +188,7 @@ export default async function handler(req, res) {
         else {
             return res.status(400).json({ success: false, error: 'Error getting ideas and accounts' });
         }
-
+        
         return res.status(200).json({ success: true, data: output });
     } catch (error) {
         console.error('Error: ', error);

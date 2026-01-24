@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,11 @@ async function handler(req, res) {
     }
 
     try {
-        const { followedaccountid, followedideaid } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const followedaccountid = getInput(fields.followedaccountid?.[0]) || '';
+        const followedideaid = getInput(fields.followedideaid?.[0]) || '';
         let data = {};
         let isNowFollowed = false;
 

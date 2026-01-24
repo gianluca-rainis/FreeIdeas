@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,18 +18,19 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0]) || '';
         let data = {};
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        const sanitizedId = getInput(id);
-
         const account = await query(
             'SELECT * FROM accounts WHERE id=?;',
-            [sanitizedId]
+            [id]
         );
 
         if (account.length === 0) {
@@ -45,7 +53,7 @@ async function handler(req, res) {
         // Get saved ideas
         const savedIdeas = await query(
             'SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM accountideadata JOIN ideas ON ideas.id=accountideadata.ideaid JOIN accounts ON accounts.id=ideas.authorid WHERE accountideadata.accountid=? AND accountideadata.saved=1;',
-            [sanitizedId]
+            [id]
         );
 
         data['saved'] = [];
@@ -64,7 +72,7 @@ async function handler(req, res) {
         // Get published ideas
         const publishedIdeas = await query(
             'SELECT ideas.id, ideas.title, ideas.ideaimage, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.authorid=? ORDER BY ideas.data DESC;',
-            [sanitizedId]
+            [id]
         );
 
         data['published'] = [];
@@ -84,7 +92,7 @@ async function handler(req, res) {
         if (req.session.account) {
             const followData = await query(
                 'SELECT * FROM follow WHERE follow.followaccountid=? AND follow.followedaccountid=?;',
-                [req.session.account.id, sanitizedId]
+                [req.session.account.id, id]
             );
 
             data['followed'] = false;

@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false, // Disable parsing
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,22 +18,24 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0] || '');
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
-
-        const sanitizedId = getInput(id);
+        
         let ret = {};
 
-        ret['idea'] = await query("SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId, accounts.public AS accountPublic FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;", [sanitizedId]);
-        ret['info'] = await query("SELECT * FROM additionalinfo WHERE ideaid=?;", [sanitizedId]); // Return the info with image
-        ret['log'] = await query("SELECT * FROM authorupdates WHERE ideaid=?;", [sanitizedId]); // Logs
-        ret['comment'] = await query("SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments LEFT JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;", [sanitizedId]); // Comments
-        ret['idealabels'] = await query("SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;", [sanitizedId]); // Labels
-        ret['accountdata'] = req.session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [sanitizedId, req.session.account.id]):[]; // Labels
-        ret['followAccountData'] = req.session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [sanitizedId, req.session.account.id]):[]; // Follow
+        ret['idea'] = await query("SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId, accounts.public AS accountPublic FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;", [id]);
+        ret['info'] = await query("SELECT * FROM additionalinfo WHERE ideaid=?;", [id]); // Return the info with image
+        ret['log'] = await query("SELECT * FROM authorupdates WHERE ideaid=?;", [id]); // Logs
+        ret['comment'] = await query("SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments LEFT JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;", [id]); // Comments
+        ret['idealabels'] = await query("SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;", [id]); // Labels
+        ret['accountdata'] = req.session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [id, req.session.account.id]):[]; // Labels
+        ret['followAccountData'] = req.session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, req.session.account.id]):[]; // Follow
 
         return res.status(200).json(ret);
     } catch (error) {

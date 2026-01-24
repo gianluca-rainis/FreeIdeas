@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false, // Disable parsing
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,37 +18,38 @@ async function handler(req, res) {
     }
 
     try {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Session destroy error: ', err);
-            }
-        });
+        const form = formidable();
+        const [fields] = await form.parse(req);
 
-        const { firstName, lastName, email, password, username } = req.body;
+        const firstName = getInput(fields.firstName?.[0] || '');
+        const lastName = getInput(fields.lastName?.[0] || '');
+        const username = getInput(fields.userName?.[0] || '');
+        const email = getInput(fields.email?.[0] || '');
+        const password = getInput(fields.password?.[0] || '');
 
         if (!firstName || !lastName || !email || !password || !username) {
             return res.status(400).json({ success: false, error: 'Not all the required fields are filled' });
         }
-
-        const sanitizedFirstName = getInput(firstName);
-        const sanitizedLastName = getInput(lastName);
-        const sanitizedEmail = getInput(email);
-        const sanitizedUsername = getInput(username);
+        
+        const bcrypt = require('bcrypt');
 
         // Check if the account exists
         const accountCheck = await query(
             'SELECT id FROM accounts WHERE email=?;',
-            [sanitizedEmail]
+            [email]
         );
 
         if (accountCheck.length > 0) {
             return res.status(401).json({ success: false, error: 'Already exist an account with the same email' });
         }
 
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         // Create the account
         const newAccount = await query(
             'INSERT INTO accounts (email, password, name, surname, username, public) VALUES (?, ?, ?, ?, ?, ?);',
-            [sanitizedEmail, bcrypt.hash(password), sanitizedFirstName, sanitizedLastName, sanitizedUsername, 0]
+            [email, hashedPassword, firstName, lastName, username, 0]
         );
 
         if (!newAccount) {
@@ -51,7 +59,7 @@ async function handler(req, res) {
         // Check if the account exists
         const accounts = await query(
             'SELECT * FROM accounts WHERE email=?;',
-            [sanitizedEmail]
+            [email]
         );
 
         if (accounts.length === 0) {
@@ -63,7 +71,6 @@ async function handler(req, res) {
         // Check the password
         let passwordMatch = false;
         
-        const bcrypt = require('bcrypt');
         passwordMatch = await bcrypt.compare(password, account.password);
 
         if (!passwordMatch) {
@@ -73,8 +80,8 @@ async function handler(req, res) {
         // Load default notification
         const title = "Welcome to FreeIdeas, "+account.username+"!";
         const description = "Welcome to FreeIdeas, "+account.username+"! We're thrilled to welcome you to our community! We hope you enjoy your stay. If you have any questions or concerns, please visit the Contact Us section of this website!";
-        const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
-
+        const today = new Date().getFullYear().toString()+"-"+((new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1).toString():(new Date().getMonth()+1).toString())+"-"+(new Date().getDate()<10?"0"+new Date().getDate().toString():new Date().getDate().toString());
+        
         const defaultNotification = await query(
             'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
             [account.id, title, description, today, 0]
@@ -91,12 +98,14 @@ async function handler(req, res) {
         );
 
         // Prepare data
+        const image = account.userimage?Buffer.from(account.userimage).toString():null;
+
         const accountData = {
             id: account.id,
             email: account.email,
             name: account.name,
             surname: account.surname,
-            userimage: account.userimage || null,
+            userimage: image,
             description: account.description,
             username: account.username,
             public: account.public,
@@ -105,9 +114,15 @@ async function handler(req, res) {
 
         // Save session
         req.session.account = accountData;
+        
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error: ', err);
+                return res.status(500).json({ success: false, error: 'Session save failed' });
+            }
 
-        return res.status(200).json({ success: true, data: accountData });
-
+            return res.status(200).json({ success: true, data: accountData });
+        });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });

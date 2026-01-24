@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,13 +18,14 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0]) || '';
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
-
-        const sanitizedId = getInput(id);
 
         if (!req.session.account || !req.session.administrator) {
             return res.status(401).json({ success: false, error: 'Administrator not logged in' });
@@ -26,7 +34,7 @@ async function handler(req, res) {
         // Delete report
         const deleteReport = await query(
             'DELETE FROM reports WHERE id=?;',
-            [sanitizedId]
+            [id]
         );
 
         if (!deleteReport) {

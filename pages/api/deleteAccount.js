@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -37,28 +44,29 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0]) || '';
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        const sanitizedId = getInput(id);
-
-        if (!req.session || ((!req.session.account || req.session.account.id != sanitizedId) && !req.session.administrator)) {
+        if (!req.session || ((!req.session.account || req.session.account.id != id) && !req.session.administrator)) {
             return res.status(400).json({ success: false, error: 'User not authorized' });
         }
 
         // Get the username
         const accountUsername = await query(
             "SELECT username FROM accounts WHERE id=?;",
-            [sanitizedId]
+            [id]
         );
 
         // Get the followers
         const followers = await query(
             "SELECT followaccountid FROM follow WHERE followedaccountid=?;",
-            [sanitizedId]
+            [id]
         );
 
         followers.forEach(async follower => {
@@ -84,31 +92,31 @@ async function handler(req, res) {
         // Delete followers
         await query(
             "DELETE FROM follow WHERE followaccountid=? OR followedaccountid=?;",
-            [sanitizedId, sanitizedId]
+            [id, id]
         );
 
         // Account idea data clear
         await query(
             "DELETE FROM accountideadata WHERE accountid=?;",
-            [sanitizedId]
+            [id]
         );
 
         // Reports clear
         await query(
             "DELETE FROM reports WHERE accountid=? OR authorid=?;",
-            [sanitizedId, sanitizedId]
+            [id, id]
         );
 
         // Notifications clear
         await query(
             "DELETE FROM notifications WHERE accountid=?;",
-            [sanitizedId]
+            [id]
         );
 
         // Get ideas id
         const ideasId = await query(
             "SELECT id FROM ideas WHERE authorid=?;",
-            [sanitizedId]
+            [id]
         );
 
         ideasId.forEach(async idea => {
@@ -164,7 +172,7 @@ async function handler(req, res) {
         // Comments clear
         const comments = await query(
             "SELECT id FROM comments WHERE authorid=?;",
-            [sanitizedId]
+            [id]
         );
 
         comments.forEach(async comment => {
@@ -176,7 +184,7 @@ async function handler(req, res) {
         // Account clear
         await query(
             "DELETE FROM accounts WHERE id=?;",
-            [sanitizedId]
+            [id]
         );
 
         if (req.session && req.session.account) {

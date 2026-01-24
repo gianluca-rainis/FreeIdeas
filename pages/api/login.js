@@ -63,22 +63,31 @@ async function handler(req, res) {
         );
 
         // Prepare data
+        const image = account.userimage?Buffer.from(account.userimage).toString():null;
+
         const accountData = {
             id: account.id,
             email: account.email,
             name: account.name,
             surname: account.surname,
-            userimage: account.userimage || null,
+            userimage: image,
             description: account.description,
             username: account.username,
             public: account.public,
             notifications: notifications
         };
 
-        // Save session con Redis
+        // Save session with Redis
         req.session.account = accountData;
-        
-        return res.status(200).json({ success: true, data: accountData });
+
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error: ', err);
+                return res.status(500).json({ success: false, error: 'Session save failed' });
+            }
+
+            return res.status(200).json({ success: true, data: accountData });
+        });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });

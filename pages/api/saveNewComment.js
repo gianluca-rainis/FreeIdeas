@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,13 @@ async function handler(req, res) {
     }
 
     try {
-        const { date, description, ideaId, superCommentId } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const date = fields.date?.[0] || '';
+        const description = fields.description?.[0] || '';
+        const ideaId = fields.ideaId?.[0] || '';
+        const superCommentId = fields.superCommentId?.[0] || '';
 
         if (!date || !description || !ideaId || !superCommentId) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
@@ -27,15 +40,10 @@ async function handler(req, res) {
             authorId = req.session.account.id;
         }
 
-        const sanitizedDate = getInput(date);
-        const sanitizedDescription = getInput(description);
-        const sanitizedIdeaId = getInput(ideaId);
-        const sanitizedSuperCommentId = getInput(superCommentId)==""?null:getInput(superCommentId);
-
         // Create the comment
         const newComment = await query(
             'INSERT INTO comments (authorid, data, description, ideaid, superCommentid) VALUES (?, ?, ?, ?, ?);',
-            [authorId, sanitizedDate, sanitizedDescription, sanitizedIdeaId, sanitizedSuperCommentId]
+            [authorId, date, description, ideaId, superCommentId]
         );
 
         if (!newComment) {

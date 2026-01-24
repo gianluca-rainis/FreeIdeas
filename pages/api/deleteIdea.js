@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -36,18 +43,19 @@ async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const id = getInput(fields.id?.[0]) || '';
 
         if (!id) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        const sanitizedId = getInput(id);
-
         // Check if the ides exists
         const idea = await query(
             'SELECT authorid FROM ideas WHERE id=?;',
-            [sanitizedId]
+            [id]
         );
 
         if (idea.length === 0) {
@@ -62,7 +70,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM authorupdates WHERE ideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -73,7 +81,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM reports WHERE ideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -84,7 +92,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM additionalinfo WHERE ideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -95,7 +103,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM idealabels WHERE ideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -106,7 +114,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM accountideadata WHERE ideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -118,7 +126,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "SELECT id FROM comments WHERE ideaid=? AND superCommentid IS NULL;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -135,7 +143,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "SELECT title, authorid FROM ideas WHERE id=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -148,7 +156,7 @@ async function handler(req, res) {
 
             result = await query(
                 "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;",
-                [authorid, sanitizedId]
+                [authorid, id]
             );
 
             if (result) {
@@ -177,7 +185,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM follow WHERE followedideaid=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {
@@ -189,7 +197,7 @@ async function handler(req, res) {
         {
             const result = await query(
                 "DELETE FROM ideas WHERE id=?;",
-                [sanitizedId]
+                [id]
             );
 
             if (!result) {

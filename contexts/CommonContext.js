@@ -170,6 +170,11 @@ export function AppProvider({ children }) {
             });
             
             if (!admin) {
+                // Fix the notification date
+                SQLdata.notifications.forEach(notification => {
+                    notification.data = notification.data.split('T')[0];
+                });
+
                 setNotifications(SQLdata.notifications || []);
                 // Load notifications into the UI
                 setTimeout(() => loadNotifications(SQLdata), 100);

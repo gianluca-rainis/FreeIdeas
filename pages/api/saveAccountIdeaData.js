@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,14 @@ async function handler(req, res) {
     }
 
     try {
-        const { ideaid, saved, dislike, liked, existRowYet } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const ideaid = fields.ideaid?.[0] || '';
+        const saved = fields.saved?.[0] || '';
+        const dislike = fields.dislike?.[0] || '';
+        const liked = fields.liked?.[0] || '';
+        const existRowYet = fields.existRowYet?.[0] || '';
 
         if (!ideaid || !saved || !dislike || !liked || !existRowYet) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
@@ -21,22 +35,16 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
-        const sanitizedIdeaId = getInput(ideaid);
-        const sanitizedSaved = getInput(saved);
-        const sanitizedDislike = getInput(dislike);
-        const sanitizedLiked = getInput(liked);
-        const sanitizedExistRowYet = getInput(existRowYet);
-
         let oldSaved;
         let oldDislike;
         let oldLiked;
 
         let sql = "";
 
-        if (sanitizedExistRowYet == "1") {
+        if (existRowYet == "1") {
             const oldAccountIdeaData = await query(
                 'SELECT saved, liked, dislike FROM accountideadata WHERE accountid=? AND ideaid=?;',
-                [req.session.account.id, sanitizedIdeaId]
+                [req.session.account.id, ideaid]
             );
 
             oldSaved = oldAccountIdeaData[0].saved;
@@ -51,21 +59,21 @@ async function handler(req, res) {
 
         await query(
             sql,
-            [sanitizedSaved, sanitizedDislike, sanitizedLiked, req.session.account.id, sanitizedIdeaId]
+            [saved, dislike, liked, req.session.account.id, ideaid]
         );
 
         const getIdeaLabels = await query(
             'SELECT saves, likes, dislike FROM idealabels WHERE ideaid=?;',
-            [sanitizedIdeaId]
+            [ideaid]
         );
         
-        let secondSaved = Math.max(0, (parseInt(getIdeaLabels[0].saves) + parseInt(sanitizedSaved) - parseInt(oldSaved)));
-        let secondLiked = Math.max(0, (parseInt(getIdeaLabels[0].likes) + parseInt(sanitizedLiked) - parseInt(oldLiked)));
-        let secondDislike = Math.max(0, (parseInt(getIdeaLabels[0].dislike) + parseInt(sanitizedDislike) - parseInt(oldDislike)));
+        let secondSaved = Math.max(0, (parseInt(getIdeaLabels[0].saves) + parseInt(saved) - parseInt(oldSaved)));
+        let secondLiked = Math.max(0, (parseInt(getIdeaLabels[0].likes) + parseInt(liked) - parseInt(oldLiked)));
+        let secondDislike = Math.max(0, (parseInt(getIdeaLabels[0].dislike) + parseInt(dislike) - parseInt(oldDislike)));
 
         await query(
             "UPDATE idealabels SET saves=?, likes=?, dislike=? WHERE ideaid=?;",
-            [secondSaved, secondLiked, secondDislike, sanitizedIdeaId]
+            [secondSaved, secondLiked, secondDislike, ideaid]
         );
 
         return res.status(200).json({ success: true });

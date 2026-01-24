@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,17 +18,18 @@ async function handler(req, res) {
     }
 
     try {
-        const { email } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const email = getInput(fields.email?.[0]) || '';
 
         if (!email) {
             return res.status(400).json({ success: false, error: 'Email is required' });
         }
 
-        const sanitizedEmail = getInput(email);
-
         const accountInfo = await query(
             'SELECT username, id FROM accounts WHERE email=?;',
-            [sanitizedEmail]
+            [email]
         );
 
         let username = accountInfo[0].username;
@@ -57,7 +65,7 @@ async function handler(req, res) {
         }
 
         // EMAIL
-        let to = sanitizedEmail;
+        let to = email;
         let subject = "Change password FreeIdeas account.";
         let message = `
         <html lang="en-US">

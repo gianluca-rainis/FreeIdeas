@@ -1,5 +1,12 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
+import formidable from 'formidable';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 function getInput(data) {
     return String(data).trim();
@@ -11,7 +18,12 @@ async function handler(req, res) {
     }
 
     try {
-        const { ideaId, accountId, feedback } = req.body;
+        const form = formidable();
+        const [fields] = await form.parse(req);
+
+        const ideaId = getInput(fields.ideaId?.[0]) || '';
+        const accountId = getInput(fields.accountId?.[0]) || '';
+        const feedback = getInput(fields.feedback?.[0]) || '';
 
         if (!ideaId || !accountId || !feedback) {
             return res.status(400).json({ success: false, error: 'Idea id, account id and feedback required' });
@@ -21,14 +33,10 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Account not logged in' });
         }
 
-        const sanitizedIdeaId = getInput(ideaId);
-        const sanitizedAccountId = getInput(accountId);
-        const sanitizedFeedback = getInput(feedback);
-
         // Create the new report
         const newReport = await query(
             'INSERT INTO reports (authorid, ideaid, accountid, feedback) VALUES (?, ?, ?, ?);',
-            [req.session.account.id, sanitizedIdeaId, sanitizedAccountId, sanitizedFeedback]
+            [req.session.account.id, ideaId, accountId, feedback]
         );
 
         if (!newReport) {
@@ -38,7 +46,7 @@ async function handler(req, res) {
         // Control if the author have done too much reports on the same thing
         const getReports = await query(
             'SELECT * FROM reports WHERE authorid=? AND ideaid=? AND accountid=?;',
-            [req.session.account.id, sanitizedIdeaId, sanitizedAccountId]
+            [req.session.account.id, ideaId, accountId]
         );
 
         // If the same author have report the same account/idea more than 5 times, report the author
