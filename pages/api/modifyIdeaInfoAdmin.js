@@ -12,6 +12,14 @@ export const config = {
     },
 };
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 async function readFileBuffer(file) {
     const chunks = [];
     
@@ -189,7 +197,7 @@ async function handler(req, res) {
             [authorid, ideaid]
         );
 
-        const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+        const today = formatDate(new Date());
 
         if (followers) {
             followers.forEach(async follower => {

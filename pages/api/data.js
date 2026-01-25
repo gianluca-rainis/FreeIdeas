@@ -51,6 +51,29 @@ async function handler(req, res) {
             }
         });
 
+        ret['log'].forEach(log => {
+            // Convert date to YYYY-MM-DD
+            if (log.data instanceof Date) {
+                const year = log.data.getFullYear();
+                const month = String(log.data.getMonth() + 1).padStart(2, '0');
+                const day = String(log.data.getDate()).padStart(2, '0');
+
+                log.data = `${year}-${month}-${day}`;
+            }
+        });
+
+        if (ret['idea'][0]['ideaimage']) {
+            ret['idea'][0]['ideaimage'] = ret['idea'][0]['ideaimage']?Buffer.from(ret['idea'][0]['ideaimage']).toString():null;
+        }
+
+        if (ret['idea'][0]['license']) {
+            ret['idea'][0]['license'] = ret['idea'][0]['license']?Buffer.from(ret['idea'][0]['license']).toString():null;
+        }
+
+        ret['info'].forEach(info => {
+            info.updtimage = info.updtimage?Buffer.from(info.updtimage).toString():null;
+        });
+
         return res.status(200).json(ret);
     } catch (error) {
         console.error('Error: ', error);

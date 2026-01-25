@@ -1,10 +1,7 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
-
-function getInput(data) {
-    return String(data).trim();
-}
+import fs from 'fs/promises';
 
 export const config = {
     api: {
@@ -12,14 +9,16 @@ export const config = {
     },
 };
 
-async function readFileBuffer(file) {
-    const chunks = [];
-    
-    return new Promise((resolve, reject) => {
-        file.on('data', (chunk) => chunks.push(chunk));
-        file.on('end', () => resolve(Buffer.concat(chunks)));
-        file.on('error', reject);
-    });
+function getInput(data) {
+    return String(data).trim();
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 async function getConvertedImage(file) {
@@ -30,7 +29,7 @@ async function getConvertedImage(file) {
             return null;
         }
 
-        const buffer = await readFileBuffer(file);
+        const buffer = await fs.readFile(file.filepath);
 
         return `data:${mimeType};base64,${buffer.toString('base64')}`;
     } catch (error) {
@@ -44,7 +43,7 @@ async function getConvertedPdf(file) {
             return null;
         }
 
-        const buffer = await readFileBuffer(file);
+        const buffer = await fs.readFile(file.filepath);
         
         return `data:application/pdf;base64,${buffer.toString('base64')}`;
     } catch (error) {
@@ -75,8 +74,8 @@ async function handler(req, res) {
         const type = getInput(fields.type?.[0] || '');
         const creativity = getInput(fields.creativity?.[0] || '');
         const status = getInput(fields.status?.[0] || '');
-        const additionalInfo = fields.additionalInfo?.[0]?JSON.parse(fields.additionalInfo[0]):{ titles: [], descriptions: [] };
-        const additionalInfoImagesData = fields.additionalInfoImagesData?.[0] || {};
+        const additionalInfo = fields.additionalInfo?.[0]?JSON.parse(fields.additionalInfo[0]):{ titles: [], descriptions: [], types: [] };
+        const additionalInfoImagesData = fields['additionalInfoImagesData[]'] || {};
         const logs = fields.logs?.[0]?JSON.parse(fields.logs[0]):{ dates: [], titles: [], descriptions: [] };
 
         if (!title || !ideaid || !author || !date || !description || !type || !creativity || !status) {
@@ -93,6 +92,9 @@ async function handler(req, res) {
                 return res.status(400).json({ success: false, error: 'MAIN_IMAGE_NULL' });
             }
         }
+        else if (fields.mainImageData?.[0]) {
+            mainImageConverted = Buffer.from(fields.mainImageData?.[0]).toString();
+        }
         else {
             return res.status(400).json({ success: false, error: 'Main image is required' });
         }
@@ -100,13 +102,13 @@ async function handler(req, res) {
         // Handle additional info images
         const additionalInfoImagesConverted = [];
 
-        if (additionalInfo.length > 0) {
+        if (additionalInfo.titles?.length > 0) {
             let iFile = 0;
             let iData = 0;
 
-            for (let i = 0; i < additionalInfo.length; i++) {
+            for (let i = 0; i < additionalInfo.types.length; i++) {
                 if (additionalInfo.types[i] == "file") {
-                    const converted = await getConvertedImage(files.additionalInfoImagesFile[i]);
+                    const converted = await getConvertedImage(files['additionalInfoImagesFile[]'][iFile]);
 
                     if (!converted) {
                         return res.status(400).json({ success: false, error: 'ADDITIONAL_INFO_IMAGE_NULL' });
@@ -124,9 +126,6 @@ async function handler(req, res) {
                     iData++;
                 }
             }
-        }
-        else if (additionalInfo.titles?.length > 0) {
-            return res.status(400).json({ success: false, error: 'Additional images required' });
         }
 
         // Handle the license
@@ -187,9 +186,10 @@ async function handler(req, res) {
         );
 
         if (followers) {
-            followers.forEach(async follower => {
+            for (const follower of followers) {
                 let titleNot = "";
                 let descrNot = "";
+                const today = formatDate(new Date());
 
                 if (req.session.account) {
                     titleNot = req.session.account.username + " has updated " + title + "!";
@@ -204,7 +204,7 @@ async function handler(req, res) {
                     'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
                     [follower.followaccountid, titleNot, descrNot, today, 0]
                 );
-            });
+            }
         }
 
         return res.status(200).json({ success: true });

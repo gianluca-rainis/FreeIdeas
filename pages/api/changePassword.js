@@ -12,6 +12,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -44,7 +52,7 @@ async function handler(req, res) {
         }
 
         {
-            const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+            const today = formatDate(new Date());
             
             let titleNot = "You have requested to change your password!";
             let description = "You have requested to change your password. Check your inbox for the password reset email. If you didn't have requested to change your password, it's possible your account has been compromised. In this case, we recommend to contact us immediately.";

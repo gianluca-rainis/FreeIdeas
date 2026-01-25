@@ -1,6 +1,7 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
+import fs from 'fs/promises';
 
 export const config = {
     api: {
@@ -12,14 +13,12 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function readFileBuffer(file) {
-    const chunks = [];
-    
-    return new Promise((resolve, reject) => {
-        file.on('data', (chunk) => chunks.push(chunk));
-        file.on('end', () => resolve(Buffer.concat(chunks)));
-        file.on('error', reject);
-    });
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 async function getConvertedImage(file) {
@@ -30,10 +29,11 @@ async function getConvertedImage(file) {
             return null;
         }
 
-        const buffer = await readFileBuffer(file);
+        const buffer = await fs.readFile(file.filepath);
 
         return `data:${mimeType};base64,${buffer.toString('base64')}`;
     } catch (error) {
+        console.error('Error converting image:', error);
         return null;
     }
 }
@@ -51,13 +51,13 @@ async function handler(req, res) {
         const form = formidable();
         const [fields, files] = await form.parse(req);
 
-        const id = getInput(fields.id?.[0] || req.session.account.id);
-        const firstName = getInput(fields.firstName?.[0] || '');
-        const lastName = getInput(fields.lastName?.[0] || '');
+        const id = getInput(fields.id?.[0] || req.session.account?.id || '');
+        const firstName = getInput(fields.name?.[0] || '');
+        const lastName = getInput(fields.surname?.[0] || '');
         const description = getInput(fields.description?.[0] || '');
         const username = getInput(fields.username?.[0] || '');
-        const email = getInput(fields.email?.[0] || req.session.account.email);
-        const ispublic = getInput(fields.public?.[0] || '');
+        const email = getInput(fields.email?.[0] || req.session.account?.email || '');
+        const isPublic = Number(getInput(fields.public?.[0] || req.session.account?.public || 0));
         let image = null;
 
         if (files.image?.[0]) {
@@ -65,38 +65,21 @@ async function handler(req, res) {
         }
 
         // Update the data (update image only if given)
-        if (!image) {
+        if (image) {
             await query(
                 "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=?, email=?, public=? WHERE id=?;",
-                [firstName, lastName, username, image, description, email, ispublic, id]
+                [firstName, lastName, username, image, description, email, isPublic, id]
             );
         }
         else {
             await query(
                 "UPDATE accounts SET name=?, surname=?, username=?, description=?, email=?, public=? WHERE id=?;",
-                [firstName, lastName, username, description, email, ispublic, id]
+                [firstName, lastName, username, description, email, isPublic, id]
             );
         }
 
-        if (req.session.account) {
-            const accountData = {
-                id: id,
-                email: email,
-                name: firstName,
-                surname: lastName,
-                userimage: image || null,
-                description: description,
-                username: username,
-                public: ispublic,
-                notifications: notifications
-            };
-
-            req.session.account = accountData;
-            await req.session.save();
-        }
-
         // Add the default notification
-        const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+        const today = formatDate(new Date());
         
         {
             let titleNot = "";
@@ -117,13 +100,13 @@ async function handler(req, res) {
             );
         }
 
-        if (ispublic == 1) {
+        if (isPublic === 1) {
             const followers = await query(
                 "SELECT followaccountid FROM follow WHERE followedaccountid=?;",
                 [id]
             );
 
-            followers.forEach(async follower => {
+            for (const follower of followers) {
                 let titleNot = "";
                 let descNot = "";
 
@@ -140,7 +123,7 @@ async function handler(req, res) {
                     "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
                     [follower.followaccountid, titleNot, descNot, today, 0]
                 );
-            });
+            }
         }
         else {
             const followers = await query(
@@ -148,7 +131,7 @@ async function handler(req, res) {
                 [id]
             );
 
-            followers.forEach(async follower => {
+            for (const follower of followers) {
                 let titleNot = "";
                 let descNot = "";
 
@@ -165,12 +148,42 @@ async function handler(req, res) {
                     "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
                     [follower.followaccountid, titleNot, descNot, today, 0]
                 );
-            });
+            }
 
             await query(
                 "DELETE FROM follow WHERE followedaccountid=?;",
                 [id]
             );
+        }
+
+        if (req.session.account) {
+            const updatedAccount = await query(
+                "SELECT * FROM accounts WHERE id=?;",
+                [id]
+            );
+
+            if (updatedAccount && updatedAccount[0]) {
+                const accountNotifications = await query(
+                    "SELECT * FROM notifications WHERE accountid=?;",
+                    [id]
+                );
+
+                const userImage = updatedAccount[0].userimage?Buffer.from(updatedAccount[0].userimage).toString():null;
+
+                req.session.account = {
+                    id: updatedAccount[0].id,
+                    email: updatedAccount[0].email,
+                    name: updatedAccount[0].name,
+                    surname: updatedAccount[0].surname,
+                    userimage: userImage,
+                    description: updatedAccount[0].description,
+                    username: updatedAccount[0].username,
+                    public: updatedAccount[0].public,
+                    notifications: accountNotifications
+                };
+
+                await req.session.save();
+            }
         }
 
         return res.status(200).json({ success: true });

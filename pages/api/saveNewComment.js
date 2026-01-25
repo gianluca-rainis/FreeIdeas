@@ -21,12 +21,12 @@ async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const date = fields.date?.[0] || '';
+        const date = fields.data?.[0] || '';
         const description = fields.description?.[0] || '';
-        const ideaId = fields.ideaId?.[0] || '';
-        const superCommentId = fields.superCommentId?.[0] || '';
+        const ideaId = fields.ideaid?.[0] || '';
+        const superCommentId = fields.superCommentid?.[0] || null;
 
-        if (!date || !description || !ideaId || !superCommentId) {
+        if (!date || !description || !ideaId) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 

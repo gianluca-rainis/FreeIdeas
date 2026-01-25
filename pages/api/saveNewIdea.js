@@ -1,10 +1,7 @@
 import { query } from '../../lib/db_connection';
 import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
-
-function getInput(data) {
-    return String(data).trim();
-}
+import fs from 'fs/promises';
 
 export const config = {
     api: {
@@ -12,14 +9,16 @@ export const config = {
     },
 };
 
-async function readFileBuffer(file) {
-    const chunks = [];
-    
-    return new Promise((resolve, reject) => {
-        file.on('data', (chunk) => chunks.push(chunk));
-        file.on('end', () => resolve(Buffer.concat(chunks)));
-        file.on('error', reject);
-    });
+function getInput(data) {
+    return String(data).trim();
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 async function getConvertedImage(file) {
@@ -30,10 +29,11 @@ async function getConvertedImage(file) {
             return null;
         }
 
-        const buffer = await readFileBuffer(file);
+        const buffer = await fs.readFile(file.filepath);
 
         return `data:${mimeType};base64,${buffer.toString('base64')}`;
     } catch (error) {
+        console.error('Error converting image: ', error);
         return null;
     }
 }
@@ -44,10 +44,11 @@ async function getConvertedPdf(file) {
             return null;
         }
 
-        const buffer = await readFileBuffer(file);
+        const buffer = await fs.readFile(file.filepath);
         
         return `data:application/pdf;base64,${buffer.toString('base64')}`;
     } catch (error) {
+        console.error('Error converting PDF: ', error);
         return null;
     }
 }
@@ -65,6 +66,19 @@ async function handler(req, res) {
         // Parse form data to handle the files
         const form = formidable();
         const [fields, files] = await form.parse(req);
+
+        // Always get data as array
+        function normalizeFileArray(file) {
+            if (!file) {
+                return [];
+            }
+
+            return Array.isArray(file) ? file : [file];
+        }
+
+        const mainImages = normalizeFileArray(files.mainImage);
+        const additionalImages = normalizeFileArray(files['additionalInfoImages[]']);
+        const licenses = normalizeFileArray(files.license);
 
         const title = getInput(fields.title?.[0] || '');
         const author = getInput(fields.author?.[0] || '');
@@ -84,8 +98,8 @@ async function handler(req, res) {
         // Handle MainImage
         let mainImageConverted = null;
 
-        if (files.mainImage?.[0]) {
-            mainImageConverted = await getConvertedImage(files.mainImage[0]);
+        if (mainImages.length > 0) {
+            mainImageConverted = await getConvertedImage(mainImages[0]);
 
             if (!mainImageConverted) {
                 return res.status(400).json({ success: false, error: 'MAIN_IMAGE_NULL' });
@@ -98,9 +112,9 @@ async function handler(req, res) {
         // Handle additional info images
         const additionalInfoImagesConverted = [];
 
-        if (files.additionalInfoImages?.length > 0) {
-            for (let i = 0; i < files.additionalInfoImages.length; i++) {
-                const converted = await getConvertedImage(files.additionalInfoImages[i]);
+        if (additionalImages.length > 0) {
+            for (let i = 0; i < additionalImages.length; i++) {
+                const converted = await getConvertedImage(additionalImages[i]);
 
                 if (!converted) {
                     return res.status(400).json({ success: false, error: 'ADDITIONAL_INFO_IMAGE_NULL' });
@@ -116,8 +130,8 @@ async function handler(req, res) {
         // Handle the license
         let licenseConverted = null;
 
-        if (files.license?.[0]) {
-            licenseConverted = await getConvertedPdf(files.license[0]);
+        if (licenses.length > 0) {
+            licenseConverted = await getConvertedPdf(licenses[0]);
 
             if (!licenseConverted) {
                 return res.status(400).json({ success: false, error: 'Invalid license PDF' });
@@ -159,7 +173,7 @@ async function handler(req, res) {
         );
 
         // Save default notifications
-        const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+        const today = formatDate(new Date());
         
         {
             const titleNot = "You have published a new idea!";
@@ -177,8 +191,8 @@ async function handler(req, res) {
             [req.session.account.id]
         );
 
-        if (followers) {
-            followers.forEach(async follower => {
+        if (followers && followers.length > 0) {
+            for (const follower of followers) {
                 const titleNot = req.session.account.username + " has published a new idea!";
                 const descrNot = req.session.account.username + " has published a new idea! The idea's title is " + title + ". You can see it in the last ideas, search it or see it from the account page of " + req.session.account.username + "!";
                 
@@ -186,7 +200,7 @@ async function handler(req, res) {
                     'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
                     [follower.followaccountid, titleNot, descrNot, today, 0]
                 );
-            });
+            }
         }
 
         // Reload notifications
@@ -196,6 +210,7 @@ async function handler(req, res) {
         );
 
         req.session.account.notifications = result;
+        await req.session.save();
 
         return res.status(200).json({ success: true, ideaId: ideaId });
     } catch (error) {

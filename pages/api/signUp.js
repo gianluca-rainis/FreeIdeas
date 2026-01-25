@@ -12,6 +12,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -80,7 +88,7 @@ async function handler(req, res) {
         // Load default notification
         const title = "Welcome to FreeIdeas, "+account.username+"!";
         const description = "Welcome to FreeIdeas, "+account.username+"! We're thrilled to welcome you to our community! We hope you enjoy your stay. If you have any questions or concerns, please visit the Contact Us section of this website!";
-        const today = new Date().getFullYear().toString()+"-"+((new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1).toString():(new Date().getMonth()+1).toString())+"-"+(new Date().getDate()<10?"0"+new Date().getDate().toString():new Date().getDate().toString());
+        const today = formatDate(new Date());
         
         const defaultNotification = await query(
             'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',

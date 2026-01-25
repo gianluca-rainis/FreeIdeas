@@ -21,8 +21,8 @@ async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const ideaId = getInput(fields.ideaid?.[0]) || null;
-        const accountId = getInput(fields.accountid?.[0]) || null;
+        const ideaId = fields.ideaid?.[0] ? parseInt(getInput(fields.ideaid[0]), 10) : null;
+        const accountId = fields.accountid?.[0] ? parseInt(getInput(fields.accountid[0]), 10) : null;
         const feedback = getInput(fields.feedback?.[0]) || '';
 
         if ((!ideaId && !accountId) || !feedback) {

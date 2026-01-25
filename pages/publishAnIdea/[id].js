@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Nav from '../../components/Nav'
@@ -24,12 +24,14 @@ export async function getServerSideProps(context) {
 
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
+        const hostHeader = context.req?.headers?.host;
+        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
 
-        const response = await fetchWithTimeout('/api/data', {
+        const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData
-        }, 800);
+        }, 2000);
 
         const data = await response.json();
         

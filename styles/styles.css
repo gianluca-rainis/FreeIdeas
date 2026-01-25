@@ -1349,6 +1349,7 @@ footer ul li a {
     border-radius: 10px;
     padding: 10px;
     font-size: large;
+    cursor: pointer;
 }
 
 #accountAsideInfo {

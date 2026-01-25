@@ -67,7 +67,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('public', formData.public);
 
             if (formData.userimage) {
-                fd.append('userimage', formData.userimage);
+                fd.append('image', formData.userimage);
             }
 
             const res = await fetch('/api/modifyAccountInfo', {

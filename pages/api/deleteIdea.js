@@ -12,6 +12,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 async function deleteAllIdsSubComments(id) {
     try {
         const result = await query(
@@ -152,7 +160,7 @@ async function handler(req, res) {
             
             let title = result[0].title;
             let authorid = result[0].authorid;
-            const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+            const today = formatDate(new Date());
 
             result = await query(
                 "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;",

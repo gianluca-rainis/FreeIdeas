@@ -240,7 +240,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                 throw new Error(data?.error || "Failed to save idea");
             }
         } catch (error) {
-            console.error('Submission error:', error);
+            console.error('Submission error: ', error);
             await showAlert('Failed to save idea. Please try again.');
         } finally {
             setLoading(false);

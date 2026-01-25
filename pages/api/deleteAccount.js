@@ -12,6 +12,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 // Delete all the comments from the deeper
 async function deleteAllIdsSubComments(id) {
     try {
@@ -70,7 +78,7 @@ async function handler(req, res) {
         );
 
         followers.forEach(async follower => {
-            const today = new Date().getFullYear()+"-"+(new Date().getMonth()+1)<10?"0"+(new Date().getMonth()+1):(new Date().getMonth()+1)+"-"+new Date().getDate()<10?"0"+new Date().getDate():new Date().getDate();
+            const today = formatDate(new Date());
             let titleNot = "";
             let description = "";
 
@@ -188,7 +196,11 @@ async function handler(req, res) {
         );
 
         if (req.session && req.session.account) {
-            req.session.destroy();
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Error destroying session: ', err);
+                }
+            });
         }
 
         return res.status(200).json({ success: true });

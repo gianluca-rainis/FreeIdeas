@@ -62,16 +62,18 @@ async function getAuthorId(id) {
 
 // Delete the comment and all the supercomments without comment
 async function deleteCommentAndSuperCommentsWithoutSubComments(id) {
-    let superCommentId = getSuperCommentid(id);
-    let authorId = getAuthorId(superCommentId);
+    let superCommentId = await getSuperCommentid(id);
+    let authorId = await getAuthorId(superCommentId);
 
     await query(
         "DELETE FROM comments WHERE id=?;",
         [id]
     );
 
-    if (superCommentId !== null && !controlIfHaveSubcomments(superCommentId) && authorId === null) {
-        deleteCommentAndSuperCommentsWithoutSubComments(superCommentId);
+    const haveSubComments = await controlIfHaveSubcomments(superCommentId);
+
+    if (superCommentId !== null && !haveSubComments && authorId === null) {
+        await deleteCommentAndSuperCommentsWithoutSubComments(superCommentId);
     }
 }
 
@@ -104,8 +106,10 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
-        if (!controlIfHaveSubcomments(id)) {
-            deleteCommentAndSuperCommentsWithoutSubComments(id);
+        const haveSubComments = await controlIfHaveSubcomments(id);
+
+        if (!haveSubComments) {
+            await deleteCommentAndSuperCommentsWithoutSubComments(id);
         }
         else {
             let description = "";

@@ -437,7 +437,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             <main id="accountMain">
                 <aside id="accountAsideInfo">
                     {
-                        isOwner && !editing ?
+                        !editing ?
                         <img id="modifyAccountInfo" alt="Modify account" src={getImagePath('modify')} onClick={startEdit} />
                         :null
                     }
@@ -471,14 +471,6 @@ export default function AccountPage({ accountData, pageTitle }) {
                             <img id="userImageAccount" alt="Account image" src={accountData.userimage?accountData.userimage:getImagePath("user")} />
                             <h2 id="userNameSurnameAccount">{accountData.name+" "+accountData.surname}</h2>
                             <h3 id="emailAccount">{accountData.email}</h3>
-                            {
-                                !isOwner?
-                                <div id="followReportAccountDiv">
-                                    <input type="button" id="followAccountButton" value={isFollowed ? 'Unfollow Account' : 'Follow Account'} onClick={handleFollow} disabled={busy.follow} />
-                                    <input type="button" id="reportAccountButton" value="Report Account" onClick={handleReport} disabled={busy.danger} />
-                                </div>
-                                :null
-                            }
                             <p id="descriptionAccount">{accountData.description}</p>
                         </>
                     )}

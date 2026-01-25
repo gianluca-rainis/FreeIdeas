@@ -86,9 +86,9 @@ function PrintAdditionalInfo({ ideaData }) {
     return null;
 }
 
-function PrintDownloadLink({ idea }) {
-    if (idea?.downloadlink) {
-        const link = idea.downloadlink;
+function PrintDownloadLink({ ideaData }) {
+    if (ideaData?.['idea']?.[0]?.downloadlink) {
+        const link = ideaData['idea'][0].downloadlink;
 
         return (
             <section id='downloadSection'>
