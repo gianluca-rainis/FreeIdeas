@@ -21,7 +21,7 @@ export default function Footer() {
                         <ul>
                             <li><Link href="/privacyPolicy" prefetch>Privacy Policy</Link></li>
                             <li><Link href="/termsOfUse" prefetch>Terms of Use</Link></li>
-                            <li><Link href="/license" prefetch>License</Link></li>
+                            <li><Link href="/licensePage" prefetch>License</Link></li>
                         </ul>
                     </div>
 
