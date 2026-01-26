@@ -28,8 +28,6 @@ async function handler(req, res) {
         const password4 = fields.password4?.[0] || '';
         const password5 = fields.password5?.[0] || '';
 
-        req.session.destroy();
-
         if (!username || !password1 || !password2 || !password3 || !password4 || !password5) {
             return res.status(400).json({ success: false, error: 'Username and 5 passwords required' });
         }
@@ -41,32 +39,43 @@ async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(401).json({ success: false, error: 'Account not found in database' });
+            return res.status(400).json({ success: false, error: 'Account not found in database' });
         }
 
         const bcrypt = require('bcrypt');
         let foundAccount = false;
 
-        accounts.forEach(async account => {
-            let passwordMatch1 = await bcrypt.compare(password1, account.password1);
-            let passwordMatch2 = await bcrypt.compare(password2, account.password2);
-            let passwordMatch3 = await bcrypt.compare(password3, account.password3);
-            let passwordMatch4 = await bcrypt.compare(password4, account.password4);
-            let passwordMatch5 = await bcrypt.compare(password5, account.password5);
+        await Promise.all(accounts.map(async account => {
+            // Convert $2y$ (PHP) to $2b$ (Node.js bcrypt)
+            let passwordMatch1 = await bcrypt.compare(password1, account.password1.replace(/^\$2y\$/, '$2b$'));
+            let passwordMatch2 = await bcrypt.compare(password2, account.password2.replace(/^\$2y\$/, '$2b$'));
+            let passwordMatch3 = await bcrypt.compare(password3, account.password3.replace(/^\$2y\$/, '$2b$'));
+            let passwordMatch4 = await bcrypt.compare(password4, account.password4.replace(/^\$2y\$/, '$2b$'));
+            let passwordMatch5 = await bcrypt.compare(password5, account.password5.replace(/^\$2y\$/, '$2b$'));
 
             if (passwordMatch1 && passwordMatch2 && passwordMatch3 && passwordMatch4 && passwordMatch5) {
-                req.session.administrator = req.session.administrator || {};
-                req.session.administrator.id = account.id;
-                req.session.administrator.username = account.username;
+                const adminData = {
+                    id: account.id,
+                    username: account.username
+                };
+
+                req.session.administrator = adminData;
                 foundAccount = true;
             }
-        });
+        }));
 
         if (!foundAccount) {
-            return res.status(401).json({ success: false, error: 'Account not found' });
+            return res.status(401).json({ success: false, error: 'Wrong passwords' });
         }
 
-        return res.status(200).json({ success: true });
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error: ', err);
+                return res.status(500).json({ success: false, error: 'Session save failed' });
+            }
+
+            return res.status(200).json({ success: true });
+        });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });

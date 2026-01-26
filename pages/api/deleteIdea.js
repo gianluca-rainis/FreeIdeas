@@ -60,17 +60,20 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        // Check if the ides exists
-        const idea = await query(
-            'SELECT authorid FROM ideas WHERE id=?;',
+        // Check if the idea exists
+        const ideaResult = await query(
+            'SELECT authorid, title FROM ideas WHERE id=?;',
             [id]
         );
 
-        if (idea.length === 0) {
+        if (ideaResult.length === 0) {
             return res.status(404).json({ success: false, error: 'Idea not found in the database' });
         }
 
-        if ((!req.session.account || req.session.account.id != ides[0].authorid) && !req.session.administrator) {
+        const authorid = ideaResult[0].authorid;
+        const title = ideaResult[0].title;
+
+        if ((!req.session.account || req.session.account.id != authorid) && !req.session.administrator) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -149,20 +152,9 @@ async function handler(req, res) {
 
         // Prepare the notifications for the followers
         {
-            const result = await query(
-                "SELECT title, authorid FROM ideas WHERE id=?;",
-                [id]
-            );
-
-            if (!result) {
-                throw new Error("Error getting idea info");
-            }
-            
-            let title = result[0].title;
-            let authorid = result[0].authorid;
             const today = formatDate(new Date());
 
-            result = await query(
+            const result = await query(
                 "SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;",
                 [authorid, id]
             );
@@ -215,6 +207,7 @@ async function handler(req, res) {
 
         // Create the default notification (to the author)
         {
+            const today = formatDate(new Date());
             let titleNot = "";
             let description = "";
 
@@ -229,7 +222,7 @@ async function handler(req, res) {
 
             const result = await query(
                 "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
-                [req.session.account.id, titleNot, description, today, 0]
+                [authorid, titleNot, description, today, 0]
             );
 
             if (!result) {
@@ -237,7 +230,7 @@ async function handler(req, res) {
             }
         }
 
-        if (req.session.account && req.session.account.id == authorId) {
+        if (req.session.account && req.session.account.id == authorid) {
             const result = await query(
                 "SELECT * FROM notifications WHERE accountid=?;",
                 [req.session.account.id]

@@ -38,6 +38,10 @@ export default function IdeasView({ showAlert, showConfirm }) {
                     throw new Error(json?.error || 'Request failed');
                 }
 
+                json.data.forEach(idea => {
+                    idea.data = idea.data.split('T')[0];
+                });
+
                 setData(Array.isArray(json.data) ? json.data : []);
             } catch (err) {
                 if (err.name === 'AbortError') {

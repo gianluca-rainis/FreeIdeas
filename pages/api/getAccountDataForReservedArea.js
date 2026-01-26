@@ -55,6 +55,10 @@ async function handler(req, res) {
             }
         }
 
+        for (const account of data) {
+            account.userimage = account.userimage?Buffer.from(account.userimage).toString():null;
+        }
+
         return res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error: ', error);

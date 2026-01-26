@@ -71,8 +71,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     dislike: labelsData?.dislike ?? ''
                 });
 
-                setUseDefaultLicense(!ideaData?.license);
-                setLicensePdfUrl(ideaData?.license || null);
+                const license = ideaData?.license?Buffer.from(ideaData?.license).toString():null;
+                
+                setUseDefaultLicense(!license);
+                setLicensePdfUrl(license);
                 setLicensePdfFile(null);
                 
                 setAdditionalInfo(json.info || []);
@@ -95,7 +97,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
     useEffect(() => {
         async function fetchDefaultLicense() {
             try {
-                if (useDefaultLicense) {
+                if (useDefaultLicense && formData.title && idea?.accountName) {
                     const fd = new FormData();
                     fd.append('title', formData.title);
                     fd.append('author', idea?.accountName || '');
@@ -114,7 +116,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
 
                     setLicensePdfUrl(data?.[0] || null);
                 }
-                else {
+                else if (!useDefaultLicense) {
                     setLicensePdfUrl(idea?.license || null);
                 }
             } catch (error) {
@@ -123,7 +125,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
         }
 
         fetchDefaultLicense();
-    }, [useDefaultLicense]);
+    }, [useDefaultLicense, formData.title, idea?.accountName, idea?.license]);
 
     async function handleSave() {
         try {

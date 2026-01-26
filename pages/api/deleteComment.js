@@ -102,7 +102,7 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Comment not found in the database' });
         }
 
-        if (!req.session.account || (req.session.account.id != authorId[0].authorid && !req.session.administrator)) {
+        if (!req.session.administrator && (!req.session.account || req.session.account.id != authorId[0].authorid)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 

@@ -42,6 +42,10 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                     throw new Error(json?.error || 'Request failed');
                 }
 
+                json.data.forEach(notification => {
+                    notification.data = notification.data.split('T')[0];
+                });
+
                 setData(Array.isArray(json.data) ? json.data : []);
             } catch (error) {
                 if (error.name === 'AbortError') {

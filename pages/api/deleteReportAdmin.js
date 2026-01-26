@@ -27,7 +27,7 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        if (!req.session.account || !req.session.administrator) {
+        if (!req.session.administrator) {
             return res.status(401).json({ success: false, error: 'Administrator not logged in' });
         }
 

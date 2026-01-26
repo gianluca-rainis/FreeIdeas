@@ -55,6 +55,10 @@ async function handler(req, res) {
             }
         }
 
+        for (const idea of data) {
+            idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+        }
+
         return res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error: ', error);
