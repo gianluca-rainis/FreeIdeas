@@ -14,11 +14,11 @@ import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 export async function getServerSideProps(context) {
     let adminSessionData = false;
     let pageTitle = 'Reserved Area';
+    
     const cookieHeader = context.req?.headers?.cookie ?? '';
-    const host = context.req?.headers?.host ?? '';
-    const forwardedProto = context.req?.headers?.['x-forwarded-proto'];
-    const protocol = forwardedProto ? forwardedProto.split(',')[0] : 'http';
-    const baseUrl = host ? `${protocol}://${host}` : '';
+    const protocol = context.req.headers['x-forwarded-proto'] || 'http';
+    const host = context.req.headers.host;
+    const baseUrl = `${protocol}://${host}`;
 
     // Cache SSR response briefly to improve perceived speed
     if (context.res) {
@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData.php?data=administrator`, {
+        const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=administrator`, {
             credentials: "include",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined
         }, 800);
@@ -68,7 +68,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
     async function handleLogout() {
         try {
-            await fetch("/api/logout.php", {
+            await fetch("/api/logout", {
                 credentials: "include"
             });
             
@@ -92,7 +92,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
             try {
                 const formData = new FormData(e.currentTarget);
 
-                const response = await fetch(form.action, {
+                const response = await fetch(new URL(form.action, window.location.origin).href, {
                     credentials: "include",
                     method: "POST",
                     body: formData
@@ -203,7 +203,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                             <hr />
                         </div>
 
-                        <form action="/api/reservedAreaLogin.php" method="POST" id="loginReservedAreaForm">
+                        <form action="/api/reservedAreaLogin" method="POST" id="loginReservedAreaForm">
                             <ul style={{width: "auto"}}>
                                 <li>
                                     <label htmlFor="usernameReservedArea">Username:</label>

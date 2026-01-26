@@ -60,7 +60,7 @@ export default function LoginPage({pageTitle}) {
                     const formData = new FormData();
                     formData.append("email", email);
 
-                    const response = await fetch("./api/changePassword.php", {
+                    const response = await fetch("./api/changePassword", {
                         credentials: "include",
                         method: "POST",
                         body: formData
@@ -168,7 +168,7 @@ export default function LoginPage({pageTitle}) {
                 <section>
                     <h1>Sign In</h1>
                     
-                    <form action="./api/login.php" method="POST" ref={formRef}>
+                    <form action="./api/login" method="POST" ref={formRef}>
                         <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength="255" id="emailLoginPage" required />
                         <input type="password" autoComplete="current-password" placeholder="Password" name="password" id="passwordFormInputLoginPage" required />
                     

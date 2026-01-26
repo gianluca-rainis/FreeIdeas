@@ -25,7 +25,7 @@ export class ValidationError extends Error {
 
 // Main handle error
 export function handleError(error, context = 'Unknown') {
-    console.error(`Error in ${context}:`, error);
+    console.error(`Error in ${context}: `, error);
     
     if (error instanceof APIError) {
         return {

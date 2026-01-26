@@ -1,4 +1,4 @@
-<div style="text-align: center;"><img src="./images/logo/FreeIdeas.svg" style="width: 50%;"></div>
+<div style="text-align: center;"><img src="/images/logo/FreeIdeas.svg" style="width: 50%;"></div>
 
 <h1 style="text-align: center;">A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a></h1>
 
@@ -69,10 +69,10 @@ EVERYTHING WAS DEVELOPED BY THE AUTHOR.
 FreeIdeas has two official logos:
 
 ### Light logo:
-<div style="text-align: center;"><img src="./images/logo/FreeIdeas.svg" style="width: 30%;"></div>
+<div style="text-align: center;"><img src="/images/logo/FreeIdeas.svg" style="width: 30%;"></div>
 
 ### Dark logo:
-<div style="text-align: center;"><img src="./images/logo/FreeIdeas_Pro.svg" style="width: 30%;"></div>
+<div style="text-align: center;"><img src="/images/logo/FreeIdeas_Pro.svg" style="width: 30%;"></div>
 
 You can find the two official logos in the `/images/logo/` folder.
 
@@ -83,6 +83,23 @@ You can find the two official logos in the `/images/logo/` folder.
 - **Prohibited uses**: Using the name or logos (official or unofficial) to impersonate FreeIdeas or mislead others is strictly forbidden.
 
 For full details about the use of logos and the official references policy, see the **FreeIdeas License**.
+
+## Dependencies
+```bash
+npm install mysql2
+```
+```bash
+npm install bcrypt
+```
+```bash
+npm install nodemailer
+```
+```bash
+npm install formidable sharp
+```
+```bash
+npm install express-session connect-mysql2
+```
 
 ## 🛢 DataBase structure
 ### Accounts

@@ -11,16 +11,25 @@
         "build-vite": "vite build"
     },
     "dependencies": {
+        "bcrypt": "^6.0.0",
+        "connect-redis": "^9.0.0",
+        "express-mysql-session": "^3.0.3",
+        "express-session": "^1.19.0",
+        "formidable": "^3.5.4",
+        "mysql2": "^3.16.0",
         "next": "^16.0.3",
+        "nodemailer": "^7.0.12",
         "react": "^19.2.0",
-        "react-dom": "^19.2.0"  
+        "react-dom": "^19.2.0",
+        "redis": "^5.10.0",
+        "sharp": "^0.34.5"
     },
     "devDependencies": {
         "@types/react": "^18.2.43",
         "@types/react-dom": "^18.2.17",
         "@vitejs/plugin-react": "^4.2.1",
-        "vite": "^5.0.8",
         "eslint": "^9",
-        "eslint-config-next": "^16.0.3"
+        "eslint-config-next": "^16.0.3",
+        "vite": "^5.0.8"
     }
 }

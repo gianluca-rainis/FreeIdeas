@@ -10,6 +10,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
         surname: '',
         email: '',
         description: '',
+        public: 0,
         userimage: null
     });
 
@@ -22,7 +23,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 const fd = new FormData();
                 fd.append('id', accountId);
 
-                const res = await fetch('/api/getAccountData.php', {
+                const res = await fetch('/api/getAccountData', {
                     credentials: 'include',
                     method: 'POST',
                     body: fd
@@ -41,6 +42,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                     surname: data.data.surname || '',
                     email: data.data.email || '',
                     description: data.data.description || '',
+                    public: data.data.public || 0,
                     userimage: null
                 });
             } catch (error) {
@@ -67,10 +69,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('public', formData.public);
 
             if (formData.userimage) {
-                fd.append('userimage', formData.userimage);
+                fd.append('image', formData.userimage);
             }
 
-            const res = await fetch('/api/modifyAccountInfoAdmin.php', {
+            const res = await fetch('/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -92,8 +94,8 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
     }
 
     async function handleTogglePublic() {
-        if (!await showConfirm(`Make this account ${accountData.public === 0 ? 'Public' : 'Private'}?`)) {
-            return
+        if (!await showConfirm(`Make this account ${accountData.public == 0 ? 'Public' : 'Private'}?`)) {
+            return;
         }
 
         try {
@@ -104,9 +106,9 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('surname', formData.surname);
             fd.append('email', formData.email);
             fd.append('description', formData.description);
-            fd.append('public', formData.public==0?1:0);
+            fd.append('public', accountData.public==0?'1':'0');
 
-            const res = await fetch('/api/modifyAccountInfoAdmin.php', {
+            const res = await fetch('/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -120,7 +122,12 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
 
             setAccountData((prev) => ({
                 ...prev,
-                public: prev.public === 0 ? 1 : 0
+                public: prev.public == 0 ? 1 : 0
+            }));
+
+            setFormData((prev) => ({
+                ...prev,
+                public: prev.public == 0 ? 1 : 0
             }));
 
             await showAlert('Account status updated!');
@@ -131,18 +138,11 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
     }
 
     async function handleChangePassword() {
-        const newPassword = await showPrompt('Enter new password:');
-
-        if (!newPassword) {
-            return
-        }
-
         try {
             const fd = new FormData();
-            fd.append('id', accountId);
-            fd.append('newPassword', newPassword);
+            fd.append('email', formData.email);
 
-            const res = await fetch('/api/changePassword.php', {
+            const res = await fetch('/api/changePassword', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -163,14 +163,14 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
 
     async function handleDeleteAccount() {
         if (!await showConfirm('Are you absolutely sure? This cannot be undone!')) {
-            return
+            return;
         }
 
         try {
             const fd = new FormData();
             fd.append('id', accountId);
 
-            const res = await fetch('/api/deleteAccountAdmin.php', {
+            const res = await fetch('/api/deleteAccount', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -237,7 +237,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             </div>
             <div id="dangerAreaAccountAdmin">
                 <label>Danger Area</label>
-                <input type="button" onClick={handleTogglePublic} value={"Make the account "+accountData.public===0?'Public':'Private'} data-value="" id="dangerAreaAccountPublicPrivateAccountAdmin" />
+                <input type="button" onClick={handleTogglePublic} value={`Make the account ${accountData.public==0?"Public":"Private"}`} data-value="" id="dangerAreaAccountPublicPrivateAccountAdmin" />
                 <input type="button" onClick={handleChangePassword} value="Change Password" id="dangerAreaAccountChangePasswordAdmin" />
                 <input type="button" onClick={handleDeleteAccount} value="Delete Account" id="dangerAreaAccountDeleteAccountAdmin" />
             </div>

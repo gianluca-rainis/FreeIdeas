@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // Server-side rendering
-export async function getServerSideProps({ res }) {
+export async function getServerSideProps({ req, res }) {
     let ideas = [];
     
     // Cache SSR response briefly to improve perceived speed
@@ -17,13 +17,26 @@ export async function getServerSideProps({ res }) {
     }
 
     try {
-        const response = await fetchWithTimeout('http://localhost:8000/api/getLastIdeas.php', {
-            headers: { 'Accept': 'application/json' }
-        }, 2000);
+        let baseUrl = (process.env.SITE_URL || '').trim();
+        
+        if (!baseUrl && req?.headers?.host) {
+            const protocol = req.headers['x-forwarded-proto'] || 'http';
+            baseUrl = `${protocol}://${req.headers.host}`;
+        }
+        
+        if (!baseUrl) {
+            baseUrl = 'http://localhost:3000';
+        }
+
+        const response = await fetchWithTimeout(`${baseUrl}/api/getLastIdeas`, {}, 30000);
 
         const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error);
+        }
         
-        const sourceList = Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : []);
+        const sourceList = data.data;
 
         if (!sourceList || sourceList.length === 0) {
             throw new Error("Empty ideas list");
@@ -33,7 +46,8 @@ export async function getServerSideProps({ res }) {
             id: phpIdea.id,
             title: phpIdea.title,
             author: phpIdea.username,
-            image: phpIdea.ideaimage || "./images/FreeIdeas.svg"
+            // Don't include image in SSR payload - load client-side
+            image: null
         }));
     } catch (error) {
         console.error('Failed to fetch ideas:', error);
@@ -43,7 +57,7 @@ export async function getServerSideProps({ res }) {
             id: i + 1,
             title: `Idea ${i + 1}`,
             author: `Author ${i + 1}`,
-            image: `./images/FreeIdeas.svg`
+            image: null
         }));
     }
 
@@ -52,7 +66,7 @@ export async function getServerSideProps({ res }) {
         const fill = [];
 
         for (let i = ideas.length; i < 22; i++) {
-            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: `./images/FreeIdeas.svg` };
+            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: null };
             
             fill.push({ ...base, id: base.id ?? i + 1 });
         }
@@ -69,8 +83,14 @@ export async function getServerSideProps({ res }) {
 }
 
 // Internal functions
-function IdeaCard({ idea }) {
+function IdeaCard({ idea, images }) {
     const router = useRouter();
+    
+    if (!idea?.id) {
+        return null;
+    }
+    
+    const imageSrc = images[idea.id] || "/images/FreeIdeas.svg";
     
     return (
         <li className="ideaBox">
@@ -79,7 +99,7 @@ function IdeaCard({ idea }) {
                 className="ideaLink" 
                 onMouseEnter={() => router.prefetch(`/idea/${idea.id}`)}
             >
-                <img src={idea.image || "/images/FreeIdeas.svg"} alt="Idea Image" className="ideaImage" />
+                <img src={imageSrc} alt="Idea Image" className="ideaImage" />
                 <p className="ideaTitle">{idea.title}</p>
                 <p className="ideaAuthor">{idea.author}</p>
             </Link>
@@ -87,11 +107,15 @@ function IdeaCard({ idea }) {
     )
 }
 
-function IdeaList({ ideas, id }) {
+function IdeaList({ ideas, id, images }) {
+    if (!Array.isArray(ideas)) {
+        return null;
+    }
+    
     return (
         <ul id={id}>
             {ideas.map((idea, index) => (
-                <IdeaCard key={`${id}-${index}`} idea={idea} />
+                <IdeaCard key={`${id}-${index}`} idea={idea} images={images} />
             ))}
         </ul>
     )
@@ -137,8 +161,12 @@ function Banner({ message = "", show = false }) {
 }
 
 // Auto-scroll effect
-function autoScrollIdeas() {
+function autoScrollIdeas(imagesReady) {
     useEffect(() => {
+        if (!imagesReady) {
+            return;
+        }
+
         let currentScrollMode = true;
 
         const startAutoScroll = () => {
@@ -240,14 +268,45 @@ function autoScrollIdeas() {
         window.addEventListener("resize", handleResize);
 
         return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    }, [imagesReady]);
 }
 
 // Main
 export default function HomePage({ ideas, pageTitle }) {
     const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
-    
-    autoScrollIdeas();
+    const [images, setImages] = React.useState({});
+    const [imagesReady, setImagesReady] = React.useState(false);
+
+    // Fetch all images once on mount
+    React.useEffect(() => {
+        async function loadAllImages() {
+            try {
+                const response = await fetch(`/api/getLastIdeas`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const imageMap = {};
+
+                    data.data.forEach(idea => {
+                        if (idea.ideaimage) {
+                            const buffer = Buffer.from(idea.ideaimage.data);
+                            imageMap[idea.id] = buffer.toString();
+                        }
+                    });
+
+                    setImages(imageMap);
+                }
+            } catch (error) {
+                console.error('Could not load images: '+error);
+            } finally {
+                setImagesReady(true);
+            }
+        }
+
+        loadAllImages();
+    }, []);
+
+    autoScrollIdeas(imagesReady);
 
     return (
         <>
@@ -270,7 +329,7 @@ export default function HomePage({ ideas, pageTitle }) {
 
             <main id="indexMain">
                 <section id="whatisFreeIdeas">
-                    <IdeaList ideas={ideas.slice(0, 6)} id="lastIdeasVertical1" />
+                    <IdeaList ideas={ideas.slice(0, 6)} id="lastIdeasVertical1" images={images} />
 
                     <section id="middleTextSection">
                         <h1>
@@ -304,11 +363,11 @@ export default function HomePage({ ideas, pageTitle }) {
                         </p>
                     </section>
 
-                    <IdeaList ideas={ideas.slice(6, 12)} id="lastIdeasVertical2" />
+                    <IdeaList ideas={ideas.slice(6, 12)} id="lastIdeasVertical2" images={images} />
                 </section>
 
                 <section id="horizzontalBarSeparatorSection">
-                    <IdeaList ideas={ideas.slice(12, 22)} id="lastIdeasHorizontal" />
+                    <IdeaList ideas={ideas.slice(12, 22)} id="lastIdeasHorizontal" images={images} />
                 </section>
 
                 <section id="imagesSectionHome">

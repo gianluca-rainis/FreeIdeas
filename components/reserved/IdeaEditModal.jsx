@@ -41,7 +41,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 const fd = new FormData();
                 fd.append('id', idea.id);
 
-                const res = await fetch('/api/data.php', {
+                const res = await fetch('/api/data', {
                     method: 'POST',
                     body: fd,
                     credentials: 'include'
@@ -71,8 +71,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     dislike: labelsData?.dislike ?? ''
                 });
 
-                setUseDefaultLicense(!ideaData?.license);
-                setLicensePdfUrl(ideaData?.license || null);
+                const license = ideaData?.license?Buffer.from(ideaData?.license).toString():null;
+                
+                setUseDefaultLicense(!license);
+                setLicensePdfUrl(license);
                 setLicensePdfFile(null);
                 
                 setAdditionalInfo(json.info || []);
@@ -95,12 +97,12 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
     useEffect(() => {
         async function fetchDefaultLicense() {
             try {
-                if (useDefaultLicense) {
+                if (useDefaultLicense && formData.title && idea?.accountName) {
                     const fd = new FormData();
                     fd.append('title', formData.title);
                     fd.append('author', idea?.accountName || '');
 
-                    const res = await fetch('/api/getFreeIdeasLicense.php', {
+                    const res = await fetch('/api/getFreeIdeasLicense', {
                         method: 'POST',
                         body: fd,
                         credentials: 'include'
@@ -114,7 +116,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
 
                     setLicensePdfUrl(data?.[0] || null);
                 }
-                else {
+                else if (!useDefaultLicense) {
                     setLicensePdfUrl(idea?.license || null);
                 }
             } catch (error) {
@@ -123,7 +125,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
         }
 
         fetchDefaultLicense();
-    }, [useDefaultLicense]);
+    }, [useDefaultLicense, formData.title, idea?.accountName, idea?.license]);
 
     async function handleSave() {
         try {
@@ -210,7 +212,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 date: dates
             }));
 
-            const res = await fetch('/api/modifyIdeaInfoAdmin.php', {
+            const res = await fetch('/api/modifyIdeaInfoAdmin', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'
@@ -243,7 +245,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', idea.id);
 
-            const res = await fetch('/api/deleteIdea.php', {
+            const res = await fetch('/api/deleteIdea', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'
@@ -299,7 +301,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', commentId);
 
-            const res = await fetch('/api/deleteComment.php', {
+            const res = await fetch('/api/deleteComment', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'

@@ -22,10 +22,13 @@ export async function getServerSideProps(context) {
 
     if (!id) {
         try {
-            const res = await fetchWithTimeout(`/api/getSessionData.php?data=account`, {
-                credentials: "include",
-                headers: cookieHeader ? { cookie: cookieHeader } : undefined
-            }, 800);
+            const hostHeader = context.req?.headers?.host;
+            const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
+            const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
+                method: 'GET',
+                headers: cookieHeader ? { cookie: cookieHeader } : {}
+            }, 1000);
 
             const data = await res.json();
 
@@ -38,17 +41,17 @@ export async function getServerSideProps(context) {
     }
     
     try {
+        const hostHeader = context.req?.headers?.host;
+        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
         const formData = new FormData();
         formData.append("id", id);
 
-        // Send cookies read session in php
-        const cookieHeader = context.req?.headers?.cookie ?? '';
-
-        const response = await fetchWithTimeout('/api/getAccountData.php', {
+        const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
             method: "POST",
-            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+            headers: cookieHeader ? { cookie: cookieHeader } : {},
             body: formData
-        }, 800);
+        }, 1000);
 
         const data = await response.json();
         
@@ -98,7 +101,7 @@ export default function AccountPage({ accountData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch(`/api/getSessionData.php?data=account`, {
+                const res = await fetch(`/api/getSessionData?data=account`, {
                     credentials: "include"
                 });
 
@@ -191,7 +194,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const formData = new FormData();
             formData.append('followedaccountid', accountData.id);
 
-            const res = await fetch(`/api/followAccountIdea.php`, {
+            const res = await fetch(`/api/followAccountIdea`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -241,7 +244,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             formData.append('feedback', feedback);
             formData.append('accountid', accountData.id);
 
-            const res = await fetch(`/api/reportIdeaAccount.php`, {
+            const res = await fetch(`/api/reportIdeaAccount`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -295,7 +298,7 @@ export default function AccountPage({ accountData, pageTitle }) {
                 data.append('image', formValues.imageFile);
             }
 
-            const res = await fetch(`/api/modifyAccountInfo.php`, {
+            const res = await fetch(`/api/modifyAccountInfo`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -330,7 +333,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('description', formValues.description || '');
             data.append('public', nextPublic);
 
-            const res = await fetch(`/api/modifyAccountInfo.php`, {
+            const res = await fetch(`/api/modifyAccountInfo`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -365,7 +368,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('email', sessionData.email);
 
-            const res = await fetch(`/api/changePassword.php`, {
+            const res = await fetch(`/api/changePassword`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -403,7 +406,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('id', sessionData.id);
 
-            const res = await fetch(`/api/deleteAccount.php`, {
+            const res = await fetch(`/api/deleteAccount`, {
                 method: 'POST',
                 credentials: 'include',
                 body: data
@@ -434,7 +437,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             <main id="accountMain">
                 <aside id="accountAsideInfo">
                     {
-                        isOwner && !editing ?
+                        !editing ?
                         <img id="modifyAccountInfo" alt="Modify account" src={getImagePath('modify')} onClick={startEdit} />
                         :null
                     }
@@ -468,14 +471,6 @@ export default function AccountPage({ accountData, pageTitle }) {
                             <img id="userImageAccount" alt="Account image" src={accountData.userimage?accountData.userimage:getImagePath("user")} />
                             <h2 id="userNameSurnameAccount">{accountData.name+" "+accountData.surname}</h2>
                             <h3 id="emailAccount">{accountData.email}</h3>
-                            {
-                                !isOwner?
-                                <div id="followReportAccountDiv">
-                                    <input type="button" id="followAccountButton" value={isFollowed ? 'Unfollow Account' : 'Follow Account'} onClick={handleFollow} disabled={busy.follow} />
-                                    <input type="button" id="reportAccountButton" value="Report Account" onClick={handleReport} disabled={busy.danger} />
-                                </div>
-                                :null
-                            }
                             <p id="descriptionAccount">{accountData.description}</p>
                         </>
                     )}

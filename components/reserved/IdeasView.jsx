@@ -21,7 +21,7 @@ export default function IdeasView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch('/api/getIdeaDataForReservedArea.php', {
+                const res = await fetch('/api/getIdeaDataForReservedArea', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',
@@ -37,6 +37,10 @@ export default function IdeasView({ showAlert, showConfirm }) {
                 if (!json?.success) {
                     throw new Error(json?.error || 'Request failed');
                 }
+
+                json.data.forEach(idea => {
+                    idea.data = idea.data.split('T')[0];
+                });
 
                 setData(Array.isArray(json.data) ? json.data : []);
             } catch (err) {

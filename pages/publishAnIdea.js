@@ -174,7 +174,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
             submitFormData.append("mainImage", mainImageFile);
             submitFormData.append("title", formData.title);
-            submitFormData.append("data", getCurrentDate());
+            submitFormData.append("date", getCurrentDate());
             submitFormData.append("description", formData.description);
             submitFormData.append("type", formData.typeProject);
             submitFormData.append("creativity", formData.creativityType);
@@ -225,7 +225,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/saveNewIdea.php', {
+            const response = await fetch('/api/saveNewIdea', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData
@@ -234,13 +234,13 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             const data = await response.json();
 
             if (data && data.success) {
-                router.push('/');
+                router.push('/idea/'+data.ideaId);
             }
             else {
                 throw new Error(data?.error || "Failed to save idea");
             }
         } catch (error) {
-            console.error('Submission error:', error);
+            console.error('Submission error: ', error);
             await showAlert('Failed to save idea. Please try again.');
         } finally {
             setLoading(false);

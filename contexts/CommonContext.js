@@ -65,12 +65,18 @@ export function AppProvider({ children }) {
     const loadRandomIdea = useCallback(async () => {
         try {
             const response = await fetch(getApiUrl('getRandomIdeaId'), {
+                method: 'POST',
                 credentials: "include"
             });
 
             const data = await response.json();
 
-            setRandomIdeaId(data?data.id:0);
+            if (data && data.success) {
+                setRandomIdeaId(data.data.id);
+            }
+            else {
+                throw new Error(data?data.error:"Error in getRandomIdeaId");
+            }
         } catch (error) {
             handleError(error, 'loadRandomIdea');
             setRandomIdeaId(0);
@@ -129,7 +135,7 @@ export function AppProvider({ children }) {
 
             const data = await res.json();
 
-            return data && data.id ? data : null;
+            return data;
         } catch (error) {
             console.error(error);
             return null;
@@ -144,7 +150,7 @@ export function AppProvider({ children }) {
 
             const data = await res.json();
 
-            return data && data.id ? data : null;
+            return data;
         } catch (error) {
             console.error(error);
             return null;
@@ -164,6 +170,11 @@ export function AppProvider({ children }) {
             });
             
             if (!admin) {
+                // Fix the notification date
+                SQLdata.notifications.forEach(notification => {
+                    notification.data = notification.data.split('T')[0];
+                });
+
                 setNotifications(SQLdata.notifications || []);
                 // Load notifications into the UI
                 setTimeout(() => loadNotifications(SQLdata), 100);

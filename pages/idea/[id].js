@@ -10,7 +10,8 @@ import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
-    const { id } = context.query;
+    const rawId = context.query?.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
     let ideaData = null;
     let pageTitle = 'Idea';
     
@@ -26,7 +27,10 @@ export async function getServerSideProps(context) {
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
 
-        const response = await fetchWithTimeout('http://localhost:8000/api/data.php', {
+        const hostHeader = context.req?.headers?.host;
+        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+
+        const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",
             headers: {
                 ...(cookieHeader ? { cookie: cookieHeader } : {}),
@@ -37,12 +41,12 @@ export async function getServerSideProps(context) {
 
         const data = await response.json();
         
-        if (data && data.success !== false) {
+        if (data && Array.isArray(data?.idea) && data.idea.length > 0) {
             ideaData = data;
-            pageTitle = ideaData['idea'][0]['title'];
+            pageTitle = data.idea[0]?.title || 'Idea';
         }
         else {
-            throw new Error(data.error);
+            throw new Error(data?.error || 'Idea not found');
         }
     } catch (error) {
         console.error('Failed to fetch ideas: '+error);
@@ -83,8 +87,8 @@ function PrintAdditionalInfo({ ideaData }) {
 }
 
 function PrintDownloadLink({ ideaData }) {
-    if (ideaData && ideaData['idea'][0]['downloadlink']) {
-        const link = ideaData['idea'][0]['downloadlink'];
+    if (ideaData?.['idea']?.[0]?.downloadlink) {
+        const link = ideaData['idea'][0].downloadlink;
 
         return (
             <section id='downloadSection'>
@@ -156,7 +160,7 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
             formData.append('ideaid', ideaId);
             formData.append('superCommentid', superCommentId || '');
 
-            const res = await fetch(`/api/saveNewComment.php`, {
+            const res = await fetch(`/api/saveNewComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData
@@ -354,7 +358,7 @@ function LicenseSection({ ideaData }) {
                     formData.append("title", title);
                     formData.append("author", author);
 
-                    const response = await fetch("/api/getFreeIdeasLicense.php", {
+                    const response = await fetch("/api/getFreeIdeasLicense", {
                         credentials: "include",
                         method: "POST",
                         body: formData
@@ -362,8 +366,8 @@ function LicenseSection({ ideaData }) {
 
                     const data = await response.json();
 
-                    if (data && data[0]) {
-                        setLicenseUrl(data[0]);
+                    if (data && data.license) {
+                        setLicenseUrl(data.license);
                     }
                     else {
                         console.error('License API error: '+data);
@@ -394,6 +398,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     const { randomIdeaId } = useAppContext();
     const { themeIsLight } = useThemeImages();
     const { currentModal, showAlert, showConfirm, showPrompt, closeModal } = useModals();
+    const idea = ideaData?.idea?.[0] || null;
     
     // State management
     const [sessionData, setSessionData] = useState(null);
@@ -410,7 +415,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch(`/api/getSessionData.php?data=account`, {
+                const res = await fetch(`/api/getSessionData?data=account`, {
                     credentials: "include"
                 });
 
@@ -517,7 +522,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("liked", newLiked?"1":"0");
             formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
 
-            const res = await fetch(`/api/saveAccountIdeaData.php`, {
+            const res = await fetch(`/api/saveAccountIdeaData`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -572,7 +577,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("feedback", feedback);
             formData.append("accountid", null);
 
-            const res = await fetch(`/api/reportIdeaAccount.php`, {
+            const res = await fetch(`/api/reportIdeaAccount`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -602,7 +607,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append("followedideaid", ideaData['idea'][0].id);
 
-            const res = await fetch(`/api/followAccountIdea.php`, {
+            const res = await fetch(`/api/followAccountIdea`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -633,7 +638,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append('id', commentId);
 
-            const res = await fetch(`/api/deleteComment.php`, {
+            const res = await fetch(`/api/deleteComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData
@@ -652,7 +657,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
         }
     }
 
-    if (!ideaData) {
+    if (!idea) {
         return (
             <>
                 <Head pageTitle="Idea not found" />
