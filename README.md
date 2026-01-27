@@ -2,7 +2,7 @@
 
 <h1 style="text-align: center;">A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a></h1>
 
-FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project.
+FreeIdeas is a site where you can publish your ideas about any type of projects, and where you can find inspiration for your next project.
 
 You can search for ideas, publish your own ideas, ask for help on your ideas, or just browse through the ideas of others.
 
@@ -10,9 +10,21 @@ The published ideas are free to use, and you can use them as you wish, without a
 
 The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
 
-The goal of FreeIdeas is to create a community of people who share their ideas and help each other to bring them to life.
+The goal of FreeIdeas is to create an international community of creatives who share their ideas and help each other to bring them to life.
 
 If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
+
+## Table of contents
+- [Features](#-features)
+- [Author](#-author)
+- [License](#-license)
+    - [FreeIdeas License - Quick Summary](#freeideas-license--quick-summary)
+    - [Note on Derived Works](#️-note-on-derived-works)
+    - [License Update Notice](#️-license-update-notice)
+- [AI Disclaimer](#-ai-disclaimer)
+- [Logos](#logos)
+    - [Light logo](#light-logo)
+    - [Dark logo](#dark-logo)
 
 ## ✨ Features
 - Search for ideas and accounts

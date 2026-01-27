@@ -1,6 +1,6 @@
 # FreeIdeas
 ## The project
-The FreeIdeas project was born to give everybody a place where share ideas. Everyone can publish their own ideas, and all the published ideas are at the same level. We give visibility to each idea, for example showing the last ideas on the home page, or ordering by default the ideas from the newest to the oldest in the search page.
+The FreeIdeas project was born to give everybody a place where share ideas. Everyone can publish their own ideas, and all the published ideas are at the same level. We give visibility to each idea, for example showing the last ideas on the home page, or ordering by default the ideas from the newest to the oldest in the search page. Our goal is to create an international community where creatives share their ideas and help others realize theirs.
 
 ---
 
@@ -100,6 +100,13 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 - Light color theme
 - Dark color theme
 - Responsive (usable from computers, phones and tablets)
+
+## Technologies used
+- HTML
+- CSS
+- Next.js
+- React
+- Redis
 
 ## Methods used
 - HTTP / HTTPS: to send the pages to the client
@@ -263,6 +270,27 @@ npm install formidable
 ```
 ```bash
 npm install express-session connect-redis redis
+```
+
+## ENV Variables
+```
+DB_HOST
+
+DB_USER
+
+DB_PASSWORD
+
+DB_NAME
+
+SECRET_COOKIE_PASSWORD
+
+EMAIL_NODE_MAILER
+
+PASSWORD_NODE_MAILER
+
+SITE_URL
+
+REDIS_URL
 ```
 
 ## 🛢 DataBase structure
