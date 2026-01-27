@@ -17,6 +17,16 @@
   </url>
 
   <url>
+    <loc>https://freeideas.duckdns.org/createAccount</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://freeideas.duckdns.org/login</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
     <loc>https://freeideas.duckdns.org/idea/</loc>
     <priority>0.80</priority>
   </url>
@@ -27,12 +37,12 @@
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/reservedArea</loc>
+    <loc>https://freeideas.duckdns.org/account/</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/sitemap.xml</loc>
+    <loc>https://freeideas.duckdns.org/reservedArea</loc>
     <priority>0.80</priority>
   </url>
 
@@ -58,6 +68,16 @@
 
   <url>
     <loc>https://freeideas.duckdns.org/about</loc>
+    <priority>0.50</priority>
+  </url>
+
+  <url>
+    <loc>https://freeideas.duckdns.org/faq</loc>
+    <priority>0.50</priority>
+  </url>
+
+  <url>
+    <loc>https://freeideas.duckdns.org/feedback</loc>
     <priority>0.50</priority>
   </url>
 </urlset>
