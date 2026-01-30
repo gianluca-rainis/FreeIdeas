@@ -28,7 +28,7 @@ export default function Nav({ randomId=0 }) {
             <nav>
                 <div id="pcNavBarGhost">
                     <ul className="navLogo">
-                        <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></Link></li>
+                        <li><a href="/" onClick={(e) => { e.preventDefault(); window.location.href = "/"; }}><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" /></a></li>
                     </ul>
                     <ul className="navLinks">
                         <li><Link href="/searchAnIdea" className="navText" prefetch>Search an Idea</Link></li>
