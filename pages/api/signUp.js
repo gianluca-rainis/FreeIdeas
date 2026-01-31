@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -20,7 +21,7 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
@@ -121,20 +122,18 @@ async function handler(req, res) {
         };
 
         // Save session
-        req.session.account = accountData;
-        
-        req.session.save((err) => {
-            if (err) {
-                console.error('Session save error: ', err);
-                return res.status(500).json({ success: false, error: 'Session save failed' });
-            }
+        const session = await getIronSession(req, res, sessionOptions);
 
-            return res.status(200).json({ success: true, data: accountData });
-        });
+        session.account = {
+            id: accountData.id,
+            username: accountData.username
+        };
+
+        await session.save();
+
+        return res.status(200).json({ success: true, data: accountData });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

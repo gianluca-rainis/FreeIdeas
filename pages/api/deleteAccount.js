@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -46,12 +47,14 @@ async function deleteAllIdsSubComments(id) {
     return;
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -61,7 +64,7 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
-        if (!req.session || ((!req.session.account || req.session.account.id != id) && !req.session.administrator)) {
+        if (!session || ((!session.account || session.account.id != id) && !session.administrator)) {
             return res.status(400).json({ success: false, error: 'User not authorized' });
         }
 
@@ -82,7 +85,7 @@ async function handler(req, res) {
             let titleNot = "";
             let description = "";
 
-            if (req.session.administrator) {
+            if (session.administrator) {
                 titleNot = accountUsername + "'s account has been deleted by the administrator.";
                 description = "We are sorry to inform you that " + accountUsername + "'s account has beed deleted by the FreeIdeas administrator, due to a violation of our Terms and Conditions. You see this notification because you were following it. You will no longer receive notifications about activity on this account.";
             }
@@ -209,5 +212,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

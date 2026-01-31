@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,7 +13,7 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
@@ -44,6 +45,7 @@ async function handler(req, res) {
 
         const bcrypt = require('bcrypt');
         let foundAccount = false;
+        let adminData = null;
 
         await Promise.all(accounts.map(async account => {
             // Convert $2y$ (PHP) to $2b$ (Node.js bcrypt)
@@ -54,12 +56,11 @@ async function handler(req, res) {
             let passwordMatch5 = await bcrypt.compare(password5, account.password5.replace(/^\$2y\$/, '$2b$'));
 
             if (passwordMatch1 && passwordMatch2 && passwordMatch3 && passwordMatch4 && passwordMatch5) {
-                const adminData = {
+                adminData = {
                     id: account.id,
                     username: account.username
                 };
 
-                req.session.administrator = adminData;
                 foundAccount = true;
             }
         }));
@@ -68,18 +69,15 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Wrong passwords' });
         }
 
-        req.session.save((err) => {
-            if (err) {
-                console.error('Session save error: ', err);
-                return res.status(500).json({ success: false, error: 'Session save failed' });
-            }
+        const session = await getIronSession(req, res, sessionOptions);
+        
+        session.administrator = adminData;
 
-            return res.status(200).json({ success: true });
-        });
+        await session.save();
+
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

@@ -1,5 +1,6 @@
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,12 +13,13 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -34,8 +36,8 @@ async function handler(req, res) {
         ret['log'] = await query("SELECT * FROM authorupdates WHERE ideaid=?;", [id]); // Logs
         ret['comment'] = await query("SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments LEFT JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;", [id]); // Comments
         ret['idealabels'] = await query("SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;", [id]); // Labels
-        ret['accountdata'] = req.session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [id, req.session.account.id]):[]; // Labels
-        ret['followAccountData'] = req.session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, req.session.account.id]):[]; // Follow
+        ret['accountdata'] = session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [id, session.account.id]):[]; // Labels
+        ret['followAccountData'] = session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, session.account.id]):[]; // Follow
 
         ret['comment'].forEach(comment => {
             const image = comment.userimage?Buffer.from(comment.userimage).toString():null;
@@ -80,5 +82,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

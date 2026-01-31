@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,7 +13,7 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
@@ -77,21 +78,19 @@ async function handler(req, res) {
             notifications: notifications
         };
 
-        // Save session with Redis
-        req.session.account = accountData;
+        // Save session
+        const session = await getIronSession(req, res, sessionOptions);
 
-        req.session.save((err) => {
-            if (err) {
-                console.error('Session save error: ', err);
-                return res.status(500).json({ success: false, error: 'Session save failed' });
-            }
+        session.account = {
+            id: accountData.id,
+            username: accountData.username
+        };
 
-            return res.status(200).json({ success: true, data: accountData });
-        });
+        await session.save();
+
+        return res.status(200).json({ success: true, data: accountData });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

@@ -3,80 +3,13 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
-import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // Server-side rendering
-export async function getServerSideProps({ req, res }) {
-    let ideas = [];
-    
-    // Cache SSR response briefly to improve perceived speed
-    if (res) {
-        res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
-    }
-
-    try {
-        let baseUrl = (process.env.SITE_URL || '').trim();
-        
-        if (!baseUrl && req?.headers?.host) {
-            const protocol = req.headers['x-forwarded-proto'] || 'http';
-            baseUrl = `${protocol}://${req.headers.host}`;
-        }
-        
-        if (!baseUrl) {
-            baseUrl = 'http://localhost:3000';
-        }
-
-        const response = await fetchWithTimeout(`${baseUrl}/api/getLastIdeas`, {}, 30000);
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.error);
-        }
-        
-        const sourceList = data.data;
-
-        if (!sourceList || sourceList.length === 0) {
-            throw new Error("Empty ideas list");
-        }
-
-        ideas = sourceList.map(phpIdea => ({
-            id: phpIdea.id,
-            title: phpIdea.title,
-            author: phpIdea.username,
-            // Don't include image in SSR payload - load client-side
-            image: null
-        }));
-    } catch (error) {
-        console.error('Failed to fetch ideas:', error);
-        
-        // Fallback data in case of API failure
-        ideas = Array.from({ length: 12 }, (_, i) => ({
-            id: i + 1,
-            title: `Idea ${i + 1}`,
-            author: `Author ${i + 1}`,
-            image: null
-        }));
-    }
-
-    // Ensure at least 22 items for all UI slices
-    if (ideas.length < 22) {
-        const fill = [];
-
-        for (let i = ideas.length; i < 22; i++) {
-            const base = ideas[i % (ideas.length || 1)] || { id: i + 1, title: `Idea ${i + 1}`, author: `Author ${i + 1}`, image: null };
-            
-            fill.push({ ...base, id: base.id ?? i + 1 });
-        }
-
-        ideas = ideas.concat(fill);
-    }
-
+export async function getStaticProps() {
     return {
         props: {
-            ideas: ideas,
             pageTitle: ""
         }
     }
@@ -161,9 +94,9 @@ function Banner({ message = "", show = false }) {
 }
 
 // Auto-scroll effect
-function autoScrollIdeas(imagesReady) {
+function autoScrollIdeas(ideasLoading) {
     useEffect(() => {
-        if (!imagesReady) {
+        if (ideasLoading) {
             return;
         }
 
@@ -268,45 +201,86 @@ function autoScrollIdeas(imagesReady) {
         window.addEventListener("resize", handleResize);
 
         return () => window.removeEventListener("resize", handleResize);
-    }, [imagesReady]);
+    }, [ideasLoading]);
 }
 
 // Main
-export default function HomePage({ ideas, pageTitle }) {
+export default function HomePage({ pageTitle }) {
     const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
     const [images, setImages] = React.useState({});
-    const [imagesReady, setImagesReady] = React.useState(false);
+    const [ideas, setIdeas] = React.useState([]);
+    const [ideasLoading, setIdeasLoading] = React.useState(true);
 
-    // Fetch all images once on mount
+    // Fetch ideas once on mount
     React.useEffect(() => {
-        async function loadAllImages() {
+        async function loadIdeas() {
             try {
                 const response = await fetch(`/api/getLastIdeas`);
                 const data = await response.json();
 
                 if (data.success) {
+                    const sourceList = data.data;
+                    
+                    // Process ideas
+                    let loadedIdeas = sourceList.map(idea => ({
+                        id: idea.id,
+                        title: idea.title,
+                        author: idea.username,
+                        image: null
+                    }));
+                    
+                    // Ensure at least 22 items for all UI slices
+                    if (loadedIdeas.length < 22) {
+                        const fill = [];
+
+                        for (let i = loadedIdeas.length; i < 22; i++) {
+                            const base = loadedIdeas[i % (loadedIdeas.length || 1)] || { 
+                                id: i + 1, 
+                                title: `Idea ${i + 1}`, 
+                                author: `Author ${i + 1}`, 
+                                image: null 
+                            };
+
+                            fill.push({ ...base, id: base.id ?? i + 1 });
+                        }
+
+                        loadedIdeas = loadedIdeas.concat(fill);
+                    }
+                    
+                    setIdeas(loadedIdeas);
+                    
+                    // Process images
                     const imageMap = {};
 
-                    data.data.forEach(idea => {
+                    sourceList.forEach(idea => {
                         if (idea.ideaimage) {
-                            const buffer = Buffer.from(idea.ideaimage.data);
-                            imageMap[idea.id] = buffer.toString();
+                            imageMap[idea.id] = Buffer.from(idea.ideaimage.data).toString();
                         }
                     });
 
                     setImages(imageMap);
                 }
             } catch (error) {
-                console.error('Could not load images: '+error);
+                console.error('Failed to fetch ideas:', error);
+                
+                // Fallback data in case of API failure
+                const fallbackIdeas = Array.from({ length: 22 }, (_, i) => ({
+                    id: i + 1,
+                    title: `Idea ${i + 1}`,
+                    author: `Author ${i + 1}`,
+                    image: null
+                }));
+
+                setIdeas(fallbackIdeas);
             } finally {
-                setImagesReady(true);
+                setIdeasLoading(false);
             }
         }
 
-        loadAllImages();
+        loadIdeas();
     }, []);
 
-    autoScrollIdeas(imagesReady);
+    autoScrollIdeas(ideasLoading);
 
     return (
         <>

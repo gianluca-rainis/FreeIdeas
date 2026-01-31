@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 function getInput(data) {
@@ -60,13 +61,15 @@ async function getConvertedPdf(file) {
     }
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        if (!req.session || !req.session.administrator) {
+        const session = await getIronSession(req, res, sessionOptions);
+        
+        if (!session || !session.administrator) {
             return res.status(401).json({ success: false, error: 'Administrator not logged in' });
         }
 
@@ -234,5 +237,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

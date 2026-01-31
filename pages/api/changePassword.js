@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -20,12 +21,14 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -44,11 +47,11 @@ async function handler(req, res) {
         let idIfNoSession = accountInfo[0].id;
         let tempid;
 
-        if (!req.session || !req.session.account) {
+        if (!session || !session.account) {
             tempid = idIfNoSession;
         }
         else {
-            tempid = req.session.account.id;
+            tempid = session.account.id;
         }
 
         {
@@ -61,15 +64,6 @@ async function handler(req, res) {
                 'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
                 [tempid, titleNot, description, today, 0]
             );
-        }
-
-        if (req.session && req.session.account) {
-            const loadNotific = await query(
-                'SELECT * FROM notifications WHERE accountid=?;',
-                [tempid]
-            );
-
-            req.session.account.notifications = loadNotific;
         }
 
         // EMAIL
@@ -124,5 +118,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

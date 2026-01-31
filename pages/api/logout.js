@@ -1,18 +1,15 @@
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     try {
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).json({ success: false, error: 'Error destroying session' });
-            }
+        const session = await getIronSession(req, res, sessionOptions);
+        
+        session.destroy();
 
-            return res.status(200).json({ success: true });
-        });
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

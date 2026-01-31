@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 import fs from 'fs/promises';
 
@@ -53,13 +54,15 @@ async function getConvertedPdf(file) {
     }
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        if (!req.session || !req.session.account) {
+        const session = await getIronSession(req, res, sessionOptions);
+        
+        if (!session || !session.account) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -141,7 +144,7 @@ async function handler(req, res) {
         // Save in DB
         const insertIdea = await query(
             'INSERT INTO ideas (authorid, title, data, ideaimage, description, downloadlink, license) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [req.session.account.id, title, date, mainImageConverted, description, link || null, licenseConverted]
+            [session.account.id, title, date, mainImageConverted, description, link || null, licenseConverted]
         );
 
         const ideaId = insertIdea.insertId;
@@ -181,20 +184,20 @@ async function handler(req, res) {
 
             await query(
                 'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
-                [req.session.account.id, titleNot, descrNot, today, 0]
+                [session.account.id, titleNot, descrNot, today, 0]
             );
         }
 
         // Send notification to followers
         const followers = await query(
             'SELECT followaccountid FROM follow WHERE followedaccountid=?;',
-            [req.session.account.id]
+            [session.account.id]
         );
 
         if (followers && followers.length > 0) {
             for (const follower of followers) {
-                const titleNot = req.session.account.username + " has published a new idea!";
-                const descrNot = req.session.account.username + " has published a new idea! The idea's title is " + title + ". You can see it in the last ideas, search it or see it from the account page of " + req.session.account.username + "!";
+                const titleNot = session.account.username + " has published a new idea!";
+                const descrNot = session.account.username + " has published a new idea! The idea's title is " + title + ". You can see it in the last ideas, search it or see it from the account page of " + session.account.username + "!";
                 
                 await query(
                     'INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);',
@@ -203,20 +206,9 @@ async function handler(req, res) {
             }
         }
 
-        // Reload notifications
-        const result = await query(
-            "SELECT * FROM notifications WHERE accountid=?;",
-            [req.session.account.id]
-        );
-
-        req.session.account.notifications = result;
-        await req.session.save();
-
         return res.status(200).json({ success: true, ideaId: ideaId });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

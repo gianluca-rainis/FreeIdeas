@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,12 +13,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -37,7 +40,7 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Notification not found in database' });
         }
         
-        if (!req.session.account || req.session.account.id != notification[0].accountid) {
+        if (!session.account || session.account.id != notification[0].accountid) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -51,31 +54,9 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Error setting the notification as read' });
         }
 
-        const accountNotifications = await query(
-            'SELECT * FROM notifications WHERE accountid=?;',
-            [req.session.account.id]
-        );
-
-        let notif = [];
-        
-        accountNotifications.forEach(accountNotification => {
-            notif.push(accountNotification);
-        });
-        
-        req.session.account.notifications = notif;
-
-        req.session.save((err) => {
-            if (err) {
-                console.error('Session save error: ', err);
-                return res.status(500).json({ success: false, error: 'Session save failed' });
-            }
-
-            return res.status(200).json({ success: true });
-        });
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

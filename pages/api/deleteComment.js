@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -77,12 +78,14 @@ async function deleteCommentAndSuperCommentsWithoutSubComments(id) {
     }
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -102,7 +105,7 @@ async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Comment not found in the database' });
         }
 
-        if (!req.session.administrator && (!req.session.account || req.session.account.id != authorId[0].authorid)) {
+        if (!session.administrator && (!session.account || session.account.id != authorId[0].authorid)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -114,7 +117,7 @@ async function handler(req, res) {
         else {
             let description = "";
 
-            if (req.session.administrator) {
+            if (session.administrator) {
                 description = "This comment was deleted by the administrator.";
             }
             else {
@@ -133,5 +136,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

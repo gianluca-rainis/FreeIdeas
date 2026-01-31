@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 import fs from 'fs/promises';
 
@@ -38,26 +39,28 @@ async function getConvertedImage(file) {
     }
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
-        if (!req.session || (!req.session.account && !req.session.administrator)) {
+        const session = await getIronSession(req, res, sessionOptions);
+        
+        if (!session || (!session.account && !session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         const form = formidable();
         const [fields, files] = await form.parse(req);
 
-        const id = getInput(fields.id?.[0] || req.session.account?.id || '');
+        const id = getInput(fields.id?.[0] || session.account?.id || '');
         const firstName = getInput(fields.name?.[0] || '');
         const lastName = getInput(fields.surname?.[0] || '');
         const description = getInput(fields.description?.[0] || '');
         const username = getInput(fields.username?.[0] || '');
-        const email = getInput(fields.email?.[0] || req.session.account?.email || '');
-        const isPublic = Number(getInput(fields.public?.[0] || req.session.account?.public || 0));
+        const email = getInput(fields.email?.[0] || '');
+        const isPublic = Number(getInput(fields.public?.[0] || 0));
         let image = null;
 
         if (files.image?.[0]) {
@@ -85,7 +88,7 @@ async function handler(req, res) {
             let titleNot = "";
             let descNot = "";
 
-            if (req.session.administrator) {
+            if (session.administrator) {
                 titleNot = "IMPORTANT: Your account info was updated by the Admin!";
                 descNot = "Your account info was updated by the Admin! For more information about this changes contact us.";
             }
@@ -110,7 +113,7 @@ async function handler(req, res) {
                 let titleNot = "";
                 let descNot = "";
 
-                if (req.session.administrator) {
+                if (session.administrator) {
                     titleNot = "The administrator has updated " + username + "'s account information.";
                     descNot = "The administrator has updated " + username + "'s account information. Visit his account page to see the changes!";
                 }
@@ -135,7 +138,7 @@ async function handler(req, res) {
                 let titleNot = "";
                 let descNot = "";
 
-                if (req.session.administrator) {
+                if (session.administrator) {
                     titleNot = "The administrator has made " + username + "'s account private.";
                     descNot = "The administrator has updated " + username + "'s account information. Now his account is set to private. You can no longer visit his account page and you will no longer receive notifications regarding activity on this account.";
                 }
@@ -156,33 +159,19 @@ async function handler(req, res) {
             );
         }
 
-        if (req.session.account) {
+        if (session.account) {
             const updatedAccount = await query(
                 "SELECT * FROM accounts WHERE id=?;",
                 [id]
             );
 
             if (updatedAccount && updatedAccount[0]) {
-                const accountNotifications = await query(
-                    "SELECT * FROM notifications WHERE accountid=?;",
-                    [id]
-                );
-
-                const userImage = updatedAccount[0].userimage?Buffer.from(updatedAccount[0].userimage).toString():null;
-
-                req.session.account = {
+                session.account = {
                     id: updatedAccount[0].id,
-                    email: updatedAccount[0].email,
-                    name: updatedAccount[0].name,
-                    surname: updatedAccount[0].surname,
-                    userimage: userImage,
-                    description: updatedAccount[0].description,
-                    username: updatedAccount[0].username,
-                    public: updatedAccount[0].public,
-                    notifications: accountNotifications
+                    username: updatedAccount[0].username
                 };
 
-                await req.session.save();
+                await session.save();
             }
         }
 
@@ -192,5 +181,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

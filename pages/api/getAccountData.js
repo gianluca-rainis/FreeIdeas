@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,12 +13,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -48,7 +51,7 @@ async function handler(req, res) {
         data['username'] = account[0]['username'];
         data['public'] = account[0]['public'];
 
-        if (data['public'] == 0 && (!req.session.account || req.session.account.id != data.id) && !req.session.administrator) {
+        if (data['public'] == 0 && (!session.account || session.account.id != data.id) && !session.administrator) {
             return res.status(401).json({ success: false, error: 'User or administrator not logged in and the account is private' });
         }
 
@@ -95,10 +98,10 @@ async function handler(req, res) {
         });
 
         // If logged in check follow
-        if (req.session.account) {
+        if (session.account) {
             const followData = await query(
                 'SELECT * FROM follow WHERE follow.followaccountid=? AND follow.followedaccountid=?;',
-                [req.session.account.id, id]
+                [session.account.id, id]
             );
 
             data['followed'] = false;
@@ -114,5 +117,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: String(error) });
     }
 }
-
-export default withSession(handler);

@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,12 +13,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -30,14 +33,14 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
-        if (!req.session || (!req.session.account && !req.session.administrator)) {
+        if (!session || (!session.account && !session.administrator)) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
         let authorId = null;
 
-        if (req.session.account) {
-            authorId = req.session.account.id;
+        if (session.account) {
+            authorId = session.account.id;
         }
 
         // Create the comment
@@ -56,5 +59,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

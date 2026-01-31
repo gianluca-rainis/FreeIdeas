@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -45,12 +46,14 @@ async function deleteAllIdsSubComments(id) {
     return;
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -73,7 +76,7 @@ async function handler(req, res) {
         const authorid = ideaResult[0].authorid;
         const title = ideaResult[0].title;
 
-        if ((!req.session.account || req.session.account.id != authorid) && !req.session.administrator) {
+        if ((!session.account || session.account.id != authorid) && !session.administrator) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
@@ -163,13 +166,13 @@ async function handler(req, res) {
                 let titleNot = "";
                 let description = "";
 
-                if (req.session.administrator) {
+                if (session.administrator) {
                     titleNot = "The administrator has deleted " + title + ".";
                     description = "The administrator of FreeIdeas has deleted " + title + ". You can no longer visit its idea page.";
                 }
                 else {
-                    titleNot = req.session.account.username + " has deleted " + title + ".";
-                    description = req.session.account.username + " has deleted " + title + ". You can no longer visit its idea page.";
+                    titleNot = session.account.username + " has deleted " + title + ".";
+                    description = session.account.username + " has deleted " + title + ". You can no longer visit its idea page.";
                 }
 
                 result.forEach(async follower => {
@@ -211,7 +214,7 @@ async function handler(req, res) {
             let titleNot = "";
             let description = "";
 
-                if (req.session.administrator) {
+                if (session.administrator) {
                     titleNot = "The administrator have deleted one of your ideas!";
                     description = "The administrator have just deleted an idea: " + title + "! If you want more informations about this action, feel free to contact us.";
                 }
@@ -230,20 +233,9 @@ async function handler(req, res) {
             }
         }
 
-        if (req.session.account && req.session.account.id == authorid) {
-            const result = await query(
-                "SELECT * FROM notifications WHERE accountid=?;",
-                [req.session.account.id]
-            );
-
-            req.session.account.notifications = result;
-        }
-
         return res.status(200).json({ success: true });
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);

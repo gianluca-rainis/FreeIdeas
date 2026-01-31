@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { withSession } from '../../lib/withSession';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
 
 export const config = {
@@ -12,12 +13,14 @@ function getInput(data) {
     return String(data).trim();
 }
 
-async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+        
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -31,7 +34,7 @@ async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
-        if (!req.session || !req.session.account) {
+        if (!session || !session.account) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
@@ -44,7 +47,7 @@ async function handler(req, res) {
         if (existRowYet == "1") {
             const oldAccountIdeaData = await query(
                 'SELECT saved, liked, dislike FROM accountideadata WHERE accountid=? AND ideaid=?;',
-                [req.session.account.id, ideaid]
+                [session.account.id, ideaid]
             );
 
             oldSaved = oldAccountIdeaData[0].saved;
@@ -59,7 +62,7 @@ async function handler(req, res) {
 
         await query(
             sql,
-            [saved, dislike, liked, req.session.account.id, ideaid]
+            [saved, dislike, liked, session.account.id, ideaid]
         );
 
         const getIdeaLabels = await query(
@@ -82,5 +85,3 @@ async function handler(req, res) {
         return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }
-
-export default withSession(handler);
