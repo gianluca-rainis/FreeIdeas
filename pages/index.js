@@ -8,8 +8,16 @@ import { useRouter } from 'next/router'
 
 // Server-side rendering
 export async function getStaticProps() {
+    const ideasEmpty = Array.from({ length: 22 }, (_, i) => ({
+        id: i + 1,
+        title: `Idea ${i + 1}`,
+        author: `Author ${i + 1}`,
+        image: null
+    }));
+    
     return {
         props: {
+            ideasEmpty: ideasEmpty,
             pageTitle: ""
         }
     }
@@ -205,10 +213,10 @@ function autoScrollIdeas(ideasLoading) {
 }
 
 // Main
-export default function HomePage({ pageTitle }) {
+export default function HomePage({ ideasEmpty, pageTitle }) {
     const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
     const [images, setImages] = React.useState({});
-    const [ideas, setIdeas] = React.useState([]);
+    const [ideas, setIdeas] = React.useState(ideasEmpty);
     const [ideasLoading, setIdeasLoading] = React.useState(true);
 
     // Fetch ideas once on mount
