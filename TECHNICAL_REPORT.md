@@ -106,7 +106,6 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 - CSS
 - Next.js
 - React
-- Redis
 
 ## Methods used
 - HTTP / HTTPS: to send the pages to the client
@@ -271,9 +270,6 @@ npm install formidable
 ```bash
 npm install iron-session
 ```
-```bash
-npm install redis
-```
 
 ## ENV Variables
 ```
@@ -292,8 +288,6 @@ EMAIL_NODE_MAILER
 PASSWORD_NODE_MAILER
 
 SITE_URL
-
-REDIS_URL
 ```
 
 ## 🛢 DataBase structure
