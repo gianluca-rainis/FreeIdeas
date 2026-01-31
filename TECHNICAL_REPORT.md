@@ -269,7 +269,10 @@ npm install nodemailer
 npm install formidable
 ```
 ```bash
-npm install express-session connect-redis redis
+npm install iron-session
+```
+```bash
+npm install redis
 ```
 
 ## ENV Variables
