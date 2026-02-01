@@ -15,7 +15,29 @@ export async function getStaticProps() {
 
 // Main
 export default function FeedbackPage({pageTitle}) {
-    const { randomIdeaId } = useAppContext();
+    const { randomIdeaId, showAlert } = useAppContext();
+
+    useEffect(() => {
+        const feedbackForm = document.getElementById("feedbackForm");
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            const title = e.srcElement[0].value;
+            const description = e.srcElement[1].value;
+
+            e.srcElement[0].value = ``;
+            e.srcElement[1].value = ``;
+
+            await showAlert("Feedback sent successfully!");
+        }
+
+        if (feedbackForm) {
+            feedbackForm.addEventListener("submit", handleSubmit);
+        }
+
+        return () => feedbackForm.removeEventListener("submit", handleSubmit);
+    }, []);
 
     return (
         <>

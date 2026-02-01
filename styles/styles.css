@@ -3515,6 +3515,22 @@ footer ul li a {
         background-color: #272727;
     }
 
+    .footerpage #feedbackForm {
+        background-color: #272727;
+    }
+
+    .footerpage #feedbackForm textarea {
+        color: #cba95c;
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+    }
+
+    .footerpage #feedbackForm input {
+        color: #5c4e2e;
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+    }
+
     #loginArea {
         background-color: #272727;
         border: 1px solid #cba95c;

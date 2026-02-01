@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
@@ -103,6 +102,15 @@ export default function FaqPage({pageTitle}) {
                         <div className="question">How long does FreeIdeas keep my data?</div>
                         <div className="answer">
                             Your data is kept until you delete your account or remove your content, unless a longer retention period is required by law.
+                        </div>
+                    </li>
+                    <li>
+                        <div className="question">What is the Reserved Area?</div>
+                        <div className="answer">
+                            The Reserved Area is a section of the site reserved for administrators.
+                            From there, administrators can manage all site data and content, subject to the Terms and Conditions and Privacy Policy.
+                            Due to the significant responsibility and power of administrators, login credentials are provided to a select few, highly trusted individuals, so regular users cannot access that section of the site.
+                            Any action taken by administrators from the Reserved Area is reported via a notification sent to the relevant accounts.
                         </div>
                     </li>
                 </ul>
