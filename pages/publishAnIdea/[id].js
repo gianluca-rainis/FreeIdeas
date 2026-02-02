@@ -277,6 +277,21 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
     // Handle form submission
     async function handleSubmit(e) {
         e.preventDefault();
+
+        const form = document.getElementById("newIdeaForm");
+
+        if (!form.checkValidity()) {
+            await showAlert("You must fill in all required fields!");
+
+            const firstInvalid = form.querySelector(":invalid");
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+            }
+
+            return;
+        }
+        
         setLoading(true);
 
         try {
@@ -548,7 +563,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             <Nav randomId={randomIdeaId} />
 
             <main id="newIdeaMain">
-                <form id="newIdeaForm" onSubmit={handleSubmit}>
+                <form id="newIdeaForm" onSubmit={handleSubmit} noValidate>
                     <div 
                         id="ideaImageAsBackground"
                         style={{
