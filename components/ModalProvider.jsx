@@ -1,5 +1,5 @@
 import { useAppContext } from '../contexts/CommonContext';
-import { AlertModal, ConfirmModal, PromptModal } from './Modal';
+import { AlertModal, ConfirmModal, PromptModal, LoadingModal } from './Modal';
 
 export function ModalProvider() {
     const { currentModal } = useAppContext();
@@ -31,6 +31,13 @@ export function ModalProvider() {
                     defaultValue={currentModal.defaultValue}
                     onSubmit={currentModal.onSubmit}
                     onCancel={currentModal.onCancel}
+                />
+            );
+        case 'loading':
+            return (
+                <LoadingModal 
+                    text={currentModal.text}
+                    onClose={currentModal.onClose}
                 />
             );
         default:

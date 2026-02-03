@@ -57,7 +57,7 @@ export async function getServerSideProps(context) {
 
 // Main
 export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
-    const { themeIsLight, user, randomIdeaId, showAlert, showConfirm } = useAppContext();
+    const { themeIsLight, user, randomIdeaId, showAlert, showConfirm, showLoading } = useAppContext();
     const router = useRouter();
     
     // State management
@@ -294,6 +294,8 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
         
         setLoading(true);
 
+        const closeLoading = showLoading("Updating your idea. This process can take anywhere from a few seconds to a few minutes. Please wait and do not reload the page; you will be redirected to the new idea page once it's finished loading.");
+
         try {
             const submitFormData = new FormData();
             
@@ -373,6 +375,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             const data = await response.json();
 
             if (data && data.success) {
+                closeLoading();
                 router.push(`/idea/${id}`);
             }
             else {
@@ -380,6 +383,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             }
         } catch (error) {
             console.error('Submission error:', error);
+            closeLoading();
             await showAlert('Failed to save idea. Please try again.');
         } finally {
             setLoading(false);

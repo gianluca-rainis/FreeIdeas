@@ -17,7 +17,7 @@ export async function getStaticProps() {
 
 // Main
 export default function PublishAnIdeaPage({ pageTitle }) {
-    const { themeIsLight, user, randomIdeaId, showAlert } = useAppContext();
+    const { themeIsLight, user, randomIdeaId, showAlert, showLoading } = useAppContext();
     const router = useRouter();
     
     // State management
@@ -178,6 +178,8 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
         setLoading(true);
 
+        const closeLoading = showLoading("Publishing your idea. This process can take anywhere from a few seconds to a few minutes. Please wait and do not reload the page; you will be redirected to the new idea page once it's finished loading.");
+        
         try {
             const submitFormData = new FormData();
             
@@ -249,6 +251,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             const data = await response.json();
 
             if (data && data.success) {
+                closeLoading();
                 router.push('/idea/'+data.ideaId);
             }
             else {
@@ -256,6 +259,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             }
         } catch (error) {
             console.error('Submission error: ', error);
+            closeLoading();
             await showAlert('Failed to save idea. Please try again.');
         } finally {
             setLoading(false);

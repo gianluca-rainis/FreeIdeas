@@ -83,3 +83,41 @@ export function PromptModal({ message, defaultValue, onSubmit, onCancel }) {
         </Modal>
     );
 }
+
+export function LoadingModal({ text, onClose }) {
+    function LoadModal({ children, isOpen, onClose }) {
+        useEffect(() => {
+            if (isOpen) {
+                document.body.style.overflow = 'hidden';
+            }
+            else {
+                document.body.style.overflow = 'unset';
+            }
+
+            return () => {
+                document.body.style.overflow = 'unset';
+            };
+        }, [isOpen]);
+
+        if (!isOpen) {
+            return null;
+        }
+
+        return (
+            <div className={styles.backdrop}>
+                <div className={styles.modalLoad}>
+                    {children}
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <LoadModal isOpen={true} onClose={onClose}>
+            <div className={`${styles.content}`}>
+                <div className={styles.loader}></div>
+                <div className={styles.textLoading}><h1>Loading</h1><br />{text}</div>
+            </div>
+        </LoadModal>
+    );
+}

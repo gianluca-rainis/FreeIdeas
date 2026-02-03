@@ -665,6 +665,21 @@ export function AppProvider({ children }) {
         });
     }, []);
 
+    const showLoading = useCallback((text) => {
+        setCurrentModal({
+            type: 'loading',
+            text,
+            onClose: () => {
+                setCurrentModal(null);
+            }
+        });
+
+        // Return a close loading function
+        return () => {
+            setCurrentModal(null);
+        };
+    }, []);
+
     const closeModal = useCallback(() => {
         if (currentModal && currentModal.onCancel) {
             currentModal.onCancel();
@@ -712,6 +727,7 @@ export function AppProvider({ children }) {
         showAlert,
         showConfirm,
         showPrompt,
+        showLoading,
         closeModal
     };
 
