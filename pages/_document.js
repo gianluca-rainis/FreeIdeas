@@ -6,6 +6,31 @@ export default function Document() {
             <Head>
                 {/* Favicon */}
                 <link rel="shortcut icon" type="image/svg+xml" href="/images/FreeIdeas.svg" />
+                
+                {/* Prevent theme flash by loading theme before render */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function() {
+                            const savedTheme = localStorage.getItem('themeIsLight');
+                            let isDark = false;
+                            
+                            if (savedTheme !== null) {
+                                isDark = savedTheme === 'false';
+                            }
+                            else {
+                                // Check system preference
+                                isDark = !window.matchMedia('(prefers-color-scheme: light)').matches;
+                            }
+                            
+                            if (isDark) {
+                                document.documentElement.setAttribute('data-theme', 'dark');
+                            }
+                            else {
+                                document.documentElement.setAttribute('data-theme', 'light');
+                            }
+                        })();`,
+                    }}
+                />
             </Head>
             <body>
                 <Main />
