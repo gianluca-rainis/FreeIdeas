@@ -283,10 +283,29 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
         if (!form.checkValidity()) {
             await showAlert("You must fill in all required fields!");
 
-            const firstInvalid = form.querySelector(":invalid");
+            const invalids = form.querySelectorAll(":invalid");
 
-            if (firstInvalid) {
-                firstInvalid.focus();
+            invalids.forEach(invalid => {
+                invalid.style.border = "3px solid #d31c1c";
+
+                function handleInputChange() {
+                    if (invalid.checkValidity()) {
+                        invalid.style.border = "";
+
+                        invalid.removeEventListener("input", handleInputChange);
+                        invalid.removeEventListener("change", handleInputChange);
+                    }
+                }
+
+                invalid.removeEventListener("input", handleInputChange);
+                invalid.removeEventListener("change", handleInputChange);
+
+                invalid.addEventListener("input", handleInputChange);
+                invalid.addEventListener("change", handleInputChange);
+            });
+
+            if (invalids[0]) {
+                invalids[0].focus();
             }
 
             return;
