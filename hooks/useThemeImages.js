@@ -39,9 +39,14 @@ export function useThemeImages() {
             return;
         }
 
-        document.documentElement.setAttribute('data-theme', themeIsLight ? 'light' : 'dark');
-
-        updateThemeElements(themeIsLight);
+        const currentDataTheme = document.documentElement.getAttribute('data-theme');
+        const targetDataTheme = themeIsLight ? 'light' : 'dark';
+        
+        // Only update if it's actually different
+        if (currentDataTheme !== targetDataTheme) {
+            document.documentElement.setAttribute('data-theme', targetDataTheme);
+            updateThemeElements(themeIsLight);
+        }
     }, [themeIsLight]);
 
     // Re-apply theme-dependent assets after client-side navigation
@@ -55,12 +60,23 @@ export function useThemeImages() {
             return;
         }
 
-        const observer = new MutationObserver(() => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const isLight = currentTheme === 'light';
-            
-            // Only update state if the data-theme actually changed
-            setThemeIsLight(isLight);
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const isLight = currentTheme === 'light';
+                    
+                    setThemeIsLight((prev) => {
+                        if (prev !== isLight) {
+                            return isLight;
+                        }
+
+                        return prev;
+                    });
+
+                    break;
+                }
+            }
         });
 
         observer.observe(document.documentElement, {
