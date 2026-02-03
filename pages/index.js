@@ -110,7 +110,7 @@ function autoScrollIdeas(ideasLoading) {
 
         let currentScrollMode = true;
 
-        const startAutoScroll = () => {
+        function startAutoScroll() {
             const vertical = window.innerWidth > 760;
 
             currentScrollMode = vertical;
@@ -192,7 +192,7 @@ function autoScrollIdeas(ideasLoading) {
 
             scrollHorizontal(lastIdeas3, false);
             scrollHorizontal(lastIdeas4, true);
-        };
+        }
 
         // Start after component mount
         setTimeout(startAutoScroll, 100);
