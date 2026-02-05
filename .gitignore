@@ -62,6 +62,10 @@ coverage/
 # Vercel
 .vercel
 
+# Cloudflare
+.wrangler/
+wrangler.toml.backup
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
