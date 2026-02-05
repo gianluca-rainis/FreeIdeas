@@ -1,0 +1,8 @@
+{
+    "name": "freeideas",
+    "compatibility_date": "2026-02-05",
+    "pages_build_configuration": {
+        "build_command": "npm run build",
+        "destination": ".next"
+    }
+}
