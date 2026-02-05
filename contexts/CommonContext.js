@@ -35,7 +35,9 @@ export function AppProvider({ children }) {
         }
         
         // Redirect
-        window.location.href = "/";
+        if (typeof window !== 'undefined') {
+            window.location.href = "/";
+        }
     }
 
     /* BANNER */
@@ -244,11 +246,13 @@ export function AppProvider({ children }) {
 
                 if (sendAccountButton) {
                     sendAccountButton.addEventListener("click", () => {
-                        if (!admin) {
-                            window.location.href = "/account";
-                        }
-                        else {
-                            window.location.href = "/reservedArea";
+                        if (typeof window !== "undefined") {
+                            if (!admin) {
+                                window.location.href = "/account";
+                            }
+                            else {
+                                window.location.href = "/reservedArea";
+                            }
                         }
                     });
                 }
@@ -257,11 +261,13 @@ export function AppProvider({ children }) {
 
                 if (sendAccountButtonMobile) {
                     sendAccountButtonMobile.addEventListener("click", () => {
-                        if (!admin) {
-                            window.location.href = "/account";
-                        }
-                        else {
-                            window.location.href = "/reservedArea";
+                        if (typeof window !== "undefined") {
+                            if (!admin) {
+                                window.location.href = "/account";
+                            }
+                            else {
+                                window.location.href = "/reservedArea";
+                            }
                         }
                     });
                 }
