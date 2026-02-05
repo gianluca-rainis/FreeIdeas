@@ -186,7 +186,9 @@ export function AppProvider({ children }) {
             }
 
             // Update DOM directly
-            updateUserUI(SQLdata, admin);
+            if (typeof window !== 'undefined') {
+                updateUserUI(SQLdata, admin);
+            }
         } catch (error) {
             console.error(error);
             setUser(null);
