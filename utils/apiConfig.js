@@ -1,7 +1,7 @@
 // Configurations for the API
 const API_CONFIG = {
     // Base URL for the API - relative paths for Next.js
-    baseURL: process.env.SITE_URL || window?.location?.origin,
+    baseURL: process.env.SITE_URL || (typeof window !== 'undefined' ? window.location.origin : ''),
     
     // Endpoints API
     endpoints: {
