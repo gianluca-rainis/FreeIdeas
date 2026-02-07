@@ -385,7 +385,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/updateOldIdea', {
+            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/updateOldIdea', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData
@@ -420,7 +420,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                 const deleteFormData = new FormData();
                 deleteFormData.append('id', id);
 
-                const response = await fetch('/api/deleteIdea', {
+                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteIdea', {
                     credentials: "include",
                     method: 'POST',
                     body: deleteFormData

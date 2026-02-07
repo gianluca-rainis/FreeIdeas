@@ -14,7 +14,7 @@ export default function ReportsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append("id", id);
 
-                const res = await fetch(`/api/deleteReportAdmin`, {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteReportAdmin`, {
                     credentials: "include",
                     method: "POST",
                     body: formData
@@ -56,7 +56,7 @@ export default function ReportsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch('/api/getReportsDataForReservedArea', {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getReportsDataForReservedArea', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',

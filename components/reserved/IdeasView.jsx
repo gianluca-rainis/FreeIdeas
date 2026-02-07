@@ -21,7 +21,7 @@ export default function IdeasView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch('/api/getIdeaDataForReservedArea', {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getIdeaDataForReservedArea', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',

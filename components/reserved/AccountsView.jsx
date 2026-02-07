@@ -21,7 +21,7 @@ export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch('/api/getAccountDataForReservedArea', {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getAccountDataForReservedArea', {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',

@@ -41,7 +41,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 const fd = new FormData();
                 fd.append('id', idea.id);
 
-                const res = await fetch('/api/data', {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/data', {
                     method: 'POST',
                     body: fd,
                     credentials: 'include'
@@ -102,7 +102,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     fd.append('title', formData.title);
                     fd.append('author', idea?.accountName || '');
 
-                    const res = await fetch('/api/getFreeIdeasLicense', {
+                    const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getFreeIdeasLicense', {
                         method: 'POST',
                         body: fd,
                         credentials: 'include'
@@ -212,7 +212,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 date: dates
             }));
 
-            const res = await fetch('/api/modifyIdeaInfoAdmin', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyIdeaInfoAdmin', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'
@@ -245,7 +245,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', idea.id);
 
-            const res = await fetch('/api/deleteIdea', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteIdea', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'
@@ -301,7 +301,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', commentId);
 
-            const res = await fetch('/api/deleteComment', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteComment', {
                 method: 'POST',
                 body: fd,
                 credentials: 'include'

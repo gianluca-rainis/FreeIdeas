@@ -261,7 +261,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch('/api/saveNewIdea', {
+            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/saveNewIdea', {
                 credentials: "include",
                 method: "POST",
                 body: submitFormData

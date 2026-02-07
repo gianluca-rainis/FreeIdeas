@@ -23,7 +23,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 const fd = new FormData();
                 fd.append('id', accountId);
 
-                const res = await fetch('/api/getAccountData', {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getAccountData', {
                     credentials: 'include',
                     method: 'POST',
                     body: fd
@@ -72,7 +72,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 fd.append('image', formData.userimage);
             }
 
-            const res = await fetch('/api/modifyAccountInfo', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -108,7 +108,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('description', formData.description);
             fd.append('public', accountData.public==0?'1':'0');
 
-            const res = await fetch('/api/modifyAccountInfo', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyAccountInfo', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -142,7 +142,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('email', formData.email);
 
-            const res = await fetch('/api/changePassword', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/changePassword', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd
@@ -170,7 +170,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('id', accountId);
 
-            const res = await fetch('/api/deleteAccount', {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteAccount', {
                 credentials: 'include',
                 method: 'POST',
                 body: fd

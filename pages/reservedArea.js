@@ -68,7 +68,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
     async function handleLogout() {
         try {
-            await fetch("/api/logout", {
+            await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+"/api/logout", {
                 credentials: "include"
             });
             
@@ -92,7 +92,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
             try {
                 const formData = new FormData(e.currentTarget);
 
-                const response = await fetch(new URL(form.action, window.location.origin).href, {
+                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+form.action, {
                     credentials: "include",
                     method: "POST",
                     body: formData

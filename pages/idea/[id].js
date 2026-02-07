@@ -160,7 +160,7 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
             formData.append('ideaid', ideaId);
             formData.append('superCommentid', superCommentId || '');
 
-            const res = await fetch(`/api/saveNewComment`, {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/saveNewComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData
@@ -358,7 +358,7 @@ function LicenseSection({ ideaData }) {
                     formData.append("title", title);
                     formData.append("author", author);
 
-                    const response = await fetch("/api/getFreeIdeasLicense", {
+                    const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+"/api/getFreeIdeasLicense", {
                         credentials: "include",
                         method: "POST",
                         body: formData
@@ -415,7 +415,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch(`/api/getSessionData?data=account`, {
+                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/getSessionData?data=account`, {
                     credentials: "include"
                 });
 
@@ -522,7 +522,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("liked", newLiked?"1":"0");
             formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
 
-            const res = await fetch(`/api/saveAccountIdeaData`, {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/saveAccountIdeaData`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -577,7 +577,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("feedback", feedback);
             formData.append("accountid", null);
 
-            const res = await fetch(`/api/reportIdeaAccount`, {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/reportIdeaAccount`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -607,7 +607,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append("followedideaid", ideaData['idea'][0].id);
 
-            const res = await fetch(`/api/followAccountIdea`, {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/followAccountIdea`, {
                 credentials: "include",
                 method: "POST",
                 body: formData
@@ -638,7 +638,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append('id', commentId);
 
-            const res = await fetch(`/api/deleteComment`, {
+            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteComment`, {
                 credentials: "include",
                 method: 'POST',
                 body: formData
