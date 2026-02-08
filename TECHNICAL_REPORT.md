@@ -228,9 +228,9 @@ FreeIdeas/
 ├── favicon.svg
 ├── FreeIdeasLicense.md
 ├── LICENSE.md
-├── middleware.js
 ├── next.config.js
 ├── package.json
+├── proxy.js
 ├── README.md
 ├── robots.txt
 ├── sitemap.xml
