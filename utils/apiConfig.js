@@ -1,7 +1,7 @@
 // Configurations for the API
 const API_CONFIG = {
     // Base URL for the API - relative paths for Next.js
-    baseURL: process.env.DB_HOST || (typeof window !== 'undefined' ? window.location.origin : ''),
+    baseURL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? window.location.origin : ''),
     
     // Endpoints API
     endpoints: {
@@ -16,10 +16,7 @@ const API_CONFIG = {
     
     // Default options for the fetch
     defaultOptions: {
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        credentials: 'include'
     }
 };
 
@@ -31,10 +28,19 @@ export function getApiUrl(endpoint) {
 // Helper function for fetch with default configurations
 export async function apiCall(endpoint, options = {}) {
     const url = getApiUrl(endpoint);
+
     const finalOptions = {
         ...API_CONFIG.defaultOptions,
         ...options
     };
+    
+    // Add Content-Type only if not body: FormData
+    if (!(options.body instanceof FormData)) {
+        finalOptions.headers = {
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+    }
     
     try {
         const response = await fetch(url, finalOptions);

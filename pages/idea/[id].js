@@ -7,6 +7,7 @@ import { useThemeImages } from '../../hooks/useThemeImages'
 import { useModals } from '../../hooks/useModals'
 import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
 import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
+import { apiCall } from '../../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -160,13 +161,10 @@ function PrintComments({ ideaData, onDeleteComment, sessionData, themeIsLight, s
             formData.append('ideaid', ideaId);
             formData.append('superCommentid', superCommentId || '');
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/saveNewComment`, {
-                credentials: "include",
+            const data = await apiCall(`/api/saveNewComment`, {
                 method: 'POST',
                 body: formData
             });
-
-            const data = await res.json();
 
             if (data['success']) {
                 window.location.href = `/idea/${ideaId}`;
@@ -358,13 +356,10 @@ function LicenseSection({ ideaData }) {
                     formData.append("title", title);
                     formData.append("author", author);
 
-                    const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+"/api/getFreeIdeasLicense", {
-                        credentials: "include",
+                    const data = await apiCall("/api/getFreeIdeasLicense", {
                         method: "POST",
                         body: formData
                     });
-
-                    const data = await response.json();
 
                     if (data && data.license) {
                         setLicenseUrl(data.license);
@@ -415,11 +410,7 @@ export default function IdeaPage({ ideaData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/getSessionData?data=account`, {
-                    credentials: "include"
-                });
-
-                const data = await res.json();
+                const data = await apiCall(`/api/getSessionData?data=account`);
 
                 setSessionData(data && data.id?data:null);
             } catch (error) {
@@ -522,13 +513,10 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("liked", newLiked?"1":"0");
             formData.append("existRowYet", existCurrentAccountIdeaData?"1":"0");
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/saveAccountIdeaData`, {
-                credentials: "include",
+            const data = await apiCall(`/api/saveAccountIdeaData`, {
                 method: "POST",
                 body: formData
             });
-
-            const data = await res.json();
 
             if (!data['success']) {
                 throw new Error(data['error']);
@@ -577,13 +565,10 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             formData.append("feedback", feedback);
             formData.append("accountid", null);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/reportIdeaAccount`, {
-                credentials: "include",
+            const data = await apiCall(`/api/reportIdeaAccount`, {
                 method: "POST",
                 body: formData
             });
-
-            const data = await res.json();
 
             if (data['success']) {
                 await showAlert("The idea was successfully reported.");
@@ -607,13 +592,10 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append("followedideaid", ideaData['idea'][0].id);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/followAccountIdea`, {
-                credentials: "include",
+            const data = await apiCall(`/api/followAccountIdea`, {
                 method: "POST",
                 body: formData
             });
-
-            const data = await res.json();
 
             if (data['success']) {
                 setFollowState(data["isNowFollowed"]);
@@ -638,13 +620,10 @@ export default function IdeaPage({ ideaData, pageTitle }) {
             const formData = new FormData();
             formData.append('id', commentId);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteComment`, {
-                credentials: "include",
+            const data = await apiCall(`/api/deleteComment`, {
                 method: 'POST',
                 body: formData
             });
-
-            const data = await res.json();
 
             if (data["success"]) {
                 window.location.reload();

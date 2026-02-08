@@ -9,6 +9,7 @@ import IdeasView from '../components/reserved/IdeasView'
 import NotificationsView from '../components/reserved/NotificationsView'
 import ReportsView from '../components/reserved/ReportsView'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -68,9 +69,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
     async function handleLogout() {
         try {
-            await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+"/api/logout", {
-                credentials: "include"
-            });
+            await apiCall("/api/logout");
             
             window.location.href = "/reservedArea";
         } catch (error) {
@@ -92,13 +91,10 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
             try {
                 const formData = new FormData(e.currentTarget);
 
-                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+form.action, {
-                    credentials: "include",
+                const data = await apiCall(form.action, {
                     method: "POST",
                     body: formData
                 });
-
-                const data = await response.json();
 
                 if (data['success']) {
                     window.location.href = "/reservedArea";

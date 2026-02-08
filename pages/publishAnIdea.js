@@ -5,6 +5,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -261,13 +262,10 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/saveNewIdea', {
-                credentials: "include",
+            const data = await apiCall('/api/saveNewIdea', {
                 method: "POST",
                 body: submitFormData
             });
-
-            const data = await response.json();
 
             if (data && data.success) {
                 closeLoading();

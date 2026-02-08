@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiCall } from '../../utils/apiConfig';
 
 export default function AccountEditModal({ accountId, onClose, onSaved, showAlert, showConfirm, showPrompt }) {
     const [accountData, setAccountData] = useState(null);
@@ -23,13 +24,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 const fd = new FormData();
                 fd.append('id', accountId);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getAccountData', {
-                    credentials: 'include',
+                const data = await apiCall('/api/getAccountData', {
                     method: 'POST',
                     body: fd
                 });
-
-                const data = await res.json();
 
                 if (!data?.success) {
                     throw new Error(data?.error || 'Failed to load account');
@@ -72,13 +70,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 fd.append('image', formData.userimage);
             }
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyAccountInfo', {
-                credentials: 'include',
+            const data = await apiCall('/api/modifyAccountInfo', {
                 method: 'POST',
                 body: fd
             });
-
-            const data = await res.json();
 
             if (!data?.success) {
                 throw new Error(data?.error || 'Failed to save');
@@ -108,13 +103,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             fd.append('description', formData.description);
             fd.append('public', accountData.public==0?'1':'0');
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyAccountInfo', {
-                credentials: 'include',
+            const data = await apiCall('/api/modifyAccountInfo', {
                 method: 'POST',
                 body: fd
             });
-
-            const data = await res.json();
 
             if (!data?.success) {
                 throw new Error(data?.error || 'Failed to toggle');
@@ -142,13 +134,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('email', formData.email);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/changePassword', {
-                credentials: 'include',
+            const data = await apiCall('/api/changePassword', {
                 method: 'POST',
                 body: fd
             });
-
-            const data = await res.json();
 
             if (!data?.success) {
                 throw new Error(data?.error || 'Failed to change password');
@@ -170,13 +159,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             const fd = new FormData();
             fd.append('id', accountId);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteAccount', {
-                credentials: 'include',
+            const data = await apiCall('/api/deleteAccount', {
                 method: 'POST',
                 body: fd
             });
-
-            const data = await res.json();
 
             if (!data?.success) {
                 throw new Error(data?.error || 'Failed to delete');

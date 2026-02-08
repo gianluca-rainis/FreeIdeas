@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AccountEditModal from './AccountEditModal';
+import { apiCall } from '../../utils/apiConfig';
 
 // Simple accounts list with search
 export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
@@ -21,14 +22,11 @@ export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getAccountDataForReservedArea', {
+                const json = await apiCall('/api/getAccountDataForReservedArea', {
                     method: 'POST',
                     body: formData,
-                    credentials: 'include',
                     signal: controller.signal
                 });
-
-                const json = await res.json();
 
                 if (ignore) {
                     return

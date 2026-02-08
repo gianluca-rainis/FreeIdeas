@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiCall } from '../../utils/apiConfig';
 
 export default function ReportsView({ showAlert, showConfirm }) {
     const [search, setSearch] = useState('');
@@ -14,13 +15,10 @@ export default function ReportsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append("id", id);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteReportAdmin`, {
-                    credentials: "include",
+                const data = await apiCall(`/api/deleteReportAdmin`, {
                     method: "POST",
                     body: formData
                 });
-
-                const data = await res.json();
 
                 if (data) {
                     if (!data["success"]) {
@@ -56,14 +54,11 @@ export default function ReportsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getReportsDataForReservedArea', {
+                const json = await apiCall('/api/getReportsDataForReservedArea', {
                     method: 'POST',
                     body: formData,
-                    credentials: 'include',
                     signal: controller.signal
                 });
-
-                const json = await res.json();
 
                 if (ignore) {
                     return

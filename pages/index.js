@@ -5,6 +5,7 @@ import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering
 export async function getStaticProps() {
@@ -223,8 +224,7 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
     React.useEffect(() => {
         async function loadIdeas() {
             try {
-                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/getLastIdeas`);
-                const data = await response.json();
+                const data = await apiCall(`/api/getLastIdeas`);
 
                 if (data.success) {
                     const sourceList = data.data;

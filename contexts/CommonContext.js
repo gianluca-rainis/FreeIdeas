@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { getApiUrl } from '../utils/apiConfig';
+import { apiCall } from '../utils/apiConfig';
 import { handleError } from '../utils/errorHandling';
 import { useThemeImages } from '../hooks/useThemeImages';
 
@@ -29,7 +29,7 @@ export function AppProvider({ children }) {
     // Logout function (moved from useAuth to avoid circular dependency)
     async function handleLogout() {
         try {
-            await fetch(getApiUrl('logout'), { credentials: "include" });
+            await apiCall('logout');
         } catch (error) {
             console.error(error);
         }
@@ -66,12 +66,9 @@ export function AppProvider({ children }) {
     // Random idea management
     const loadRandomIdea = useCallback(async () => {
         try {
-            const response = await fetch(getApiUrl('getRandomIdeaId'), {
-                method: 'POST',
-                credentials: "include"
+            const data = await apiCall('getRandomIdeaId', {
+                method: 'POST'
             });
-
-            const data = await response.json();
 
             if (data && data.success) {
                 setRandomIdeaId(data.data.id);
@@ -131,13 +128,9 @@ export function AppProvider({ children }) {
 
     async function getSessionDataAccountFromDatabase() {
         try {
-            const res = await fetch(`${getApiUrl('getSessionData')}?data=account`, {
-                credentials: "include"
-            });
+            const res = await apiCall('/api/getSessionData?data=account');
 
-            const data = await res.json();
-
-            return data;
+            return res;
         } catch (error) {
             console.error(error);
             return null;
@@ -146,13 +139,9 @@ export function AppProvider({ children }) {
 
     async function getSessionDataAdminFromDatabase() {
         try {
-            const res = await fetch(`${getApiUrl('getSessionData')}?data=administrator`, {
-                credentials: "include"
-            });
+            const res = await apiCall('/api/getSessionData?data=administrator');
 
-            const data = await res.json();
-
-            return data;
+            return res;
         } catch (error) {
             console.error(error);
             return null;
@@ -487,13 +476,10 @@ export function AppProvider({ children }) {
                             const formData = new FormData();
                             formData.append("id", idToSetStatus);
 
-                            const response = await fetch(getApiUrl('setNotificationAsRead'), {
-                                credentials: "include",
+                            const data = await apiCall('setNotificationAsRead', {
                                 method: "POST",
                                 body: formData
                             });
-
-                            const data = await response.json();
 
                             if (data) {
                                 if (!data['success']) {
@@ -547,13 +533,10 @@ export function AppProvider({ children }) {
                             const formData = new FormData();
                             formData.append("id", idToDelete);
 
-                            const response = await fetch(getApiUrl('deleteNotification'), {
-                                credentials: "include",
+                            const data = await apiCall('deleteNotification', {
                                 method: "POST",
                                 body: formData
                             });
-
-                            const data = await response.json();
 
                             if (data) {
                                 if (!data['success']) {

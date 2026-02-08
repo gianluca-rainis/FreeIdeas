@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppContext } from '../contexts/CommonContext';
 import { useRouter } from 'next/router';
-import { getApiUrl } from '../utils/apiConfig';
+import { apiCall } from '../utils/apiConfig';
 import { handleError, ValidationError } from '../utils/errorHandling';
 
 export function useAuth() {
@@ -21,13 +21,10 @@ export function useAuth() {
     // API functions for authentication
     async function login(formData) {
         try {
-            const response = await fetch(getApiUrl('login'), {
-                credentials: "include",
+            const data = await apiCall('login', {
                 method: "POST",
                 body: formData
             });
-
-            const data = await response.json();
 
             if (data && data.success) {
                 return { success: true };
@@ -49,7 +46,7 @@ export function useAuth() {
 
     async function logout() {
         try {
-            await fetch(getApiUrl('logout'), { credentials: "include" });
+            await apiCall('logout');
         } catch (error) {
             console.error(error);
         }
@@ -67,13 +64,10 @@ export function useAuth() {
             const formData = new FormData();
             formData.append("email", email);
 
-            const response = await fetch(getApiUrl('changePassword'), {
-                credentials: "include",
+            const data = await apiCall('changePassword', {
                 method: "POST",
                 body: formData
             });
-
-            const data = await response.json();
 
             if (data && data.success) {
                 return { success: true, message: `Email sent to: ${email}` };

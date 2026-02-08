@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -222,13 +223,10 @@ export default function SearchAnIdeaPage({ pageTitle }) {
             formData.append("status", (customFilters.status !== "All") ? customFilters.status : "");
             formData.append("order", (customFilters.order !== "All") ? customFilters.order : "");
 
-            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/searchAnIdea', {
-                credentials: "include",
+            const data = await apiCall('/api/searchAnIdea', {
                 method: 'POST',
                 body: formData
             });
-
-            const data = await response.json();
             
             if (data.success) {
                 const ideasData = data.data;
@@ -307,13 +305,10 @@ export default function SearchAnIdeaPage({ pageTitle }) {
             formData.append("status", statusFilter?(statusFilter.value!="All"?statusFilter.value:""):"");
             formData.append("order", orderFilter?(orderFilter.value!="All"?orderFilter.value:""):"");
 
-            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/searchAnIdea', {
-                credentials: "include",
+            const data = await apiCall('/api/searchAnIdea', {
                 method: 'POST',
                 body: formData
             });
-
-            const data = await response.json();
             
             if (data.success) {
                 const ideasData = data.data;

@@ -7,6 +7,7 @@ import { useAppContext } from '../contexts/CommonContext'
 import { useThemeImages } from '../hooks/useThemeImages'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 import Link from 'next/link'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -101,13 +102,9 @@ export default function AccountPage({ accountData, pageTitle }) {
     useEffect(() => {
         async function loadSessionData() {
             try {
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/getSessionData?data=account`, {
-                    credentials: "include"
-                });
+                const res = await apiCall(`/api/getSessionData?data=account`);
 
-                const data = await res.json();
-
-                setSessionData(data && data.id?data:null);
+                setSessionData(res && res.id?res:null);
             } catch (error) {
                 console.error('Failed to load session data: '+error);
             }
@@ -194,13 +191,10 @@ export default function AccountPage({ accountData, pageTitle }) {
             const formData = new FormData();
             formData.append('followedaccountid', accountData.id);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/followAccountIdea`, {
+            const data = await apiCall(`/api/followAccountIdea`, {
                 method: 'POST',
-                credentials: 'include',
                 body: formData
             });
-
-            const data = await res.json();
 
             if (!data.success) {
                 console.error(data.error);
@@ -244,13 +238,10 @@ export default function AccountPage({ accountData, pageTitle }) {
             formData.append('feedback', feedback);
             formData.append('accountid', accountData.id);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/reportIdeaAccount`, {
+            const data = await apiCall(`/api/reportIdeaAccount`, {
                 method: 'POST',
-                credentials: 'include',
                 body: formData
             });
-
-            const data = await res.json();
 
             if (!data.success) {
                 throw new Error(data.error);
@@ -298,13 +289,10 @@ export default function AccountPage({ accountData, pageTitle }) {
                 data.append('image', formValues.imageFile);
             }
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/modifyAccountInfo`, {
+            const resp = await apiCall(`/api/modifyAccountInfo`, {
                 method: 'POST',
-                credentials: 'include',
                 body: data
             });
-
-            const resp = await res.json();
 
             if (resp?.success) {
                 router.reload();
@@ -333,13 +321,10 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('description', formValues.description || '');
             data.append('public', nextPublic);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/modifyAccountInfo`, {
+            const resp = await apiCall(`/api/modifyAccountInfo`, {
                 method: 'POST',
-                credentials: 'include',
                 body: data
             });
-
-            const resp = await res.json();
 
             if (resp?.success) {
                 setFormValues((prev) => ({ ...prev, public: nextPublic }));
@@ -368,13 +353,10 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('email', sessionData.email);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/changePassword`, {
+            const resp = await apiCall(`/api/changePassword`, {
                 method: 'POST',
-                credentials: 'include',
                 body: data
             });
-
-            const resp = await res.json();
 
             if (resp?.success) {
                 showAlert('Check your inbox for the password reset email.');
@@ -406,13 +388,10 @@ export default function AccountPage({ accountData, pageTitle }) {
             const data = new FormData();
             data.append('id', sessionData.id);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteAccount`, {
+            const resp = await apiCall(`/api/deleteAccount`, {
                 method: 'POST',
-                credentials: 'include',
                 body: data
             });
-
-            const resp = await res.json();
 
             if (resp?.success) {
                 router.push('/');

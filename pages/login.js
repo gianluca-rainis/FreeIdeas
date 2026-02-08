@@ -3,6 +3,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
+import { apiCall } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -32,13 +33,10 @@ export default function LoginPage({pageTitle}) {
 
             try {
                 const formData = new FormData(form);
-                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+form.action, {
-                    credentials: "include",
+                const data = await apiCall(form.action, {
                     method: "POST",
                     body: formData
                 });
-
-                const data = await response.json();
 
                 if (data && data['success']) {
                     window.location.href = "/";
@@ -60,13 +58,10 @@ export default function LoginPage({pageTitle}) {
                     const formData = new FormData();
                     formData.append("email", email);
 
-                    const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+"/api/changePassword", {
-                        credentials: "include",
+                    const data = await apiCall("/api/changePassword", {
                         method: "POST",
                         body: formData
                     });
-
-                    const data = await response.json();
 
                     if (data['success']) {
                         alert("Email sent to: " + email);

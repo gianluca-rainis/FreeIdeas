@@ -6,6 +6,7 @@ import Footer from '../../components/Footer'
 import Head from '../../components/Head'
 import { useAppContext } from '../../contexts/CommonContext'
 import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
+import { apiCall } from '../../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -385,13 +386,10 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
             submitFormData.append("logs", JSON.stringify(logJson));
 
             // Submit to appropriate endpoint
-            const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/updateOldIdea', {
-                credentials: "include",
+            const data = await apiCall('/api/updateOldIdea', {
                 method: "POST",
                 body: submitFormData
             });
-
-            const data = await response.json();
 
             if (data && data.success) {
                 closeLoading();
@@ -420,13 +418,10 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                 const deleteFormData = new FormData();
                 deleteFormData.append('id', id);
 
-                const response = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteIdea', {
-                    credentials: "include",
+                const data = await apiCall('/api/deleteIdea', {
                     method: 'POST',
                     body: deleteFormData
                 });
-
-                const data = await response.json();
                 
                 if (data && data.success) {
                     router.push('/publishAnIdea');

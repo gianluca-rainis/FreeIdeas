@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiCall } from '../../utils/apiConfig';
 
 export default function NotificationsView({ showAlert, showConfirm }) {
     const [search, setSearch] = useState('');
@@ -25,14 +26,11 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append('search', search);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getNotificationsDataForReservedArea', {
+                const json = await apiCall('/api/getNotificationsDataForReservedArea', {
                     method: 'POST',
                     body: formData,
-                    credentials: 'include',
                     signal: controller.signal
                 });
-
-                const json = await res.json();
 
                 if (ignore) {
                     return
@@ -96,13 +94,10 @@ export default function NotificationsView({ showAlert, showConfirm }) {
             formData.append('description', newDescription);
             formData.append('status', newStatus ? 1 : 0);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/createNewNotificationAdmin`, {
-                credentials: 'include',
+            const resp = await apiCall(`/api/createNewNotificationAdmin`, {
                 method: 'POST',
                 body: formData
             });
-
-            const resp = await res.json();
 
             if (!resp || !resp.success) {
                 throw new Error(resp?.error || 'Error creating notification');
@@ -125,13 +120,10 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                 const formData = new FormData();
                 formData.append("id", id);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+`/api/deleteNotificationAdmin`, {
-                    credentials: "include",
+                const data = await apiCall(`/api/deleteNotificationAdmin`, {
                     method: "POST",
                     body: formData
                 });
-
-                const data = await res.json();
 
                 if (data) {
                     if (!data["success"]) {

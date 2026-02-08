@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiCall } from '../../utils/apiConfig';
 
 function decodeHtmlEntities(text) {
     if (!text) {
@@ -41,13 +42,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 const fd = new FormData();
                 fd.append('id', idea.id);
 
-                const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/data', {
+                const json = await apiCall('/api/data', {
                     method: 'POST',
-                    body: fd,
-                    credentials: 'include'
+                    body: fd
                 });
-
-                const json = await res.json();
 
                 if (!json?.idea || !Array.isArray(json.idea) || json.idea.length === 0) {
                     throw new Error(json?.error || 'Failed to load idea data');
@@ -102,13 +100,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     fd.append('title', formData.title);
                     fd.append('author', idea?.accountName || '');
 
-                    const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/getFreeIdeasLicense', {
+                    const data = await apiCall('/api/getFreeIdeasLicense', {
                         method: 'POST',
-                        body: fd,
-                        credentials: 'include'
+                        body: fd
                     });
-
-                    const data = await res.json();
 
                     if (data && data['success'] === false) {
                         throw new Error(data['error']);
@@ -212,13 +207,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                 date: dates
             }));
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/modifyIdeaInfoAdmin', {
+            const json = await apiCall('/api/modifyIdeaInfoAdmin', {
                 method: 'POST',
-                body: fd,
-                credentials: 'include'
+                body: fd
             });
-
-            const json = await res.json();
 
             if (!json?.success) {
                 throw new Error(json?.error || 'Failed to save idea');
@@ -245,13 +237,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', idea.id);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteIdea', {
+            const json = await apiCall('/api/deleteIdea', {
                 method: 'POST',
-                body: fd,
-                credentials: 'include'
+                body: fd
             });
-
-            const json = await res.json();
 
             if (!json?.success) {
                 throw new Error(json?.error || 'Failed to delete idea');
@@ -301,13 +290,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             const fd = new FormData();
             fd.append('id', commentId);
 
-            const res = await fetch((process.env.DB_HOST?process.env.DB_HOST:"")+'/api/deleteComment', {
+            const json = await apiCall('/api/deleteComment', {
                 method: 'POST',
-                body: fd,
-                credentials: 'include'
+                body: fd
             });
-
-            const json = await res.json();
 
             if (!json?.success) {
                 throw new Error(json?.error || 'Failed to delete comment');
