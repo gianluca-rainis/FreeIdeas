@@ -7,7 +7,7 @@ import { useAppContext } from '../contexts/CommonContext'
 import { useThemeImages } from '../hooks/useThemeImages'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
 import Link from 'next/link'
-import { apiCall } from '../utils/apiConfig'
+import { apiCall, getBaseUrl } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -23,8 +23,7 @@ export async function getServerSideProps(context) {
 
     if (!id) {
         try {
-            const hostHeader = context.req?.headers?.host;
-            const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+            const baseUrl = getBaseUrl();
 
             const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
                 method: 'GET',
@@ -42,8 +41,7 @@ export async function getServerSideProps(context) {
     }
     
     try {
-        const hostHeader = context.req?.headers?.host;
-        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+        const baseUrl = getBaseUrl();
 
         const formData = new FormData();
         formData.append("id", id);

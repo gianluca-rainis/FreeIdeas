@@ -9,7 +9,7 @@ import IdeasView from '../components/reserved/IdeasView'
 import NotificationsView from '../components/reserved/NotificationsView'
 import ReportsView from '../components/reserved/ReportsView'
 import { fetchWithTimeout } from '../utils/fetchWithTimeout'
-import { apiCall } from '../utils/apiConfig'
+import { apiCall, getBaseUrl } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -17,9 +17,7 @@ export async function getServerSideProps(context) {
     let pageTitle = 'Reserved Area';
     
     const cookieHeader = context.req?.headers?.cookie ?? '';
-    const protocol = context.req.headers['x-forwarded-proto'] || 'http';
-    const host = context.req.headers.host;
-    const baseUrl = `${protocol}://${host}`;
+    const baseUrl = getBaseUrl();
 
     // Cache SSR response briefly to improve perceived speed
     if (context.res) {

@@ -148,9 +148,9 @@ FreeIdeas/
     ├── usePasswordVisibility.js
     └── useThemeImages.js
 ├── lib/
+    ├── cors.js
     ├── db_connection.js
-    ├── session.js
-    └── withSession.js
+    └── session.js
 ├── pages/
     ├── account/
         └── [id].js
@@ -225,29 +225,15 @@ FreeIdeas/
     ├── errorHandling.js
     └── fetchWithTimeout.js
 ├── .gitignore
-├── about.html
-├── account.html
-├── contacts.html
-├── createAccount.html
-├── faq.html
 ├── favicon.svg
-├── feedback.html
 ├── FreeIdeasLicense.md
-├── idea.html
-├── index.html
 ├── LICENSE.md
-├── licensePage.html
-├── login.html
+├── middleware.js
 ├── next.config.js
 ├── package.json
-├── privacyPolicy.html
-├── publishAnIdea.html
 ├── README.md
-├── reservedArea.html
 ├── robots.txt
-├── searchAnIdea.html
 ├── sitemap.xml
-├── termsOfUse.html
 └── TECHNICAL_REPORT.md
 ```
 
@@ -286,6 +272,8 @@ SECRET_COOKIE_PASSWORD
 EMAIL_NODE_MAILER
 
 PASSWORD_NODE_MAILER
+
+NEXT_PUBLIC_API_URL     # Only for the front-end
 
 SITE_URL
 ```

@@ -7,7 +7,7 @@ import { useThemeImages } from '../../hooks/useThemeImages'
 import { useModals } from '../../hooks/useModals'
 import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
 import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
-import { apiCall } from '../../utils/apiConfig'
+import { apiCall, getBaseUrl } from '../../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -27,9 +27,7 @@ export async function getServerSideProps(context) {
 
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
-
-        const hostHeader = context.req?.headers?.host;
-        const baseUrl = process.env.SITE_URL || (hostHeader ? `http://${hostHeader}` : 'http://localhost:3000');
+        const baseUrl = getBaseUrl();
 
         const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",

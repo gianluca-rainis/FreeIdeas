@@ -1,8 +1,5 @@
 // Configurations for the API
 const API_CONFIG = {
-    // Base URL for the API - relative paths for Next.js
-    baseURL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? window.location.origin : ''),
-    
     // Endpoints API
     endpoints: {
         getSessionData: '/api/getSessionData',
@@ -20,6 +17,18 @@ const API_CONFIG = {
     }
 };
 
+export function getBaseUrl() {
+    if (process.env.NEXT_PUBLIC_API_URL) {
+        return process.env.NEXT_PUBLIC_API_URL;
+    }
+    
+    if (typeof window !== 'undefined') {
+        return window.location.origin;
+    }
+    
+    return '';
+}
+
 // Helper function to build the URL
 export function getApiUrl(endpoint) {
     // If endpoint is an URL, return it
@@ -27,7 +36,9 @@ export function getApiUrl(endpoint) {
         return endpoint;
     }
     
-    return `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
+    const baseURL = getBaseUrl();
+    
+    return `${baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
 }
 
 // Helper function for fetch with default configurations
