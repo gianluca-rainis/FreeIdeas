@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
 
     if (!id) {
         try {
-            const baseUrl = getBaseUrl();
+            const baseUrl = getBaseUrl(context.req);
 
             const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
                 method: 'GET',
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
     }
     
     try {
-        const baseUrl = getBaseUrl();
+        const baseUrl = getBaseUrl(context.req);
 
         const formData = new FormData();
         formData.append("id", id);

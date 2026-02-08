@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
 
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
-        const baseUrl = getBaseUrl();
+        const baseUrl = getBaseUrl(context.req);
 
         const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",

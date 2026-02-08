@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
     let pageTitle = 'Reserved Area';
     
     const cookieHeader = context.req?.headers?.cookie ?? '';
-    const baseUrl = getBaseUrl();
+    const baseUrl = getBaseUrl(context.req);
 
     // Cache SSR response briefly to improve perceived speed
     if (context.res) {

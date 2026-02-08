@@ -17,9 +17,16 @@ const API_CONFIG = {
     }
 };
 
-export function getBaseUrl() {
+export function getBaseUrl(req = null) {
     if (process.env.NEXT_PUBLIC_API_URL) {
         return process.env.NEXT_PUBLIC_API_URL;
+    }
+
+    if (req) {
+        if (req?.headers?.host) {
+            const proto = req.headers['x-forwarded-proto'] || 'http';
+            return `${proto}://${req.headers.host}`;
+        }
     }
     
     if (typeof window !== 'undefined') {
