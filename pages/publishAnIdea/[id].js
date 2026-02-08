@@ -130,26 +130,26 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                 };
                 
                 setFormData({
-                    title: decodeHtmlEntities(ideaData.idea[0].title),
-                    description: ideaData.idea[0].description,
-                    typeProject: decodeHtmlEntities(ideaData.idealabels[0].type),
-                    creativityType: decodeHtmlEntities(ideaData.idealabels[0].creativity),
-                    statusProject: decodeHtmlEntities(ideaData.idealabels[0].status),
+                    title: decodeHtmlEntities(ideaData.idea[0].title) || '',
+                    description: ideaData.idea[0].description || '',
+                    typeProject: decodeHtmlEntities(ideaData.idealabels[0].type) || '',
+                    creativityType: decodeHtmlEntities(ideaData.idealabels[0].creativity) || '',
+                    statusProject: decodeHtmlEntities(ideaData.idealabels[0].status) || '',
                     buttonlink: ideaData.idea[0].downloadlink || '',
                     licenseDefaultLicense: !ideaData.idea[0].license || ideaData.idea[0].license === 'default'
                 });
 
                 setLicensePdfFile(null);
                 
-                setMainImagePreview(ideaData.idea[0].ideaimage);
+                setMainImagePreview(ideaData.idea[0].ideaimage || '');
                 
                 // Load additional info
                 if (ideaData.info && ideaData.info.length > 0) {
                     setAdditionalInfos(ideaData.info.map(info => ({
                         id: Date.now() + Math.random(),
-                        title: info.title,
-                        description: info.description,
-                        imagePreview: info.updtimage,
+                        title: info.title || '',
+                        description: info.description || '',
+                        imagePreview: info.updtimage || '/images/FreeIdeas.svg',
                         imageFile: null
                     })));
                 }
@@ -158,9 +158,9 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                 if (ideaData.log && ideaData.log.length > 0) {
                     setLogs(ideaData.log.map(log => ({
                         id: Date.now() + Math.random(),
-                        title: log.title,
-                        description: log.description,
-                        date: log.data
+                        title: log.title || '',
+                        description: log.description || '',
+                        date: log.data || getCurrentDate()
                     })));
                 }
             }

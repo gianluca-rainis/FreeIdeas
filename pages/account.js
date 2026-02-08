@@ -91,6 +91,7 @@ export default function AccountPage({ accountData, pageTitle }) {
         username: accountData?.username || '',
         name: accountData?.name || '',
         surname: accountData?.surname || '',
+        email: accountData?.email || '',
         description: accountData?.description || '',
         public: accountData?.public ?? 1,
         imageFile: null
@@ -128,6 +129,7 @@ export default function AccountPage({ accountData, pageTitle }) {
                 username: accountData.username || '',
                 name: accountData.name || '',
                 surname: accountData.surname || '',
+                email: accountData?.email || '',
                 description: accountData.description || '',
                 public: accountData.public ?? 1
             }));
@@ -261,6 +263,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             username: accountData.username || '',
             name: accountData.name || '',
             surname: accountData.surname || '',
+            email: accountData?.email || '',
             description: accountData.description || '',
             public: accountData.public ?? 1,
             imageFile: null
@@ -282,6 +285,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('username', formValues.username);
             data.append('name', formValues.name);
             data.append('surname', formValues.surname);
+            data.append('email', formValues.email);
             data.append('description', formValues.description || '');
             data.append('public', formValues.public);
 
@@ -318,6 +322,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('username', formValues.username);
             data.append('name', formValues.name);
             data.append('surname', formValues.surname);
+            data.append('email', formValues.email);
             data.append('description', formValues.description || '');
             data.append('public', nextPublic);
 

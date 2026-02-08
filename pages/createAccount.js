@@ -16,7 +16,7 @@ export async function getStaticProps() {
 
 // Main
 export default function CreateAccountPage({pageTitle}) {
-    const { randomIdeaId } = useAppContext();
+    const { randomIdeaId, showAlert } = useAppContext();
     const formRef = useRef(null);
     
     // Handle form submit
@@ -45,7 +45,7 @@ export default function CreateAccountPage({pageTitle}) {
                 }
             } catch (error) {
                 console.error(error);
-                alert("An error occurred. Please try again.");
+                showAlert("An error occurred. Please try again.");
             }
         }
 

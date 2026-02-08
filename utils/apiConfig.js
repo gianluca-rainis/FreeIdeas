@@ -22,6 +22,11 @@ const API_CONFIG = {
 
 // Helper function to build the URL
 export function getApiUrl(endpoint) {
+    // If endpoint is an URL, return it
+    if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+        return endpoint;
+    }
+    
     return `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
 }
 
@@ -45,14 +50,15 @@ export async function apiCall(endpoint, options = {}) {
     try {
         const response = await fetch(url, finalOptions);
         
-        if (!response.ok) {
-            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
-        }
-        
         const data = await response.json();
+
         return data;
     } catch (error) {
-        console.error(`API call error for ${endpoint}:`, error);
+        // Don't log AbortErrors (intentional errors)
+        if (error.name !== 'AbortError') {
+            console.error(`API call error for ${endpoint}:`, error);
+        }
+
         throw error;
     }
 }

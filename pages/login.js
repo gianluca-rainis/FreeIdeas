@@ -16,7 +16,7 @@ export async function getStaticProps() {
 
 // Main
 export default function LoginPage({pageTitle}) {
-    const { randomIdeaId } = useAppContext();
+    const { randomIdeaId, showAlert } = useAppContext();
     const formRef = useRef(null);
 
     // Handle form submit
@@ -42,11 +42,11 @@ export default function LoginPage({pageTitle}) {
                     window.location.href = "/";
                 }
                 else {
-                    alert("Email or password are wrong");
+                    showAlert("Email or password are wrong");
                 }
             } catch (error) {
                 console.error(error);
-                alert("An error occurred. Please try again.");
+                showAlert("An error occurred. Please try again.");
             }
         }
 
@@ -64,19 +64,19 @@ export default function LoginPage({pageTitle}) {
                     });
 
                     if (data['success']) {
-                        alert("Email sent to: " + email);
+                        showAlert("Email sent to: " + email);
                     }
                     else {
                         console.error(data['error']);
-                        alert("Error sending email");
+                        showAlert("Error sending email");
                     }
                 } catch (error) {
                     console.error(error);
-                    alert("An error occurred. Please try again.");
+                    showAlert("An error occurred. Please try again.");
                 }
             }
             else {
-                alert("Insert a valid email");
+                showAlert("Insert a valid email");
             }
         }
 

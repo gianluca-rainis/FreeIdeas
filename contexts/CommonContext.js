@@ -89,12 +89,10 @@ export function AppProvider({ children }) {
 
     // Set new random idea when navigated
     useEffect(() => {
-        const handler = () => loadRandomIdea();
-
-        router.events.on('routeChangeComplete', handler);
+        router.events.on('routeChangeComplete', loadRandomIdea);
 
         return () => {
-            router.events.off('routeChangeComplete', handler);
+            router.events.off('routeChangeComplete', loadRandomIdea);
         };
     }, [router, loadRandomIdea]);
 
@@ -102,6 +100,19 @@ export function AppProvider({ children }) {
     useEffect(() => {
         ldAccountData();
     }, []);
+
+    // Reload account data when navigating between pages
+    const reloadAccountData = useCallback(() => {
+        ldAccountData();
+    }, []);
+    
+    useEffect(() => {
+        router.events.on('routeChangeComplete', reloadAccountData);
+
+        return () => {
+            router.events.off('routeChangeComplete', reloadAccountData);
+        };
+    }, [router, reloadAccountData]);
 
     async function ldAccountData() {
         setIsLoading(true);
