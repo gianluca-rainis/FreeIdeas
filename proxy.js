@@ -4,6 +4,9 @@ export function proxy(request) {
     const origin = request.headers.get('origin');
     
     const allowedOrigins = [
+        'https://freeideas.pro',
+        'https://www.freeideas.pro',
+        'https://api.freeideas.pro',
         'https://freeideas.vercel.app',
         'https://freeideas.duckdns.org',
         'http://localhost:3000',
