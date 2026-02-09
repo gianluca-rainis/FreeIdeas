@@ -42,8 +42,8 @@ export function AppProvider({ children }) {
 
     /* BANNER */
     useEffect(() => {
-        setBannerMessage("");
-        setBannerVisibility(false);
+        setBannerMessage("We're changing our domain: from now on, the site's homepage will be https://www.freeideas.pro. The old link will remain active for a while.");
+        setBannerVisibility(true);
     }, []);
 
     // Window size management
