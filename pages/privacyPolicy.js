@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
@@ -37,7 +36,7 @@ export default function PrivacyPolicyPage({pageTitle}) {
                     <li><p><strong>Account</strong> means a unique account created for You to access Our Service or parts of Our Service.</p></li>
                     <li><p><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Policy) refers to FreeIdeas.</p></li>
                     <li><p><strong>Country</strong> refers to: Italy.</p></li>
-                    <li><p><strong>Service</strong> refers to the Website, FreeIdeas, accessible from <a href="https://freeideas.duckdns.org/" target="_blank" rel="noopener">https://freeideas.duckdns.org/</a>.</p></li>
+                    <li><p><strong>Service</strong> refers to the Website, FreeIdeas, accessible from <a href="https://www.freeideas.pro/" target="_blank" rel="noopener">https://www.freeideas.pro/</a>.</p></li>
                     <li><p><strong>You</strong> means the individual accessing or using the Service, or the company or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p></li>
                     <li><p><strong>Personal Data</strong> means any information relating to an identified or identifiable individual.</p></li>
                 </ul>

@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Head from '../components/Head'
@@ -39,7 +38,7 @@ export default function TermsOfUsePage({pageTitle}) {
                     <li><p><strong>Country</strong> refers to: Italy.</p></li>
                     <li><p><strong>Content</strong> means any text, images, or other material that You upload, post, or otherwise make available through the Service.</p></li>
                     <li><p><strong>Device</strong> means any device that can access the Service, such as a computer, mobile phone, or tablet.</p></li>
-                    <li><p><strong>Service</strong> refers to the Website, FreeIdeas, accessible from <a href="https://freeideas.duckdns.org/" target="_blank" rel="noopener">https://freeideas.duckdns.org/</a>.</p></li>
+                    <li><p><strong>Service</strong> refers to the Website, FreeIdeas, accessible from <a href="https://www.freeideas.pro/" target="_blank" rel="noopener">https://www.freeideas.pro/</a>.</p></li>
                     <li><p><strong>You</strong> means the individual accessing or using the Service, or the company or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p></li>
                 </ul>
 

@@ -2,82 +2,82 @@
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://freeideas.duckdns.org/</loc>
+    <loc>https://www.freeideas.pro/</loc>
     <priority>1.00</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/searchAnIdea</loc>
+    <loc>https://www.freeideas.pro/searchAnIdea</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/publishAnIdea</loc>
+    <loc>https://www.freeideas.pro/publishAnIdea</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/createAccount</loc>
+    <loc>https://www.freeideas.pro/createAccount</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/login</loc>
+    <loc>https://www.freeideas.pro/login</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/idea/</loc>
+    <loc>https://www.freeideas.pro/idea/</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/account</loc>
+    <loc>https://www.freeideas.pro/account</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/account/</loc>
+    <loc>https://www.freeideas.pro/account/</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/reservedArea</loc>
+    <loc>https://www.freeideas.pro/reservedArea</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/termsOfUse</loc>
+    <loc>https://www.freeideas.pro/termsOfUse</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/privacyPolicy</loc>
+    <loc>https://www.freeideas.pro/privacyPolicy</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/licensePage</loc>
+    <loc>https://www.freeideas.pro/licensePage</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/contacts</loc>
+    <loc>https://www.freeideas.pro/contacts</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/about</loc>
+    <loc>https://www.freeideas.pro/about</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/faq</loc>
+    <loc>https://www.freeideas.pro/faq</loc>
     <priority>0.50</priority>
   </url>
 
   <url>
-    <loc>https://freeideas.duckdns.org/feedback</loc>
+    <loc>https://www.freeideas.pro/feedback</loc>
     <priority>0.50</priority>
   </url>
 </urlset>

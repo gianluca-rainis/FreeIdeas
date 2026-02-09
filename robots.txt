@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /include/
 
-Sitemap: https://freeideas.duckdns.org/sitemap.xml
+Sitemap: https://www.freeideas.pro/sitemap.xml

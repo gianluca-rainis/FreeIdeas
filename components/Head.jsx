@@ -1,7 +1,7 @@
 import React from 'react'
 import HeadNext from 'next/head'
 
-export default function Head({ pageTitle="", pageUrl="https://freeideas.duckdns.org/" }) {
+export default function Head({ pageTitle="", pageUrl="https://www.freeideas.pro/" }) {
     return (
         <>
             <HeadNext>
@@ -19,8 +19,8 @@ export default function Head({ pageTitle="", pageUrl="https://freeideas.duckdns.
                 <meta property="og:site_name" content="FreeIdeas" />
                 <meta property="og:title" content={pageTitle || 'FreeIdeas'} />
                 <meta property="og:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-                <meta property="og:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
-                <meta property="og:image:secure_url" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
+                <meta property="og:image" content="https://www.freeideas.pro/images/freeideasPreview.png" />
+                <meta property="og:image:secure_url" content="https://www.freeideas.pro/images/freeideasPreview.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
@@ -28,11 +28,11 @@ export default function Head({ pageTitle="", pageUrl="https://freeideas.duckdns.
 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta property="twitter:domain" content="freeideas.duckdns.org" />
+                <meta property="twitter:domain" content="www.freeideas.pro" />
                 <meta name="twitter:url" content={pageUrl} />
                 <meta name="twitter:title" content={pageTitle || 'FreeIdeas'} />
                 <meta name="twitter:description" content="FreeIdeas is a site where you can publish your ideas for projects, apps, and websites, and where you can find inspiration for your next project." />
-                <meta name="twitter:image" content="https://freeideas.duckdns.org/images/freeideasPreview.png" />
+                <meta name="twitter:image" content="https://www.freeideas.pro/images/freeideasPreview.png" />
                 
                 {/* Favicon and CSS are in _document.js */}
                 
@@ -44,7 +44,7 @@ export default function Head({ pageTitle="", pageUrl="https://freeideas.duckdns.
                             "@type": "WebSite",
                             "@context": "https://schema.org",
                             "name": "FreeIdeas",
-                            "url": "https://freeideas.duckdns.org"
+                            "url": "https://www.freeideas.pro"
                         })
                     }}
                 />
