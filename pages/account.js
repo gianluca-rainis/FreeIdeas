@@ -94,6 +94,7 @@ export default function AccountPage({ accountData, pageTitle }) {
     });
 
     const [busy, setBusy] = useState({ follow: false, save: false, danger: false });
+    const [sessionLoading, setSessionLoading] = useState(true);
 
     // Load session data
     useEffect(() => {
@@ -104,6 +105,8 @@ export default function AccountPage({ accountData, pageTitle }) {
                 setSessionData(res && res.id?res:null);
             } catch (error) {
                 console.error('Failed to load session data: '+error);
+            } finally {
+                setSessionLoading(false);
             }
         }
 
@@ -129,10 +132,10 @@ export default function AccountPage({ accountData, pageTitle }) {
 
     // Redirect to home if user not logged in
     useEffect(() => {
-        if (accountData === null && typeof window !== 'undefined') {
+        if (!sessionLoading && accountData === null && sessionData === null && typeof window !== 'undefined') {
             router.push("/");
         }
-    }, [accountData, router]);
+    }, [accountData, sessionData, sessionLoading, router]);
 
     if (!accountData) {
         return (
