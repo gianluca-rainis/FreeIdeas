@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
             const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
                 method: 'GET',
                 headers: cookieHeader ? { cookie: cookieHeader } : {}
-            }, 2000);
+            }, 1000);
 
             const data = await res.json();
 
@@ -50,7 +50,7 @@ export async function getServerSideProps(context) {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : {},
             body: formData
-        }, 2000);
+        }, 1000);
 
         const data = await response.json();
         
