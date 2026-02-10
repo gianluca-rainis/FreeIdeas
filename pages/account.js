@@ -137,7 +137,7 @@ export default function AccountPage({ accountData, pageTitle }) {
         }
     }, [accountData, sessionData, sessionLoading, router]);
 
-    if (!accountData) {
+    if (!sessionLoading && !accountData) {
         return (
             <>
                 <Head pageTitle={pageTitle} />
