@@ -74,15 +74,13 @@ export async function getServerSideProps(context) {
 
 // Main
 export default function AccountPage({ accountData, pageTitle }) {
-    const { randomIdeaId, showAlert, showPrompt, showConfirm } = useAppContext();
+    const { randomIdeaId, showAlert, showConfirm } = useAppContext();
     const router = useRouter();
     const { getImagePath } = useThemeImages();
     const [sessionData, setSessionData] = useState(null);
     const [savedList, setSavedList] = useState(accountData?.saved || []);
     const [publishedList, setPublishedList] = useState(accountData?.published || []);
     const [selectedTab, setSelectedTab] = useState('saved');
-    const [isFollowed, setIsFollowed] = useState(accountData?.followed || false);
-    const [isOwner, setIsOwner] = useState(false);
     const [editing, setEditing] = useState(false);
 
     const [formValues, setFormValues] = useState({
@@ -113,14 +111,9 @@ export default function AccountPage({ accountData, pageTitle }) {
     }, []);
 
     useEffect(() => {
-        setIsOwner(accountData?.id && sessionData?.id && accountData.id === sessionData.id);
-    }, [accountData, sessionData]);
-
-    useEffect(() => {
         if (accountData) {
             setSavedList(accountData.saved || []);
             setPublishedList(accountData.published || []);
-            setIsFollowed(accountData.followed || false);
 
             setFormValues((prev) => ({
                 ...prev,
@@ -134,11 +127,14 @@ export default function AccountPage({ accountData, pageTitle }) {
         }
     }, [accountData]);
 
-    if (!accountData) {
-        useEffect(() => {
+    // Redirect to home if user not logged in
+    useEffect(() => {
+        if (accountData === null && typeof window !== 'undefined') {
             router.push("/");
-        }, []);
+        }
+    }, [accountData, router]);
 
+    if (!accountData) {
         return (
             <>
                 <Head pageTitle={pageTitle} />
@@ -177,83 +173,6 @@ export default function AccountPage({ accountData, pageTitle }) {
                 </Link>
             </li>
         ));
-    }
-
-    async function handleFollow() {
-        if (!sessionData) {
-            showAlert('You must login before you can follow an account!');
-            return;
-        }
-
-        setBusy((prev) => ({ ...prev, follow: true }));
-
-        try {
-            const formData = new FormData();
-            formData.append('followedaccountid', accountData.id);
-
-            const data = await apiCall(`/api/followAccountIdea`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!data.success) {
-                console.error(data.error);
-            }
-            else {
-                setIsFollowed(data.isNowFollowed);
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setBusy((prev) => ({ ...prev, follow: false }));
-        }
-    }
-
-    async function handleReport() {
-        if (!sessionData) {
-            showAlert('You must login before you can report an account!');
-            return;
-        }
-
-        if (!showConfirm('Are you sure you want to report this account? This action cannot be undone.')) {
-            return;
-        }
-
-        const feedback = showPrompt('Please tell us why you think this account is inappropriate.');
-
-        if (!feedback) {
-            return;
-        }
-
-        if (feedback.trim() === '') {
-            showAlert('The feedback cannot be empty.');
-            return;
-        }
-
-        setBusy((prev) => ({ ...prev, danger: true }));
-
-        try {
-            const formData = new FormData();
-            formData.append('ideaid', '');
-            formData.append('feedback', feedback);
-            formData.append('accountid', accountData.id);
-
-            const data = await apiCall(`/api/reportIdeaAccount`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!data.success) {
-                throw new Error(data.error);
-            }
-            else {
-                showAlert('The account was successfully reported.');
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setBusy((prev) => ({ ...prev, danger: false }));
-        }
     }
 
     function startEdit() {
