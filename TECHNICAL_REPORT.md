@@ -106,6 +106,7 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 - CSS
 - Next.js
 - React
+- Vercel
 
 ## Methods used
 - HTTP / HTTPS: to send the pages to the client
@@ -114,7 +115,7 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 
 ## Software requirements
 - A DBMS (for the development it's been used MySQL).
-- Apache (or an equivalent) to run a webserver.
+- Nginx (or an equivalent) to run a webserver.
 - NPM to install the dependencies.
 - Next to run the back-end.
 - React for the front-end.
@@ -124,106 +125,106 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 ```
 FreeIdeas/
 ├── components/
-    ├── reserved/
-        ├── AccountEditModal.jsx
-        ├── AccountsView.jsx
-        ├── IdeaEditModal.jsx
-        ├── IdeasView.jsx
-        ├── NotificationsView.jsx
-        ├── ReportsView.jsx
-        └── WelcomeView.jsx
-    ├── Footer.jsx
-    ├── Head.jsx
-    ├── LoginForm.jsx
-    ├── Modal.jsx
-    ├── ModalProvider.jsx
-    ├── Nav.jsx
-    └── PasswordInput.jsx
+│   ├── reserved/
+│   │   ├── AccountEditModal.jsx
+│   │   ├── AccountsView.jsx
+│   │   ├── IdeaEditModal.jsx
+│   │   ├── IdeasView.jsx
+│   │   ├── NotificationsView.jsx
+│   │   ├── ReportsView.jsx
+│   │   └── WelcomeView.jsx
+│   ├── Footer.jsx
+│   ├── Head.jsx
+│   ├── LoginForm.jsx
+│   ├── Modal.jsx
+│   ├── ModalProvider.jsx
+│   ├── Nav.jsx
+│   └── PasswordInput.jsx
 ├── contexts/
-    └── CommonContext.js
+│   └── CommonContext.js
 ├── hooks/
-    ├── useAuth.js
-    ├── useModals.js
-    ├── useNotifications.js
-    ├── usePasswordVisibility.js
-    └── useThemeImages.js
+│   ├── useAuth.js
+│   ├── useModals.js
+│   ├── useNotifications.js
+│   ├── usePasswordVisibility.js
+│   └── useThemeImages.js
 ├── lib/
-    ├── cors.js
-    ├── db_connection.js
-    └── session.js
+│   ├── cors.js
+│   ├── db_connection.js
+│   └── session.js
 ├── pages/
-    ├── account/
-        └── [id].js
-    ├── api/
-        ├── changePassword.js
-        ├── createNewNotificationAdmin.js
-        ├── data.js
-        ├── deleteAccount.js
-        ├── deleteComment.js
-        ├── deleteIdea.js
-        ├── deleteNotification.js
-        ├── deleteNotificationAdmin.js
-        ├── deleteReportAdmin.js
-        ├── followAccountIdea.js
-        ├── getAccountData.js
-        ├── getAccountDataForReservedArea.js
-        ├── getFreeIdeasLicense.js
-        ├── getIdeaDataForReservedArea.js
-        ├── getLastIdeas.js
-        ├── getNotificationsDataForReservedArea.js
-        ├── getRandomIdeaId.js
-        ├── getReportsDataForReservedArea.js
-        ├── getSessionData.js
-        ├── login.js
-        ├── logout.js
-        ├── modifyAccountInfo.js
-        ├── modifyIdeaInfoAdmin.js
-        ├── reportIdeaAccount.js
-        ├── reservedAreaLogin.js
-        ├── saveAccountIdeaData.js
-        ├── saveNewComment.js
-        ├── saveNewIdea.js
-        ├── searchAnIdea.js
-        ├── setNotificationAsRead.js
-        ├── signUp.js
-        └── updateOldIdea.js
-    ├── idea/
-        └── [id].js
-    ├── publishAnIdea/
-        └── [id].js
-    ├── _app.js
-    ├── _document.js
-    ├── about.js
-    ├── account.js
-    ├── contacts.js
-    ├── createAccount.js
-    ├── faq.js
-    ├── feedback.js
-    ├── index.js
-    ├── licensePage.js
-    ├── login.js
-    ├── privacyPolicy.js
-    ├── publishAnIdea.js
-    ├── reservedArea.js
-    ├── searchAnIdea.js
-    └── termsOfUse.js
+│   ├── account/
+│   │   └── [id].js
+│   ├── api/
+│   │   ├── changePassword.js
+│   │   ├── createNewNotificationAdmin.js
+│   │   ├── data.js
+│   │   ├── deleteAccount.js
+│   │   ├── deleteComment.js
+│   │   ├── deleteIdea.js
+│   │   ├── deleteNotification.js
+│   │   ├── deleteNotificationAdmin.js
+│   │   ├── deleteReportAdmin.js
+│   │   ├── followAccountIdea.js
+│   │   ├── getAccountData.js
+│   │   ├── getAccountDataForReservedArea.js
+│   │   ├── getFreeIdeasLicense.js
+│   │   ├── getIdeaDataForReservedArea.js
+│   │   ├── getLastIdeas.js
+│   │   ├── getNotificationsDataForReservedArea.js
+│   │   ├── getRandomIdeaId.js
+│   │   ├── getReportsDataForReservedArea.js
+│   │   ├── getSessionData.js
+│   │   ├── login.js
+│   │   ├── logout.js
+│   │   ├── modifyAccountInfo.js
+│   │   ├── modifyIdeaInfoAdmin.js
+│   │   ├── reportIdeaAccount.js
+│   │   ├── reservedAreaLogin.js
+│   │   ├── saveAccountIdeaData.js
+│   │   ├── saveNewComment.js
+│   │   ├── saveNewIdea.js
+│   │   ├── searchAnIdea.js
+│   │   ├── setNotificationAsRead.js
+│   │   ├── signUp.js
+│   │   └── updateOldIdea.js
+│   ├── idea/
+│   │   └── [id].js
+│   ├── publishAnIdea/
+│   │   └── [id].js
+│   ├── _app.js
+│   ├── _document.js
+│   ├── about.js
+│   ├── account.js
+│   ├── contacts.js
+│   ├── createAccount.js
+│   ├── faq.js
+│   ├── feedback.js
+│   ├── index.js
+│   ├── licensePage.js
+│   ├── login.js
+│   ├── privacyPolicy.js
+│   ├── publishAnIdea.js
+│   ├── reservedArea.js
+│   ├── searchAnIdea.js
+│   └── termsOfUse.js
 ├── public/
-    ├── images/
-        ├── logo/
-            ├── FreeIdeas_official_logos.zip
-            ├── FreeIdeas_Pro.svg
-            ├── FreeIdeas_ReservedArea.svg
-            └── FreeIdeas.svg
-        └── ...                                 # Omitted because too many files
+│   └── images/
+│       ├── logo/
+│       │   ├── FreeIdeas_official_logos.zip
+│       │   ├── FreeIdeas_Pro.svg
+│       │   ├── FreeIdeas_ReservedArea.svg
+│       │   └── FreeIdeas.svg
+│       └── ...                                 # Omitted because too many files
 ├── styles/
-    ├── LoginForm.module.css
-    ├── Modal.module.css
-    ├── PasswordToggle.module.css
-    └── styles.css
+│   ├── LoginForm.module.css
+│   ├── Modal.module.css
+│   ├── PasswordToggle.module.css
+│   └── styles.css
 ├── utils/
-    ├── apiConfig.js
-    ├── errorHandling.js
-    └── fetchWithTimeout.js
+│   ├── apiConfig.js
+│   ├── errorHandling.js
+│   └── fetchWithTimeout.js
 ├── .gitignore
 ├── favicon.svg
 ├── FreeIdeasLicense.md

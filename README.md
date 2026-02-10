@@ -15,18 +15,59 @@ The goal of FreeIdeas is to create an international community of creatives who s
 If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
 
 ## Table of contents
-- [Features](#-features)
+- [Presentation of the project](#-presentation-of-the-project)
+    - [Philosophy](#philosophy)
+    - [Purpose](#purpose)
+    - [Meaning of the logo](#meaning-of-the-logo)
+    - [Meaning of the slogan](#meaning-of-the-slogan)
+- [Main Features](#-main-features)
 - [Author](#-author)
 - [License](#-license)
     - [FreeIdeas License - Quick Summary](#freeideas-license--quick-summary)
     - [Note on Derived Works](#️-note-on-derived-works)
     - [License Update Notice](#️-license-update-notice)
 - [AI Disclaimer](#-ai-disclaimer)
-- [Logos](#logos)
+- [Logos](#-logos)
     - [Light logo](#light-logo)
     - [Dark logo](#dark-logo)
 
-## ✨ Features
+---
+
+*If you are looking for technical informations please see the [TECHNICAL_REPORT.md](TECHNICAL_REPORT.md) file.*
+
+---
+
+## 📝 Presentation of the project
+### Philosophy
+For us, **all ideas are equal**, and as such, **they deserve equal visibility** on the site. We ensure this equality by **highlighting the latest 22 ideas published on our home page** and automatically sorting them in reverse chronological order on the search page.
+
+**All ideas on the site are public**, allowing anyone to view them, contribute advice, and **draw inspiration from the creativity** of others.
+
+### Purpose
+The project aims to promote **freedom of expression** and **digital inclusion**, allowing creatives to share their ideas with the world, without being labeled or judged.
+
+The ideal goal is to create an *international* and *intercultural* community of creative people who share their ideas and projects in a healthy and constructive way, even **helping each other** to implement their ideas.
+
+This is why the site is in **English**: to allow anyone, **regardless of their geographic location, language, or culture**, to participate by posting their ideas.
+As the site develops and expands, it is highly likely that sub-communities will also develop that post ideas *in their native language*, thus allowing even those *who do not speak English* to participate equally, **without excluding anyone**.
+
+### Meaning of the logo
+The project's name, FreeIdeas, means "Free Ideas" and immediately captures the core concept: offering a **space open to everyone's ideas**.
+
+The logo is simple and clean:
+- The word "**Free**" features letters colored in various shades of *green*, with a *soft, harmonious font* that conveys continuity and completeness;
+- The word "**Ideas**" uses a different shade of *yellow* for each letter, with a font reminiscent of *a sketchy yet carefully crafted text*, evoking creativity and originality.
+
+The logo as a whole **conveys creativity, care, and hospitality**: every idea, even if only sketched or incomplete, can find its place on the site.
+
+The logo's colors were carefully chosen and have profound meanings. **Green evokes nature**, a symbol of *vitality, strength, and continuity*, also suggesting the responsibility to care for it so it doesn't decay. **Yellow evokes gold**, recalling what is *precious, rare, and valuable*, underscoring the importance of every idea.
+
+### Meaning of the slogan
+The slogan we chose for the project aims to summarize the site's purpose:
+'**A place where your Ideas can be Free**', This short and concise phrase **captures the site's purpose: to provide a place where anyone's ideas can be valued**.
+The word 'your' is in bold to emphasize that **the site exists solely for the user**, and that *without creatives publishing their ideas, it would cease to have any purpose*.
+
+## ✨ Main Features
 - Search for ideas and accounts
 - Publish your own ideas
 - Browse through the ideas of others
@@ -36,12 +77,6 @@ If you have an idea that you want to share with the world, or if you are looking
 - Personalized license for your ideas
 - Personalize your account informations
 - Vote and comment your favourites ideas
-
----
-
-*If you are looking for technical informations please see the [TECHNICAL_REPORT.md](TECHNICAL_REPORT.md) file.*
-
----
 
 ## 🧑‍💻 Author
 The author of the project is Gianluca Rainis ( [gianluca-rainis](https://github.com/gianluca-rainis) on GitHub ).
@@ -81,15 +116,15 @@ Users and contributors are strongly encouraged to review the full license in [LI
 **All previous versions of the FreeIdeas License are considered governed by the latest published version of the FreeIdeas License.**
 
 ## ֎ AI Disclaimer
-AI WAS USED IN THIS PROJECT IN THE DEBUG PHASE AND AS AN ASSISTANT FOR THE MIGRATION PROCESS (PHP/JS TO NEXT.JS/REACT).
+AI WAS USED IN THIS PROJECT IN THE **DEBUG PHASE** AND **AS AN ASSISTANT FOR THE MIGRATION** PROCESS (PHP/JS TO NEXT.JS/REACT).
 
-NO AI WAS USED IN THE DESIGN OF THE SITE OR ITS CONCEPTION.
+**NO AI WAS USED IN THE DESIGN OF THE SITE OR ITS CONCEPTION.**
 
-AI USE WAS LIMITED TO ESSENTIAL CASES.
+**AI USE WAS LIMITED TO ESSENTIAL CASES.**
 
-EVERYTHING WAS DEVELOPED BY THE AUTHOR.
+**EVERYTHING WAS DEVELOPED BY THE AUTHOR.**
 
-## Logos
+## 🎨 Logos
 FreeIdeas has two official logos:
 
 ### Light logo:
