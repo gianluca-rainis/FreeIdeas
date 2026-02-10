@@ -5,16 +5,17 @@ import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 
 // Server-side rendering for initial data
-export async function getStaticProps() {
+GenericError.getInitialProps = ({ res, err }) => {
+    const statusCode = res ? res.statusCode : (err ? err.statusCode : 404);
+
     return {
-        props: {
-            pageTitle: "Error 404 - Page not Found"
-        }
-    }
+        pageTitle: `Error ${statusCode?statusCode:""}`,
+        statusCode: statusCode
+    };
 }
 
 // Main
-export default function Page404({ pageTitle }) {
+export default function GenericError({ pageTitle, statusCode }) {
     const { randomIdeaId } = useAppContext();
 
     return (
@@ -24,10 +25,10 @@ export default function Page404({ pageTitle }) {
             <Nav randomId={randomIdeaId} />
             
             <main className="errorPageMain">
-                <h1>Error 404</h1>
-                <h2>Page not found</h2>
+                <h1>Error {statusCode}</h1>
+                <h2>Generic Error</h2>
                 <p>
-                    We're sorry, but the page you're looking for doesn't exist or has moved.
+                    We're sorry, but we've encountered an unexpected error. Please try again later. If the problem persists, please contact technical support.
                 </p>
             </main>
             

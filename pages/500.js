@@ -8,13 +8,13 @@ import { useAppContext } from '../contexts/CommonContext'
 export async function getStaticProps() {
     return {
         props: {
-            pageTitle: "Error 404 - Page not Found"
+            pageTitle: "Error 500 - Internal Server Error"
         }
     }
 }
 
 // Main
-export default function Page404({ pageTitle }) {
+export default function Page500({ pageTitle }) {
     const { randomIdeaId } = useAppContext();
 
     return (
@@ -24,10 +24,10 @@ export default function Page404({ pageTitle }) {
             <Nav randomId={randomIdeaId} />
             
             <main className="errorPageMain">
-                <h1>Error 404</h1>
-                <h2>Page not found</h2>
+                <h1>Error 500</h1>
+                <h2>Internal Server Error</h2>
                 <p>
-                    We're sorry, but the page you're looking for doesn't exist or has moved.
+                    We're sorry, but we encountered a server error. Please try again later. If the problem persists, please contact technical support.
                 </p>
             </main>
             

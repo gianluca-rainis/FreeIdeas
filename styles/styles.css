@@ -2163,7 +2163,7 @@ footer ul li a {
 }
 
 /* Error 404 page */
-#page404Main {
+.errorPageMain {
     width: 100%;
     height: 60vh;
     align-content: center;
@@ -2172,12 +2172,12 @@ footer ul li a {
     color: #d31c1c;
 }
 
-#page404Main h1 {
+.errorPageMain h1 {
     padding-bottom: 50px;
     font-size: 60px;
 }
 
-#page404Main h2 {
+.errorPageMain h2 {
     padding: 20px;
 }
 
