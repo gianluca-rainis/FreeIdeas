@@ -24,9 +24,18 @@ export function proxy(request) {
     
     // Handle method OPTIONS
     if (request.method === 'OPTIONS') {
+        const headers = new Headers();
+        
+        if (origin && allowedOrigins.includes(origin)) {
+            headers.set('Access-Control-Allow-Origin', origin);
+            headers.set('Access-Control-Allow-Credentials', 'true');
+            headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+            headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie');
+        }
+
         return new NextResponse(null, { 
-            status: 200, 
-            headers: response.headers 
+            status: 204,
+            headers: headers
         });
     }
     
