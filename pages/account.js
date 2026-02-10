@@ -132,12 +132,12 @@ export default function AccountPage({ accountData, pageTitle }) {
 
     // Redirect to home if user not logged in
     useEffect(() => {
-        if (!sessionLoading && accountData === null && sessionData === null && typeof window !== 'undefined') {
+        if (accountData === null && typeof window !== 'undefined') {
             router.push("/");
         }
-    }, [accountData, sessionData, sessionLoading, router]);
+    }, [accountData, router]);
 
-    if (!sessionLoading && !accountData) {
+    if (!accountData) {
         return (
             <>
                 <Head pageTitle={pageTitle} />
