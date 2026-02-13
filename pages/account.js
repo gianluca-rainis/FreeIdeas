@@ -11,7 +11,7 @@ import { apiCall, getBaseUrl } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
-    let id = 0;
+    let id = null;
     let accountData = null;
     let pageTitle = 'Account';
     const cookieHeader = context.req?.headers?.cookie ?? '';
@@ -38,28 +38,30 @@ export async function getServerSideProps(context) {
         console.error('Failed to load session data: '+error);
     }
     
-    try {
-        const baseUrl = getBaseUrl(context.req);
+    if (id) {
+        try {
+            const baseUrl = getBaseUrl(context.req);
 
-        const formData = new FormData();
-        formData.append("id", id);
-console.log("DEBUG: ", id, baseUrl);
-        const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
-            method: "POST",
-            headers: cookieHeader ? { cookie: cookieHeader } : {},
-            body: formData
-        }, 1000);
+            const formData = new FormData();
+            formData.append("id", id);
 
-        const data = await response.json();
-        
-        if (data && data.success) {
-            accountData = data.data;
+            const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
+                method: "POST",
+                headers: cookieHeader ? { cookie: cookieHeader } : {},
+                body: formData
+            }, 1000);
+
+            const data = await response.json();
+            
+            if (data && data.success) {
+                accountData = data.data;
+            }
+            else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error('Failed to fetch account info: '+error);
         }
-        else {
-            throw new Error(data.error);
-        }
-    } catch (error) {
-        console.error('Failed to fetch account info: '+error);
     }
 
     return {
