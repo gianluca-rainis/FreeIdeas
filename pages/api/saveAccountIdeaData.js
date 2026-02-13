@@ -24,11 +24,11 @@ export default async function handler(req, res) {
         const form = formidable();
         const [fields] = await form.parse(req);
 
-        const ideaid = fields.ideaid?.[0] || '';
-        const saved = fields.saved?.[0] || '';
-        const dislike = fields.dislike?.[0] || '';
-        const liked = fields.liked?.[0] || '';
-        const existRowYet = fields.existRowYet?.[0] || '';
+        const ideaid = fields.ideaid?.[0];
+        const saved = fields.saved?.[0];
+        const dislike = fields.dislike?.[0];
+        const liked = fields.liked?.[0];
+        const existRowYet = fields.existRowYet?.[0];
 
         if (!ideaid || !saved || !dislike || !liked || !existRowYet) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
@@ -38,9 +38,9 @@ export default async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'User not logged in' });
         }
 
-        let oldSaved;
-        let oldDislike;
-        let oldLiked;
+        let oldSaved = 0;
+        let oldDislike = 0;
+        let oldLiked = 0;
 
         let sql = "";
 
@@ -50,9 +50,9 @@ export default async function handler(req, res) {
                 [session.account.id, ideaid]
             );
 
-            oldSaved = oldAccountIdeaData[0].saved;
-            oldDislike = oldAccountIdeaData[0].dislike;
-            oldLiked = oldAccountIdeaData[0].liked;
+            oldSaved = parseInt(oldAccountIdeaData[0].saved, 10) || 0;
+            oldDislike = parseInt(oldAccountIdeaData[0].dislike, 10) || 0;
+            oldLiked = parseInt(oldAccountIdeaData[0].liked, 10) || 0;
 
             sql = "UPDATE accountideadata SET saved=?, dislike=?, liked=? WHERE accountid=? AND ideaid=?;";
         }
@@ -70,9 +70,16 @@ export default async function handler(req, res) {
             [ideaid]
         );
         
-        let secondSaved = Math.max(0, (parseInt(getIdeaLabels[0].saves) + parseInt(saved) - parseInt(oldSaved)));
-        let secondLiked = Math.max(0, (parseInt(getIdeaLabels[0].likes) + parseInt(liked) - parseInt(oldLiked)));
-        let secondDislike = Math.max(0, (parseInt(getIdeaLabels[0].dislike) + parseInt(dislike) - parseInt(oldDislike)));
+        const currentSaves = parseInt(getIdeaLabels[0].saves, 10) || 0;
+        const currentLikes = parseInt(getIdeaLabels[0].likes, 10) || 0;
+        const currentDislikes = parseInt(getIdeaLabels[0].dislike, 10) || 0;
+        const nextSaved = parseInt(saved, 10) || 0;
+        const nextLiked = parseInt(liked, 10) || 0;
+        const nextDisliked = parseInt(dislike, 10) || 0;
+
+        let secondSaved = Math.max(0, currentSaves + nextSaved - oldSaved);
+        let secondLiked = Math.max(0, currentLikes + nextLiked - oldLiked);
+        let secondDislike = Math.max(0, currentDislikes + nextDisliked - oldDislike);
 
         await query(
             "UPDATE idealabels SET saves=?, likes=?, dislike=? WHERE ideaid=?;",

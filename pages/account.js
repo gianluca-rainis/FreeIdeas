@@ -11,7 +11,7 @@ import { apiCall, getBaseUrl } from '../utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
-    let { id } = context.query;
+    let id = 0;
     let accountData = null;
     let pageTitle = 'Account';
     const cookieHeader = context.req?.headers?.cookie ?? '';
@@ -21,23 +21,21 @@ export async function getServerSideProps(context) {
         context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     }
 
-    if (!id) {
-        try {
-            const baseUrl = getBaseUrl(context.req);
+    try {
+        const baseUrl = getBaseUrl(context.req);
 
-            const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
-                method: 'GET',
-                headers: cookieHeader ? { cookie: cookieHeader } : {}
-            }, 1000);
+        const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
+            method: 'GET',
+            headers: cookieHeader ? { cookie: cookieHeader } : {}
+        }, 1000);
 
-            const data = await res.json();
+        const data = await res.json();
 
-            if (data && data.id) {
-                id = data.id;
-            }
-        } catch (error) {
-            console.error('Failed to load session data: '+error);
+        if (data && data.id) {
+            id = data.id;
         }
+    } catch (error) {
+        console.error('Failed to load session data: '+error);
     }
     
     try {
@@ -94,7 +92,6 @@ export default function AccountPage({ accountData, pageTitle }) {
     });
 
     const [busy, setBusy] = useState({ follow: false, save: false, danger: false });
-    const [sessionLoading, setSessionLoading] = useState(true);
 
     // Load session data
     useEffect(() => {
@@ -105,8 +102,6 @@ export default function AccountPage({ accountData, pageTitle }) {
                 setSessionData(res && res.id?res:null);
             } catch (error) {
                 console.error('Failed to load session data: '+error);
-            } finally {
-                setSessionLoading(false);
             }
         }
 
