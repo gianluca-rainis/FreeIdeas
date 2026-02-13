@@ -78,7 +78,7 @@ export default function FaqPage({pageTitle}) {
                     <li>
                         <div className="question">Where can I find support or contact the FreeIdeas team?</div>
                         <div className="answer">
-                            You can reach us through the “Contact Us” section in the site footer or by email at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>.
+                            You can reach us through the “Contact Us” section in the site footer or by email at <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a>.
                         </div>
                     </li>
                     <li>
@@ -116,7 +116,7 @@ export default function FaqPage({pageTitle}) {
                 </ul>
 
                 <p>
-                    If you have any questions not answered here, feel free to contact us at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>.
+                    If you have any questions not answered here, feel free to contact us at <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a>.
                 </p>
             </main>
 

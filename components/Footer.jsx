@@ -12,7 +12,7 @@ export default function Footer() {
 
                     <ul className="footerText">
                         <li>Copyright &copy; 2025-{new Date().getFullYear()} Gianluca Rainis</li>
-                        <li>freeideas.site@gmail.com</li>
+                        <li>freeideas@freeideas.pro</li>
                     </ul>
                 </section>
                 <section className="footerLinksSection">

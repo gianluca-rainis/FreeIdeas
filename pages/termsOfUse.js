@@ -107,7 +107,7 @@ export default function TermsOfUsePage({pageTitle}) {
                 <p>The laws of Italy, excluding its conflict of law rules, shall govern these Terms and Your use of the Service.</p>
 
                 <h2>Dispute Resolution</h2>
-                <p>Any disputes or concerns related to the Service should first be addressed informally by contacting Us at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>.</p>
+                <p>Any disputes or concerns related to the Service should first be addressed informally by contacting Us at <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a>.</p>
 
                 <h2>Changes to These Terms</h2>
                 <p>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material, We will provide notice prior to the new terms taking effect.</p>
@@ -116,7 +116,7 @@ export default function TermsOfUsePage({pageTitle}) {
                 <h2>Contact Us</h2>
                 <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
                 <ul>
-                    <li>By email: <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a></li>
+                    <li>By email: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
                 </ul>
             </main>
 

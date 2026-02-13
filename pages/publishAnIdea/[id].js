@@ -539,8 +539,8 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                             <Link href="/privacyPolicy" style={{ color: 'inherit' }}>Privacy Policy</Link>
                             <br /><br />
                             If you have any questions you can contact us via email at{' '}
-                            <a href="mailto:freeideas.site@gmail.com" style={{ color: 'inherit' }}>
-                                freeideas.site@gmail.com
+                            <a href="mailto:customer_service@freeideas.pro" style={{ color: 'inherit' }}>
+                                customer_service@freeideas.pro
                             </a>
                         </div>
                     </div>

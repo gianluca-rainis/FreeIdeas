@@ -83,7 +83,7 @@ export default function PrivacyPolicyPage({pageTitle}) {
                     <li>Receive your data in a portable format.</li>
                     <li>Withdraw consent where applicable.</li>
                 </ul>
-                <p>To exercise these rights, please contact us at <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>.</p>
+                <p>To exercise these rights, please contact us at <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a>.</p>
 
                 <h2>Data Security</h2>
                 <p>We implement technical and organizational measures to protect your personal data. In case of a data breach, affected users will be notified promptly.</p>
@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage({pageTitle}) {
                 <h2>Contact Us</h2>
                 <p>If you have any questions about this Privacy Policy or your personal data, you may contact us:</p>
                 <ul>
-                    <li>By email: <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a></li>
+                    <li>By email: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
                 </ul>
             </main>
 

@@ -34,7 +34,12 @@ export default function ContactsPage({pageTitle}) {
                     If you want to give us feedback on your experience on the site, report a bug or suggest improvements, you can send feedback via the <a href='/feedback'>feedback</a> page.
                 </p>
                 <p>
-                    You can contact us via email at: <a href="mailto:freeideas.site@gmail.com">freeideas.site@gmail.com</a>
+                    You can contact us by email at the following addresses:
+                    <ul>
+                        <li>For general questions and communications: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
+                        <li>To obtain technical support, to ask questions of any kind, and to provide feedback and information useful for improving the site: <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a></li>
+                        <li>To contact the site administrator directly (use only in case of serious need): <a href="mailto:administrator@freeideas.pro">administrator@freeideas.pro</a></li>
+                    </ul>
                 </p>
                 <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className="logo" />
             </main>
