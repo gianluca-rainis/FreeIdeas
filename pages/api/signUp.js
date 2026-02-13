@@ -44,12 +44,12 @@ export default async function handler(req, res) {
 
         // Check if the account exists
         const accountCheck = await query(
-            'SELECT id FROM accounts WHERE email=?;',
-            [email]
+            'SELECT id FROM accounts WHERE email=? or username=?;',
+            [email, username]
         );
 
         if (accountCheck.length > 0) {
-            return res.status(401).json({ success: false, error: 'Already exist an account with the same email' });
+            return res.status(401).json({ success: false, error: 'Already exist an account with the same email or the same username' });
         }
 
         // Hash password

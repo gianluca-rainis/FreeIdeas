@@ -281,55 +281,60 @@ SITE_URL
 
 ## 🛢 DataBase structure
 ### Accounts
-```SQL
-+--------------------------------------------------------------------------------------+
-|                                       accounts                                       |
-+--------------------------------------------------------------------------------------+
-| id | email | password | name | surname | userimage | description | username | public |
-+----+-------+----------+------+---------+-----------+---------------------------------+
-|    |       |          |      |         |           |             |          |        |
-|    |       |          |      |         |           |             |          |        |
-|    |       |          |      |         |           |             |          |        |
-+----+-------+----------+------+---------+-----------+-------------+----------+--------+
+```mermaid
+erDiagram
+    accounts {
+        INT id PK
+        TEXT email UK
+        TEXT password
+        TEXT name
+        TEXT surname
+        mediumblob userimage
+        TEXT description
+        TEXT username UK
+        INT public
+    }
 ```
 
 ```SQL
 CREATE TABLE accounts (
     id INT NOT NULL AUTO_INCREMENT,
-    email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    name varchar(255) NOT NULL,
-    surname varchar(255) NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL,
     userimage mediumblob,
-    description varchar(1000),
-    username varchar(255) NOT NULL,
-    public int NOT NULL,
+    description TEXT,
+    username TEXT NOT NULL UNIQUE,
+    public INT NOT NULL,
     PRIMARY KEY (id)
 );
 ```
 
 ### Ideas
-```SQL
-+---------------------------------------------------------------------------------+
-|                                     ideas                                       |
-+---------------------------------------------------------------------------------+
-| id | authorid | title | data | ideaimage | description | downloadlink | license |
-+----+----------+-------+------+-----------+-------------+------------------------+
-|    |          |       |      |           |             |              |         |
-|    |          |       |      |           |             |              |         |
-|    |          |       |      |           |             |              |         |
-+----+----------+-------+------+-----------+-------------+------------------------+
+```mermaid
+erDiagram
+    ideas {
+        INT id PK
+        INT authorid FK
+        TEXT title
+        DATE data
+        mediumblob ideaimage
+        TEXT description
+        TEXT downloadlink
+        mediumblob license
+    }
 ```
 
 ```SQL
 CREATE TABLE ideas (
-    id int NOT NULL AUTO_INCREMENT,
-    authorid int NOT NULL,
-    title varchar(255) NOT NULL,
-    data date NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    authorid INT NOT NULL,
+    title TEXT NOT NULL,
+    data DATE NOT NULL,
     ideaimage mediumblob,
-    description varchar(10000) NOT NULL,
-    downloadlink varchar(5000),
+    description TEXT NOT NULL,
+    downloadlink TEXT,
     license mediumblob,
     PRIMARY KEY (id),
     FOREIGN KEY (authorid) REFERENCES accounts(id)
@@ -337,76 +342,74 @@ CREATE TABLE ideas (
 ```
 
 ### Additional info
-```SQL
-+-----------------------------------------------+
-|                 additionalinfo                |
-+-----------------------------------------------+
-| id | title | updtimage | description | ideaid |
-+----+-------+-----------+-------------+--------+
-|    |       |           |             |        |
-|    |       |           |             |        |
-|    |       |           |             |        |
-+----+-------+-----------+-------------+--------+
+```mermaid
+erDiagram
+    additionalinfo {
+        INT id PK
+        TEXT title
+        mediumblob updtimage
+        TEXT description
+        INT ideaid FK
+    }
 ```
 
 ```SQL
 CREATE TABLE additionalinfo (
-    id int NOT NULL AUTO_INCREMENT,
-    title varchar(255) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    title TEXT NOT NULL,
     updtimage mediumblob NOT NULL,
-    description varchar(10000) NOT NULL,
-    ideaid int NOT NULL,
+    description TEXT NOT NULL,
+    ideaid INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id)
 );
 ```
 
 ### Author Updates
-```SQL
-+------------------------------------------+
-|              authorupdates               |
-+------------------------------------------+
-| id | title | description | ideaid | data |
-+----+-------+-------------+--------+------+
-|    |       |             |        |      |
-|    |       |             |        |      |
-|    |       |             |        |      |
-+----+-------+-------------+--------+------+
+```mermaid
+erDiagram
+    authorupdates {
+        INT id PK
+        TEXT title
+        TEXT description
+        INT ideaid FK
+        DATE data
+    }
 ```
 
 ```SQL
 CREATE TABLE authorupdates (
-    id int NOT NULL AUTO_INCREMENT,
-    title varchar(255) NOT NULL,
-    description varchar(10000),
-    ideaid int NOT NULL,
-    data date NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    ideaid INT NOT NULL,
+    data DATE NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id)
 );
 ```
 
 ### Comments and help
-```SQL
-+--------------------------------------------------------------+
-|                           comments                           |
-+--------------------------------------------------------------+
-| id | authorid | data | description | ideaid | superCommentid |
-+----+----------+------+-------------+--------+----------------+
-|    |          |      |             |        |                |
-|    |          |      |             |        |                |
-|    |          |      |             |        |                |
-+----+----------+------+-------------+--------+----------------+
+```mermaid
+erDiagram
+    comments {
+        INT id PK
+        INT authorid FK
+        DATE data
+        TEXT description
+        INT ideaid FK
+        INT superCommentid FK
+    }
 ```
 
 ```SQL
 CREATE TABLE comments (
-    id int NOT NULL AUTO_INCREMENT,
-    authorid int NULL,
-    data date NOT NULL,
-    description varchar(10000) NOT NULL,
-    ideaid int NOT NULL,
-    superCommentid int,
+    id INT NOT NULL AUTO_INCREMENT,
+    authorid INT NULL,
+    data DATE NOT NULL,
+    description TEXT NOT NULL,
+    ideaid INT NOT NULL,
+    superCommentid INT,
     PRIMARY KEY (id),
     FOREIGN KEY (authorid) REFERENCES accounts(id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id),
@@ -415,54 +418,56 @@ CREATE TABLE comments (
 ```
 
 ### Labels of a project
-```SQL
-+--------------------------------------------------------------------+
-|                             idealabels                             |
-+--------------------------------------------------------------------+
-| id | ideaid | type | creativity | status | saves | likes | dislike |
-+----+--------+------+------------+--------+-------+-------+---------+
-|    |        |      |            |        |       |       |         |
-|    |        |      |            |        |       |       |         |
-|    |        |      |            |        |       |       |         |
-+----+--------+------+------------+--------+-------+-------+---------+
+```mermaid
+erDiagram
+    idealabels {
+        INT id PK
+        INT ideaid FK
+        TEXT type
+        TEXT creativity
+        TEXT status
+        INT saves
+        INT likes
+        INT dislike
+    }
 ```
 
 ```SQL
 CREATE TABLE idealabels (
-    id int NOT NULL AUTO_INCREMENT,
-    ideaid int NOT NULL,
-    type varchar(500) NOT NULL,
-    creativity varchar(500) NOT NULL,
-    status varchar(500) NOT NULL,
-    saves int NOT NULL,
-    likes int NOT NULL,
-    dislike int NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    ideaid INT NOT NULL,
+    type TEXT NOT NULL,
+    creativity TEXT NOT NULL,
+    status TEXT NOT NULL,
+    saves INT NOT NULL,
+    likes INT NOT NULL,
+    dislike INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id)
 );
 ```
 
 ### Account additional data about ideas
-```SQL
-+---------------------------------------------------+
-|                  accountideadata                  |
-+---------------------------------------------------+
-| id | accountid | ideaid | saved | dislike | liked |
-+----+-----------+--------+-------+---------+-------+
-|    |           |        |       |         |       |
-|    |           |        |       |         |       |
-|    |           |        |       |         |       |
-+----+-----------+--------+-------+---------+-------+
+```mermaid
+erDiagram
+    accountideadata {
+        INT id PK
+        INT accountid FK
+        INT ideaid FK
+        INT saved
+        INT dislike
+        INT liked
+    }
 ```
 
 ```SQL
 CREATE TABLE accountideadata (
-    id int NOT NULL AUTO_INCREMENT,
-    accountid int NOT NULL,
-    ideaid int NOT NULL,
-    saved int,
-    dislike int,
-    liked int,
+    id INT NOT NULL AUTO_INCREMENT,
+    accountid INT NOT NULL,
+    ideaid INT NOT NULL,
+    saved INT,
+    dislike INT,
+    liked INT,
     PRIMARY KEY (id),
     FOREIGN KEY (accountid) REFERENCES accounts(id),
     FOREIGN KEY (ideaid) REFERENCES ideas(id)
@@ -470,75 +475,72 @@ CREATE TABLE accountideadata (
 ```
 
 ### Account notifications
-```SQL
-+------------------------------------------------------+
-|                     notifications                    |
-+------------------------------------------------------+
-| id | accountid | title | description | data | status |
-+----+-----------+-------+-------------+------+--------+
-|    |           |       |             |      |        |
-|    |           |       |             |      |        |
-|    |           |       |             |      |        |
-+----+-----------+-------+-------------+------+--------+
+```mermaid
+erDiagram
+    notifications {
+        INT id PK
+        INT accountid FK
+        TEXT title
+        TEXT description
+        DATE data
+        INT status
+    }
 ```
 
 ```SQL
 CREATE TABLE notifications (
-    id int NOT NULL AUTO_INCREMENT,
-    accountid int NOT NULL,
-    title varchar(255) NOT NULL,
-    description varchar(10000) NOT NULL,
-    data date NOT NULL,
-    status int NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    accountid INT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    data DATE NOT NULL,
+    status INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (accountid) REFERENCES accounts(id)
 );
 ```
 
 ### Reports (ideas, accounts)
-```SQL
-+-----------------------------------------------+
-|                    reports                    |
-+-----------------------------------------------+
-| id | authorid | ideaid | accountid | feedback |
-+----+----------+--------+-----------+----------+
-|    |          |        |           |          |
-|    |          |        |           |          |
-|    |          |        |           |          |
-+----+----------+--------+-----------+----------+
+```mermaid
+erDiagram
+    reports {
+        INT id PK
+        INT authorid FK
+        INT ideaid
+        INT accountid
+        TEXT feedback
+    }
 ```
 
 ```SQL
 CREATE TABLE reports (
-    id int NOT NULL AUTO_INCREMENT,
-    authorid int NOT NULL,
-    ideaid int,
-    accountid int,
-    feedback varchar(10000) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    authorid INT NOT NULL,
+    ideaid INT,
+    accountid INT,
+    feedback TEXT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (authorid) REFERENCES accounts(id)
 );
 ```
 
 ### Follow (ideas, accounts)
-```SQL
-+-----------------------------------------------------------+
-|                          follow                           |
-+-----------------------------------------------------------+
-| id | followaccountid | followedaccountid | followedideaid |
-+----+-----------------+-------------------+----------------+
-|    |                 |                   |                |
-|    |                 |                   |                |
-|    |                 |                   |                |
-+----+-----------------+-------------------+----------------+
+```mermaid
+erDiagram
+    follow {
+        INT id PK
+        INT followaccountid FK
+        INT followedaccountid FK
+        INT followedideaid FK
+    }
 ```
 
 ```SQL
 CREATE TABLE follow (
-    id int NOT NULL AUTO_INCREMENT,
-    followaccountid int NOT NULL,
-    followedaccountid int,
-    followedideaid int,
+    id INT NOT NULL AUTO_INCREMENT,
+    followaccountid INT NOT NULL,
+    followedaccountid INT,
+    followedideaid INT,
     PRIMARY KEY (id),
     FOREIGN KEY (followaccountid) REFERENCES accounts(id),
     FOREIGN KEY (followedaccountid) REFERENCES accounts(id),
@@ -547,109 +549,220 @@ CREATE TABLE follow (
 ```
 
 ### Reserved Area Accounts
-```SQL
-+---------------------------------------------------------------------------+
-|                            reservedareaaccounts                           |
-+---------------------------------------------------------------------------+
-| id | username | password1 | password2 | password3 | password4 | password5 |
-+---------------------------------------------------------------------------+
-|    |          |           |           |           |           |           |
-|    |          |           |           |           |           |           |
-|    |          |           |           |           |           |           |
-+---------------------------------------------------------------------------+
+```mermaid
+erDiagram
+    reservedareaaccounts {
+        id INT PK
+        TEXT username
+        TEXT password1
+        TEXT password2
+        TEXT password3
+        TEXT password4
+        TEXT password5
+    }
 ```
 
 ```SQL
 CREATE TABLE reservedareaaccounts (
-    id int NOT NULL AUTO_INCREMENT,
-    username varchar(255) NOT NULL,
-    password1 varchar(255) NOT NULL,
-    password2 varchar(255) NOT NULL,
-    password3 varchar(255) NOT NULL,
-    password4 varchar(255) NOT NULL,
-    password5 varchar(255) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    username TEXT NOT NULL,
+    password1 TEXT NOT NULL,
+    password2 TEXT NOT NULL,
+    password3 TEXT NOT NULL,
+    password4 TEXT NOT NULL,
+    password5 TEXT NOT NULL,
     PRIMARY KEY (id)
 );
+```
+
+## Entity Relationship Diagrams
+```mermaid
+erDiagram
+    ideas }o --|| accounts : authorid-id
+    additionalinfo }o -- || ideas : ideaid-id
+    authorupdates }o -- || ideas : ideaid-id
+    comments }o -- || ideas : ideaid-id
+    comments }o -- o| accounts : authorid-id
+    comments }o -- || comments : superCommentid-id
+    idealabels || -- || ideas : ideaid-id
+    accountideadata }o -- || ideas : ideaid-id
+    accountideadata }o -- || accounts : accountid-id
+    notifications }o -- o{ accounts : accountid-id
+    reports }o -- |{ accounts : authorid-id
+    follow }o -- o| accounts : followaccountid-id
+    follow }o -- o| accounts : followedaccountid-id
+    follow }o -- o| ideas : followedideaid-id
+    accounts {
+        INT id PK
+        TEXT email UK
+        TEXT password
+        TEXT name
+        TEXT surname
+        mediumblob userimage
+        TEXT description
+        TEXT username UK
+        INT public
+    }
+    ideas {
+        INT id PK
+        INT authorid FK
+        TEXT title
+        DATE data
+        mediumblob ideaimage
+        TEXT description
+        TEXT downloadlink
+        mediumblob license
+    }
+    additionalinfo {
+        INT id PK
+        TEXT title
+        mediumblob updtimage
+        TEXT description
+        INT ideaid FK
+    }
+    authorupdates {
+        INT id PK
+        TEXT title
+        TEXT description
+        INT ideaid FK
+        DATE data
+    }
+    comments {
+        INT id PK
+        INT authorid FK
+        DATE data
+        TEXT description
+        INT ideaid FK
+        INT superCommentid FK
+    }
+    idealabels {
+        INT id PK
+        INT ideaid FK
+        TEXT type
+        TEXT creativity
+        TEXT status
+        INT saves
+        INT likes
+        INT dislike
+    }
+    accountideadata {
+        INT id PK
+        INT accountid FK
+        INT ideaid FK
+        INT saved
+        INT dislike
+        INT liked
+    }
+    notifications {
+        INT id PK
+        INT accountid FK
+        TEXT title
+        TEXT description
+        DATE data
+        INT status
+    }
+    reports {
+        INT id PK
+        INT authorid FK
+        INT ideaid
+        INT accountid
+        TEXT feedback
+    }
+    follow {
+        INT id PK
+        INT followaccountid FK
+        INT followedaccountid FK
+        INT followedideaid FK
+    }
+    reservedareaaccounts {
+        id INT PK
+        TEXT username
+        TEXT password1
+        TEXT password2
+        TEXT password3
+        TEXT password4
+        TEXT password5
+    }
 ```
 
 ## Database Types
 ```SQL
 mysql> describe accounts;
-+-------------+----------------+------+-----+---------+----------------+
-| Field       | Type           | Null | Key | Default | Extra          |
-+-------------+----------------+------+-----+---------+----------------+
-| id          | int            | NO   | PRI | NULL    | auto_increment |
-| email       | varchar(255)   | NO   |     | NULL    |                |
-| password    | varchar(255)   | NO   |     | NULL    |                |
-| name        | varchar(255)   | NO   |     | NULL    |                |
-| surname     | varchar(255)   | NO   |     | NULL    |                |
-| userimage   | mediumblob     | YES  |     | NULL    |                |
-| description | varchar(1000)  | YES  |     | NULL    |                |
-| username    | varchar(255)   | NO   |     | NULL    |                |
-| public      | int            | NO   |     | NULL    |                |
-+-------------+----------------+------+-----+---------+----------------+
++-------------+------------+------+-----+---------+----------------+
+| Field       | Type       | Null | Key | Default | Extra          |
++-------------+------------+------+-----+---------+----------------+
+| id          | int        | NO   | PRI | NULL    | auto_increment |
+| email       | text       | NO   |     | NULL    |                |
+| password    | text       | NO   |     | NULL    |                |
+| name        | text       | NO   |     | NULL    |                |
+| surname     | text       | NO   |     | NULL    |                |
+| userimage   | mediumblob | YES  |     | NULL    |                |
+| description | text       | YES  |     | NULL    |                |
+| username    | text       | NO   |     | NULL    |                |
+| public      | int        | NO   |     | NULL    |                |
++-------------+------------+------+-----+---------+----------------+
 
 mysql> describe ideas;
-+--------------+----------------+------+-----+---------+----------------+
-| Field        | Type           | Null | Key | Default | Extra          |
-+--------------+----------------+------+-----+---------+----------------+
-| id           | int            | NO   | PRI | NULL    | auto_increment |
-| authorid     | int            | NO   | MUL | NULL    |                |
-| title        | varchar(255)   | NO   |     | NULL    |                |
-| data         | date           | NO   |     | NULL    |                |
-| ideaimage    | mediumblob     | YES  |     | NULL    |                |
-| description  | varchar(10000) | NO   |     | NULL    |                |
-| downloadlink | varchar(5000)  | YES  |     | NULL    |                |
-| license      | mediumblob     | YES  |     | NULL    |                |
-+--------------+----------------+------+-----+---------+----------------+
++--------------+------------+------+-----+---------+----------------+
+| Field        | Type       | Null | Key | Default | Extra          |
++--------------+------------+------+-----+---------+----------------+
+| id           | int        | NO   | PRI | NULL    | auto_increment |
+| authorid     | int        | NO   | MUL | NULL    |                |
+| title        | text       | NO   |     | NULL    |                |
+| data         | date       | NO   |     | NULL    |                |
+| ideaimage    | mediumblob | YES  |     | NULL    |                |
+| description  | text       | NO   |     | NULL    |                |
+| downloadlink | text       | YES  |     | NULL    |                |
+| license      | mediumblob | YES  |     | NULL    |                |
++--------------+------------+------+-----+---------+----------------+
 
 mysql> describe additionalinfo;
-+-------------+----------------+------+-----+---------+----------------+
-| Field       | Type           | Null | Key | Default | Extra          |
-+-------------+----------------+------+-----+---------+----------------+
-| id          | int            | NO   | PRI | NULL    | auto_increment |
-| title       | varchar(255)   | NO   |     | NULL    |                |
-| updtimage   | mediumblob     | NO   |     | NULL    |                |
-| description | varchar(10000) | NO   |     | NULL    |                |
-| ideaid      | int            | NO   | MUL | NULL    |                |
-+-------------+----------------+------+-----+---------+----------------+
++-------------+------------+------+-----+---------+----------------+
+| Field       | Type       | Null | Key | Default | Extra          |
++-------------+------------+------+-----+---------+----------------+
+| id          | int        | NO   | PRI | NULL    | auto_increment |
+| title       | text       | NO   |     | NULL    |                |
+| updtimage   | mediumblob | NO   |     | NULL    |                |
+| description | text       | NO   |     | NULL    |                |
+| ideaid      | int        | NO   | MUL | NULL    |                |
++-------------+------------+------+-----+---------+----------------+
 
 mysql> describe authorupdates;
-+-------------+----------------+------+-----+---------+----------------+
-| Field       | Type           | Null | Key | Default | Extra          |
-+-------------+----------------+------+-----+---------+----------------+
-| id          | int            | NO   | PRI | NULL    | auto_increment |
-| title       | varchar(255)   | NO   |     | NULL    |                |
-| description | varchar(10000) | YES  |     | NULL    |                |
-| ideaid      | int            | NO   | MUL | NULL    |                |
-| data        | date           | NO   |     | NULL    |                |
-+-------------+----------------+------+-----+---------+----------------+
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| id          | int  | NO   | PRI | NULL    | auto_increment |
+| title       | text | NO   |     | NULL    |                |
+| description | text | YES  |     | NULL    |                |
+| ideaid      | int  | NO   | MUL | NULL    |                |
+| data        | date | NO   |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
 
 mysql> describe comments;
-+----------------+----------------+------+-----+---------+----------------+
-| Field          | Type           | Null | Key | Default | Extra          |
-+----------------+----------------+------+-----+---------+----------------+
-| id             | int            | NO   | PRI | NULL    | auto_increment |
-| authorid       | int            | YES  | MUL | NULL    |                |
-| data           | date           | NO   |     | NULL    |                |
-| description    | varchar(10000) | NO   |     | NULL    |                |
-| ideaid         | int            | NO   | MUL | NULL    |                |
-| superCommentid | int            | YES  | MUL | NULL    |                |
-+----------------+----------------+------+-----+---------+----------------+
++----------------+------+------+-----+---------+----------------+
+| Field          | Type | Null | Key | Default | Extra          |
++----------------+------+------+-----+---------+----------------+
+| id             | int  | NO   | PRI | NULL    | auto_increment |
+| authorid       | int  | YES  | MUL | NULL    |                |
+| data           | date | NO   |     | NULL    |                |
+| description    | text | NO   |     | NULL    |                |
+| ideaid         | int  | NO   | MUL | NULL    |                |
+| superCommentid | int  | YES  | MUL | NULL    |                |
++----------------+------+------+-----+---------+----------------+
 
 mysql> describe idealabels;
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| id         | int          | NO   | PRI | NULL    | auto_increment |
-| ideaid     | int          | NO   | MUL | NULL    |                |
-| type       | varchar(500) | NO   |     | NULL    |                |
-| creativity | varchar(500) | NO   |     | NULL    |                |
-| status     | varchar(500) | NO   |     | NULL    |                |
-| saves      | int          | NO   |     | NULL    |                |
-| likes      | int          | NO   |     | NULL    |                |
-| dislike    | int          | NO   |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
++------------+------+------+-----+---------+----------------+
+| Field      | Type | Null | Key | Default | Extra          |
++------------+------+------+-----+---------+----------------+
+| id         | int  | NO   | PRI | NULL    | auto_increment |
+| ideaid     | int  | NO   | MUL | NULL    |                |
+| type       | text | NO   |     | NULL    |                |
+| creativity | text | NO   |     | NULL    |                |
+| status     | text | NO   |     | NULL    |                |
+| saves      | int  | NO   |     | NULL    |                |
+| likes      | int  | NO   |     | NULL    |                |
+| dislike    | int  | NO   |     | NULL    |                |
++------------+------+------+-----+---------+----------------+
 
 mysql> describe accountideadata;
 +-----------+------+------+-----+---------+----------------+
@@ -664,27 +777,27 @@ mysql> describe accountideadata;
 +-----------+------+------+-----+---------+----------------+
 
 mysql> describe notifications;
-+-------------+----------------+------+-----+---------+----------------+
-| Field       | Type           | Null | Key | Default | Extra          |
-+-------------+----------------+------+-----+---------+----------------+
-| id          | int            | NO   | PRI | NULL    | auto_increment |
-| accountid   | int            | NO   | MUL | NULL    |                |
-| title       | varchar(255)   | NO   |     | NULL    |                |
-| description | varchar(10000) | NO   |     | NULL    |                |
-| data        | date           | NO   |     | NULL    |                |
-| status      | int            | NO   |     | NULL    |                |
-+-------------+----------------+------+-----+---------+----------------+
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| id          | int  | NO   | PRI | NULL    | auto_increment |
+| accountid   | int  | NO   | MUL | NULL    |                |
+| title       | text | NO   |     | NULL    |                |
+| description | text | NO   |     | NULL    |                |
+| data        | date | NO   |     | NULL    |                |
+| status      | int  | NO   |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
 
 mysql> describe reports;
-+-----------+----------------+------+-----+---------+----------------+
-| Field     | Type           | Null | Key | Default | Extra          |
-+-----------+----------------+------+-----+---------+----------------+
-| id        | int            | NO   | PRI | NULL    | auto_increment |
-| authorid  | int            | NO   | MUL | NULL    |                |
-| ideaid    | int            | YES  |     | NULL    |                |
-| accountid | int            | YES  |     | NULL    |                |
-| feedback  | varchar(10000) | NO   |     | NULL    |                |
-+-----------+----------------+------+-----+---------+----------------+
++-----------+------+------+-----+---------+----------------+
+| Field     | Type | Null | Key | Default | Extra          |
++-----------+------+------+-----+---------+----------------+
+| id        | int  | NO   | PRI | NULL    | auto_increment |
+| authorid  | int  | NO   | MUL | NULL    |                |
+| ideaid    | int  | YES  |     | NULL    |                |
+| accountid | int  | YES  |     | NULL    |                |
+| feedback  | text | NO   |     | NULL    |                |
++-----------+------+------+-----+---------+----------------+
 
 mysql> describe follow;
 +-------------------+------+------+-----+---------+----------------+
@@ -697,15 +810,15 @@ mysql> describe follow;
 +-------------------+------+------+-----+---------+----------------+
 
 mysql> describe reservedareaaccounts;
-+-----------+--------------+------+-----+---------+----------------+
-| Field     | Type         | Null | Key | Default | Extra          |
-+-----------+--------------+------+-----+---------+----------------+
-| id        | int          | NO   | PRI | NULL    | auto_increment |
-| username  | varchar(255) | NO   |     | NULL    |                |
-| password1 | varchar(255) | NO   |     | NULL    |                |
-| password2 | varchar(255) | NO   |     | NULL    |                |
-| password3 | varchar(255) | NO   |     | NULL    |                |
-| password4 | varchar(255) | NO   |     | NULL    |                |
-| password5 | varchar(255) | NO   |     | NULL    |                |
-+-----------+--------------+------+-----+---------+----------------+
++-----------+------+------+-----+---------+----------------+
+| Field     | Type | Null | Key | Default | Extra          |
++-----------+------+------+-----+---------+----------------+
+| id        | int  | NO   | PRI | NULL    | auto_increment |
+| username  | text | NO   |     | NULL    |                |
+| password1 | text | NO   |     | NULL    |                |
+| password2 | text | NO   |     | NULL    |                |
+| password3 | text | NO   |     | NULL    |                |
+| password4 | text | NO   |     | NULL    |                |
+| password5 | text | NO   |     | NULL    |                |
++-----------+------+------+-----+---------+----------------+
 ```
