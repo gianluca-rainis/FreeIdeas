@@ -40,6 +40,8 @@ export default function ContactsPage({pageTitle}) {
                         <li>To obtain technical support, to ask questions of any kind, and to provide feedback and information useful for improving the site: <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a></li>
                         <li>To contact the site administrator directly (use only in case of serious need): <a href="mailto:administrator@freeideas.pro">administrator@freeideas.pro</a></li>
                     </ul>
+                    
+                    We'll try to respond as soon as possible. Remember to check your spam folder.
                 </p>
                 <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className="logo" />
             </main>
