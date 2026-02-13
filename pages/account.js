@@ -30,14 +30,14 @@ export async function getServerSideProps(context) {
         }, 2000);
 
         const data = await res.json();
-console.log(data);
+
         if (data && data.id) {
             id = data.id;
         }
     } catch (error) {
         console.error('Failed to load session data: '+error);
     }
-    console.log(id);
+    
     if (id) {
         try {
             const baseUrl = getBaseUrl(context.req);
