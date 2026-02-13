@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
         }, 2000);
 
         const data = await res.json();
-
+console.log(data);
         if (data && data.id) {
             id = data.id;
         }
