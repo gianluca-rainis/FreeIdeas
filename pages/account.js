@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
 
         const formData = new FormData();
         formData.append("id", id);
-
+console.log("DEBUG: ", id, baseUrl);
         const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : {},
