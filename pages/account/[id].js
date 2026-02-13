@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
             const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
                 method: 'GET',
                 headers: cookieHeader ? { cookie: cookieHeader } : {}
-            }, 1000);
+            }, 2000);
 
             const data = await res.json();
 
