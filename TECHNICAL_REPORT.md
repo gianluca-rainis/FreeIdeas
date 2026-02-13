@@ -2,6 +2,33 @@
 ## The project
 The FreeIdeas project was born to give everybody a place where share ideas. Everyone can publish their own ideas, and all the published ideas are at the same level. We give visibility to each idea, for example showing the last ideas on the home page, or ordering by default the ideas from the newest to the oldest in the search page. Our goal is to create an international community where creatives share their ideas and help others realize theirs.
 
+## Table of contents
+- [Features](#features)
+    - [Ideas](#ideas)
+    - [Accounts](#accounts)
+    - [Reserved Area](#reserved-area)
+    - [Other](#other)
+- [Technologies used](#technologies-used)
+- [Methods used](#methods-used)
+- [Software requirements](#software-requirements)
+- [Files](#files)
+- [Dependencies](#dependencies)
+- [ENV Variables](#env-variables)
+- [🛢 DataBase structure](#-database-structure)
+    - [Accounts](#accounts-1)
+    - [Ideas](#ideas)
+    - [Additional info](#additional-info)
+    - [Author Updates](#author-updates)
+    - [Comments and help](#comments-and-help)
+    - [Labels of a project](#labels-of-a-project)
+    - [Account additional data about ideas](#account-additional-data-about-ideas)
+    - [Account notifications](#account-notifications)
+    - [Reports (ideas, accounts)](#reports-ideas-accounts)
+    - [Follow (ideas, accounts)](#follow-ideas-accounts)
+    - [Reserved Area Accounts](#reserved-area-accounts)
+- [Entity Relationship Diagrams](#entity-relationship-diagrams)
+- [Database Types](#database-types)
+
 ---
 
 *If you are looking for non-technical informations please see the [README.md](README.md) file.*
@@ -589,6 +616,8 @@ erDiagram
     accountideadata }o -- || accounts : accountid-id
     notifications }o -- o{ accounts : accountid-id
     reports }o -- |{ accounts : authorid-id
+    reports }o -- o{ ideas : ideaid-id
+    reports }o -- o{ accounts : accountid-id
     follow }o -- o| accounts : followaccountid-id
     follow }o -- o| accounts : followedaccountid-id
     follow }o -- o| ideas : followedideaid-id
