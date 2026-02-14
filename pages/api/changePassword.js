@@ -75,102 +75,114 @@ export default async function handler(req, res) {
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
                 <title>Change password FreeIdeas</title>
-                <style>
-                    * {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    
-                    body {
-                        background-color: #f6ffd7;
-                        text-align: center;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        font-family: Arial, sans-serif;
-                        width: 100%;
-                        height: 100%;
-                        gap: 20px;
-                    }
-
-                    button {
-                        cursor: pointer;
-                        align-self: center;
-                        box-sizing: border-box;
-                        background-color: #a2f16e;
-                        border: 1px solid #2c3d27;
-                        border-radius: 5px;
-                        width: 30%;
-                        height: 30px;
-                        margin-bottom: 10px;
-                    }
-
-                    button:hover {
-                        background-color: #81d54a
-                    }
-
-                    #signature {
-                        width: 30%;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 5px;
-                    }
-
-                    #signature h1 {
-                        font-size: 20px;
-                    }
-
-                    #signature p {
-                        padding: 10px;
-                        font-family: cursive;
-                    }
-
-                    #signature ul {
-                        gap: 10px;
-                        display: flex;
-                        flex-direction: column;
-                        font-size: 12px;
-                        text-align: left;
-                        padding: 10px;
-                        list-style-type: none;
-                    }
-
-                    #signature img {
-                        width: 100%
-                    }
-                </style>
             </head>
 
-            <body>
-                <h1>Change the password of your FreeIdeas account</h1>
-                <h2>Hello ${username}</h2>
-                <p>This email was sent automatically because you requested a password change or because you forgot your password.</p>
-                <p><strong>If you haven't asked for change your password report it immediatly.</strong></p>
-                <h2>To change your password press here:</h2>
-                <button>Change your password</button>
-
-                <div id="signature">
-                    <img src="https://www.freeideas.pro/images/FreeIdeas.svg" alt="FreeIdeas logo">
-                    <h1>
-                        A place where <strong>your</strong>
-                        <span style="color: #ffcf00">I</span>
-                        <span style="color: #f4d54b">d</span>
-                        <span style="color: #e4c53d">e</span>
-                        <span style="color: #c0a634">a</span>
-                        <span style="color: #a28710">s</span>
-                         can be 
-                        <span style="color: #59ff97">F</span>
-                        <span style="color: #47dc55">r</span>
-                        <span style="color: #05a814">e</span>
-                        <span style="color: #106d19">e</span>
-                    </h1>
-                    <p>The FreeIdeas team.</p>
-                    <ul>
-                        <li>For generic comunications: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
-                        <li>For technical support: <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a></li>
-                        <li>For the site administrator: <a href="mailto:administrator@freeideas.pro">administrator@freeideas.pro</a></li>
-                    </ul>
-                </div>
+            <body style="
+                margin:0;
+                padding:0;
+                background-color:#f6ffd7;
+            ">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f6ffd7;">
+                    <tr>
+                        <td align="center" style="padding:20px 10px;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="
+                                max-width:600px;
+                                font-family: Arial, sans-serif;
+                                text-align:center;
+                            ">
+                                <tr>
+                                    <td style="padding:10px 0;">
+                                        <h1 style="margin:0; font-size:24px;">Change the password of your FreeIdeas account</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0;">
+                                        <h2 style="margin:0; font-size:18px;">Hello ${username}</h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; font-size:14px;">
+                                        This email was sent automatically because you requested a password change or because you forgot your password.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; font-size:14px;">
+                                        <strong>If you haven't asked for change your password report it immediatly.</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:12px 0;">
+                                        <h2 style="margin:0; font-size:18px;">To change your password press here:</h2>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px 0 14px 0;">
+                                        <a href="#" style="
+                                            display:inline-block;
+                                            text-decoration:none;
+                                            background-color:#a2f16e;
+                                            border:1px solid #2c3d27;
+                                            border-radius:5px;
+                                            color:#000000;
+                                            padding:9px 16px;
+                                            font-size:14px;
+                                        ">Change your password</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:12px 0;">
+                                        <table role="presentation" cellpadding="0" cellspacing="0" width="50%" style="max-width:340px;">
+                                            <tr>
+                                                <td style="text-align:center; padding:6px 0;">
+                                                    <a href="https://www.freeideas.pro">
+                                                    <img src="https://www.freeideas.pro/images/FreeIdeas.svg" alt="FreeIdeas logo" style="
+                                                        display:block;
+                                                        width:100%;
+                                                        max-width:240px;
+                                                        height:auto;
+                                                        margin:0 auto;
+                                                        border:0;
+                                                    " /></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center; padding:6px 0;">
+                                                    <h1 style="margin:0; font-size:18px; line-height:1.4;">
+                                                        A place where <strong>your</strong>
+                                                        <span style="color:#ffcf00;">I</span>
+                                                        <span style="color:#f4d54b;">d</span>
+                                                        <span style="color:#e4c53d;">e</span>
+                                                        <span style="color:#c0a634;">a</span>
+                                                        <span style="color:#a28710;">s</span>
+                                                        can be
+                                                        <span style="color:#59ff97;">F</span>
+                                                        <span style="color:#47dc55;">r</span>
+                                                        <span style="color:#05a814;">e</span>
+                                                        <span style="color:#106d19;">e</span>
+                                                    </h1>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center; padding:6px 0; font-family:cursive;">
+                                                    The FreeIdeas team.
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left; padding:6px 0; font-size:10px;">
+                                                    <ul style="margin:0; padding:0; list-style-type:none;">
+                                                        <li style="margin:0 0 6px 0;">For generic comunications: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
+                                                        <li style="margin:0 0 6px 0;">For technical support: <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a></li>
+                                                        <li style="margin:0;">For the site administrator: <a href="mailto:administrator@freeideas.pro">administrator@freeideas.pro</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </body>
         </html>`;
 
