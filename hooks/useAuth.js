@@ -70,7 +70,7 @@ export function useAuth() {
             });
 
             if (data && data.success) {
-                return { success: true, message: `Email sent to: ${email}` };
+                return { success: true, message: `Email sent to: ${email}. Remember to check your spam folder!` };
             }
             else {
                 throw new Error(data?.error || "Failed to send password reset email");

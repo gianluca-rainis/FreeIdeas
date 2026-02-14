@@ -64,7 +64,7 @@ export default function LoginPage({pageTitle}) {
                     });
 
                     if (data['success']) {
-                        showAlert("Email sent to: " + email);
+                        showAlert("Email sent to: " + email + ". Remember to check your spam folder!");
                     }
                     else {
                         console.error(data['error']);

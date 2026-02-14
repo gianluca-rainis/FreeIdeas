@@ -68,11 +68,77 @@ export default async function handler(req, res) {
 
         // EMAIL
         let to = email;
-        let subject = "Change password FreeIdeas account.";
+        let subject = "FreeIdeas - Change the password of your account";
         let message = `
+        <!DOCTYPE html>
         <html lang="en-US">
             <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
                 <title>Change password FreeIdeas</title>
+                <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    body {
+                        background-color: #f6ffd7;
+                        text-align: center;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        font-family: Arial, sans-serif;
+                        width: 100%;
+                        height: 100%;
+                        gap: 20px;
+                    }
+
+                    button {
+                        cursor: pointer;
+                        align-self: center;
+                        box-sizing: border-box;
+                        background-color: #a2f16e;
+                        border: 1px solid #2c3d27;
+                        border-radius: 5px;
+                        width: 30%;
+                        height: 30px;
+                        margin-bottom: 10px;
+                    }
+
+                    button:hover {
+                        background-color: #81d54a
+                    }
+
+                    #signature {
+                        width: 30%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                    }
+
+                    #signature h1 {
+                        font-size: 20px;
+                    }
+
+                    #signature p {
+                        padding: 10px;
+                        font-family: cursive;
+                    }
+
+                    #signature ul {
+                        gap: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        font-size: 12px;
+                        text-align: left;
+                        padding: 10px;
+                        list-style-type: none;
+                    }
+
+                    #signature img {
+                        width: 100%
+                    }
+                </style>
             </head>
 
             <body>
@@ -82,7 +148,29 @@ export default async function handler(req, res) {
                 <p><strong>If you haven't asked for change your password report it immediatly.</strong></p>
                 <h2>To change your password press here:</h2>
                 <button>Change your password</button>
-                <img src="https://www.freeideas.pro/images/FreeIdeas.svg" alt="FreeIdeas logo">
+
+                <div id="signature">
+                    <img src="https://www.freeideas.pro/images/FreeIdeas.svg" alt="FreeIdeas logo">
+                    <h1>
+                        A place where <strong>your</strong>
+                        <span style="color: #ffcf00">I</span>
+                        <span style="color: #f4d54b">d</span>
+                        <span style="color: #e4c53d">e</span>
+                        <span style="color: #c0a634">a</span>
+                        <span style="color: #a28710">s</span>
+                         can be 
+                        <span style="color: #59ff97">F</span>
+                        <span style="color: #47dc55">r</span>
+                        <span style="color: #05a814">e</span>
+                        <span style="color: #106d19">e</span>
+                    </h1>
+                    <p>The FreeIdeas team.</p>
+                    <ul>
+                        <li>For generic comunications: <a href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a></li>
+                        <li>For technical support: <a href="mailto:customer_service@freeideas.pro">customer_service@freeideas.pro</a></li>
+                        <li>For the site administrator: <a href="mailto:administrator@freeideas.pro">administrator@freeideas.pro</a></li>
+                    </ul>
+                </div>
             </body>
         </html>`;
 
@@ -92,12 +180,12 @@ export default async function handler(req, res) {
             service: 'gmail',
             auth: {
                 user: process.env.EMAIL_NODE_MAILER,
-                pass: process.end.PASSWORD_NODE_MAILER
+                pass: process.env.PASSWORD_NODE_MAILER
             }
         });
 
         let mailOptions = {
-            from: process.env.EMAIL_NODE_MAILER,
+            from: "freeideas@freeideas.pro",
             to: to,
             subject: subject,
             html: message
