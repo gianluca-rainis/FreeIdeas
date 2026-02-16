@@ -91,7 +91,7 @@ export function LoginForm({ onClose }) {
                 
                 <button 
                     type="button"
-                    onClick={handleForgotPasswordClick}
+                    ={handleForgotPasswordClick}
                     className={`${styles.button} ${styles.secondaryButton}`}
                     disabled={isSubmitting}
                 >

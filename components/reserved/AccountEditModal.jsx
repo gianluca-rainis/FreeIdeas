@@ -139,7 +139,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 body: fd
             });
 
-            if (!data?.success) {
+            if (data?.success) {
+                showAlert("Email sent to: " + formData.email);
+            }
+            else {
                 throw new Error(data?.error || 'Failed to change password');
             }
 
@@ -207,19 +210,19 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 <input type="file" id="newuserImageAccountAdmin" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" onChange={(e) => setFormData({ ...formData, userimage: e.target.files?.[0] })} />
                 
                 <label>Username</label>
-                <input type="text" id="newuserNameAccountAdmin" maxLength="255" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required />
+                <input type="text" id="newuserNameAccountAdmin" maxLength={255} value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required />
                 
                 <label>Name</label>
-                <input type="text" id="newuserAccountNameAdmin" maxLength="255" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                <input type="text" id="newuserAccountNameAdmin" maxLength={255} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
                 
                 <label>Surname</label>
-                <input type="text" id="newuserSurnameAccountAdmin" maxLength="255" value={formData.surname} onChange={(e) => setFormData({ ...formData, surname: e.target.value })} required />
+                <input type="text" id="newuserSurnameAccountAdmin" maxLength={255} value={formData.surname} onChange={(e) => setFormData({ ...formData, surname: e.target.value })} required />
                 
                 <label>Email</label>
-                <input type="text" id="newemailAccountAdmin" maxLength="255" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                <input type="text" id="newemailAccountAdmin" maxLength={255} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
                 
                 <label>Description</label>
-                <textarea type="text" rows="8" cols="25" id="newdescriptionAccountAdmin" maxLength="1000" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}></textarea>
+                <textarea type="text" rows="8" cols="25" id="newdescriptionAccountAdmin" maxLength={1000} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}></textarea>
             </div>
             <div id="dangerAreaAccountAdmin">
                 <label>Danger Area</label>

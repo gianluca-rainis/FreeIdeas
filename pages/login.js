@@ -31,6 +31,37 @@ export default function LoginPage({pageTitle}) {
         async function handleSubmit(e) {
             e.preventDefault();
 
+            if (!form.checkValidity()) {
+                await showAlert("You must fill in all required fields!");
+
+                const invalids = form.querySelectorAll(":invalid");
+
+                invalids.forEach(invalid => {
+                    invalid.style.border = "3px solid #d31c1c";
+
+                    function handleInputChange() {
+                        if (invalid.checkValidity()) {
+                            invalid.style.border = "";
+
+                            invalid.removeEventListener("input", handleInputChange);
+                            invalid.removeEventListener("change", handleInputChange);
+                        }
+                    }
+
+                    invalid.removeEventListener("input", handleInputChange);
+                    invalid.removeEventListener("change", handleInputChange);
+
+                    invalid.addEventListener("input", handleInputChange);
+                    invalid.addEventListener("change", handleInputChange);
+                });
+
+                if (invalids[0]) {
+                    invalids[0].focus();
+                }
+
+                return;
+            }
+
             try {
                 const formData = new FormData(form);
                 const data = await apiCall(form.action, {
@@ -163,8 +194,8 @@ export default function LoginPage({pageTitle}) {
                 <section>
                     <h1>Sign In</h1>
                     
-                    <form action="/api/login" method="POST" ref={formRef}>
-                        <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength="255" id="emailLoginPage" required />
+                    <form action="/api/login" method="POST" ref={formRef} noValidate>
+                        <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength={255} id="emailLoginPage" required />
                         <input type="password" autoComplete="current-password" placeholder="Password" name="password" id="passwordFormInputLoginPage" required />
                     
                         <button type="button" className="toggle-password-visibility-ext">

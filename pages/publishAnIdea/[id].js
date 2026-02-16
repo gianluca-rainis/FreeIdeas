@@ -591,7 +591,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                             type="text" 
                             id="title" 
                             placeholder="Title" 
-                            maxLength="255" 
+                            maxLength={255} 
                             required 
                             value={formData.title}
                             onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
@@ -674,7 +674,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                         type="text" 
                         id="description" 
                         placeholder="Description" 
-                        maxLength="10000" 
+                        maxLength={10000} 
                         required
                         value={formData.description}
                         onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
@@ -723,7 +723,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                                             type="text" 
                                             className="titleImageInfo" 
                                             placeholder="Title" 
-                                            maxLength="255" 
+                                            maxLength={255} 
                                             required
                                             value={info.title}
                                             onChange={(e) => updateAdditionalInfo(info.id, 'title', e.target.value)}
@@ -733,7 +733,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                                             type="text" 
                                             className="imageInfoDescription" 
                                             placeholder="Info" 
-                                            maxLength="10000" 
+                                            maxLength={10000} 
                                             required
                                             value={info.description}
                                             onChange={(e) => updateAdditionalInfo(info.id, 'description', e.target.value)}
@@ -751,7 +751,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                             type="url" 
                             id="buttonlink" 
                             placeholder="Link to download data" 
-                            maxLength="5000"
+                            maxLength={5000}
                             value={formData.buttonlink}
                             onChange={(e) => setFormData(prev => ({ ...prev, buttonlink: e.target.value }))}
                             disabled={loading}
@@ -803,7 +803,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                                         <textarea 
                                             className="logTitle" 
                                             placeholder="Title" 
-                                            maxLength="255" 
+                                            maxLength={255} 
                                             required
                                             value={log.title}
                                             onChange={(e) => updateLog(log.id, 'title', e.target.value)}
@@ -815,7 +815,7 @@ export default function PublishAnIdeaPage({ id, ideaData, pageTitle }) {
                                     <textarea 
                                         className="logInfo" 
                                         placeholder="Description" 
-                                        maxLength="10000" 
+                                        maxLength={10000} 
                                         required
                                         value={log.description}
                                         onChange={(e) => updateLog(log.id, 'description', e.target.value)}

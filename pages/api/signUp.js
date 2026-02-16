@@ -27,6 +27,8 @@ export default async function handler(req, res) {
     }
 
     try {
+        const session = await getIronSession(req, res, sessionOptions);
+
         const form = formidable();
         const [fields] = await form.parse(req);
 
@@ -35,9 +37,10 @@ export default async function handler(req, res) {
         const username = getInput(fields.userName?.[0] || '');
         const email = getInput(fields.email?.[0] || '');
         const password = getInput(fields.password?.[0] || '');
+        const otp = getInput(fields.otp?.[0] || '');
 
-        if (!firstName || !lastName || !email || !password || !username) {
-            return res.status(400).json({ success: false, error: 'Not all the required fields are filled' });
+        if (!firstName || !lastName || !email || !password || !username || !otp) {
+            return res.status(400).json({ success: false, error: 'Not all the required fields are filled.' });
         }
         
         const bcrypt = require('bcrypt');
@@ -49,7 +52,14 @@ export default async function handler(req, res) {
         );
 
         if (accountCheck.length > 0) {
-            return res.status(401).json({ success: false, error: 'Already exist an account with the same email or the same username' });
+            return res.status(401).json({ success: false, error: 'Already exist an account with the same email or the same username.' });
+        }
+        
+        if (!(session.otp && session.otp.email == email && session.otp.code == otp)) {
+            return res.status(401).json({ success: false, error: 'The otp code is wrong. Please retry the create account process.' });
+        }
+        else {
+            session.otp = null;
         }
 
         // Hash password
@@ -122,8 +132,6 @@ export default async function handler(req, res) {
         };
 
         // Save session
-        const session = await getIronSession(req, res, sessionOptions);
-
         session.account = {
             id: accountData.id,
             username: accountData.username

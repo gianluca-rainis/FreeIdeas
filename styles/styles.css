@@ -1819,7 +1819,7 @@ footer ul li a {
     color: black;
 }
 
-#signInLoginPageButton {
+#signInLoginPageButton, #signInLoginPageCancelButton {
     width: calc(100%);
     height: 30px;
     margin-bottom: 10px;
@@ -3770,7 +3770,7 @@ footer ul li a {
         color: #5c4e2e;
     }
 
-    #loginMain #signInLoginPageButton {
+    #loginMain #signInLoginPageButton, #loginMain #signInLoginPageCancelButton {
         background-color: #cba95c;
         border: 1px solid #5c4e2e;
         color: #5c4e2e;

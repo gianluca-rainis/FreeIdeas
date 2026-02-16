@@ -281,7 +281,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             });
 
             if (resp?.success) {
-                showAlert('Check your inbox for the password reset email.');
+                showAlert("Email sent to: " + sessionData.email + ". Remember to check your spam folder!");
             }
             else {
                 console.error(resp?.error);
@@ -349,15 +349,15 @@ export default function AccountPage({ accountData, pageTitle }) {
 
                             <div id="newDataSetAccount">
                                 <label>Username</label>
-                                <input type="text" id="newuserNameAccount" maxLength="255" required value={formValues.username} onChange={(e) => setFormValues({ ...formValues, username: e.target.value })} />
+                                <input type="text" id="newuserNameAccount" maxLength={255} required value={formValues.username} onChange={(e) => setFormValues({ ...formValues, username: e.target.value })} />
                                 <label>Image</label>
                                 <input type="file" id="newuserImageAccount" accept="image/png, image/jpeg, image/gif, image/x-icon, image/webp, image/bmp" onChange={(e) => setFormValues({ ...formValues, imageFile: e.target.files?.[0] || null })} />
                                 <label>Name</label>
-                                <input type="text" id="newuserAccountName" maxLength="255" required value={formValues.name} onChange={(e) => setFormValues({ ...formValues, name: e.target.value })} />
+                                <input type="text" id="newuserAccountName" maxLength={255} required value={formValues.name} onChange={(e) => setFormValues({ ...formValues, name: e.target.value })} />
                                 <label>Surname</label>
-                                <input type="text" id="newuserSurnameAccount" maxLength="255" required value={formValues.surname} onChange={(e) => setFormValues({ ...formValues, surname: e.target.value })} />
+                                <input type="text" id="newuserSurnameAccount" maxLength={255} required value={formValues.surname} onChange={(e) => setFormValues({ ...formValues, surname: e.target.value })} />
                                 <label>Description</label>
-                                <textarea rows="8" cols="25" id="newdescriptionAccount" maxLength="1000" value={formValues.description} onChange={(e) => setFormValues({ ...formValues, description: e.target.value })} />
+                                <textarea rows="8" cols="25" id="newdescriptionAccount" maxLength={1000} value={formValues.description} onChange={(e) => setFormValues({ ...formValues, description: e.target.value })} />
                             </div>
                             <div id="dangerAreaAccount">
                                 <label>Danger Area</label>
