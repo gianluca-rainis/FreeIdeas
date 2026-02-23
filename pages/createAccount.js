@@ -107,7 +107,7 @@ export default function CreateAccountPage({pageTitle}) {
                 formData.append("userName", newAccountData.username);
                 formData.append("otp", form.emailOTP.value);
 
-                const data = await apiCall(form.action, {
+                const data = await apiCall("/api/signUp", {
                     method: "POST",
                     body: formData
                 });
