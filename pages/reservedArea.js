@@ -89,7 +89,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
             try {
                 const formData = new FormData(e.currentTarget);
 
-                const data = await apiCall(form.action, {
+                const data = await apiCall("/api/reservedAreaLogin", {
                     method: "POST",
                     body: formData
                 });
