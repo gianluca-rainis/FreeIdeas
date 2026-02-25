@@ -1819,7 +1819,7 @@ footer ul li a {
     color: black;
 }
 
-#signInLoginPageButton, #signInLoginPageCancelButton {
+#signInLoginPageButton, #signInLoginPageCancelButton, #changePasswordLoginPageButton {
     width: calc(100%);
     height: 30px;
     margin-bottom: 10px;
@@ -1863,6 +1863,10 @@ footer ul li a {
 
 #loginMain h1 {
     padding-bottom: 20px;
+}
+
+#loginMain #passwordFormInputLoginPage, #loginMain #confirmPasswordFormInputLoginPage {
+    width: 450px;
 }
 
 /* RESERVED AREA */
@@ -2817,7 +2821,11 @@ footer ul li a {
     }
 
     /* Login page */
-    #loginMain form p {
+    #loginMain form p, #loginMain p {
+        width: 300px;
+    }
+
+    #loginMain #passwordFormInputLoginPage, #loginMain #confirmPasswordFormInputLoginPage {
         width: 300px;
     }
 
@@ -3186,7 +3194,11 @@ footer ul li a {
         top: 215px;
     }
 
-    #loginMain form p {
+    #loginMain form p, #loginMain p {
+        width: 100%;
+    }
+
+    #loginMain #passwordFormInputLoginPage, #loginMain #confirmPasswordFormInputLoginPage {
         width: 100%;
     }
 

@@ -198,8 +198,8 @@ export default async function handler(req, res) {
             [id]
         );
 
-        if (req.session && req.session.account) {
-            req.session.destroy((err) => {
+        if (session && session.account) {
+            session.destroy((err) => {
                 if (err) {
                     console.error('Error destroying session: ', err);
                 }
