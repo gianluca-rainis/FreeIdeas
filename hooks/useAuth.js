@@ -46,7 +46,9 @@ export function useAuth() {
 
     async function logout() {
         try {
-            await apiCall('logout');
+            await apiCall('logout', {
+                method: 'POST'
+            });
         } catch (error) {
             console.error(error);
         }

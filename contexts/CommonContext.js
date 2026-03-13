@@ -29,7 +29,9 @@ export function AppProvider({ children }) {
     // Logout function (moved from useAuth to avoid circular dependency)
     async function handleLogout() {
         try {
-            await apiCall('logout');
+            await apiCall('logout', {
+                method: 'POST'
+            });
         } catch (error) {
             console.error(error);
         }

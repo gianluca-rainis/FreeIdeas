@@ -67,7 +67,9 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
     async function handleLogout() {
         try {
-            await apiCall("/api/logout");
+            await apiCall("/api/logout", {
+                method: 'POST'
+            });
             
             window.location.href = "/reservedArea";
         } catch (error) {
