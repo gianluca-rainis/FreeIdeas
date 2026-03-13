@@ -11,6 +11,7 @@
         "build-vite": "vite build"
     },
     "dependencies": {
+        "@libsql/client": "^0.17.0",
         "bcrypt": "^6.0.0",
         "formidable": "^3.5.4",
         "iron-session": "^8.0.4",

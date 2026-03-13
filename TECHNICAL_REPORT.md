@@ -303,8 +303,6 @@ EMAIL_NODE_MAILER
 
 PASSWORD_NODE_MAILER
 
-NEXT_PUBLIC_API_URL     # Only for the front-end
-
 SITE_URL
 ```
 

@@ -13,7 +13,7 @@ async function handler(req, res) {
     try {
         // Get the random id
         const randomId = await query(
-            'SELECT id FROM ideas ORDER BY RAND() LIMIT 1;',
+            'SELECT id FROM ideas ORDER BY RANDOM() LIMIT 1;',
             []
         );
 

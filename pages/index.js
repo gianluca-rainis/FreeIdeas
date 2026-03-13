@@ -262,7 +262,7 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
 
                     sourceList.forEach(idea => {
                         if (idea.ideaimage) {
-                            imageMap[idea.id] = Buffer.from(idea.ideaimage.data).toString();
+                            imageMap[idea.id] = Buffer.isBuffer(idea.ideaimage)?Buffer.from(idea.ideaimage.data).toString():idea.ideaimage;
                         }
                     });
 
