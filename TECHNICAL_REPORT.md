@@ -287,13 +287,9 @@ npm install iron-session
 
 ## ENV Variables
 ```
-DB_HOST
+TURSO_DATABASE_URL
 
-DB_USER
-
-DB_PASSWORD
-
-DB_NAME
+TURSO_AUTH_TOKEN
 
 COOKIE_DOMAIN
 
