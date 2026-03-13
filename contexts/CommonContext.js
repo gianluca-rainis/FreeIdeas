@@ -44,8 +44,8 @@ export function AppProvider({ children }) {
 
     /* BANNER */
     useEffect(() => {
-        setBannerMessage("Due to site maintenance, some features may be malfunctioning or unavailable.");
-        setBannerVisibility(true);
+        setBannerMessage("");
+        setBannerVisibility(false);
     }, []);
 
     // Window size management
