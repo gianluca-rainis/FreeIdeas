@@ -13,6 +13,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -40,7 +44,7 @@ export default async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Account not found in database' });
         }
 
-        const userImage = account[0]['userimage']?Buffer.from(account[0]['userimage']).toString():null;
+        const userImage = getImage(account[0]['userimage']);
         
         data['id'] = account[0]['id'];
         data['email'] = account[0]['email'];
@@ -65,7 +69,7 @@ export default async function handler(req, res) {
         let indexForSaved = 0;
 
         savedIdeas.forEach(ideaSaved => {
-            const image = ideaSaved['ideaimage']?Buffer.from(ideaSaved['ideaimage']).toString():null;
+            const image = getImage(ideaSaved['ideaimage']);
 
             data['saved'][indexForSaved] = {};
             data['saved'][indexForSaved]['id'] = ideaSaved['id'];
@@ -86,7 +90,7 @@ export default async function handler(req, res) {
         indexForSaved = 0;
 
         publishedIdeas.forEach(ideaPublished => {
-            const image = ideaPublished['ideaimage']?Buffer.from(ideaPublished['ideaimage']).toString():null;
+            const image = getImage(ideaPublished['ideaimage']);
             
             data['published'][indexForSaved] = {};
             data['published'][indexForSaved]['id'] = ideaPublished['id'];

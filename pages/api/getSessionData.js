@@ -7,6 +7,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 async function handler(req, res) {
     if (req.method !== 'GET') {
         return res.status(405).json(null);
@@ -36,7 +40,7 @@ async function handler(req, res) {
 
                 const account = accounts[0];
 
-                const image = account.userimage?Buffer.from(account.userimage).toString():null;
+                const image = getImage(account.userimage);
                 
                 const accountNotifications = await query(
                     'SELECT * FROM notifications WHERE accountid=?;',

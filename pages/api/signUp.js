@@ -13,6 +13,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -117,7 +121,7 @@ export default async function handler(req, res) {
         );
 
         // Prepare data
-        const image = account.userimage?Buffer.from(account.userimage).toString():null;
+        const image = getImage(account.userimage);
 
         const accountData = {
             id: account.id,

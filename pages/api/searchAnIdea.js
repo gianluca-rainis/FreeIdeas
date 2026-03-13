@@ -11,6 +11,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -158,11 +162,11 @@ export default async function handler(req, res) {
             output = {data: result, type: typeOfQuery, format: "mono"};
 
             output.data.forEach(idea => {
-                idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+                idea.ideaimage = getImage(idea.ideaimage);
             });
 
             output.data.forEach(account => {
-                account.userimage = account.userimage?Buffer.from(account.userimage).toString():null;
+                account.userimage = getImage(account.userimage);
             });
 
             if (search != "" && type == "" && creativity == "" && status == "" && order == "") {
@@ -178,7 +182,7 @@ export default async function handler(req, res) {
 
                 if (result) {
                     result.forEach(idea => {
-                        idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+                        idea.ideaimage = getImage(idea.ideaimage);
                     });
 
                     output = {data: {data: output.data, type: output.type}, subdata: {data: result, type: typeOfQuery}, format: "double"};

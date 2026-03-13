@@ -13,6 +13,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -40,7 +44,7 @@ export default async function handler(req, res) {
         ret['followAccountData'] = session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, session.account.id]):[]; // Follow
 
         ret['comment'].forEach(comment => {
-            const image = comment.userimage?Buffer.from(comment.userimage).toString():null;
+            const image = getImage(comment.userimage);
             comment.userimage = image;
             
             // Convert date to YYYY-MM-DD
@@ -65,15 +69,15 @@ export default async function handler(req, res) {
         });
 
         if (ret['idea'][0]['ideaimage']) {
-            ret['idea'][0]['ideaimage'] = ret['idea'][0]['ideaimage']?Buffer.from(ret['idea'][0]['ideaimage']).toString():null;
+            ret['idea'][0]['ideaimage'] = getImage(ret['idea'][0]['ideaimage']);
         }
 
         if (ret['idea'][0]['license']) {
-            ret['idea'][0]['license'] = ret['idea'][0]['license']?Buffer.from(ret['idea'][0]['license']).toString():null;
+            ret['idea'][0]['license'] = getImage(ret['idea'][0]['license']);
         }
 
         ret['info'].forEach(info => {
-            info.updtimage = info.updtimage?Buffer.from(info.updtimage).toString():null;
+            info.updtimage = getImage(info.updtimage);
         });
 
         return res.status(200).json(ret);

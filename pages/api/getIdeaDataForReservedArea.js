@@ -13,6 +13,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -59,7 +63,7 @@ export default async function handler(req, res) {
         }
 
         for (const idea of data) {
-            idea.ideaimage = idea.ideaimage?Buffer.from(idea.ideaimage).toString():null;
+            idea.ideaimage = getImage(idea.ideaimage);
         }
 
         return res.status(200).json({ success: true, data: data });

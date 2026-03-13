@@ -14,6 +14,10 @@ function getInput(data) {
     return String(data).trim();
 }
 
+function getImage(data) {
+    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
+}
+
 function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -96,7 +100,7 @@ export default async function handler(req, res) {
             }
         }
         else if (fields.mainImageData?.[0]) {
-            mainImageConverted = Buffer.from(fields.mainImageData?.[0]).toString();
+            mainImageConverted = getImage(fields.mainImageData?.[0]);
         }
         else {
             return res.status(400).json({ success: false, error: 'Main image is required' });
