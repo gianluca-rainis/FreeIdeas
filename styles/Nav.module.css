@@ -1,0 +1,553 @@
+/* NAV STYLE */
+.nav {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #f6ffd7;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.light {
+    background-color: #f6ffd7;
+    color: #2c3d27;
+}
+
+.dark {
+    background-color: #0a0a0a;
+    color: #cba95c;
+}
+
+.pcNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobileNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: none;
+    align-items: center;
+    background-color: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: fit-content;
+    text-decoration: none;
+}
+
+.navList li {
+    height: fit-content;
+}
+
+.navText {
+    text-decoration: none;
+    background: none;
+    color: inherit;
+    font-size: 1.1em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navText:hover {
+    background-color: #f8f095;
+}
+
+.dark .navText:hover {
+    background-color: #1a1410;
+    color: #e8d9af;
+}
+
+.navLogo {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: left;
+}
+
+.navLogoImage {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    background: none;
+    background-color: transparent;
+    margin: 0;
+}
+
+.navLinks {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    gap: 20px;
+    padding-right: 3rem;
+}
+
+.navLinks li {
+    align-items: center;
+}
+
+.mobileSpacing {
+    margin-left: 2rem;
+}
+
+.navLinks li a {
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.userImage {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+}
+
+.userName {
+    padding-top: 3px;
+    color: #5cad43;
+    cursor: default;
+    transition: color 0.2s ease;
+}
+
+.dark .userName {
+    color: #cba95c;
+}
+
+.menuMobile {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+}
+
+.themeImageLi {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+}
+
+.themeToggle {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.themeToggle:hover {
+    transform: rotate(180deg);
+}
+
+.notificationsImg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.notificaionsMobile {
+    margin: 10px;
+}
+
+.notificationsUl {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-height: calc(40px * 6);
+    overflow-x: inherit;
+    overflow-y: scroll;
+}
+
+.notificationsUl li {
+    border: 1px solid #2c3d27;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #ebffa4;
+}
+
+.notificationsUl li:hover {
+    background-color: #f8f095 !important;
+}
+
+:global(.unReadNotification) {
+    background-color: #88ff38 !important;
+}
+
+.hiddenNotificationData div img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.hiddenNotificationData div input {
+    padding: 5px;
+    border-radius: 10px;
+    border: 0;
+    background-color: #b6ffa4;
+    margin-left: 10px;
+}
+
+.hiddenNotificationData div input:hover {
+    background-color: #7bd85f;
+}
+
+/* HIDDEN MOBILE MENU AREA */
+.mobileMenuHidden {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    background-color: #fffff0;
+    z-index: 10;
+    top: 100px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: calc(100%);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.dark .mobileMenuHidden {
+    background-color: #111111;
+}
+
+/* links for mobile */
+.mobileNavLinks {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 10px;
+    width: calc(100%);
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.mobileNavLinks li {
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #2c3d27;
+    width: calc(100%);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dark .mobileNavLinks li {
+    border-bottom-color: #2a2410;
+}
+
+.themeImageLiMobile {
+    width: fit-content;
+    border-bottom: none !important;
+}
+
+.mobileNavLinks li a {
+    padding: 10px;
+    display: block;
+    text-align: left;
+    align-items: center;
+    width: calc(100%);
+}
+
+.mobileNavLinks .navText {
+    text-decoration: none;
+    background: none;
+    color: inherit;
+    font-size: 2rem;
+}
+
+.mobileNavLinks .navText:hover {
+    background-color: #f8f095;
+}
+
+.dark .mobileNavLinks .navText:hover {
+    background-color: #1a1410;
+}
+
+/* LOGIN AREA - DESKTOP */
+.loginArea {
+    display: none;
+    position: fixed;
+    background-color: #fffff0;
+    right: 0;
+    z-index: 10;
+    top: 100px;
+    padding: 10px 30px 20px 20px;
+    align-items: center;
+    text-align: center;
+    border-radius: 9px;
+    width: 20rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dark .loginArea {
+    background-color: #161616;
+    color: #cba95c;
+}
+
+.loginArea h2 {
+    text-align: center;
+    padding-bottom: 10px;
+    color: #7ddf60;
+}
+
+.loginArea p {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.signUp {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+    transition: color 0.2s ease;
+}
+
+.signUp:hover {
+    color: rgb(109, 255, 12);
+}
+
+.dark .signUp {
+    color: #cba95c;
+}
+
+.dark .signUp:hover {
+    color: #e8d9af;
+}
+
+.desktopInput {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    color: black;
+}
+
+:global(#passwordAreaLogin) {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    color: black;
+}
+
+:global(.toggle-password-visibility),
+:global(.toggle-password-visibility-ext) {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 135px;
+    right: 40px;
+}
+
+:global(.toggle-password-visibility-ext) {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.desktopActionButton {
+    width: calc(100%);
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+:global(#sendAccountButton),
+:global(#sendLogoutButton) {
+    width: calc(100%);
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.dark :global(#sendAccountButton),
+.dark :global(#sendLogoutButton) {
+    background-color: #2a2410;
+    border-color: #cba95c;
+    color: #cba95c;
+}
+
+.forgotPassword {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+}
+
+.forgotPassword:hover {
+    color: rgb(109, 255, 12);
+}
+
+/* login area mobile */
+.loginAreaMobile {
+    display: contents;
+    align-items: center;
+    text-align: center;
+    border-radius: 9px;
+    width: 20rem;
+}
+
+.loginAreaMobile h2 {
+    text-align: center;
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #7ddf60;
+}
+
+.loginAreaMobile p {
+    font-size: large;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.signUpMobile {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+    transition: color 0.2s ease;
+}
+
+.signUpMobile:hover {
+    color: rgb(109, 255, 12);
+}
+
+.dark .signUpMobile {
+    color: #cba95c;
+}
+
+.dark .signUpMobile:hover {
+    color: #e8d9af;
+}
+
+.mobileInput {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+}
+
+:global(#passwordAreaLoginMobile) {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+}
+
+.togglePasswordVisibilityMobile {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 391px;
+    right: 36px;
+}
+
+.mobileActionButton {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+:global(#sendAccountButtonMobile),
+:global(#sendLogoutButtonMobile) {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.dark :global(#sendAccountButtonMobile),
+.dark :global(#sendLogoutButtonMobile) {
+    background-color: #2a2410;
+    border-color: #cba95c;
+    color: #cba95c;
+}
+
+.mobileActionButton:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .pcNavBarGhost {
+        display: none;
+    }
+
+    .mobileNavBarGhost {
+        display: flex;
+    }
+}
+
+@media (min-width: 901px) {
+    .pcNavBarGhost {
+        display: flex;
+    }
+
+    .mobileNavBarGhost {
+        display: none;
+    }
+}

@@ -457,7 +457,8 @@ export function AppProvider({ children }) {
 
                 // Add event listeners for notification buttons
                 ul.querySelectorAll("li").forEach(li => li.addEventListener("click", () => {
-                    ul.style.display = "none";
+                    // Keep mobile/desktop notification state in sync when viewport changes
+                    document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "none");
                     document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "block");
 
                     document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = `
@@ -465,14 +466,14 @@ export function AppProvider({ children }) {
                         <br>
                         <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
                         <div style="display: flex; justify-content: center; align-items: center;">
-                            <img id="notificationBackImage" src="/images/back${themeIsLight?"":"_Pro"}.svg">
-                            <input type="button" id="notificationDeleteButton" value="Delete">
+                            <img class="notificationBackImage" src="/images/back${themeIsLight?"":"_Pro"}.svg">
+                            <input type="button" class="notificationDeleteButton" value="Delete">
                         </div>
                     `);
 
                     /* Back button */
-                    document.getElementById("notificationBackImage").addEventListener("click", async () => {
-                        ul.style.display = "block";
+                    document.querySelectorAll(".notificationBackImage").forEach(backButton => backButton.addEventListener("click", async () => {
+                        document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "block");
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
 
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
@@ -508,11 +509,11 @@ export function AppProvider({ children }) {
 
                         // Reload user data to get updated notifications
                         ldAccountData();
-                    });
+                    }));
 
                     /* Delete button */
-                    document.getElementById("notificationDeleteButton").addEventListener("click", async () => {
-                        ul.style.display = "block";
+                    document.querySelectorAll(".notificationDeleteButton").forEach(deleteButton => deleteButton.addEventListener("click", async () => {
+                        document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "block");
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
                         
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
@@ -565,7 +566,7 @@ export function AppProvider({ children }) {
 
                         // Reload user data to get updated notifications
                         ldAccountData();
-                    });
+                    }));
                 }));
 
                 // Padding for the notifications
