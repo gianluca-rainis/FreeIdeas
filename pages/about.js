@@ -40,6 +40,21 @@ export default function AboutPage({pageTitle}) {
                 <p>
                     Thank you for visiting FreeIdeas, and we hope you find something that inspires you!
                 </p>
+
+                <h2>The FreeIdeas Project Presentation</h2>
+                <p>
+                    Here you can find the complete official Presentation of the FreeIdeas Project.
+                    <br />
+                    The Presentation is available in English and Italian, in PPTX and PDF formats.
+                </p>
+                <ul>
+                    <li><a href="/files/FreeIdeas_project.pptx" download="">FreeIdeas Project Presentation</a></li>
+                    <li><a href="/files/FreeIdeas_project_it.pptx" download="">FreeIdeas Project Presentation (Italian Version)</a></li>
+                    <li></li>
+                    <li><a href="/files/FreeIdeas_project.pdf" download="">FreeIdeas Project Presentation PDF</a></li>
+                    <li><a href="/files/FreeIdeas_project_it.pdf" download="">FreeIdeas Project Presentation PDF (Italian Version)</a></li>
+                </ul>
+
                 <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className ="logo" />
             </main>
 
