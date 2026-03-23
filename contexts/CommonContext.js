@@ -223,7 +223,7 @@ export function AppProvider({ children }) {
 
             if (pcLoginSignUpBlock) {
                 pcLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
-                    <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                    <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; border-radius: 50%; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
                     <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
                     <button type="submit" id="sendAccountButton">Account</button>
                     <button type="submit" id="sendLogoutButton">Log Out</button>`;
@@ -235,7 +235,7 @@ export function AppProvider({ children }) {
             if (mobileLoginSignUpBlock) {
                 mobileLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
                     <div style="align-items: center;">
-                        <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
+                        <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; border-radius: 50%; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
                     </div>
                     <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
                     <div style="align-items: center;">

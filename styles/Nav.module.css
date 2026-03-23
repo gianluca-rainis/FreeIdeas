@@ -11,6 +11,7 @@
     top: 0;
     z-index: 1000;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: saturate(120%) blur(4px);
 }
 
 .light {
@@ -21,6 +22,10 @@
 .dark {
     background-color: #0a0a0a;
     color: #cba95c;
+}
+
+.scrolled {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
 }
 
 .pcNavBarGhost {
@@ -64,6 +69,7 @@
     color: inherit;
     font-size: 1.1em;
     transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
 }
 
 .navText:hover {
@@ -73,6 +79,25 @@
 .dark .navText:hover {
     background-color: #1a1410;
     color: #e8d9af;
+}
+
+.navText::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+}
+
+.navText:hover::after,
+.navText:focus-visible::after {
+    transform: scaleX(1);
 }
 
 .navLogo {
@@ -119,6 +144,17 @@
     width: 37px;
     height: 37px;
     cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userImage:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.25);
+}
+
+.dark .userImage:hover {
+    box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.35);
 }
 
 .userName {
@@ -136,6 +172,11 @@
     width: 37px;
     height: 37px;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.menuMobile:hover {
+    transform: scale(1.05);
 }
 
 .themeImageLi {
@@ -149,17 +190,42 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .themeToggle:hover {
     transform: rotate(180deg);
+    filter: drop-shadow(0 0 5px rgba(203, 169, 92, 0.45));
 }
 
 .notificationsImg {
     width: 30px;
     height: 30px;
     cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.notificationsImg:hover {
+    transform: translateY(-1px) scale(1.05);
+    filter: drop-shadow(0 0 5px rgba(92, 173, 67, 0.4));
+}
+
+.navText:focus-visible,
+.themeToggle:focus-visible,
+.notificationsImg:focus-visible,
+.userImage:focus-visible,
+.menuMobile:focus-visible {
+    outline: 3px solid rgba(92, 173, 67, 0.7);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+.dark .navText:focus-visible,
+.dark .themeToggle:focus-visible,
+.dark .notificationsImg:focus-visible,
+.dark .userImage:focus-visible,
+.dark .menuMobile:focus-visible {
+    outline-color: rgba(203, 169, 92, 0.75);
 }
 
 .notificaionsMobile {
@@ -174,6 +240,7 @@
     max-height: calc(40px * 6);
     overflow-x: inherit;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 .notificationsUl li {
@@ -184,10 +251,12 @@
     padding: 10px;
     cursor: pointer;
     background-color: #ebffa4;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .notificationsUl li:hover {
     background-color: #f8f095 !important;
+    transform: translateY(-1px);
 }
 
 :global(.unReadNotification) {
@@ -198,6 +267,11 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
+    transition: transform 0.2s ease;
+}
+
+.hiddenNotificationData div img:hover {
+    transform: translateX(-2px);
 }
 
 .hiddenNotificationData div input {
@@ -206,6 +280,7 @@
     border: 0;
     background-color: #b6ffa4;
     margin-left: 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .hiddenNotificationData div input:hover {
@@ -226,6 +301,7 @@
     height: 100%;
     width: calc(100%);
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    animation: navPanelIn 0.22s ease;
 }
 
 .dark .mobileMenuHidden {
@@ -298,6 +374,12 @@
     border-radius: 9px;
     width: 20rem;
     transition: background-color 0.2s ease, color 0.2s ease;
+    animation: navPanelIn 0.22s ease;
+}
+
+:global(#notificaions),
+:global(#notificaionsMobile) {
+    animation: navPanelIn 0.22s ease;
 }
 
 .dark .loginArea {
@@ -345,6 +427,13 @@
     padding-right: 33px;
     padding-left: 10px;
     color: black;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.desktopInput:focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
 }
 
 :global(#passwordAreaLogin) {
@@ -358,6 +447,13 @@
     padding-right: 33px;
     padding-left: 10px;
     color: black;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:global(#passwordAreaLogin):focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
 }
 
 :global(.toggle-password-visibility),
@@ -386,6 +482,12 @@
     border-radius: 5px;
     cursor: pointer;
     box-sizing: border-box;
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+.desktopActionButton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
 }
 
 :global(#sendAccountButton),
@@ -467,6 +569,13 @@
     box-sizing: border-box;
     padding-right: 33px;
     padding-left: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mobileInput:focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
 }
 
 :global(#passwordAreaLoginMobile) {
@@ -480,6 +589,13 @@
     box-sizing: border-box;
     padding-right: 33px;
     padding-left: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:global(#passwordAreaLoginMobile):focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
 }
 
 .togglePasswordVisibilityMobile {
@@ -503,6 +619,12 @@
     cursor: pointer;
     padding-right: 0;
     padding-left: 0;
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+.mobileActionButton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
 }
 
 :global(#sendAccountButtonMobile),
@@ -532,13 +654,90 @@
     cursor: not-allowed;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
     .pcNavBarGhost {
         display: none;
     }
 
     .mobileNavBarGhost {
         display: flex;
+        justify-content: space-between;
+        padding: 0rem 1rem;
+    }
+
+    .mobileNavBarGhost .navLogoImage {
+        width: 170px;
+    }
+
+    .mobileNavBarGhost .navLinks {
+        flex-grow: 1;
+        justify-content: flex-end;
+        padding-right: 0;
+        gap: 0.75rem;
+    }
+
+    .mobileNavBarGhost .themeToggle,
+    .mobileNavBarGhost .notificationsImg,
+    .mobileNavBarGhost .menuMobile {
+        width: 28px;
+        height: 28px;
+    }
+
+    .loginArea {
+        display: none !important;
+    }
+
+    .mobileMenuHidden {
+        left: 0;
+        right: 0;
+        top: 64px;
+        width: 100%;
+        height: calc(100dvh - 64px);
+        overflow-y: auto;
+        border-top: 1px solid #dde8a8;
+    }
+
+    .dark .mobileMenuHidden {
+        border-top-color: #2a2410;
+    }
+
+    .mobileNavLinks {
+        gap: 0;
+        padding-top: 0.5rem;
+        padding-bottom: 0.8rem;
+    }
+
+    .mobileNavLinks .navText {
+        font-size: 1.15rem;
+        padding: 0.9rem 1rem;
+        width: fit-content;
+    }
+
+    .loginAreaMobile {
+        display: block;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .mobileInput,
+    :global(#passwordAreaLoginMobile),
+    .mobileActionButton,
+    :global(#sendAccountButtonMobile),
+    :global(#sendLogoutButtonMobile) {
+        width: 90%;
+        height: 30px;
+        font-size: medium;
+    }
+
+    .notificaionsMobile {
+        width: 100%;
+        max-width: 420px;
+        margin: 0.75rem auto 0;
+    }
+
+    .notificationsUl {
+        max-height: min(320px, 45dvh);
     }
 }
 
@@ -549,5 +748,46 @@
 
     .mobileNavBarGhost {
         display: none;
+    }
+
+    .mobileMenuHidden {
+        display: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav,
+    .navText,
+    .navText::after,
+    .themeToggle,
+    .notificationsImg,
+    .userImage,
+    .menuMobile,
+    .mobileMenuHidden,
+    .loginArea,
+    :global(#notificaions),
+    :global(#notificaionsMobile),
+    .desktopActionButton,
+    .mobileActionButton,
+    .desktopInput,
+    .mobileInput,
+    :global(#passwordAreaLogin),
+    :global(#passwordAreaLoginMobile),
+    .notificationsUl li,
+    .hiddenNotificationData div img,
+    .hiddenNotificationData div input {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+@keyframes navPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useAppContext } from '../contexts/CommonContext'
 import { PasswordInput } from './PasswordInput';
@@ -6,6 +6,25 @@ import { useAuth } from '../hooks/useAuth';
 import styles from '../styles/Nav.module.css';
 
 export default function Nav({ randomId=0 }) {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        function onScroll() {
+            setIsScrolled(window.scrollY > 4);
+        }
+
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, []);
+
     const {
         themeIsLight,
         toggleTheme,
@@ -24,7 +43,7 @@ export default function Nav({ randomId=0 }) {
 
     return (
         <>
-            <nav className={`${styles.nav} ${themeIsLight ? styles.light : styles.dark}`}>
+            <nav className={`${styles.nav} ${themeIsLight ? styles.light : styles.dark} ${isScrolled ? styles.scrolled : ''}`}>
                 <div id="pcNavBarGhost" className={styles.pcNavBarGhost}>
                     <ul className={`${styles.navList} ${styles.navLogo}`}>
                         <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" className={styles.navLogoImage} /></Link></li>
@@ -53,7 +72,7 @@ export default function Nav({ randomId=0 }) {
                                 {user ? (
                                     <div>
                                         <h2>Welcome </h2>
-                                        <img alt="User Image" style={{width: "60px", height: "60px", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
+                                        <img alt="User Image" style={{width: "60px", height: "60px", borderRadius: "50%", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
                                         <h3 style={{marginBottom: "20px"}}></h3>
                                         <button type="submit" id="sendAccountButton" className={styles.desktopActionButton}>Account</button>
                                         <button type="submit" id="sendLogoutButton" className={styles.desktopActionButton}>Log Out</button>
@@ -138,7 +157,7 @@ export default function Nav({ randomId=0 }) {
                                         <div>
                                             <h2>Welcome </h2>
                                             <div style={{alignItems: "center"}}>
-                                                <img alt="User Image" style={{width: "100px", height: "100px", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
+                                                <img alt="User Image" style={{width: "100px", height: "100px", borderRadius: "50%", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
                                             </div>
                                             <h3 style={{marginBottom: "20px"}}></h3>
                                             <div style={{alignItems: "center"}}>
