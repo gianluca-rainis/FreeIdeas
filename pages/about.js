@@ -54,6 +54,16 @@ export default function AboutPage({pageTitle}) {
                     <li><a href="/files/FreeIdeas_project.pdf" download="">FreeIdeas Project Presentation PDF</a></li>
                     <li><a href="/files/FreeIdeas_project_it.pdf" download="">FreeIdeas Project Presentation PDF (Italian Version)</a></li>
                 </ul>
+                <p>
+                    Here you can find the short official Presentation of the FreeIdeas Project.
+                </p>
+                <ul>
+                    <li><a href="/files/FreeIdeas_project_short.pptx" download="">FreeIdeas Project Short Presentation</a></li>
+                    <li><a href="/files/FreeIdeas_project_short_it.pptx" download="">FreeIdeas Project Short Presentation (Italian Version)</a></li>
+                    <li></li>
+                    <li><a href="/files/FreeIdeas_project_short.pdf" download="">FreeIdeas Project Short Presentation PDF</a></li>
+                    <li><a href="/files/FreeIdeas_project_short_it.pdf" download="">FreeIdeas Project Short Presentation PDF (Italian Version)</a></li>
+                </ul>
 
                 <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className ="logo" />
             </main>
