@@ -2,6 +2,7 @@ import { query } from '../../lib/db_connection';
 import { getIronSession } from 'iron-session';
 import { sessionOptions } from '../../lib/session';
 import formidable from 'formidable';
+import nodemailer from 'nodemailer';
 
 export const config = {
     api: {
@@ -183,7 +184,11 @@ export default async function handler(req, res) {
             </body>
         </html>`;
 
-        let nodemailer = require('nodemailer');
+        if (!process.env.EMAIL_NODE_MAILER || !process.env.PASSWORD_NODE_MAILER) {
+            console.error('Missing email env vars: EMAIL_NODE_MAILER and/or PASSWORD_NODE_MAILER');
+
+            return res.status(500).json({ success: false, error: 'Email service is not configured' });
+        }
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -200,14 +205,13 @@ export default async function handler(req, res) {
             html: message
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.error(error);
-            }
-            else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Email sent: ' + info.response);
+        } catch (mailError) {
+            console.error('SMTP send failed in signUpPrecheck:', mailError);
+            return res.status(502).json({ success: false, error: 'Unable to send verification email' });
+        }
 
         // Save session
         const session = await getIronSession(req, res, sessionOptions);
