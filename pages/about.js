@@ -134,7 +134,7 @@ export default function AboutPage({pageTitle}) {
                     <li><a href="/files/FreeIdeas_project_short_it.pdf" download>FreeIdeas Project Short Presentation PDF (Italian Version)</a></li>
                 </ul>
 
-                <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" class="logo" />
+                <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className="logo" />
             </main>
 
             <Footer />
