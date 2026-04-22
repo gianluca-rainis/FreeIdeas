@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import { apiCall } from '../utils/apiConfig'
+import { positionPasswordToggleButtons } from '../utils/passwordTogglePosition'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -133,19 +134,10 @@ export default function LoginPage({pageTitle}) {
     // Handle password visibility button
     useEffect(() => {
         function positionTogglePasswordButton() {
-            const passwordInput = document.getElementById("passwordFormInputLoginPage");
-            const toggleButton = document.querySelector(".toggle-password-visibility-ext");
-            
-            if (passwordInput && toggleButton) {
-                const inputRect = passwordInput.getBoundingClientRect();
-                const formRect = passwordInput.closest('form').getBoundingClientRect();
-                
-                // Calculate position relative to form
-                const topPosition = inputRect.top - formRect.top + (inputRect.height / 2);
-                
-                toggleButton.style.top = topPosition + 'px';
-                toggleButton.style.right = '10px';
-            }
+            positionPasswordToggleButtons({
+                form: formRef.current,
+                inputSelectors: ['#passwordFormInputLoginPage']
+            });
         }
 
         function togglePasswordButton() {

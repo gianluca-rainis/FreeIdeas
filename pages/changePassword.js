@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Head from '../components/Head'
 import { useAppContext } from '../contexts/CommonContext'
 import { apiCall } from '../utils/apiConfig'
+import { positionPasswordToggleButtons } from '../utils/passwordTogglePosition'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -110,26 +111,10 @@ export default function ChangePasswordPage({pageTitle, email, token}) {
     // Handle password visibility button
     useEffect(() => {
         function positionTogglePasswordButton() {
-            const passwordInput = document.getElementById("passwordFormInputLoginPage");
-            const confirmPasswordInput = document.getElementById("confirmPasswordFormInputLoginPage");
-            const toggleButtons = document.querySelectorAll(".toggle-password-visibility-ext");
-            
-            if (passwordInput && confirmPasswordInput && toggleButtons.length > 0) {
-                const inputRect = passwordInput.getBoundingClientRect();
-                const confirmInputRect = confirmPasswordInput.getBoundingClientRect();
-                const formRect = passwordInput.closest('form').getBoundingClientRect();
-                
-                // Calculate position relative to form
-                const topPosition = inputRect.top - formRect.top + (inputRect.height / 2);
-                
-                toggleButtons[0].style.top = topPosition + 'px';
-                toggleButtons[0].style.right = '10px';
-
-                const confirmTopPosition = confirmInputRect.top - formRect.top + (confirmInputRect.height / 2);
-                
-                toggleButtons[1].style.top = confirmTopPosition + 'px';
-                toggleButtons[1].style.right = '10px';
-            }
+            positionPasswordToggleButtons({
+                form: formRef.current,
+                inputSelectors: ['#passwordFormInputLoginPage', '#confirmPasswordFormInputLoginPage']
+            });
         }
 
         function togglePasswordButton(e) {

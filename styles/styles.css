@@ -1484,86 +1484,212 @@ main {
 
 /* LOGIN PAGE */
 #loginMain {
+    --auth-bg-top: #ecffd8;
+    --auth-bg-bottom: #d0f0ad;
+    --auth-card-bg: rgba(255, 255, 219, 0.98);
+    --auth-card-border: #6f9f4f;
+    --auth-text: #223519;
+    --auth-muted: #466737;
+    --auth-input-bg: #f9ffef;
+    --auth-input-border: #9fca7e;
+    --auth-input-focus: #5e9f3a;
+    --auth-button-bg: linear-gradient(135deg, #93d95d 0%, #d5ef85 100%);
+    --auth-button-text: #223519;
+    --auth-button-cancel: #f5ffd9;
+    --auth-link: #3a8d1e;
+    --auth-link-hover: #2c6d16;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    background-color: #caffa2;
+    min-height: calc(100vh - 200px);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.74), transparent 34%),
+        radial-gradient(circle at 90% 85%, rgba(132, 203, 92, 0.2), transparent 38%),
+        linear-gradient(160deg, var(--auth-bg-top) 0%, var(--auth-bg-bottom) 100%);
 }
 
 #loginMain form {
     display: flex;
     flex-direction: column;
-    width: fit-content;
+    width: min(520px, 100%);
+    max-width: 100%;
     justify-content: center;
     justify-self: center;
     position: relative;
+    gap: 8px;
 }
 
 #loginMain form p {
-    width: 450px;
+    width: 100%;
+    margin: 2px 0;
 }
 
 #loginMain form input {
     width: 100%;
-    height: 30px;
-    margin-bottom: 10px;
-    background-color: rgb(236, 236, 236);
-    border: 1px solid #2c3d27;
-    border-radius: 5px;
+    min-height: 48px;
+    margin-bottom: 4px;
+    background-color: var(--auth-input-bg);
+    border: 1px solid var(--auth-input-border);
+    border-radius: 12px;
     box-sizing: border-box;
-    padding-right: 33px;
-    padding-left: 10px;
-    color: black;
+    padding-right: 48px;
+    padding-left: 14px;
+    color: var(--auth-text);
+    font-size: 1rem;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+#loginMain form input::placeholder {
+    color: #6f8f5e;
+}
+
+#loginMain form input:focus {
+    outline: none;
+    border-color: var(--auth-input-focus);
+    box-shadow: 0 0 0 3px rgba(110, 181, 75, 0.2);
+    background-color: #ffffff;
 }
 
 #signInLoginPageButton, #signInLoginPageCancelButton, #changePasswordLoginPageButton {
-    width: calc(100%);
-    height: 30px;
-    margin-bottom: 10px;
-    background-color: rgb(162, 241, 110);
-    border: 1px solid #2c3d27;
-    border-radius: 5px;
+    width: 100%;
+    min-height: 48px;
+    margin: 6px 0 0;
+    background: var(--auth-button-bg);
+    color: var(--auth-button-text);
+    border: 1px solid #6ea64d;
+    border-radius: 12px;
     cursor: pointer;
     box-sizing: border-box;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+#signInLoginPageButton:hover, #signInLoginPageCancelButton:hover, #changePasswordLoginPageButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(71, 125, 42, 0.18);
+    filter: brightness(1.05);
+}
+
+#signInLoginPageButton:active, #signInLoginPageCancelButton:active, #changePasswordLoginPageButton:active {
+    transform: translateY(0);
+}
+
+#signInLoginPageCancelButton {
+    background: var(--auth-button-cancel);
+    color: var(--auth-text);
+    border-color: #afcf8f;
 }
 
 #loginMain a {
     cursor: pointer;
-    color: rgb(70, 175, 0);
+    color: var(--auth-link);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 #loginMain a:hover {
-    color: rgb(109, 255, 12);
+    color: var(--auth-link-hover);
+    opacity: 0.95;
 }
 
 #loginMain section {
-    width: fit-content;
+    width: min(620px, 100%);
     justify-self: center;
-    background-color: #ffffc8;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 20px;
+    background-color: var(--auth-card-bg);
+    border: 1px solid var(--auth-card-border);
+    border-radius: 22px;
+    padding: clamp(22px, 3vw, 34px);
     margin: 20px;
+    box-shadow: 0 20px 44px rgba(66, 112, 40, 0.16);
+    backdrop-filter: blur(3px);
+    animation: authPanelEnter 0.55s ease both;
 }
 
 #loginMain .toggle-password-visibility-ext {
     position: absolute;
     right: 10px;
     z-index: 2;
-    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#loginMain .toggle-password-visibility-ext:hover {
+    opacity: 0.8;
 }
 
 #loginMain p {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    color: var(--auth-muted);
+    line-height: 1.45;
+    font-size: 0.98rem;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 #loginMain h1 {
-    padding-bottom: 20px;
+    padding-bottom: 16px;
+    margin: 0;
+    color: var(--auth-text);
+    font-size: clamp(1.8rem, 3.3vw, 2.5rem);
+    letter-spacing: 0.01em;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 #loginMain #passwordFormInputLoginPage, #loginMain #confirmPasswordFormInputLoginPage {
-    width: 450px;
+    width: 100%;
+}
+
+#loginMain form > * {
+    animation: authItemEnter 0.4s ease both;
+}
+
+#loginMain form > *:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+#loginMain form > *:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+#loginMain form > *:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+#loginMain form > *:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+@keyframes authPanelEnter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.992);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes authItemEnter {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* RESERVED AREA */
@@ -2519,11 +2645,30 @@ main {
 
     /* Login page */
     #loginMain form p, #loginMain p {
-        width: 300px;
+        width: 100%;
     }
 
     #loginMain #passwordFormInputLoginPage, #loginMain #confirmPasswordFormInputLoginPage {
-        width: 300px;
+        width: 100%;
+    }
+
+    #loginMain {
+        padding: 28px 14px;
+        min-height: auto;
+    }
+
+    #loginMain section {
+        margin: 10px;
+        border-radius: 16px;
+        padding: 18px 14px;
+    }
+
+    #loginMain h1 {
+        font-size: 1.9rem;
+    }
+
+    #signInLoginPageButton, #signInLoginPageCancelButton, #changePasswordLoginPageButton {
+        min-height: 44px;
     }
 
     /* idea page */
@@ -3072,6 +3217,71 @@ main {
     body {
         background-color: #000000;
         color: #cba95c;
+    }
+
+    #loginMain {
+        --auth-bg-top: #131a14;
+        --auth-bg-bottom: #071109;
+        --auth-card-bg: rgba(14, 20, 15, 0.94);
+            --auth-card-border: #7f6840;
+            --auth-text: #f3e2b7;
+            --auth-muted: #d5c28d;
+            --auth-input-bg: #18130d;
+            --auth-input-border: #806643;
+            --auth-input-focus: #cba95c;
+            --auth-button-bg: linear-gradient(135deg, #9a7a39 0%, #cba95c 100%);
+            --auth-button-text: #20160a;
+            --auth-button-cancel: #1b1610;
+            --auth-link: #d7bc6a;
+            --auth-link-hover: #f0d890;
+        background:
+                radial-gradient(circle at 12% 18%, rgba(203, 169, 92, 0.12), transparent 32%),
+                radial-gradient(circle at 88% 82%, rgba(203, 169, 92, 0.1), transparent 34%),
+            linear-gradient(160deg, var(--auth-bg-top) 0%, var(--auth-bg-bottom) 100%);
+    }
+
+    #loginMain section {
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    #loginMain form input {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    #loginMain form input::placeholder {
+        color: #9d8b64;
+    }
+
+    #loginMain form input:focus {
+        background-color: #211a11;
+        box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.16);
+    }
+
+    #signInLoginPageButton, #signInLoginPageCancelButton, #changePasswordLoginPageButton {
+        border-color: #a88948;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    #signInLoginPageButton:hover, #signInLoginPageCancelButton:hover, #changePasswordLoginPageButton:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    #signInLoginPageCancelButton {
+        background: #15110c;
+        color: var(--auth-text);
+        border-color: #66563a;
+    }
+
+    #loginMain .toggle-password-visibility-ext {
+        background: none;
+    }
+
+    #loginMain .toggle-password-visibility-ext:hover {
+        opacity: 0.86;
+    }
+
+    #loginMain .toggle-password-visibility-ext svg path {
+        fill: #f1e7c9;
     }
 
     nav {
