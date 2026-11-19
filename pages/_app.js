@@ -1,6 +1,6 @@
-import { AppProvider } from '../contexts/CommonContext';
-import { ModalProvider } from '../components/ModalProvider';
-import '../styles/styles.css';
+import { AppProvider } from '@/contexts/CommonContext';
+import { ModalProvider } from '@/components/ModalProvider';
+import '@/styles/styles.css';
 
 export default function MyApp({ Component, pageProps }) {
     return (

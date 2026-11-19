@@ -1,4 +1,4 @@
-import { useAppContext } from '../contexts/CommonContext';
+import { useAppContext } from '@/contexts/CommonContext';
 import { useRouter } from 'next/router';
 
 export function useNotifications() {

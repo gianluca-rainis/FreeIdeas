@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { apiCall } from '../utils/apiConfig';
-import { handleError } from '../utils/errorHandling';
-import { useThemeImages } from '../hooks/useThemeImages';
+import { apiCall } from '@/utils/apiConfig';
+import { handleError } from '@/utils/errorHandling';
+import { useThemeImages } from '@/hooks/useThemeImages';
 
 const AppContext = createContext();
 
@@ -76,7 +76,7 @@ export function AppProvider({ children }) {
                 setRandomIdeaId(data.data.id);
             }
             else {
-                throw new Error(data?data.error:"Error in getRandomIdeaId");
+                setRandomIdeaId(0);
             }
         } catch (error) {
             handleError(error, 'loadRandomIdea');
@@ -98,15 +98,44 @@ export function AppProvider({ children }) {
         };
     }, [router, loadRandomIdea]);
 
+    const ldAccountData = useCallback(async () => {
+        try {
+            const accountData = await apiCall('/api/getSessionData?data=account');
+
+            if (accountData) {
+                setUser({ ...accountData, isAdmin: false });
+                setNotifications(accountData.notifications || []);
+                return;
+            }
+
+            const administratorData = await apiCall('/api/getSessionData?data=administrator');
+
+            if (administratorData) {
+                setUser({ ...administratorData, isAdmin: true });
+                setNotifications([]);
+                return;
+            }
+
+            setUser(null);
+            setNotifications([]);
+        } catch (error) {
+            handleError(error, 'loadAccountData');
+            setUser(null);
+            setNotifications([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     // User management
     useEffect(() => {
         ldAccountData();
-    }, []);
+    }, [ldAccountData]);
 
     // Reload account data when navigating between pages
     const reloadAccountData = useCallback(() => {
         ldAccountData();
-    }, []);
+    }, [ldAccountData]);
     
     useEffect(() => {
         router.events.on('routeChangeComplete', reloadAccountData);
@@ -116,275 +145,191 @@ export function AppProvider({ children }) {
         };
     }, [router, reloadAccountData]);
 
-    async function ldAccountData() {
-        setIsLoading(true);
-        
-        const SQLdata = await getSessionDataAccountFromDatabase();
-        
-        if (SQLdata) {
-            loadData(SQLdata, false);
-        }
-        else {
-            const adminSQLdata = await getSessionDataAdminFromDatabase();
-            
-            if (adminSQLdata) {
-                loadData(adminSQLdata, true);
-            }
-            else {
-                setUser(null);
-                setNotifications([]);
-            }
-        }
-        
-        setIsLoading(false);
-    }
-
-    async function getSessionDataAccountFromDatabase() {
-        try {
-            const res = await apiCall('/api/getSessionData?data=account');
-
-            return res;
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    }
-
-    async function getSessionDataAdminFromDatabase() {
-        try {
-            const res = await apiCall('/api/getSessionData?data=administrator');
-
-            return res;
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    }
-
-    function loadData(SQLdata, admin=false) {
-        try {
-            // Set React state
-            setUser({ 
-                ...SQLdata, 
-                isAdmin: admin,
-                userimage: SQLdata.userimage,
-                username: SQLdata.username,
-                name: SQLdata.name,
-                surname: SQLdata.surname
-            });
-            
-            if (!admin) {
-                // Fix the notification date
-                SQLdata.notifications.forEach(notification => {
-                    notification.data = notification.data.split('T')[0];
-                });
-
-                setNotifications(SQLdata.notifications || []);
-                // Load notifications into the UI
-                setTimeout(() => loadNotifications(SQLdata), 100);
-            }
-            else {
-                setNotifications([]);
-            }
-
-            // Update DOM directly
-            if (typeof window !== 'undefined') {
-                updateUserUI(SQLdata, admin);
-            }
-        } catch (error) {
-            console.error(error);
-            setUser(null);
-            setNotifications([]);
-        }
-    }
-
-    function updateUserUI(SQLdata, admin=false) {
-        try {
-            const userImageDisplayed = !admin 
-                ? (SQLdata.userimage != null ? SQLdata.userimage : `/images/user${themeIsLight ? "" : "_Pro"}.svg`)
-                : `/images/FreeIdeas_ReservedArea.svg`;
-
-            // Update user image in navigation
-            const loginButton = document.getElementById("userImage");
-
-            if (loginButton) {
-                loginButton.src = userImageDisplayed;
-            }
-
-            // Update username display
-            const userNameElement = document.getElementById("userName");
-
-            if (userNameElement) {
-                userNameElement.innerHTML = SQLdata.username;
-            }
-
-            // Update PC login block
-            const pcLoginSignUpBlock = document.getElementById("pcLoginSignUpBlock");
-
-            if (pcLoginSignUpBlock) {
-                pcLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
-                    <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
-                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
-                    <button type="submit" id="sendAccountButton">Account</button>
-                    <button type="submit" id="sendLogoutButton">Log Out</button>`;
-            }
-
-            // Update mobile login block
-            const mobileLoginSignUpBlock = document.getElementById("mobileLoginSignUpBlock");
-
-            if (mobileLoginSignUpBlock) {
-                mobileLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
-                    <div style="align-items: center;">
-                        <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
-                    </div>
-                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
-                    <div style="align-items: center;">
-                        <button type="submit" id="sendAccountButtonMobile">Account</button>
-                        <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
-                    </div>`;
-            }
-
-            // Add event listeners for buttons
-            setTimeout(() => {
-                const sendAccountButton = document.getElementById("sendAccountButton");
-
-                if (sendAccountButton) {
-                    sendAccountButton.addEventListener("click", () => {
-                        if (typeof window !== "undefined") {
-                            if (!admin) {
-                                window.location.href = "/account";
-                            }
-                            else {
-                                window.location.href = "/reservedArea";
-                            }
-                        }
-                    });
-                }
-
-                const sendAccountButtonMobile = document.getElementById("sendAccountButtonMobile");
-
-                if (sendAccountButtonMobile) {
-                    sendAccountButtonMobile.addEventListener("click", () => {
-                        if (typeof window !== "undefined") {
-                            if (!admin) {
-                                window.location.href = "/account";
-                            }
-                            else {
-                                window.location.href = "/reservedArea";
-                            }
-                        }
-                    });
-                }
-
-                const sendLogoutButton = document.getElementById("sendLogoutButton");
-
-                if (sendLogoutButton) {
-                    sendLogoutButton.addEventListener("click", async () => {
-                        await handleLogout();
-                    });
-                }
-
-                const sendLogoutButtonMobile = document.getElementById("sendLogoutButtonMobile");
-
-                if (sendLogoutButtonMobile) {
-                    sendLogoutButtonMobile.addEventListener("click", async () => {
-                        await handleLogout();
-                    });
-                }
-            }, 100);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // useEffect to handle UI updates when login/notification states change
     useEffect(() => {
         if (typeof document === 'undefined') {
             return;
         }
 
-        try {
-            const loginArea = document.getElementById("loginArea");
-            const mobileMenuHidden = document.getElementById("mobileMenuHidden");
-            const pcLoginSignUpBlock = document.getElementById("pcLoginSignUpBlock");
-            const mobileLoginSignUpBlock = document.getElementById("mobileLoginSignUpBlock");
-            const notificaionsMobile = document.getElementById("notificaionsMobile");
-            const notificaions = document.getElementById("notificaions");
+        const mobileMenuHidden = document.getElementById("mobileMenuHidden");
+        const notificationsMobile = document.getElementById("notificaionsMobile");
+        const notificationsDesktop = document.getElementById("notificaions");
 
-            // Handle login area visibility
-            if (showLoginArea) {
-                if (pcLoginSignUpBlock) {
-                    pcLoginSignUpBlock.style.display = "block";
-                }
-                
-                if (mobileLoginSignUpBlock) {
-                    mobileLoginSignUpBlock.style.display = "block";
-                }
-                
-                if (loginArea) {
-                    loginArea.style.display = "block";
-                }
-
-                if (mobileMenuHidden) {
-                    mobileMenuHidden.style.display = "flex";
-                }
-            }
-            else {
-                if (pcLoginSignUpBlock) {
-                    pcLoginSignUpBlock.style.display = "none";
-                }
-
-                if (mobileLoginSignUpBlock) {
-                    mobileLoginSignUpBlock.style.display = "none";
-                }
-            }
-            
-            // Handle notifications visibility
-            if (showNotifications) {
-                if (notificaionsMobile) {
-                    notificaionsMobile.style.display = "block";
-                }
-
-                if (notificaions) {
-                    notificaions.style.display = "block";
-                }
-
-                if (loginArea) {
-                    loginArea.style.display = "block";
-                }
-
-                if (mobileMenuHidden) {
-                    mobileMenuHidden.style.display = "flex";
-                }
-            }
-            else {
-                if (notificaionsMobile) {
-                    notificaionsMobile.style.display = "none";
-                }
-
-                if (notificaions) {
-                    notificaions.style.display = "none";
-                }
-            }
-
-            // Hide everything if both are false
-            if (!showLoginArea && !showNotifications) {
-                if (loginArea) {
-                    loginArea.style.display = "none";
-                }
-
-                if (mobileMenuHidden) {
-                    mobileMenuHidden.style.display = "none";
-                }
-            }
-        } catch (error) {
-            console.error('Error in login/notification UI update:', error);
+        if (notificationsMobile) {
+            notificationsMobile.style.display = showNotifications ? "block" : "none";
         }
-    }, [showLoginArea, showNotifications]);
+
+        if (notificationsDesktop) {
+            notificationsDesktop.style.display = showNotifications ? "block" : "none";
+        }
+
+        if (mobileMenuHidden && !showNotifications) {
+            mobileMenuHidden.style.display = "none";
+        }
+    }, [showNotifications]);
+
+    function loadNotifications(SQLdata) {
+        try {
+                const notificationsShowOrder = [...(SQLdata.notifications || [])]
+                    .sort((first, second) => new Date(second.data) - new Date(first.data))
+                    .sort((first, second) => first.status - second.status);
+                const hasUnread = notificationsShowOrder.some(notification => notification.status === 0);
+
+                document.querySelectorAll("#notificationImageLi, #notificationImageLiMobile").forEach(button => {
+                    button.classList.toggle('hasUnread', hasUnread);
+                });
+
+                document.querySelectorAll(".notificationsUl").forEach(list => {
+                    list.replaceChildren();
+                    const panel = list.closest("#notificaions, #notificaionsMobile");
+                    const detail = panel?.querySelector(".hiddenNotificationData");
+
+                    if (!panel || !detail) {
+                        return;
+                    }
+
+                    function showEmptyState() {
+                        const empty = document.createElement("li");
+                        const content = document.createElement("div");
+                        const title = document.createElement("strong");
+                        const description = document.createElement("span");
+
+                        empty.className = "notificationEmpty";
+                        title.textContent = "You're all caught up";
+                        description.textContent = "No new notifications";
+                        content.append(title, description);
+                        empty.appendChild(content);
+                        list.replaceChildren(empty);
+                    }
+
+                    function showNotificationList() {
+                        list.hidden = false;
+                        detail.hidden = true;
+                        detail.replaceChildren();
+                    }
+
+                    async function markAsRead(notificationId) {
+                        const formData = new FormData();
+                        formData.append("id", notificationId);
+
+                        try {
+                            const response = await apiCall('setNotificationAsRead', {
+                                method: "POST",
+                                body: formData
+                            });
+
+                            if (!response?.success) {
+                                throw new Error(response?.error || "Unable to mark notification as read");
+                            }
+
+                            ldAccountData();
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+
+                    async function deleteNotification(notificationId) {
+                        const formData = new FormData();
+                        formData.append("id", notificationId);
+
+                        try {
+                            const response = await apiCall('deleteNotification', {
+                                method: "POST",
+                                body: formData
+                            });
+
+                            if (!response?.success) {
+                                throw new Error(response?.error || "Unable to delete notification");
+                            }
+
+                            ldAccountData();
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+
+                    function showNotificationDetail(notification, item) {
+                        list.hidden = true;
+                        detail.hidden = false;
+                        detail.replaceChildren();
+
+                        const article = document.createElement("article");
+                        const meta = document.createElement("div");
+                        const date = document.createElement("p");
+                        const title = document.createElement("h3");
+                        const description = document.createElement("p");
+                        const actions = document.createElement("div");
+                        const backButton = document.createElement("button");
+                        const deleteButton = document.createElement("button");
+
+                        article.className = "notificationDetail";
+                        meta.className = "notificationDetailMeta";
+                        date.textContent = notification.data || "";
+                        title.textContent = notification.title || "Notification";
+                        description.className = "notificationDetailDescription";
+                        description.textContent = notification.description || "";
+                        actions.className = "notificationDetailActions";
+                        backButton.type = "button";
+                        backButton.className = "notificationBackImage";
+                        backButton.setAttribute("aria-label", "Back");
+                        backButton.textContent = "Back";
+                        deleteButton.type = "button";
+                        deleteButton.className = "notificationDeleteButton";
+                        deleteButton.textContent = "Delete";
+
+                        backButton.addEventListener("click", async () => {
+                            showNotificationList();
+
+                            if (notification.status === 0) {
+                                item.classList.remove("unReadNotification");
+                                await markAsRead(notification.id);
+                            }
+                        });
+
+                        deleteButton.addEventListener("click", async () => {
+                            showNotificationList();
+                            await deleteNotification(notification.id);
+                        });
+
+                        meta.append(date, title);
+                        actions.append(backButton, deleteButton);
+                        article.append(meta, description, actions);
+                        detail.appendChild(article);
+                    }
+
+                    if (notificationsShowOrder.length === 0) {
+                        showEmptyState();
+                        return;
+                    }
+
+                    notificationsShowOrder.forEach(notification => {
+                        const item = document.createElement("li");
+                        const status = document.createElement("span");
+                        const copy = document.createElement("div");
+                        const title = document.createElement("strong");
+                        const description = document.createElement("p");
+                        const date = document.createElement("time");
+                        const fullDescription = notification.description || "";
+
+                        item.className = notification.status === 0 ? "notificationItem unReadNotification" : "notificationItem";
+                        status.className = "notificationStatusDot";
+                        copy.className = "notificationCopy";
+                        title.textContent = notification.title || "Notification";
+                        description.textContent = fullDescription.length > 72 ? `${fullDescription.substring(0, 72)}...` : fullDescription;
+                        date.textContent = notification.data || "";
+                        item.append(status, copy, date);
+                        copy.append(title, description);
+                        item.addEventListener("click", () => showNotificationDetail(notification, item));
+                        list.appendChild(item);
+                    });
+                });
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+        }
+    }
 
     // Load notifications when they change
     useEffect(() => {
-        if (user && !user.isAdmin && notifications.length > 0) {
+        if (user && !user.isAdmin) {
             setTimeout(() => loadNotifications({ notifications }), 100);
         }
     }, [notifications, user, themeIsLight]);
@@ -433,46 +378,63 @@ export function AppProvider({ children }) {
             notificationsUl.forEach(ul => {
                 ul.innerHTML = ""; // Clear existing notifications
                 
+                if (notificationsShowOrder.length === 0) {
+                    const empty = document.createElement("li");
+                    empty.className = "notificationEmpty";
+                    empty.innerHTML = `<div><strong>You're all caught up</strong><span>No new notifications</span></div>`;
+                    ul.appendChild(empty);
+                }
+
                 notificationsShowOrder.forEach(notification => {
                     const li = document.createElement("li");
-                    let dataETitle = document.createElement("div");
-                    let content = document.createElement("div");
-
-                    dataETitle.innerHTML = `<strong>${notification.title}</strong> &nbsp; - &nbsp; <div style="color: grey;">${notification.data}</div>`;
-                    dataETitle.style.display = "flex";
-                    content.innerHTML = `${notification.description.substring(0, 30)}...`;
-                    content.dataset.fullDescription = notification.description;
-
-                    li.appendChild(dataETitle);
-                    li.appendChild(content);
-
-                    if (notification.status == 0) {
-                        li.classList = "unReadNotification";
-                    }
-
+                    li.className = notification.status == 0 ? "notificationItem unReadNotification" : "notificationItem";
                     li.dataset.notificationId = notification.id;
 
+                    li.innerHTML = `
+                        <span class="notificationStatusDot"></span>
+                        <div class="notificationCopy">
+                            <strong>${notification.title}</strong>
+                            <p>${notification.description.substring(0, 72)}${notification.description.length > 72 ? '...' : ''}</p>
+                        </div>
+                        <time>${notification.data}</time>
+                    `;
+
+                    li.dataset.fullDescription = notification.description;
                     ul.appendChild(li);
                 });
 
                 // Add event listeners for notification buttons
                 ul.querySelectorAll("li").forEach(li => li.addEventListener("click", () => {
-                    ul.style.display = "none";
+                    // Keep mobile/desktop notification state in sync when viewport changes
+                    document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "none");
                     document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "block");
 
+                    const title = li.querySelector("strong")?.textContent || "Notification";
+                    const date = li.querySelector("time")?.textContent || "";
+                    const description = li.dataset.fullDescription || "";
+
                     document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = `
-                        <h3 style="display: flex; justify-content: center;">${li.querySelectorAll("div")[0].querySelector("strong").innerText} &nbsp; - &nbsp; <div style="color: grey;">${li.querySelectorAll("div")[0].querySelector("div").innerText}</div></h3>
-                        <br>
-                        <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <img id="notificationBackImage" src="/images/back${themeIsLight?"":"_Pro"}.svg">
-                            <input type="button" id="notificationDeleteButton" value="Delete">
-                        </div>
+                        <article class="notificationDetail">
+                            <div class="notificationDetailMeta">
+                                <p>${date}</p>
+                                <h3>${title}</h3>
+                            </div>
+                            <p class="notificationDetailDescription">${description}</p>
+                            <div class="notificationDetailActions">
+                                <button type="button" class="notificationBackImage" aria-label="Back">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                                    <span>Back</span>
+                                </button>
+                                <button type="button" class="notificationDeleteButton">
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </article>
                     `);
 
                     /* Back button */
-                    document.getElementById("notificationBackImage").addEventListener("click", async () => {
-                        ul.style.display = "block";
+                    document.querySelectorAll(".notificationBackImage").forEach(backButton => backButton.addEventListener("click", async () => {
+                        document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "block");
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
 
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
@@ -508,11 +470,11 @@ export function AppProvider({ children }) {
 
                         // Reload user data to get updated notifications
                         ldAccountData();
-                    });
+                    }));
 
                     /* Delete button */
-                    document.getElementById("notificationDeleteButton").addEventListener("click", async () => {
-                        ul.style.display = "block";
+                    document.querySelectorAll(".notificationDeleteButton").forEach(deleteButton => deleteButton.addEventListener("click", async () => {
+                        document.querySelectorAll(".notificationsUl").forEach(list => list.style.display = "block");
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
                         
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
@@ -525,21 +487,11 @@ export function AppProvider({ children }) {
                             notificationPc.forEach(element => element.src = `/images/notifications${themeIsLight?"":"_Pro"}.svg`);
                         }
 
-                        if (notificationsShowOrder.length < 6) {
-                            for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
-                                let linew = document.createElement("li");
-                                let dataETitle = document.createElement("div");
-                                let content = document.createElement("div");
-
-                                dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
-                                dataETitle.style.display = "flex";
-                                content.innerHTML = ` `;
-
-                                linew.appendChild(dataETitle);
-                                linew.appendChild(content);
-
-                                ul.appendChild(linew);
-                            }
+                        if (ul.querySelectorAll("li").length === 0) {
+                            const empty = document.createElement("li");
+                            empty.className = "notificationEmpty";
+                            empty.innerHTML = `<div><strong>You're all caught up</strong><span>No new notifications</span></div>`;
+                            ul.appendChild(empty);
                         }
 
                         try {
@@ -565,25 +517,14 @@ export function AppProvider({ children }) {
 
                         // Reload user data to get updated notifications
                         ldAccountData();
-                    });
+                    }));
                 }));
 
-                // Padding for the notifications
-                if (notificationsShowOrder.length < 6) {
-                    for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
-                        let li = document.createElement("li");
-                        let dataETitle = document.createElement("div");
-                        let content = document.createElement("div");
-
-                        dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
-                        dataETitle.style.display = "flex";
-                        content.innerHTML = ` `;
-
-                        li.appendChild(dataETitle);
-                        li.appendChild(content);
-
-                        ul.appendChild(li);
-                    }
+                if (notificationsShowOrder.length === 0) {
+                    const empty = document.createElement("li");
+                    empty.className = "notificationEmpty";
+                    empty.innerHTML = `<div><strong>You're all caught up</strong><span>No new notifications</span></div>`;
+                    ul.appendChild(empty);
                 }
             });
 

@@ -1,11 +1,18 @@
+import styles from '@/styles/SearchPublishModern.module.css'
+import '@/styles/PublishPage.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import '@/styles/ModernShared.module.css';
+import '@/styles/IdeaPublishModern.module.css';
+import '@/styles/UnifiedPages.module.css';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import { apiCall } from '../utils/apiConfig'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -305,12 +312,12 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                         <label>Background image: </label>
                         <input type="file" disabled />
                         <div id="newinfoForFilters">
-                            <label className="labelInfoSearch">Type of project:</label>
-                            <label className="labelInfoSearch">Creativity Type:</label>
-                            <label className="labelInfoSearch">Project status:</label>
-                            <select className="filterSearch" disabled><option>Loading...</option></select>
-                            <select className="filterSearch" disabled><option>Loading...</option></select>
-                            <select className="filterSearch" disabled><option>Loading...</option></select>
+                            <label className={styles.labelInfoSearch}>Type of project:</label>
+                            <label className={styles.labelInfoSearch}>Creativity Type:</label>
+                            <label className={styles.labelInfoSearch}>Project status:</label>
+                            <select className={styles.filterSearch} disabled><option>Loading...</option></select>
+                            <select className={styles.filterSearch} disabled><option>Loading...</option></select>
+                            <select className={styles.filterSearch} disabled><option>Loading...</option></select>
                         </div>
                         <textarea placeholder="Description" disabled></textarea>
                         <div style={{display: "flex", justifyContent: "center"}}>
@@ -400,12 +407,12 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                         <label>Background image: </label>
                         <input type="file" disabled />
                         <div id="newinfoForFilters">
-                            <label className="labelInfoSearch">Type of project:</label>
-                            <label className="labelInfoSearch">Creativity Type:</label>
-                            <label className="labelInfoSearch">Project status:</label>
-                            <select className="filterSearch" disabled><option>None</option></select>
-                            <select className="filterSearch" disabled><option>None</option></select>
-                            <select className="filterSearch" disabled><option>None</option></select>
+                            <label className={styles.labelInfoSearch}>Type of project:</label>
+                            <label className={styles.labelInfoSearch}>Creativity Type:</label>
+                            <label className={styles.labelInfoSearch}>Project status:</label>
+                            <select className={styles.filterSearch} disabled><option>None</option></select>
+                            <select className={styles.filterSearch} disabled><option>None</option></select>
+                            <select className={styles.filterSearch} disabled><option>None</option></select>
                         </div>
                         <textarea placeholder="Description" disabled></textarea>
                         <div style={{display: "flex", justifyContent: "center"}}>
@@ -426,6 +433,11 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             <Nav randomId={randomIdeaId} />
 
             <main id="newIdeaMain">
+                <header className={styles.publishPageHeader}>
+                    <p>Share a concept</p>
+                    <h1>Publish an idea</h1>
+                    <span>Give the community enough context to understand, discuss and develop it.</span>
+                </header>
                 <form id="newIdeaForm" onSubmit={handleSubmit} noValidate>
                     <div 
                         id="ideaImageAsBackground"
@@ -461,13 +473,13 @@ export default function PublishAnIdeaPage({ pageTitle }) {
                     />
 
                     <div id="newinfoForFilters">
-                        <label className="labelInfoSearch">Type of project:</label>
-                        <label className="labelInfoSearch">Creativity Type:</label>
-                        <label className="labelInfoSearch">Project status:</label>
+                        <label className={styles.labelInfoSearch}>Type of project:</label>
+                        <label className={styles.labelInfoSearch}>Creativity Type:</label>
+                        <label className={styles.labelInfoSearch}>Project status:</label>
 
                         <select 
                             id="typeFilter" 
-                            className="filterSearch" 
+                            className={styles.filterSearch} 
                             required
                             value={formData.typeProject}
                             onChange={(e) => setFormData(prev => ({ ...prev, typeProject: e.target.value }))}
@@ -487,7 +499,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
                         <select 
                             id="creativityTypeFilter" 
-                            className="filterSearch" 
+                            className={styles.filterSearch} 
                             required
                             value={formData.creativityType}
                             onChange={(e) => setFormData(prev => ({ ...prev, creativityType: e.target.value }))}
@@ -503,7 +515,7 @@ export default function PublishAnIdeaPage({ pageTitle }) {
 
                         <select 
                             id="orderByStatus" 
-                            className="filterSearch" 
+                            className={styles.filterSearch} 
                             required
                             value={formData.statusProject}
                             onChange={(e) => setFormData(prev => ({ ...prev, statusProject: e.target.value }))}

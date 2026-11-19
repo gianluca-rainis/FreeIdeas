@@ -1,15 +1,21 @@
+import '@/styles/ReservedAreaPage.module.css';
+import '@/styles/ReservedAreaModern.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import styles from '@/styles/UnifiedPages.module.css'
 import React, { useEffect, useState } from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import WelcomeView from '../components/reserved/WelcomeView'
-import AccountsView from '../components/reserved/AccountsView'
-import IdeasView from '../components/reserved/IdeasView'
-import NotificationsView from '../components/reserved/NotificationsView'
-import ReportsView from '../components/reserved/ReportsView'
-import { fetchWithTimeout } from '../utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '../utils/apiConfig'
+import { Bell, Flag, Lightbulb, LogOut, Menu, LayoutDashboard, Users } from 'lucide-react'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import WelcomeView from '@/components/reserved/WelcomeView'
+import AccountsView from '@/components/reserved/AccountsView'
+import IdeasView from '@/components/reserved/IdeasView'
+import NotificationsView from '@/components/reserved/NotificationsView'
+import ReportsView from '@/components/reserved/ReportsView'
+import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
+import { apiCall, getBaseUrl } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -19,9 +25,9 @@ export async function getServerSideProps(context) {
     const cookieHeader = context.req?.headers?.cookie ?? '';
     const baseUrl = getBaseUrl(context.req);
 
-    // Cache SSR response briefly to improve perceived speed
+    // The response depends on the administrator session and must never be shared.
     if (context.res) {
-        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+        context.res.setHeader('Cache-Control', 'private, no-store, max-age=0');
     }
 
     try {
@@ -153,45 +159,47 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
     }, []);
 
     return (
-        <>
+        <div className="reservedAreaShell">
             <Head pageTitle={pageTitle} />
 
             <Nav randomId={randomIdeaId} />
 
             {
                 adminSessionData?
-                <header id="reservedAreaHeader">
-                    <a href="/reservedArea">
-                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                <header className="adminWorkspaceHeader">
+                    <button type="button" className="adminMenuButton" id="menuReservedArea" aria-label="Open administration menu">
+                        <Menu size={20} strokeWidth={2} aria-hidden="true" />
+                    </button>
+
+                    <a href="/reservedArea" className="adminBrand">
+                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Reserved Area" />
                     </a>
 
-                    <ul id="ulReservedAreaHeader">
-                        <li className="liReservedAreaHeaderExt"><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
-                        <li className="liReservedAreaHeaderRed"><img src="/images/menuReservedArea.svg" id="menuReservedArea" /></li>
-                    </ul>
+                    <div className="adminIdentity">
+                        <span>{adminSessionData.username || 'Administrator'}</span>
+                        <button type="button" onClick={handleLogout}><LogOut size={16} aria-hidden="true" />Sign out</button>
+                    </div>
 
-                    <div id="mobileNavBarReservedAreaHeader">
-                        <ul>
-                            <li><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
-                            <li><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
-                            <li><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
-                            <li><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
-                            <li><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
-                        </ul>
+                    <div id="mobileNavBarReservedAreaHeader" className="adminMobileMenu">
+                                <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}><LayoutDashboard size={17} aria-hidden="true" />Overview</button>
+                        <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}><Users size={17} aria-hidden="true" />Accounts</button>
+                        <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}><Lightbulb size={17} aria-hidden="true" />Ideas</button>
+                        <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}><Bell size={17} aria-hidden="true" />Notifications</button>
+                        <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}><Flag size={17} aria-hidden="true" />Reports</button>
+                        <button type="button" onClick={handleLogout}><LogOut size={17} aria-hidden="true" />Sign out</button>
                     </div>
                 </header>
                 :null
             }
 
-            <main id="reservedAreaMain">
+            <main id="reservedAreaMain" className={`${styles.scope} ${styles.reservedAreaScope} ${adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}`}>
                 {
                     !adminSessionData?
-                    <div>
-                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                    <div className="reservedLoginPanel">
+                        <header className="reservedLoginHeader">
+                            <p>Administration / Secure access</p>
+                            <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                        </header>
 
                         <div id="bannerDiv">
                             <hr />
@@ -200,7 +208,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                         </div>
 
                         <form action="/api/reservedAreaLogin" method="POST" id="loginReservedAreaForm">
-                            <ul style={{width: "auto"}}>
+                            <ul style={{width: "100%"}}>
                                 <li>
                                     <label htmlFor="usernameReservedArea">Username:</label>
                                     <input type="text" name="username" id="usernameReservedArea" autoComplete="username" required />
@@ -233,6 +241,44 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                     </div>
                     :
                     <>
+                        <aside className="adminSidebar">
+                            <p className="adminSidebarLabel">Workspace</p>
+                            <nav className="adminSidebarNav" aria-label="Administration navigation">
+                                <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}>
+                                    <LayoutDashboard size={18} aria-hidden="true" />
+                                    <span>01</span>
+                                    <b>Overview</b>
+                                </button>
+                                <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}>
+                                    <Users size={18} aria-hidden="true" />
+                                    <span>02</span>
+                                    <b>Accounts</b>
+                                </button>
+                                <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}>
+                                    <Lightbulb size={18} aria-hidden="true" />
+                                    <span>03</span>
+                                    <b>Ideas</b>
+                                </button>
+                                <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}>
+                                    <Bell size={18} aria-hidden="true" />
+                                    <span>04</span>
+                                    <b>Notifications</b>
+                                </button>
+                                <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}>
+                                    <Flag size={18} aria-hidden="true" />
+                                    <span>05</span>
+                                    <b>Reports</b>
+                                </button>
+                            </nav>
+                        </aside>
+
+                        <section className="adminContent">
+                            <header className="adminContentHeader">
+                                <p>Administration</p>
+                                <h1>{activeView === 'welcome' ? 'Overview' : activeView.charAt(0).toUpperCase() + activeView.slice(1)}</h1>
+                            </header>
+
+                            <div className="adminViewBody">
                         {activeView === 'welcome' && (
                             <WelcomeView username={adminSessionData.username} />
                         )}
@@ -248,11 +294,13 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                         {activeView === 'reports' && (
                             <ReportsView showAlert={showAlert} showConfirm={showConfirm} />
                         )}
+                            </div>
+                        </section>
                     </>
                 }
             </main>
 
             <Footer />
-        </>
+        </div>
     )
 }

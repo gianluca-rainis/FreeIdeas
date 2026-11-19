@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { apiCall } from '../../utils/apiConfig';
+import { Plus, Save, ShieldAlert, Trash2, X } from 'lucide-react';
+import { apiCall } from '@/utils/apiConfig';
 
 function decodeHtmlEntities(text) {
     if (!text) {
@@ -322,7 +323,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                         <div className="dataWriter">{comment.data}</div>
                     </div>
                     <p className="commentText">{renderedText}</p>
-                    <p className="deleteComment" style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDeleteComment(comment.id)}>Delete</p>
+                    <button type="button" className="deleteComment" onClick={() => handleDeleteComment(comment.id)}><Trash2 size={15} aria-hidden="true" />Delete</button>
                     <ul className="underComments">
                         {renderComments(commentsList, comment.id)}
                     </ul>
@@ -340,9 +341,9 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     <p className="ideaAuthorSrc">ID: {fullIdea?.id}</p>
                     {fullIdea?.accountName && <p className="ideaAuthorSrc">Author Name: {fullIdea?.accountName}</p>}
 
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 10 }}>
-                        <img id="saveIdeaInfoAdmin" alt="Save changes" src="/images/save.svg" style={{ cursor: 'pointer' }} onClick={handleSave} />
-                        <img id="cancelIdeaInfoAdmin" alt="Cancel changes" src="/images/delete.svg" style={{ cursor: 'pointer' }} onClick={onClose} />
+                    <div className="adminEditorActions">
+                        <button type="button" id="saveIdeaInfoAdmin" aria-label="Save idea changes" onClick={handleSave} disabled={saving}><Save size={18} aria-hidden="true" /><span>{saving ? 'Saving…' : 'Save'}</span></button>
+                        <button type="button" id="cancelIdeaInfoAdmin" aria-label="Cancel idea changes" onClick={onClose}><X size={18} aria-hidden="true" /><span>Cancel</span></button>
                     </div>
 
                     <div id="newDataSetAccount">
@@ -396,12 +397,12 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
 
                     <div id="newAdditionalInfoIdea">
                         <h3>Additional Information</h3>
-                        <img src="/images/add.svg" alt="Add additional info" id="addAdditionalInfoAdmin" style={{ cursor: 'pointer' }} onClick={handleAddInfo} />
+                        <button type="button" aria-label="Add additional info" id="addAdditionalInfoAdmin" onClick={handleAddInfo}><Plus size={18} aria-hidden="true" /></button>
                         <ul id="imagesInfo">
                             {additionalInfo.map((info, index) => (
                                 <li key={index} className="imageInfoLi">
                                     <div></div>
-                                    <img src="/images/delete.svg" alt="Delete additional info" className="deleteAdditionalInfoAdmin" style={{ cursor: 'pointer' }} onClick={() => handleRemoveInfo(index)} />
+                                    <button type="button" aria-label="Delete additional info" className="deleteAdditionalInfoAdmin" onClick={() => handleRemoveInfo(index)}><Trash2 size={17} aria-hidden="true" /></button>
                                     
                                     <div>
                                         <img className="preview" alt="Additional info image" src={info.imageFile ? URL.createObjectURL(info.imageFile) : (info.updtimage || '/images/FreeIdeas.svg')} style={{ maxWidth: 200 }} />
@@ -419,11 +420,11 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
 
                     <div id="newDevLogsSection">
                         <h3>Author's Log</h3>
-                        <img src="/images/add.svg" alt="Add log" id="addLogAdmin" style={{ cursor: 'pointer' }} onClick={handleAddLog} />
+                        <button type="button" aria-label="Add log" id="addLogAdmin" onClick={handleAddLog}><Plus size={18} aria-hidden="true" /></button>
                         <ul id="logsList">
                             {logs.map((log, index) => (
                                 <li key={index} className="log">
-                                    <img src="/images/delete.svg" alt="Delete Log" className="deleteLogAdmin" style={{ cursor: 'pointer' }} onClick={() => handleRemoveLog(index)} />
+                                    <button type="button" aria-label="Delete log" className="deleteLogAdmin" onClick={() => handleRemoveLog(index)}><Trash2 size={17} aria-hidden="true" /></button>
                                     <div className="logTitleAndData">
                                         <textarea className="logTitleAdmin" placeholder="Title" maxLength={255} value={decodeHtmlEntities(log.title)} onChange={(e) => handleUpdateLog(index, 'title', e.target.value)} required />
                                         <input type="date" className="dataAdmin" value={log.data} maxLength={10} onChange={(e) => handleUpdateLog(index, 'data', e.target.value)} required />
@@ -442,7 +443,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     </div>
 
                     <div id="dangerAreaAccountAdmin">
-                        <label>Danger Area</label>
+                        <label><ShieldAlert size={17} aria-hidden="true" />Danger Area</label>
                         <input type="button" value="Delete Idea" id="dangerAreaDeleteIdeaAdmin" onClick={handleDelete} style={{cursor: "pointer"}} />
                     </div>
                 </>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useAppContext } from '../contexts/CommonContext';
-import { PasswordInput } from './PasswordInput';
-import styles from '../styles/LoginForm.module.css';
+import { useAuth } from '@/hooks/useAuth';
+import { useAppContext } from '@/contexts/CommonContext';
+import { PasswordInput } from '@/components/PasswordInput';
+import styles from '@/styles/LoginForm.module.css';
 
 export function LoginForm({ onClose }) {
     const [formData, setFormData] = useState({

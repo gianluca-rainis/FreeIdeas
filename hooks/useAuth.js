@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useAppContext } from '../contexts/CommonContext';
+import { useAppContext } from '@/contexts/CommonContext';
 import { useRouter } from 'next/router';
-import { apiCall } from '../utils/apiConfig';
-import { handleError, ValidationError } from '../utils/errorHandling';
+import { apiCall } from '@/utils/apiConfig';
+import { handleError, ValidationError } from '@/utils/errorHandling';
 
 export function useAuth() {
     const { 
@@ -146,9 +146,13 @@ export function useAuth() {
         }
     }
 
-    // Handle click on user image or menu
+    // Handle the mobile menu button
     function handleUserImageClick() {
-        toggleLoginArea();
+        const mobileMenuHidden = document.getElementById('mobileMenuHidden');
+
+        if (mobileMenuHidden) {
+            mobileMenuHidden.style.display = mobileMenuHidden.style.display === 'flex' ? 'none' : 'flex';
+        }
     }
 
     function redirectToAccount() {

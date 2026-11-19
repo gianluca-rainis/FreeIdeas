@@ -1,4 +1,4 @@
-import { query } from '../../lib/db_connection';
+import { query } from '@/lib/db_connection';
 import formidable from 'formidable';
 
 export const config = {

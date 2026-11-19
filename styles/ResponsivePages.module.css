@@ -1,0 +1,1229 @@
+/* Page-specific styles for this route family. */
+/* MEDIA QUERIES */
+/* WIDTH */
+@media screen and (min-width: 1201px) and (max-width: 1500px) {
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto auto auto auto;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+    }
+
+    /* account page */
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: small;
+    }
+}
+
+@media screen and (min-width: 1101px) and (max-width: 1200px) {
+    :global(.navLinks) {
+        font-size: small;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto auto auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+    }
+
+    /* idea page */
+    :global(#ideaMain .imageInfo) {
+        max-width: 70%;
+    }
+
+    /* account page */
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#dangerAreaAccount) {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccount label) {
+        grid-column: 1;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: medium;
+    }
+}
+
+@media screen and (min-width: 901px) and (max-width: 1100px) {
+    :global(#whatisFreeIdeas) {
+        height: 700px;
+    }
+
+    :global(#whatisFreeIdeas .description) {
+        font-size: 1em;
+    }
+
+    :global(.navLinks) {
+        font-size: small;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto auto auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    :global(#searchPage #search) {
+        width: 30%;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+    }
+
+    :global(#newIdeaMain .filterSearch) {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    :global(#newIdeaMain .preview) {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    :global(#newIdeaMain .imageInfo) {
+        width: 250px;
+    }
+
+    /* account page */
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#accountMain #newDataSetAccount) {
+        grid-template-columns: 1fr;
+        margin-right: 0;
+        justify-items: center;
+    }
+
+    :global(#newuserNameAccount),
+:global(#newuserImageAccount),
+:global(#newuserAccountName),
+:global(#newuserSurnameAccount),
+:global(#newemailAccount),
+:global(#newdescriptionAccount) {
+        width: 90%;
+    }
+
+    :global(#dangerAreaAccount) {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccount label) {
+        grid-column: 1;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: medium;
+    }
+}
+
+@media screen and (min-width: 761px) and (max-width: 900px) {
+    :global(#whatisFreeIdeas) {
+        height: 150vh;
+    }
+
+    :global(.navLinks) {
+        font-size: x-small;
+    }
+
+    :global(#footer ul li) {
+        font-size: 13px;
+    }
+
+    :global(#githubLogo) {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* index */
+    :global(#whatisFreeIdeas .description) {
+        padding: 20px 20px 20px 20px;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    :global(#searchPage #search) {
+        width: 30%;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+    }
+
+    :global(#newIdeaMain .filterSearch) {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    :global(#newIdeaMain .imageInfoLi) {
+        grid-template-columns: 1fr !important;
+    }
+
+    :global(#newIdeaMain .preview) {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    :global(#newIdeaMain .imageInfo) {
+        width: 250px;
+    }
+
+    /* idea page */
+    :global(#ideaMain .imageInfo) {
+        margin-right: 10px;
+    }
+
+    :global(#ideaMain .underComments) {
+        margin-left: 10px;
+    }
+
+    /* account page */
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#accountMain #accountAsideInfo) {
+        width: 40%;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#newCommentText) {
+        width: 70%;
+    }
+
+    :global(#dangerAreaAccount) {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccount label) {
+        grid-column: 1;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: medium;
+    }
+
+    /* reserved area page */
+    :global(#reservedAreaHeader ul li button) {
+        font-size: small;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 760px) {
+    :global(#pcNavBarGhost) {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    :global(#mobileNavBarGhost) {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    :global(.navLinks) {
+        padding-right: 2rem;
+    }
+
+    :global(#footer) {
+        flex-direction: column-reverse;
+    }
+
+    :global(.footerTextSection) {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    :global(.footerLinksSection) {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
+    }
+
+    :global(#githubLogo) {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* index */
+    :global(#whatisFreeIdeas) {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    :global(#whatisFreeIdeas #lastIdeasVertical1),
+:global(#whatisFreeIdeas #lastIdeasVertical2) {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
+    :global(#whatisFreeIdeas .description) {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        font-size: 20px;
+    }
+
+    :global(header h1) {
+        font-size: 24px;
+    }
+
+    :global(.logo) {
+        width: 400px;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+    }
+
+    :global(#newIdeaMain .filterSearch) {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    :global(#newIdeaMain .imageInfoLi) {
+        grid-template-columns: 1fr !important;
+    }
+
+    :global(#newIdeaMain .preview) {
+        max-width: 30rem !important;
+        max-height: 12rem !important;
+        margin: 0 !important;
+        margin-left: 20px !important;
+    }
+
+    :global(#newIdeaMain .imageInfo) {
+        width: 250px;
+    }
+
+    /* Idea page */
+    :global(#ideaMain #title) {
+        font-size: 90px;
+    }
+
+    :global(#imagesInfo .imageInfoLi) {
+        display: block;
+    }
+
+    :global(#ideaMain .titleImageInfo) {
+        font-size: 30px;
+    }
+
+    :global(#ideaMain .imageInfoDescription) {
+        margin: 20px;
+    }
+
+    :global(#ideaMain .logTitleAndData) {
+        flex-direction: column-reverse;
+    }
+
+    :global(#ideaMain .logTitle) {
+        margin: 10px;
+        max-width: 90vw;
+    }
+
+    :global(#ideaMain .comment) {
+        margin-left: 25px;
+    }
+
+    :global(#ideaMain .underComments) {
+        margin-left: 0;
+    }
+
+    /* account page */
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#accountMain #accountAsideInfo) {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    :global(#accountMain #userNameSurnameAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #emailAccount) {
+        font-size: 16px;
+    }
+
+    :global(#accountMain #descriptionAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#newCommentText) {
+        width: 80%;
+    }
+
+    :global(#dangerAreaAccount) {
+        gap: 5px;
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccount label) {
+        grid-column: 1;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: medium;
+    }
+
+    /* reserved area page */
+    :global(#reservedAreaHeader ul) {
+        gap: 5px;
+        padding-right: 2rem;
+    }
+
+    :global(#reservedAreaHeader ul li button) {
+        font-size: small;
+    }
+
+    :global(.liReservedAreaHeaderExt) {
+        display: none;
+    }
+
+    :global(.liReservedAreaHeaderRed) {
+        display: block;
+    }
+    
+    :global(.editDataSectionAdmin) {
+        width: 90%;
+    }
+
+    :global(#dangerAreaAccountAdmin) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccountAdmin label) {
+        grid-column: auto;
+    }
+}
+
+@media screen and (min-width: 471px) and (max-width: 600px) {
+    :global(#pcNavBarGhost) {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    :global(#mobileNavBarGhost) {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    :global(.navLinks) {
+        padding-right: 2rem;
+    }
+
+    :global(#footer) {
+        flex-direction: column-reverse;
+    }
+
+    :global(.footerTextSection) {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    :global(.footerLinksSection) {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 40px;
+    }
+
+    :global(#githubLogo) {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* index */
+    :global(#whatisFreeIdeas) {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    :global(#whatisFreeIdeas #lastIdeasVertical1),
+:global(#whatisFreeIdeas #lastIdeasVertical2) {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
+    :global(#whatisFreeIdeas .description) {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        font-size: 20px;
+    }
+
+    :global(#imagesSectionHome .imageInfoLiHome) {
+        flex-direction: column;
+    }
+
+    :global(#imagesSectionHome .imageInfoLiHome .imageHome) {
+        width: 80%;
+    }
+
+    :global(header h1) {
+        font-size: 24px;
+    }
+
+    :global(.logo) {
+        width: 400px;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    :global(#compactFiltersHidden) {
+        top: 190px;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+        font-size: 60px;
+    }
+
+    :global(#newIdeaMain #author) {
+        font-size: 40px;
+    }
+
+    :global(#newIdeaMain #description) {
+        width: 75%;
+    }
+
+    :global(#newIdeaMain .filterSearch) {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    :global(#newIdeaMain .imageInfoLi) {
+        grid-template-columns: 1fr !important;
+    }
+
+    :global(#newIdeaMain .deleteAdditionalInfo) {
+        margin-bottom: 15px;
+    }
+
+    :global(#newIdeaMain .imageInfoDescription) {
+        width: 80% !important;
+    }
+
+    :global(#newIdeaMain .preview) {
+        max-width: 26rem !important;
+        max-height: 11rem !important;
+        margin: 0 !important;
+    }
+
+    :global(#newIdeaMain .imageInfo) {
+        width: 250px;
+    }
+
+    /* Login page */
+    :global(#loginMain form p),
+:global(#loginMain p) {
+        width: 100%;
+    }
+
+    :global(#loginMain #passwordFormInputLoginPage),
+:global(#loginMain #confirmPasswordFormInputLoginPage) {
+        width: 100%;
+    }
+
+    :global(#loginMain) {
+        padding: 28px 14px;
+        min-height: auto;
+    }
+
+    :global(#loginMain section) {
+        margin: 10px;
+        border-radius: 16px;
+        padding: 18px 14px;
+    }
+
+    :global(#loginMain h1) {
+        font-size: 1.9rem;
+    }
+
+    :global(#signInLoginPageButton),
+:global(#signInLoginPageCancelButton),
+:global(#changePasswordLoginPageButton) {
+        min-height: 44px;
+    }
+
+    /* idea page */
+    :global(#ideaMain #title) {
+        font-size: 80px;
+    }
+
+    :global(#ideaMain .titleImageInfo) {
+        font-size: 30px;
+    }
+
+    :global(#imagesInfo .imageInfoLi) {
+        display: block;
+    }
+
+    :global(#imagesInfo .imageInfo) {
+        max-height: 70vh;
+    }
+
+    :global(#ideaMain .imageInfoDescription) {
+        margin: 20px;
+    }
+
+    :global(#ideaMain .logTitleAndData) {
+        flex-direction: column-reverse;
+    }
+
+    :global(#ideaMain .logTitle) {
+        margin: 10px;
+        max-width: 90vw;
+    }
+
+    :global(#ideaMain .comment) {
+        margin-left: 20px;
+    }
+
+    :global(#ideaMain .underComments) {
+        margin-left: 0;
+    }
+
+    /* account page */
+    :global(#accountMain) {
+        display: block;
+    }
+
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#accountMain #accountAsideInfo) {
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        padding-block-end: 0;
+        padding-bottom: 30px;
+    }
+
+    :global(#accountMain #userNameSurnameAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #emailAccount) {
+        font-size: 16px;
+    }
+
+    :global(#accountMain #descriptionAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#accountAsideInfo) {
+        border-right: 0 !important;
+    }
+
+    :global(#newCommentText) {
+        width: 90%;
+    }
+
+    /* Reserved area */
+    :global(#reservedAreaMain .logo) {
+        width: 80%;
+        justify-self: center;
+    }
+
+    :global(#reservedAreaMain h2) {
+        font-size: 21px
+    }
+
+    :global(#reservedAreaMain hr) {
+        width: 90%;
+    }
+
+    :global(#reservedAreaHeader ul) {
+        gap: 5px;
+        padding-right: 2rem;
+    }
+
+    :global(.liReservedAreaHeaderExt) {
+        display: none;
+    }
+
+    :global(.liReservedAreaHeaderRed) {
+        display: block;
+    }
+
+    :global(.editDataSectionAdmin) {
+        width: 90%;
+    }
+
+    :global(#dangerAreaAccountAdmin) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccountAdmin label) {
+        grid-column: auto;
+    }
+
+    :global(#loginReservedAreaForm) {
+        width: 80% !important;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    :global(#pcNavBarGhost) {
+        content-visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    :global(#mobileNavBarGhost) {
+        content-visibility: visible !important;
+        width: 100% !important;
+        height: fit-content !important;
+    }
+
+    :global(.navLinks) {
+        padding-right: 2rem;
+    }
+
+    :global(#navLogo) {
+        width: 150px;
+    }
+
+    :global(#mobileMenuHidden) {
+        top: 60px;
+    }
+
+    :global(#footer) {
+        flex-direction: column-reverse;
+    }
+
+    :global(.footerTextSection) {
+        width: 100%;
+        border-top: 1px solid black;
+        margin: 0;
+    }
+
+    :global(.footerLinksSection) {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 10px;
+        grid-template-columns: 1fr;
+        row-gap: 60px;
+    }
+
+    :global(#githubLogo) {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    :global(#footerLogo) {
+        width: 150px;
+    }
+
+    /* index */
+    :global(#whatisFreeIdeas) {
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        background-color: rgb(214, 233, 144);
+        display: block;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+
+    :global(#whatisFreeIdeas #lastIdeasVertical1),
+:global(#whatisFreeIdeas #lastIdeasVertical2) {
+        text-align: center;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        overflow: hidden;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+    
+    :global(#whatisFreeIdeas .description) {
+        padding: 20px 20px 20px 20px;
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    :global(#whatisFreeIdeas h2) {
+        font-size: 20px;
+    }
+
+    :global(#imagesSectionHome .imageInfoLiHome) {
+        flex-direction: column;
+    }
+
+    :global(#imagesSectionHome .imageInfoLiHome .imageHome) {
+        width: 80%;
+    }
+
+    :global(header h1) {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    :global(.logo) {
+        width: 300px;
+    }
+
+    /* search an idea */
+    :global(#lastIdeasSrc) {
+        grid-template-columns: auto;
+    }
+
+    :global(#searchPage header) {
+        position: absolute;
+    }
+
+    :global(#searchPage #search) {
+        width: 30%;
+        margin: 0;
+    }
+
+    :global(#compactFiltersHidden) {
+        top: 150px;
+    }
+
+    /* publish an idea */
+    :global(#newIdeaMain #title) {
+        width: 80%;
+        font-size: 60px;
+    }
+
+    :global(#newIdeaMain #author) {
+        font-size: 40px;
+    }
+
+    :global(#newIdeaMain #description) {
+        width: 75%;
+    }
+
+    :global(#newIdeaMain .filterSearch) {
+        width: 60%;
+        justify-self: center;
+        font-size: small;
+    }
+
+    :global(#newIdeaMain .imageInfoLi) {
+        grid-template-columns: 1fr !important;
+    }
+
+    :global(#newIdeaMain .deleteAdditionalInfo) {
+        margin-bottom: 15px;
+        margin-left: 80%;
+    }
+
+    :global(#newIdeaMain .imageInfoDescription) {
+        width: 80% !important;
+    }
+
+    :global(#newIdeaMain .preview) {
+        max-width: 90% !important;
+        max-height: 10rem !important;
+        margin: 0 !important;
+    }
+
+    :global(#newIdeaMain .titleImageInfo) {
+        font-size: 20px !important;
+    }
+
+    :global(#newIdeaMain .imageInfo) {
+        width: 250px;
+    }
+
+    :global(#newIdeaMain .logInfo) {
+        margin: 0;
+        justify-self: center;
+    }
+
+    /* idea page */
+    :global(#ideaMain .imageInfo) {
+        max-height: 60vh;
+    }
+
+    :global(#ideaMain #title) {
+        font-size: 70px;
+    }
+
+    :global(#ideaMain #mainAuthorAccount) {
+        font-size: 35px;
+    }
+
+    :global(#ideaMain #description) {
+        font-size: medium;
+    }
+
+    :global(#ideaLikeSaveSection) {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        gap: 10px;
+    }
+
+    :global(#ideaMain .titleImageInfo) {
+        font-size: 25px;
+    }
+
+    :global(#imagesInfo .imageInfoLi) {
+        display: block;
+    }
+
+    :global(#ideaMain .imageInfoDescription) {
+        margin: 20px;
+        font-size: 15px;
+    }
+
+    :global(#ideaMain .logTitleAndData) {
+        flex-direction: column-reverse;
+    }
+
+    :global(#ideaMain .logTitle) {
+        margin: 10px;
+        max-width: 90vw;
+    }
+
+    :global(#ideaMain #commentsList) {
+        margin-left: 5px;
+    }
+
+    :global(#ideaMain .comment) {
+        margin-left: 15px;
+    }
+
+    :global(#ideaMain .underComments) {
+        margin-left: 0;
+    }
+
+    /* Login page */
+    :global(#loginMain .toggle-password-visibility-ext) {
+        top: 215px;
+    }
+
+    :global(#loginMain form p),
+:global(#loginMain p) {
+        width: 100%;
+    }
+
+    :global(#loginMain #passwordFormInputLoginPage),
+:global(#loginMain #confirmPasswordFormInputLoginPage) {
+        width: 100%;
+    }
+
+    /* account page */
+    :global(#accountMain) {
+        display: block;
+    }
+
+    :global(#accountMain #mainDivDinamicContent) {
+        grid-template-columns: 1fr;
+        margin: 0;
+    }
+
+    :global(#accountMain #accountAsideInfo) {
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        padding-block-end: 0;
+        padding-bottom: 70px;
+    }
+
+    :global(#accountMain #navBarForAccountSaved) {
+        top: 60px;
+    }
+
+    :global(#accountMain #userNameSurnameAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #emailAccount) {
+        font-size: 16px;
+    }
+
+    :global(#accountMain #descriptionAccount) {
+        font-size: 15px;
+    }
+
+    :global(#accountMain #modifyAccountInfo) {
+        margin-left: 80%;
+    }
+
+    :global(#accountAsideInfo) {
+        border-right: 0 !important;
+    }
+
+    :global(#newCommentText) {
+        width: 90%;
+    }
+
+    :global(#dangerAreaAccount) {
+        gap: 5px;
+        grid-template-columns: 1fr;
+        padding-bottom: 10px;
+    }
+
+    :global(#dangerAreaAccount label) {
+        grid-column: 1;
+    }
+
+    :global(#dangerAreaAccount input) {
+        font-size: medium;
+    }
+
+    /* Reserved area */
+    :global(#reservedAreaMain .logo) {
+        width: 80%;
+        justify-self: center;
+    }
+
+    :global(#reservedAreaHeader) {
+        top: 60px;
+    }
+
+    :global(#mobileNavBarReservedAreaHeader) {
+        top: 120px;
+    }
+
+    :global(#reservedAreaHeader .logo) {
+        width: 150px;
+    }
+
+    :global(#reservedAreaMain h2) {
+        font-size: 100%
+    }
+
+    :global(#reservedAreaMain hr) {
+        width: 90%;
+    }
+
+    :global(#reservedAreaHeader ul) {
+        gap: 5px;
+        padding-right: 2rem;
+    }
+
+    :global(.liReservedAreaHeaderExt) {
+        display: none;
+    }
+
+    :global(.liReservedAreaHeaderRed) {
+        display: block;
+    }
+
+    :global(#saveAccountInfoAdmin) {
+        margin-left: 90%;
+    }
+
+    :global(#cancelAccountInfoAdmin) {
+        top: 40px;
+    }
+
+    :global(.editDataSectionAdmin) {
+        width: 90%;
+    }
+
+    :global(#dangerAreaAccountAdmin) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#dangerAreaAccountAdmin label) {
+        grid-column: auto;
+    }
+
+    :global(#dangerAreaAccountAdmin input) {
+        width: 100%;
+    }
+
+    :global(#loginReservedAreaForm) {
+        width: 80% !important;
+    }
+}
+
+/* STYLES DON'T WORKS WELL WITH WIDTH < 320PX */
+
+/* HEIGHT */
+@media screen and (max-height: 785px) {
+    :global(#mobileMenuHidden .navText) {
+        font-size: 1.2rem;
+    }
+
+    :global(#loginAreaMobile h2) {
+        font-size: 20px !important;
+    }
+
+    :global(#loginAreaMobile h3) {
+        font-size: 15px;
+    }
+
+    :global(#emailAreaLoginMobile),
+:global(#emailAreaSignUpMobile),
+:global(#passwordAreaLoginMobile),
+:global(#passwordAreaSignUpMobile),
+:global(#firstNameMobile),
+:global(#lastNameMobile),
+:global(#userNameSignInMobile),
+:global(#sendLoginButtonMobile),
+:global(#sendCreateAccountButtonMobile),
+:global(#sendLogoutButtonMobile),
+:global(#sendAccountButtonMobile) {
+        height: 30px;
+        font-size: medium;
+    }
+
+    :global(.toggle-password-visibility-mobile) {
+        top: 320px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    :global(#accountMain #userImageAccount) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    :global(#accountMain #userNameSurnameAccount) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+

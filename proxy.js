@@ -6,7 +6,6 @@ export function proxy(request) {
     const allowedOrigins = [
         'https://freeideas.pro',
         'https://www.freeideas.pro',
-        'https://api.freeideas.pro',
         'https://freeideas.vercel.app',
         'http://localhost:3000',
     ];

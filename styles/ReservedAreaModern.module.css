@@ -1,0 +1,1008 @@
+/* Page-specific styles for this route family. */
+@media (max-width: 760px) {
+    :global(#ideaMain #ideaImageAsBackground) {
+        min-height: 300px;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 2rem 1rem;
+    }
+
+    :global(#ideaMain #title) {
+        width: 100%;
+        font-size: clamp(2.5rem, 14vw, 4.25rem);
+    }
+
+    :global(#ideaLikeSaveSection) {
+        width: calc(100% - 1rem);
+        min-height: 68px;
+        margin-top: -34px;
+        flex-wrap: wrap;
+    }
+
+    :global(#ideaLikeSaveSection ul) {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    :global(#ideaLikeSaveSection ul li) {
+        min-width: 72px;
+    }
+
+    :global(#ideaMain #description),
+:global(#ideaMain #imagesInfo),
+:global(#ideaMain #downloadSection),
+:global(#ideaMain #licenseSection),
+:global(#ideaMain #devLogsSection),
+:global(#ideaMain #commentSection),
+:global(#newIdeaMain #description),
+:global(#newIdeaMain #newinfoForFilters),
+:global(#newIdeaMain #additionalInfo),
+:global(#newIdeaMain #downloadSection),
+:global(#newIdeaMain #licenseSection),
+:global(#newIdeaMain #devLogsSection) {
+        width: calc(100% - 1rem);
+    }
+
+    :global(#ideaMain #imagesInfo .imageInfoLi) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#newIdeaMain #title) {
+        min-height: 58px;
+        font-size: clamp(2rem, 12vw, 3.25rem);
+    }
+
+    :global(#newIdeaMain #description) {
+        min-height: 150px;
+        margin-inline: 0.5rem;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters .filterSearch) {
+        width: 100%;
+    }
+}
+
+/* Reserved Area palette: always black and red, regardless of the public theme. */
+:global(.reservedAreaShell) {
+    --reserved-black: #070707;
+    --reserved-surface: #111111;
+    --reserved-surface-raised: #181818;
+    --reserved-red: #d31c1c;
+    --reserved-red-bright: #ff4a4a;
+    --reserved-red-muted: #b86a6a;
+    --reserved-line: #452020;
+    --reserved-text: #f7eded;
+    min-height: 100vh;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(.reservedAreaShell > nav) {
+    border-bottom: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(.reservedAreaShell > nav a),
+:global(.reservedAreaShell > nav button),
+:global(.reservedAreaShell > nav .navText) {
+    color: var(--reserved-red) !important;
+}
+
+:global(.reservedAreaShell > nav a:hover),
+:global(.reservedAreaShell > nav button:hover),
+:global(.reservedAreaShell > nav .navText:hover) {
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(.reservedAreaShell > footer) {
+    border-top: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(.reservedAreaShell > footer a),
+:global(.reservedAreaShell > footer h2),
+:global(.reservedAreaShell > footer h3) {
+    color: var(--reserved-red) !important;
+}
+
+:global(.reservedAreaShell > footer a:hover) {
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(.adminWorkspaceHeader),
+:global(#reservedAreaMain.adminWorkspace),
+:global(#mobileNavBarReservedAreaHeader) {
+    --reserved-black: #070707;
+    --reserved-surface: #111111;
+    --reserved-surface-raised: #181818;
+    --reserved-red: #d31c1c;
+    --reserved-red-bright: #ff4a4a;
+    --reserved-red-muted: #b86a6a;
+    --reserved-line: #452020;
+    --reserved-text: #f7eded;
+    --reserved-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+}
+
+:global(.adminWorkspaceHeader) {
+    position: relative;
+    z-index: 20;
+    min-height: 76px;
+    border-bottom: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(.adminWorkspaceHeader .adminBrand img) {
+    filter: saturate(1.2) brightness(1.15);
+}
+
+:global(.adminWorkspaceHeader .adminIdentity span) {
+    color: var(--reserved-text) !important;
+}
+
+:global(.adminWorkspaceHeader .adminIdentity button),
+:global(.adminWorkspaceHeader .adminMobileMenu button),
+:global(.adminWorkspaceHeader .adminMenuButton) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--reserved-line) !important;
+    border-radius: 8px;
+    background: var(--reserved-surface) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(.adminWorkspaceHeader .adminIdentity button:hover),
+:global(.adminWorkspaceHeader .adminMobileMenu button:hover),
+:global(.adminWorkspaceHeader .adminMenuButton:hover) {
+    border-color: var(--reserved-red) !important;
+    background: rgba(211, 28, 28, 0.14) !important;
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace) {
+    --fi-paper: var(--reserved-black);
+    --fi-surface: var(--reserved-surface);
+    --fi-ink: var(--reserved-text);
+    --fi-muted: var(--reserved-red-muted);
+    --fi-border: var(--reserved-line);
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebar) {
+    border-right: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-surface) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarLabel),
+:global(#reservedAreaMain.adminWorkspace .adminContentHeader p),
+:global(#reservedAreaMain.adminWorkspace .adminWelcomeEyebrow) {
+    color: var(--reserved-red) !important;
+    letter-spacing: 0.14em;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button) {
+    grid-template-columns: 24px 32px minmax(0, 1fr);
+    gap: 0.55rem;
+    color: var(--reserved-red-muted) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button svg) {
+    color: currentColor;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button span) {
+    color: currentColor;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button b) {
+    font-weight: 700;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button.active),
+:global(#reservedAreaMain.adminWorkspace .adminSidebarNav button:hover) {
+    background: rgba(211, 28, 28, 0.14) !important;
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminContentHeader) {
+    border-bottom: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminContentHeader h1) {
+    color: var(--reserved-red-bright) !important;
+    text-shadow: 0 0 24px rgba(211, 28, 28, 0.18);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminContentHeader p) {
+    color: var(--reserved-red) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminWelcomeView h2),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .ideaTitleSrc) {
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminWelcomeView),
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchSectionInReservedArea),
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin) {
+    border-color: var(--reserved-line) !important;
+    background: var(--reserved-surface) !important;
+    box-shadow: var(--reserved-shadow);
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminWelcomeView > p:last-child),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .ideaAuthorSrc),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .ideaAuthorSrc a) {
+    color: var(--reserved-red-muted) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchSectionInReservedArea) {
+    border-color: var(--reserved-line) !important;
+    background: var(--reserved-surface-raised) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchSectionInReservedArea svg) {
+    flex: 0 0 auto;
+    color: var(--reserved-red);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchReservedArea) {
+    outline: none;
+    background: transparent !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchReservedArea::placeholder) {
+    color: var(--reserved-red-muted);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo) {
+    border-top: 2px solid var(--reserved-red) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo .ideaImageSrc) {
+    background: var(--reserved-black) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyAccountInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyIdeaInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteReportsAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteNotificationAdmin),
+:global(#reservedAreaMain.adminWorkspace #createNotificationReservedArea),
+:global(#reservedAreaMain.adminWorkspace #saveNotificationInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace #cancelNotificaitonInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace #addAdditionalInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace #addLogAdmin),
+:global(#reservedAreaMain.adminWorkspace .deleteAdditionalInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace .deleteLogAdmin) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-red) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyAccountInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyIdeaInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteReportsAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteNotificationAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace #createNotificationReservedArea:hover),
+:global(#reservedAreaMain.adminWorkspace #saveNotificationInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace #cancelNotificaitonInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace #addAdditionalInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace #addLogAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace .deleteAdditionalInfoAdmin:hover),
+:global(#reservedAreaMain.adminWorkspace .deleteLogAdmin:hover) {
+    border-color: var(--reserved-red) !important;
+    background: rgba(211, 28, 28, 0.16) !important;
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 40px;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--reserved-line);
+    border-radius: 8px;
+    background: var(--reserved-black);
+    color: var(--reserved-text);
+    cursor: pointer;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button svg) {
+    flex: 0 0 auto;
+    color: currentColor;
+    stroke-width: 2.2;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button:first-child) {
+    border-color: var(--reserved-red);
+    background: var(--reserved-red);
+    color: #ffffff;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button:hover) {
+    filter: brightness(1.2);
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount input),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount textarea),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin input),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin textarea) {
+    border-color: var(--reserved-line) !important;
+    background: var(--reserved-black) !important;
+    color: var(--reserved-text) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount label),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newAdditionalInfoIdea h3),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDevLogsSection h3),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #commentsSectionAdmin h3) {
+    color: var(--reserved-red-muted) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newAdditionalInfoIdea),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDevLogsSection),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #commentsSectionAdmin) {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--reserved-line);
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin) {
+    border-color: rgba(211, 28, 28, 0.5) !important;
+    background: rgba(211, 28, 28, 0.08) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin label) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin input) {
+    border-color: var(--reserved-red) !important;
+    background: transparent !important;
+    color: var(--reserved-red-bright) !important;
+}
+
+:global(#reservedAreaMain.adminWorkspace .deleteComment) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    border: 0;
+    background: transparent;
+    color: var(--reserved-red-bright);
+    cursor: pointer;
+}
+
+@media (max-width: 760px) {
+    :global(.adminWorkspaceHeader .adminMobileMenu) {
+        border-bottom: 1px solid var(--reserved-line) !important;
+        background: var(--reserved-black) !important;
+        box-shadow: var(--reserved-shadow);
+    }
+
+    :global(.adminWorkspaceHeader .adminMobileMenu button) {
+        justify-content: flex-start;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo) {
+        min-height: 0;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions) {
+        justify-content: stretch;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button) {
+        flex: 1;
+    }
+}
+
+/* Administrator workspace */
+:global(.adminWorkspaceHeader) {
+    width: 100%;
+    min-height: 72px;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+:global(.adminMenuButton) {
+    display: none;
+}
+
+:global(.adminBrand) {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+}
+
+:global(.adminBrand img) {
+    width: 170px;
+    height: auto;
+}
+
+:global(.adminIdentity) {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.75rem;
+}
+
+:global(.adminIdentity span) {
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+:global(.adminIdentity button),
+:global(.adminMobileMenu button) {
+    min-height: 38px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+:global(.adminMobileMenu) {
+    display: none;
+}
+
+:global(.adminWorkspace) {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 140px);
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    margin: 0;
+    background: var(--fi-paper);
+}
+
+:global(.adminSidebar) {
+    min-height: calc(100vh - 140px);
+    padding: 2rem 1rem;
+    border-right: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+:global(.adminSidebarLabel) {
+    margin: 0 0 1.25rem;
+    padding: 0 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminSidebarNav) {
+    display: grid;
+    gap: 0.35rem;
+}
+
+:global(.adminSidebarNav button) {
+    width: 100%;
+    min-height: 52px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fi-muted);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+:global(.adminSidebarNav button span) {
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+:global(.adminSidebarNav button.active),
+:global(.adminSidebarNav button:hover) {
+    background: rgba(63, 125, 68, 0.10);
+    color: var(--fi-ink);
+}
+
+:global(.adminContent) {
+    min-width: 0;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+:global(.adminContentHeader) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--fi-border);
+}
+
+:global(.adminContentHeader p) {
+    margin: 0 0 0.5rem;
+    grid-column: 1 / -1;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminContentHeader h1) {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 0.92;
+}
+
+:global(.adminViewBody) {
+    padding-top: 1.5rem;
+}
+
+:global(.adminWelcomeView) {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    padding: clamp(2rem, 6vw, 5rem);
+    background: var(--fi-surface);
+}
+
+:global(.adminWelcomeView h2) {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.92;
+}
+
+:global(.adminWelcomeView > p:last-child) {
+    max-width: 520px;
+    margin: 1.5rem 0 0;
+}
+
+:global(.adminWelcomeEyebrow) {
+    margin: 0 0 1.25rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminDataView) {
+    width: 100%;
+}
+
+:global(.adminDataView #searchSectionInReservedArea) {
+    width: 100%;
+    min-height: auto;
+    margin: 0 0 1.25rem;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+:global(.adminDataView #searchReservedArea) {
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    background: transparent;
+}
+
+:global(.adminDataView > ul) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+:global(.adminDataView .reservedAreaLiBoxInfo) {
+    width: 100%;
+    min-height: 220px;
+    margin: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+:global(.adminDataView .ideaImageSrc) {
+    height: 160px;
+}
+
+:global(.adminDataView .modifyAccountInfoAdmin),
+:global(.adminDataView .modifyIdeaInfoAdmin),
+:global(.adminDataView .deleteReportsAdmin),
+:global(.adminDataView .deleteNotificationAdmin) {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 1000px) {
+    :global(.adminWorkspace) {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    :global(.adminWorkspaceHeader) {
+        grid-template-columns: 200px minmax(0, 1fr) auto;
+    }
+
+    :global(.adminDataView > ul) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    :global(.adminWorkspaceHeader) {
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        padding-inline: 0.75rem;
+    }
+
+    :global(.adminMenuButton) {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-content: center;
+        gap: 4px;
+        border: 1px solid var(--fi-border);
+        border-radius: 6px;
+        background: var(--fi-surface);
+        cursor: pointer;
+    }
+
+    :global(.adminMenuButton span) {
+        width: 16px;
+        height: 2px;
+        display: block;
+        background: var(--fi-ink);
+    }
+
+    :global(.adminBrand) {
+        justify-self: center;
+    }
+
+    :global(.adminBrand img) {
+        width: 145px;
+    }
+
+    :global(.adminIdentity) {
+        display: none;
+    }
+
+    :global(.adminMobileMenu) {
+        width: 100%;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        z-index: 100;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--fi-border);
+        background: var(--fi-surface);
+        box-shadow: var(--fi-shadow);
+    }
+
+    :global(.adminMobileMenu button) {
+        width: 100%;
+        text-align: left;
+    }
+
+    :global(.adminMobileMenu button.active) {
+        background: rgba(63, 125, 68, 0.10);
+    }
+
+    :global(.adminWorkspace) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(.adminSidebar) {
+        display: none;
+    }
+
+    :global(.adminContent) {
+        padding: 1.25rem 0.75rem 3rem;
+    }
+
+    :global(.adminContentHeader h1) {
+        font-size: clamp(2.6rem, 12vw, 4.5rem);
+    }
+
+    :global(.adminDataView > ul) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :global(.adminDataView > ul) {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :global(body),
+:global(button),
+:global(input),
+:global(select),
+:global(textarea),
+:global(#lastIdeasSrc > .ideaBox),
+:global(#mainDivDinamicContent > .ideaBox) {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Keep the authenticated workspace independent from the legacy reserved-area layout. */
+:global(#reservedAreaMain.adminWorkspace) {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 9rem);
+    display: grid !important;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: stretch;
+    justify-content: initial;
+    margin: 0;
+    border-radius: 0;
+    background: var(--fi-paper) !important;
+    color: var(--fi-ink) !important;
+    text-align: left;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminSidebar) {
+    min-width: 0;
+    min-height: calc(100vh - 9rem);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminContent) {
+    min-width: 0;
+    max-width: none;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView) {
+    min-width: 0;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchSectionInReservedArea) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView #searchReservedArea) {
+    min-width: 0;
+    margin: 0;
+    padding: 0.75rem;
+    color: var(--fi-ink);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+    min-width: 0;
+    min-height: 240px;
+    margin: 0;
+    padding: 1.25rem;
+    overflow: hidden;
+    border: 1px solid var(--fi-border);
+    border-radius: 12px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+    text-align: left;
+    word-break: break-word;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView > ul > li.reservedAreaLiBoxInfo .ideaImageSrc) {
+    width: 100%;
+    height: 150px;
+    margin: 0 0 0.5rem;
+    object-fit: contain;
+    border-radius: 8px;
+    background: var(--fi-paper);
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView .ideaTitleSrc) {
+    margin: 0;
+    color: var(--fi-ink);
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView .ideaAuthorSrc) {
+    max-width: 100%;
+    margin: 0;
+    color: var(--fi-muted);
+    line-height: 1.4;
+}
+
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyAccountInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .modifyIdeaInfoAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteReportsAdmin),
+:global(#reservedAreaMain.adminWorkspace .adminDataView .deleteNotificationAdmin) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    left: auto;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0.35rem;
+    border-radius: 6px;
+    background: var(--fi-paper);
+    cursor: pointer;
+    object-fit: contain;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin) {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--fi-border);
+    border-radius: 12px;
+    background: var(--fi-surface) !important;
+    color: var(--fi-ink) !important;
+    text-align: left;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > label),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > textarea),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > div) {
+    min-width: 0;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > label) {
+    align-self: end;
+    margin: 0;
+    color: var(--fi-muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > textarea),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > div input),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin input[type="text"]),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin input[type="number"]),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin input[type="url"]),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin input[type="file"]),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin textarea) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-paper);
+    color: var(--fi-ink);
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > textarea),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input[id="newdescriptionAccountAdmin"]),
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input[id="newideaDescriptionAdmin"]) {
+    grid-column: 1 / -1;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 1rem;
+    border: 1px solid rgba(180, 38, 38, 0.35);
+    border-radius: 10px;
+    background: rgba(180, 38, 38, 0.06);
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin label) {
+    width: 100%;
+    margin: 0;
+    color: #b42626;
+    text-align: left;
+}
+
+:global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #dangerAreaAccountAdmin input) {
+    flex: 1 1 180px;
+    width: auto;
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid #b42626;
+    border-radius: 8px;
+    background: transparent;
+    color: #b42626;
+    cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    :global(#reservedAreaMain.adminWorkspace .adminDataView > ul) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    :global(#reservedAreaMain.adminWorkspace) {
+        min-height: 0;
+        grid-template-columns: 1fr;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .adminSidebar) {
+        display: none;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .adminContent) {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1.25rem 0.75rem 3rem;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .adminDataView > ul) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > textarea),
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input[id="newdescriptionAccountAdmin"]),
+    :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin #newDataSetAccount > input[id="newideaDescriptionAdmin"]) {
+        grid-column: auto;
+    }
+}
+

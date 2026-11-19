@@ -1,0 +1,375 @@
+.authPage {
+    --auth-ink: #193321;
+    --auth-muted: #617263;
+    --auth-line: #d8e2d7;
+    --auth-surface: #ffffff;
+    --auth-field: #f7faf6;
+    --auth-accent: #b9dc67;
+    --auth-accent-strong: #86b33f;
+    --auth-shadow: 0 24px 70px rgba(30, 61, 39, 0.16);
+    min-height: calc(100vh - 8.5rem);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 4rem) !important;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(185, 220, 103, 0.28), transparent 26rem),
+        linear-gradient(135deg, #f4f8f1 0%, #e5eee0 100%) !important;
+}
+
+.authPage::before {
+    display: none !important;
+    content: none !important;
+}
+
+.authCard {
+    width: min(100%, 1080px) !important;
+    min-height: 600px !important;
+    display: grid !important;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    border: 1px solid rgba(49, 89, 52, 0.2) !important;
+    border-radius: 28px !important;
+    background: var(--auth-surface) !important;
+    box-shadow: var(--auth-shadow) !important;
+    flex: 0 1 1080px !important;
+}
+
+.authIntro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    color: #f6faef;
+    background:
+        radial-gradient(circle at 85% 12%, rgba(185, 220, 103, 0.25), transparent 13rem),
+        linear-gradient(145deg, #214d31 0%, #102b1c 100%);
+}
+
+.authIntro::after {
+    content: "";
+    position: absolute;
+    right: -5rem;
+    bottom: -6rem;
+    width: 18rem;
+    height: 18rem;
+    border: 1px solid rgba(185, 220, 103, 0.35);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2rem rgba(185, 220, 103, 0.06), 0 0 0 4rem rgba(185, 220, 103, 0.04);
+}
+
+.authKicker,
+.authEyebrow {
+    color: var(--auth-accent-strong);
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.authKicker {
+    color: var(--auth-accent);
+}
+
+.authIntro h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 10ch;
+    margin: auto 0 1.25rem;
+    color: #f6faef;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 400;
+    letter-spacing: -0.06em;
+    line-height: 0.92;
+}
+
+.authIntro p {
+    position: relative;
+    z-index: 1;
+    max-width: 32rem;
+    margin: 0;
+    color: rgba(246, 250, 239, 0.74);
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.authAccent {
+    position: absolute;
+    right: clamp(2rem, 5vw, 4.5rem);
+    top: clamp(4rem, 10vw, 8rem);
+    color: var(--auth-accent);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 300;
+    line-height: 0.7;
+    opacity: 0.85;
+}
+
+.authFormPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    background: var(--auth-surface);
+}
+
+.authEyebrow {
+    margin: 0 0 0.75rem;
+}
+
+.authFormPanel h2 {
+    margin: 0 0 2rem;
+    color: var(--auth-ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.authForm {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    max-width: none !important;
+    gap: 1rem !important;
+}
+
+.authFields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.signupForm .authFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.authField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.authFieldFull {
+    grid-column: 1 / -1;
+}
+
+.authField span {
+    color: var(--auth-ink);
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.authField input {
+    width: 100% !important;
+    min-height: 3.25rem !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 0 1rem !important;
+    border: 1px solid var(--auth-line) !important;
+    border-radius: 10px !important;
+    background: var(--auth-field) !important;
+    color: var(--auth-ink) !important;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.authField input::placeholder {
+    color: #91a095;
+}
+
+.authField input:focus {
+    outline: none;
+    border-color: var(--auth-accent-strong) !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(134, 179, 63, 0.16);
+}
+
+.passwordToggle {
+    position: absolute !important;
+    right: 0.9rem !important;
+    z-index: 2;
+    width: 2rem !important;
+    min-height: 2rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    cursor: pointer;
+}
+
+.passwordToggle svg {
+    width: 1rem;
+    height: auto;
+}
+
+.passwordToggle svg path {
+    fill: var(--auth-muted);
+}
+
+.authMeta,
+.authLegal,
+.authFooter,
+.authStepNote {
+    color: var(--auth-muted);
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.authMeta {
+    margin-top: -0.15rem;
+    text-align: right;
+}
+
+.authPage a {
+    color: #4f7d24;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+.authPage a:hover {
+    color: #315816;
+}
+
+.authPrimaryButton,
+.authSecondaryButton {
+    width: 100% !important;
+    min-height: 3.25rem !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.authPrimaryButton {
+    border: 1px solid #739d32 !important;
+    background: linear-gradient(135deg, #9bc951 0%, #c9e67a 100%) !important;
+    color: #183019 !important;
+}
+
+.authSecondaryButton {
+    border: 1px solid var(--auth-line) !important;
+    background: transparent !important;
+    color: var(--auth-ink) !important;
+}
+
+.authPrimaryButton:hover,
+.authSecondaryButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(48, 88, 35, 0.14);
+}
+
+.authLegal {
+    margin: 0;
+    font-size: 0.78rem;
+}
+
+.authStepNote {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-left: 3px solid var(--auth-accent-strong);
+    background: #f2f7ed;
+}
+
+.authFooter {
+    margin: 1.5rem 0 0;
+    text-align: center;
+}
+
+:global([data-theme="dark"]) .authPage {
+    --auth-ink: #f2f6ed;
+    --auth-muted: #b5c5b3;
+    --auth-line: #3d5540;
+    --auth-surface: #17231a;
+    --auth-field: #101a13;
+    --auth-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+    background: linear-gradient(135deg, #101b13 0%, #1d3021 100%) !important;
+}
+
+:global([data-theme="dark"]) .authField input:focus {
+    background: #18251b !important;
+}
+
+:global([data-theme="dark"]) .authStepNote {
+    background: #1d3021;
+}
+
+@media (max-width: 760px) {
+    .authPage {
+        min-height: auto;
+        padding: 1.25rem 0.85rem 2.5rem !important;
+    }
+
+    .authCard {
+        min-height: 0 !important;
+        grid-template-columns: 1fr !important;
+        border-radius: 20px !important;
+    }
+
+    .authIntro {
+        min-height: 15rem;
+        padding: 1.75rem;
+    }
+
+    .authIntro h1 {
+        max-width: 12ch;
+        margin-top: 3.5rem;
+        font-size: clamp(2.8rem, 14vw, 4.5rem);
+    }
+
+    .authIntro p {
+        max-width: 27rem;
+    }
+
+    .authAccent {
+        right: 1.5rem;
+        top: 4.5rem;
+        font-size: 6rem;
+    }
+
+    .authFormPanel {
+        padding: 2rem 1.25rem 2.25rem;
+    }
+
+    .authFormPanel h2 {
+        margin-bottom: 1.5rem;
+        font-size: clamp(2rem, 11vw, 3rem);
+    }
+
+    .signupForm .authFields {
+        grid-template-columns: 1fr;
+    }
+
+    .authFieldFull {
+        grid-column: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .authPrimaryButton,
+    .authSecondaryButton,
+    .authField input {
+        transition: none;
+    }
+}

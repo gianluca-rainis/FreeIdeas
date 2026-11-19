@@ -1,0 +1,1528 @@
+/* NAV STYLE */
+.nav {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    min-height: 68px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: rgba(247, 248, 239, 0.88);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: saturate(150%) blur(18px);
+    border-bottom: 1px solid rgba(39, 70, 38, 0.10);
+}
+
+.light {
+    background-color: rgba(246, 255, 215, 0.94);
+    color: #2c3d27;
+}
+
+.dark {
+    background-color: rgba(10, 10, 10, 0.94);
+    color: #cba95c;
+    border-bottom-color: rgba(203, 169, 92, 0.24);
+}
+
+.scrolled {
+    box-shadow: 0 8px 26px rgba(22, 38, 14, 0.12);
+}
+
+.dark.scrolled {
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.38);
+}
+
+.pcNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 72px;
+}
+
+.mobileNavBarGhost {
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: 100%;
+    display: none;
+    align-items: center;
+    background-color: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    width: fit-content;
+    text-decoration: none;
+}
+
+.navList li {
+    height: fit-content;
+}
+
+.navText {
+    text-decoration: none;
+    background: none;
+    color: inherit;
+    font-size: 1.1em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.navText:hover {
+    background-color: #f8f095;
+}
+
+.dark .navText:hover {
+    background-color: #1a1410;
+    color: #e8d9af;
+}
+
+.navText::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+}
+
+.navText:hover::after,
+.navText:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.navLogo {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: left;
+}
+
+.navLogoImage {
+    display: flex;
+    align-items: center;
+    width: 188px;
+    background: none;
+    background-color: transparent;
+    margin: 0;
+}
+
+.navLinks {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    gap: 12px;
+    padding-right: clamp(1rem, 3vw, 2.5rem);
+}
+
+.navLinks li {
+    display: flex;
+    align-items: center;
+}
+
+.mobileSpacing {
+    margin-left: 2rem;
+}
+
+.navLinks li a {
+    padding: 0.65rem 0.75rem;
+    border-radius: 999px;
+    align-items: center;
+}
+
+.userImage {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userImage:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.25);
+}
+
+.dark .userImage:hover {
+    box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.35);
+}
+
+.userName {
+    padding-top: 3px;
+    color: #5cad43;
+    cursor: default;
+    transition: color 0.2s ease;
+}
+
+.dark .userName {
+    color: #cba95c;
+}
+
+.menuMobile {
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.menuMobile:hover {
+    transform: scale(1.05);
+}
+
+.themeImageLi {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+}
+
+.themeToggle {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.themeToggle:hover {
+    transform: rotate(180deg);
+    filter: drop-shadow(0 0 5px rgba(203, 169, 92, 0.45));
+}
+
+.notificationsImg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.notificationsImg:hover {
+    transform: translateY(-1px) scale(1.05);
+    filter: drop-shadow(0 0 5px rgba(92, 173, 67, 0.4));
+}
+
+.navText:focus-visible,
+.themeToggle:focus-visible,
+.notificationsImg:focus-visible,
+.userImage:focus-visible,
+.menuMobile:focus-visible {
+    outline: 3px solid rgba(92, 173, 67, 0.7);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+.dark .navText:focus-visible,
+.dark .themeToggle:focus-visible,
+.dark .notificationsImg:focus-visible,
+.dark .userImage:focus-visible,
+.dark .menuMobile:focus-visible {
+    outline-color: rgba(203, 169, 92, 0.75);
+}
+
+.notificaionsMobile {
+    margin: 10px;
+}
+
+.notificationsUl {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-height: calc(40px * 6);
+    overflow-x: inherit;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.notificationsUl li {
+    border: 1px solid #2c3d27;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #ebffa4;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.notificationsUl li:hover {
+    background-color: #f8f095 !important;
+    transform: translateY(-1px);
+}
+
+:global(.unReadNotification) {
+    background-color: #88ff38 !important;
+}
+
+.hiddenNotificationData div img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    transition: transform 0.2s ease;
+}
+
+.hiddenNotificationData div img:hover {
+    transform: translateX(-2px);
+}
+
+.hiddenNotificationData div input {
+    padding: 5px;
+    border-radius: 10px;
+    border: 0;
+    background-color: #b6ffa4;
+    margin-left: 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hiddenNotificationData div input:hover {
+    background-color: #7bd85f;
+}
+
+/* HIDDEN MOBILE MENU AREA */
+.mobileMenuHidden {
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    background-color: #fffff0;
+    z-index: 10;
+    top: 100px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: calc(100%);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    animation: navPanelIn 0.22s ease;
+}
+
+.dark .mobileMenuHidden {
+    background-color: #111111;
+}
+
+/* links for mobile */
+.mobileNavLinks {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 10px;
+    width: calc(100%);
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.mobileNavLinks li {
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #2c3d27;
+    width: calc(100%);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dark .mobileNavLinks li {
+    border-bottom-color: #2a2410;
+}
+
+.themeImageLiMobile {
+    width: fit-content;
+    border-bottom: none !important;
+}
+
+.mobileNavLinks li a {
+    padding: 10px;
+    display: block;
+    text-align: left;
+    align-items: center;
+    width: calc(100%);
+}
+
+.mobileNavLinks .navText {
+    text-decoration: none;
+    background: none;
+    color: inherit;
+    font-size: 2rem;
+}
+
+.mobileNavLinks .navText:hover {
+    background-color: #f8f095;
+}
+
+.dark .mobileNavLinks .navText:hover {
+    background-color: #1a1410;
+}
+
+/* LOGIN AREA - DESKTOP */
+.loginArea {
+    display: none;
+    position: fixed;
+    background-color: #fffff0;
+    right: 0;
+    z-index: 10;
+    top: 100px;
+    padding: 10px 30px 20px 20px;
+    align-items: center;
+    text-align: center;
+    border-radius: 9px;
+    width: 20rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    animation: navPanelIn 0.22s ease;
+}
+
+:global(#notificaions),
+:global(#notificaionsMobile) {
+    animation: navPanelIn 0.22s ease;
+}
+
+.dark .loginArea {
+    background-color: #161616;
+    color: #cba95c;
+}
+
+.loginArea h2 {
+    text-align: center;
+    padding-bottom: 10px;
+    color: #7ddf60;
+}
+
+.loginArea p {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.signUp {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+    transition: color 0.2s ease;
+}
+
+.signUp:hover {
+    color: rgb(109, 255, 12);
+}
+
+.dark .signUp {
+    color: #cba95c;
+}
+
+.dark .signUp:hover {
+    color: #e8d9af;
+}
+
+.desktopInput {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    color: black;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.desktopInput:focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
+}
+
+:global(#passwordAreaLogin) {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    color: black;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:global(#passwordAreaLogin):focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
+}
+
+:global(.toggle-password-visibility),
+:global(.toggle-password-visibility-ext) {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 135px;
+    right: 40px;
+}
+
+:global(.toggle-password-visibility-ext) {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.desktopActionButton {
+    width: calc(100%);
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+.desktopActionButton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+}
+
+:global(#sendAccountButton),
+:global(#sendLogoutButton) {
+    width: calc(100%);
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.dark :global(#sendAccountButton),
+.dark :global(#sendLogoutButton) {
+    background-color: #2a2410;
+    border-color: #cba95c;
+    color: #cba95c;
+}
+
+.forgotPassword {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+}
+
+.forgotPassword:hover {
+    color: rgb(109, 255, 12);
+}
+
+/* login area mobile */
+.loginAreaMobile {
+    display: contents;
+    align-items: center;
+    text-align: center;
+    border-radius: 9px;
+    width: 20rem;
+}
+
+.loginAreaMobile h2 {
+    text-align: center;
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #7ddf60;
+}
+
+.loginAreaMobile p {
+    font-size: large;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.signUpMobile {
+    cursor: pointer;
+    color: rgb(70, 175, 0);
+    transition: color 0.2s ease;
+}
+
+.signUpMobile:hover {
+    color: rgb(109, 255, 12);
+}
+
+.dark .signUpMobile {
+    color: #cba95c;
+}
+
+.dark .signUpMobile:hover {
+    color: #e8d9af;
+}
+
+.mobileInput {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mobileInput:focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
+}
+
+:global(#passwordAreaLoginMobile) {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(236, 236, 236);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-right: 33px;
+    padding-left: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:global(#passwordAreaLoginMobile):focus {
+    outline: none;
+    border-color: #5cad43;
+    box-shadow: 0 0 0 3px rgba(92, 173, 67, 0.2);
+}
+
+.togglePasswordVisibilityMobile {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 391px;
+    right: 36px;
+}
+
+.mobileActionButton {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-right: 0;
+    padding-left: 0;
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+.mobileActionButton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+}
+
+:global(#sendAccountButtonMobile),
+:global(#sendLogoutButtonMobile) {
+    width: calc(90%);
+    height: 40px;
+    font-size: large;
+    margin-bottom: 10px;
+    background-color: rgb(162, 241, 110);
+    border: 1px solid #2c3d27;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.dark :global(#sendAccountButtonMobile),
+.dark :global(#sendLogoutButtonMobile) {
+    background-color: #2a2410;
+    border-color: #cba95c;
+    color: #cba95c;
+}
+
+.mobileActionButton:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Rebuilt navigation */
+.nav {
+    min-height: 72px;
+    background: rgba(247, 248, 239, 0.94);
+}
+
+.dark.nav {
+    background: rgba(17, 20, 15, 0.94);
+}
+
+.pcNavBarGhost,
+.mobileNavBarGhost {
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.brandLink {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.navLogoImage {
+    width: 174px;
+}
+
+.navLinks {
+    gap: 0.15rem;
+}
+
+.navLinks li a {
+    border-radius: 6px;
+}
+
+/* Modern navigation system */
+.nav {
+    min-height: 72px;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+    background: rgba(249, 250, 244, 0.92);
+    backdrop-filter: blur(18px) saturate(150%);
+}
+
+.dark.nav {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+    background: rgba(17, 20, 15, 0.92);
+}
+
+.scrolled {
+    box-shadow: 0 12px 32px rgba(23, 34, 23, 0.10);
+}
+
+.pcNavBarGhost {
+    min-height: 72px;
+}
+
+.navInner {
+    width: min(1320px, calc(100% - 2.5rem));
+    min-height: 72px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    align-items: center;
+}
+
+.brandLink {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+
+.navLogoImage {
+    width: 168px;
+    height: auto;
+}
+
+.primaryNav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.navText {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: 0.55rem 0.82rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.navText::after {
+    display: none;
+}
+
+.navText:hover {
+    background: rgba(82, 132, 66, 0.10);
+}
+
+.publishLink {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    margin-inline: 0.25rem;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    padding: 0.55rem 0.9rem;
+    background: #263f23;
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.dark .publishLink {
+    border-color: #d0b85f;
+    background: #d0b85f;
+    color: #17180f;
+}
+
+.navUtilities,
+.mobileUtilities {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.iconButton,
+.accountButton {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+}
+
+.iconButton:hover {
+    border-color: rgba(37, 54, 33, 0.14);
+    background: rgba(82, 132, 66, 0.08);
+}
+
+.themeToggle,
+.notificationsImg,
+.menuMobile {
+    width: 22px;
+    height: 22px;
+}
+
+.accountButton {
+    width: auto;
+    min-width: 112px;
+    gap: 0.55rem;
+    border-color: rgba(37, 54, 33, 0.14);
+    padding: 0.25rem 0.45rem 0.25rem 0.25rem;
+}
+
+.userImage {
+    width: 32px;
+    height: 32px;
+}
+
+.userName {
+    max-width: 72px;
+    overflow: hidden;
+    padding: 0;
+    color: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.loginArea {
+    top: 72px;
+    right: max(20px, calc((100vw - 1320px) / 2));
+    width: 340px;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fdfdf8;
+    box-shadow: 0 24px 60px rgba(23, 34, 23, 0.16);
+}
+
+.dark .loginArea {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #1a1e17;
+}
+
+.mobileMenuHidden {
+    top: 72px;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .mobileMenuHidden {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
+/* Notification panels */
+.notificationsPanel {
+    width: 380px;
+    max-height: calc(100dvh - 88px);
+    right: max(1.25rem, calc((100vw - 1320px) / 2));
+    top: 72px;
+    overflow-y: auto;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fafbf6;
+    box-shadow: 0 24px 70px rgba(23, 34, 23, 0.16);
+}
+
+.dark .notificationsPanel {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #171a15;
+}
+
+.notificationsHeader {
+    min-height: 88px;
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.dark .notificationsHeader {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+}
+
+.notificationsHeader h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.notificationsUl {
+    width: 100%;
+    max-height: 440px;
+    display: block;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.notificationsUl li.notificationItem {
+    min-height: 84px;
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.10);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+}
+
+.dark .notificationsUl li.notificationItem {
+    border-bottom-color: rgba(237, 234, 221, 0.10);
+}
+
+.notificationsUl li.notificationItem:hover {
+    background: rgba(63, 125, 68, 0.08) !important;
+}
+
+.notificationStatusDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.unReadNotification .notificationStatusDot {
+    background: #5c9a47;
+}
+
+.notificationCopy {
+    min-width: 0;
+}
+
+.notificationCopy strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.86rem;
+}
+
+.notificationCopy p {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    opacity: 0.68;
+}
+
+.notificationsUl time {
+    align-self: start;
+    font-size: 0.68rem;
+    opacity: 0.62;
+}
+
+.notificationEmpty {
+    min-height: 220px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    text-align: center;
+}
+
+.notificationEmpty div {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.notificationEmpty span {
+    font-size: 0.78rem;
+    opacity: 0.65;
+}
+
+.hiddenNotificationData {
+    padding: 0;
+}
+
+:global(.notificationDetail) {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+
+:global(.notificationDetailMeta) p {
+    margin: 0 0 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.notificationDetailMeta) h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+}
+
+:global(.notificationDetailDescription) {
+    margin: 1.25rem 0;
+    line-height: 1.55;
+}
+
+:global(.notificationDetailActions) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
+    margin-top: auto;
+}
+
+:global(.notificationBackImage),
+:global(.notificationDeleteButton) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(37, 54, 33, 0.16);
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+:global(.notificationBackImage) svg {
+    width: 18px;
+    height: 18px;
+}
+
+:global(.notificationDeleteButton) {
+    border-color: #9a3f32;
+    color: #9a3f32;
+}
+
+.notificaionsMobile {
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 72px);
+    margin: 0;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .notificaionsMobile {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
+/* Login and notification panels */
+.loginArea {
+    width: 360px;
+    max-height: calc(100dvh - 88px);
+    right: max(1.25rem, calc((100vw - 1320px) / 2));
+    top: 72px;
+    overflow-y: auto;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fafbf6;
+    box-shadow: 0 24px 70px rgba(23, 34, 23, 0.16);
+}
+
+.dark .loginArea {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #171a15;
+}
+
+.accountPanel,
+.notificationsPanel {
+    width: 100%;
+}
+
+.signInPanel,
+.signedInPanel {
+    padding: 1.25rem;
+}
+
+.panelEyebrow {
+    margin-bottom: 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.signInPanel h2,
+.signedInPanel h2,
+.notificationsHeader h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.panelSubtitle {
+    margin: 0.7rem 0 1.25rem;
+    color: inherit;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    opacity: 0.72;
+}
+
+.loginForm {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.desktopInput,
+:global(#passwordAreaLogin) {
+    width: 100%;
+    height: 46px;
+    margin: 0;
+    border: 1px solid rgba(37, 54, 33, 0.18);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #172217;
+}
+
+.dark .desktopInput,
+.dark :global(#passwordAreaLogin) {
+    border-color: rgba(237, 234, 221, 0.16);
+    background: #20251c;
+    color: #edeadd;
+}
+
+.forgotPassword {
+    width: fit-content;
+    border: 0;
+    background: transparent;
+    color: var(--fi-green-dark, #2d6534);
+    padding: 0.15rem 0;
+    text-align: left;
+}
+
+.dark .forgotPassword {
+    color: #d0b85f;
+}
+
+.desktopActionButton,
+.desktopActionButtonSecondary {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    background: #263f23;
+    color: #ffffff;
+}
+
+.desktopActionButtonSecondary {
+    margin-top: 0.5rem;
+    border-color: rgba(37, 54, 33, 0.18);
+    background: transparent;
+    color: inherit;
+}
+
+.dark .desktopActionButton {
+    border-color: #d0b85f;
+    background: #d0b85f;
+    color: #17180f;
+}
+
+.dark .desktopActionButtonSecondary {
+    border-color: rgba(237, 234, 221, 0.18);
+}
+
+.registerLine {
+    margin: 1rem 0 0;
+    text-align: center;
+}
+
+.accountIdentity {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem 0 1.25rem;
+}
+
+.accountIdentity h2 {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.accountIdentity p {
+    margin: 0.25rem 0 0;
+    font-size: 0.78rem;
+    opacity: 0.68;
+}
+
+.accountAvatar {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 50%;
+}
+
+.accountAvatar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.notificationsHeader {
+    min-height: 84px;
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.dark .notificationsHeader {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+}
+
+.notificationsUl {
+    max-height: 420px;
+    padding: 0.35rem 0;
+}
+
+.notificationsUl li {
+    min-height: 66px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.10);
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.notificationsUl li:hover {
+    background: rgba(63, 125, 68, 0.07) !important;
+}
+
+.hiddenNotificationData {
+    padding: 0.75rem;
+}
+
+.mobileMenuHidden {
+    width: 100%;
+    max-width: none;
+    height: calc(100dvh - 72px);
+    top: 72px;
+    align-items: stretch;
+    overflow-y: auto;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .mobileMenuHidden {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
+.mobileNavLinks {
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.mobileNavLinks li {
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.mobileNavLinks .navText {
+    width: 100%;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    font-size: 1.15rem;
+}
+
+.loginAreaMobile {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.mobileAccountPanel,
+.notificaionsMobile {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.mobileAccountPanel .signInPanel,
+.mobileAccountPanel .signedInPanel,
+.notificaionsMobile {
+    padding: 1.25rem;
+}
+
+.mobileInput,
+:global(#passwordAreaLoginMobile) {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    border: 1px solid rgba(37, 54, 33, 0.18);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #172217;
+}
+
+.mobileActionButton,
+.mobileActionButtonSecondary {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    background: #263f23;
+    color: #ffffff;
+}
+
+.mobileActionButtonSecondary {
+    margin-top: 0.5rem;
+    border-color: rgba(37, 54, 33, 0.18);
+    background: transparent;
+    color: inherit;
+}
+
+@media (max-width: 900px) {
+    .pcNavBarGhost {
+        display: none;
+    }
+
+    .mobileNavBarGhost {
+        display: flex;
+        min-height: 72px;
+    }
+
+    .mobileNavInner {
+        width: calc(100% - 1.5rem);
+        min-height: 72px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mobileUtilities {
+        gap: 0.15rem;
+    }
+
+    .mobileUtilities .iconButton {
+        width: 38px;
+        height: 38px;
+    }
+
+    .mobileNavBarGhost .navLogoImage {
+        width: 170px;
+    }
+
+    .mobileNavBarGhost .navLinks {
+        flex-grow: 1;
+        justify-content: flex-end;
+        padding-right: 0;
+        gap: 0.75rem;
+    }
+
+    .mobileNavBarGhost .themeToggle,
+    .mobileNavBarGhost .notificationsImg,
+    .mobileNavBarGhost .menuMobile {
+        width: 28px;
+        height: 28px;
+    }
+
+    .loginArea {
+        display: none !important;
+    }
+
+    .mobileMenuHidden {
+        left: 0;
+        right: 0;
+        top: 72px;
+        width: 100%;
+        height: calc(100dvh - 72px);
+        overflow-y: auto;
+        border-top: 1px solid #dde8a8;
+    }
+
+    .dark .mobileMenuHidden {
+        border-top-color: #2a2410;
+    }
+
+    .mobileNavLinks {
+        gap: 0;
+        padding-top: 0.5rem;
+        padding-bottom: 0.8rem;
+    }
+
+    .mobileNavLinks .navText {
+        font-size: 1.15rem;
+        padding: 0.9rem 1rem;
+        width: fit-content;
+    }
+
+    .loginAreaMobile {
+        display: block;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .mobileInput,
+    :global(#passwordAreaLoginMobile),
+    .mobileActionButton,
+    :global(#sendAccountButtonMobile),
+    :global(#sendLogoutButtonMobile) {
+        width: 90%;
+        height: 30px;
+        font-size: medium;
+    }
+
+    .notificaionsMobile {
+        width: 100%;
+        max-width: 420px;
+        margin: 0.75rem auto 0;
+    }
+
+    .notificationsUl {
+        max-height: min(320px, 45dvh);
+    }
+}
+
+@media (min-width: 901px) {
+    .pcNavBarGhost {
+        display: flex;
+    }
+
+    .mobileNavBarGhost {
+        display: none;
+    }
+
+    .mobileMenuHidden {
+        display: none !important;
+    }
+}
+
+/* Lucide-style utility icons */
+.iconButton svg,
+.userIconWrap svg,
+.menuIconWrap svg {
+    display: block;
+}
+
+.userIconWrap,
+.menuIconWrap {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userIconWrap svg,
+.menuIconWrap svg {
+    width: 20px;
+    height: 20px;
+}
+
+.accountButton .userIconWrap {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 50%;
+}
+
+.dark .accountButton .userIconWrap {
+    border-color: rgba(237, 234, 221, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav,
+    .navText,
+    .navText::after,
+    .themeToggle,
+    .notificationsImg,
+    .userImage,
+    .menuMobile,
+    .mobileMenuHidden,
+    .loginArea,
+    :global(#notificaions),
+    :global(#notificaionsMobile),
+    .desktopActionButton,
+    .mobileActionButton,
+    .desktopInput,
+    .mobileInput,
+    :global(#passwordAreaLogin),
+    :global(#passwordAreaLoginMobile),
+    .notificationsUl li,
+    .hiddenNotificationData div img,
+    .hiddenNotificationData div input {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+@keyframes navPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

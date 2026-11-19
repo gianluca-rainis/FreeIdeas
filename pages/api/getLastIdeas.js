@@ -1,4 +1,4 @@
-import { query } from '../../lib/db_connection';
+import { query } from '@/lib/db_connection';
 
 export default async function handler(req, res) {
     try {

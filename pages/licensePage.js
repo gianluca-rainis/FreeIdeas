@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
+import styles from '@/styles/UnifiedPages.module.css'
+import '@/styles/FooterPages.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import React from 'react'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -23,8 +27,11 @@ export default function LicensePage({pageTitle}) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main className="footerpage">
-                <h1>FreeIdeas License</h1>
+            <main className={`${styles.scope} footerpage`}>
+                <header className="footerPageHeader">
+                    <p>Legal / License</p>
+                    <h1>FreeIdeas License</h1>
+                </header>
 
                 <h1>Copyright (c) 2025, FreeIdeas by Gianluca Rainis</h1>
 

@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
+import styles from '@/styles/Home.module.css'
+import '@/styles/HomePage.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { apiCall } from '../utils/apiConfig'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering
 export async function getStaticProps() {
-    const ideasEmpty = Array.from({ length: 22 }, (_, i) => ({
+    const ideasEmpty = Array.from({ length: 12 }, (_, i) => ({
         id: i + 1,
         title: `Idea ${i + 1}`,
         author: `Author ${i + 1}`,
@@ -24,224 +28,335 @@ export async function getStaticProps() {
     }
 }
 
-// Internal functions
-function IdeaCard({ idea, images }) {
-    const router = useRouter();
-    
-    if (!idea?.id) {
+function formatImage(rawImage) {
+    if (!rawImage) {
         return null;
     }
-    
-    const imageSrc = images[idea.id] || "/images/FreeIdeas.svg";
-    
+
+    if (typeof rawImage === 'string') {
+        return rawImage;
+    }
+
+    if (rawImage?.data && Array.isArray(rawImage.data) && typeof window !== 'undefined') {
+        try {
+            let binary = '';
+            const bytes = rawImage.data;
+            const chunkSize = 0x8000;
+
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                const chunk = bytes.slice(i, i + chunkSize);
+                binary += String.fromCharCode(...chunk);
+            }
+
+            return `data:image/png;base64,${window.btoa(binary)}`;
+        } catch (error) {
+            console.error('Unable to parse image buffer:', error);
+            return null;
+        }
+    }
+
+    return null;
+}
+
+function FeaturedIdeasCarousel({ allIdeas, images }) {
+    const router = useRouter();
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    const [isAutoPlay, setIsAutoPlay] = useState(true);
+    const [galleryAutoScroll, setGalleryAutoScroll] = useState(true);
+    const [visibleSets, setVisibleSets] = useState(2);
+    const galleryRef = useRef(null);
+    const galleryScrollTimeoutRef = useRef(null);
+    const lastSetAddTimeRef = useRef(0);
+    const singleSetHeightRef = useRef(0);
+
+    useEffect(() => {
+        if (!isAutoPlay || !allIdeas || allIdeas.length < 2) {
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setCarouselIndex(prev => (prev + 2 >= allIdeas.length ? 0 : prev + 2));
+        }, 6000);
+
+        return () => clearInterval(interval);
+    }, [isAutoPlay, allIdeas]);
+
+    useEffect(() => {
+        if (!galleryAutoScroll || !galleryRef.current) {
+            return;
+        }
+
+        const scrollInterval = setInterval(() => {
+            if (galleryRef.current) {
+                const { scrollTop, scrollHeight, clientHeight } = galleryRef.current;
+                const idealSingleSetHeight = (scrollHeight - clientHeight) / 2;
+                singleSetHeightRef.current = idealSingleSetHeight;
+                
+                galleryRef.current.scrollTop += 1;
+                
+                // When approaching bottom, add a new set (max 3 total)
+                const now = Date.now();
+
+                if (scrollTop + clientHeight >= scrollHeight - 300 && now - lastSetAddTimeRef.current > 500) {
+                    lastSetAddTimeRef.current = now;
+                    setVisibleSets(prev => (prev < 3 ? prev + 1 : 3));
+                }
+                
+                // When at top and have more than 2 sets, remove oldest
+                if (scrollTop < 100 && visibleSets > 2) {
+                    const newScroll = Math.max(0, scrollTop + idealSingleSetHeight);
+
+                    setVisibleSets(prev => Math.max(2, prev - 1));
+                    setTimeout(() => {
+                        if (galleryRef.current) {
+                            galleryRef.current.scrollTop = newScroll;
+                        }
+                    }, 0);
+                }
+            }
+        }, 35);
+
+        return () => clearInterval(scrollInterval);
+    }, [galleryAutoScroll, visibleSets]);
+
+    if (!allIdeas || allIdeas.length === 0) {
+        return null;
+    }
+
+    const idea1 = allIdeas[carouselIndex] || null;
+    const idea2 = allIdeas[carouselIndex + 1] || null;
+
+    function handleGalleryClick(index) {
+        setCarouselIndex(index);
+        setIsAutoPlay(false);
+    }
+
+    function handleAutoResume() {
+        setIsAutoPlay(true);
+    }
+
+    function handleGalleryScroll() {
+        // User is scrolling manually - pause auto-scroll
+        /* setGalleryAutoScroll(false);
+        
+        // Clear any existing timeout
+        if (galleryScrollTimeoutRef.current) {
+            clearTimeout(galleryScrollTimeoutRef.current);
+        }
+        
+        // Resume auto-scroll after 3 seconds of inactivity
+        galleryScrollTimeoutRef.current = setTimeout(() => {
+            setGalleryAutoScroll(true);
+        }, 3000); */
+    }
+
     return (
-        <li className="ideaBox">
-            <Link 
-                href={`/idea/${idea.id}`} 
-                className="ideaLink" 
-                onMouseEnter={() => router.prefetch(`/idea/${idea.id}`)}
+        <div className={styles.carouselContainer}>
+            {/* Featured Pair */}
+            <div className={styles.featuredCarouselGrid}>
+                {idea1 && (
+                    <Link
+                        href={`/idea/${idea1.id || 0}`}
+                        className={styles.carouselCard}
+                        onMouseEnter={() => router.prefetch(`/idea/${idea1.id || 0}`)}
+                    >
+                        <img src={images[idea1.id] || '/images/FreeIdeas.svg'} alt="Featured idea" className={styles.carouselImage} />
+                        <div className={styles.carouselContent}>
+                            <p className={styles.carouselKicker}>Latest published</p>
+                            <h3 className={styles.carouselTitle}>{idea1.title || 'Untitled'}</h3>
+                            <p className={styles.carouselAuthor}>by {idea1.author || 'Unknown'}</p>
+                        </div>
+                    </Link>
+                )}
+                {idea2 && (
+                    <Link
+                        href={`/idea/${idea2.id || 0}`}
+                        className={styles.carouselCard}
+                        onMouseEnter={() => router.prefetch(`/idea/${idea2.id || 0}`)}
+                    >
+                        <img src={images[idea2.id] || '/images/FreeIdeas.svg'} alt="Featured idea" className={styles.carouselImage} />
+                        <div className={styles.carouselContent}>
+                            <p className={styles.carouselKicker}>Latest published</p>
+                            <h3 className={styles.carouselTitle}>{idea2.title || 'Untitled'}</h3>
+                            <p className={styles.carouselAuthor}>by {idea2.author || 'Unknown'}</p>
+                        </div>
+                    </Link>
+                )}
+            </div>
+
+            {/* Gallery/Selector List - Dynamic infinite scroll */}
+            <div 
+                className={styles.carouselGallery}
+                ref={galleryRef}
+                onScroll={handleGalleryScroll}
             >
-                <img src={imageSrc} alt="Idea Image" className="ideaImage" />
-                <p className="ideaTitle">{idea.title}</p>
-                <p className="ideaAuthor">{idea.author}</p>
-            </Link>
-        </li>
+                {/* Render multiple cycles dynamically */}
+                {Array.from({ length: visibleSets }).map((_, setIndex) => (
+                    allIdeas.map((idea, index) => {
+                        const isActive = index >= carouselIndex && index < carouselIndex + 2;
+
+                        return (
+                            <button
+                                key={`carousel-thumb-${setIndex}-${index}`}
+                                className={`${styles.carouselThumb} ${isActive ? styles.carouselThumbActive : ''}`}
+                                onClick={() => handleGalleryClick(index)}
+                                onMouseEnter={handleAutoResume}
+                                title={idea.title}
+                            >
+                                <img src={images[idea.id] || '/images/FreeIdeas.svg'} alt={idea.title || 'Idea'} />
+                                <span className={styles.carouselThumbLabel}>{idea.title || 'Untitled'}</span>
+                            </button>
+                        );
+                    })
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function FeaturedIdea({ idea, imageSrc, randomIdeaId }) {
+    const router = useRouter();
+
+    if (!idea) {
+        return null;
+    }
+
+    const finalId = idea.id || randomIdeaId || 0;
+
+    return (
+        <Link
+            href={`/idea/${finalId}`}
+            className={styles.featuredIdea}
+            onMouseEnter={() => router.prefetch(`/idea/${finalId}`)}
+        >
+            <img src={imageSrc || '/images/FreeIdeas.svg'} alt="Featured idea" className={styles.featuredImage} />
+            <div className={styles.featuredContent}>
+                <p className={styles.kicker}>Latest published idea</p>
+                <h3 className={styles.featuredTitle}>{idea.title || 'Untitled idea'}</h3>
+                <p className={styles.featuredAuthor}>by {idea.author || 'Unknown author'}</p>
+                <p className={styles.featuredText}>Open the full concept, read details, and decide if this is your next collaboration.</p>
+            </div>
+        </Link>
     )
 }
 
-function IdeaList({ ideas, id, images }) {
+function LatestIdeasRail({ ideas, images }) {
+    const router = useRouter();
+
     if (!Array.isArray(ideas)) {
         return null;
     }
-    
+
     return (
-        <ul id={id}>
+        <ul className={styles.latestRail}>
             {ideas.map((idea, index) => (
-                <IdeaCard key={`${id}-${index}`} idea={idea} images={images} />
+                <li key={`latest-idea-${index}`}>
+                    <Link
+                        href={`/idea/${idea.id || 0}`}
+                        className={styles.railItem}
+                        onMouseEnter={() => router.prefetch(`/idea/${idea.id || 0}`)}
+                    >
+                        <img src={images[idea.id] || '/images/FreeIdeas.svg'} alt="Latest idea" className={styles.railImage} />
+                        <div>
+                            <p className={styles.railTitle}>{idea.title || 'Untitled idea'}</p>
+                            <p className={styles.railAuthor}>by {idea.author || 'Unknown author'}</p>
+                        </div>
+                    </Link>
+                </li>
             ))}
         </ul>
     )
 }
 
-function ColoredTitle() {
-    return (
-        <h1>
-            A place where <strong>your</strong>{' '}
-            <span style={{color: '#ffcf00'}}>I</span>
-            <span style={{color: '#f4d54b'}}>d</span>
-            <span style={{color: '#e4c53d'}}>e</span>
-            <span style={{color: '#c0a634'}}>a</span>
-            <span style={{color: '#a28710'}}>s</span>
-            {' '}can be{' '}
-            <span style={{color: '#59ff97'}}>F</span>
-            <span style={{color: '#47dc55'}}>r</span>
-            <span style={{color: '#05a814'}}>e</span>
-            <span style={{color: '#106d19'}}>e</span>
-        </h1>
-    )
-}
+function Banner({ message = '', show = false }) {
+    if (!show || !message) {
+        return null;
+    }
 
-function Banner({ message = "", show = false }) {
     return (
-        <div style={{
-            backgroundColor: '#ffbf8f',
-            width: '100%',
-            marginBottom: '15px',
-            justifyItems: 'center',
-            display: show ? undefined : 'none'
-        }}>
-            <h1 style={{
-                width: 'fit-content',
-                textAlign: 'center',
-                padding: '10px',
-                color: 'black'
-            }}>
-                {message}
-            </h1>
+        <div className={styles.banner} role="status" aria-live="polite">
+            {message}
         </div>
     )
 }
 
-// Auto-scroll effect
-function autoScrollIdeas(ideasLoading) {
-    useEffect(() => {
-        if (ideasLoading) {
-            return;
-        }
-
-        let currentScrollMode = true;
-
-        function startAutoScroll() {
-            const vertical = window.innerWidth > 760;
-
-            currentScrollMode = vertical;
-
-            const lastIdeas1 = document.getElementById("lastIdeasVertical1");
-            const lastIdeas2 = document.getElementById("lastIdeasVertical2");
-            const lastIdeas3 = document.getElementById("lastIdeasHorizontal");
-            const lastIdeas4 = document.getElementById("inspirationalUl");
-
-            if (!lastIdeas1 || !lastIdeas2 || !lastIdeas3 || !lastIdeas4) {
-                return;
-            }
-
-            // Clone content for infinite scroll
-            if (!lastIdeas1.dataset.cloned) {
-                lastIdeas1.innerHTML += lastIdeas1.innerHTML;
-                lastIdeas2.innerHTML += lastIdeas2.innerHTML;  
-                lastIdeas3.innerHTML += lastIdeas3.innerHTML;
-                lastIdeas4.innerHTML += lastIdeas4.innerHTML;
-
-                lastIdeas1.dataset.cloned = "true";
-                lastIdeas2.dataset.cloned = "true";
-                lastIdeas3.dataset.cloned = "true";
-                lastIdeas4.dataset.cloned = "true";
-            }
-
-            // Scroll functions
-            function scrollVertical(element, direction) {
-                let scrollAmount = direction?0:element.scrollHeight / 2;
-                const speed = 1.5;
-
-                function autoScroll() {
-                    scrollAmount += (direction?1:-1) * speed;
-                    
-                    if (direction && scrollAmount >= element.scrollHeight / 2) {
-                        scrollAmount = 0;
-                    }
-                    else if (!direction && scrollAmount < 0) {
-                        scrollAmount = element.scrollHeight / 2;
-                    }
-                    
-                    element.scrollTop = scrollAmount;
-                    requestAnimationFrame(autoScroll);
-                }
-
-                autoScroll();
-            };
-
-            function scrollHorizontal(element, direction) {
-                let scrollAmount = direction?0:element.scrollWidth / 2;
-                const speed = 1.5;
-
-                function autoScroll() {
-                    scrollAmount += (direction?1:-1) * speed;
-                    
-                    if (direction && scrollAmount >= element.scrollWidth / 2) {
-                        scrollAmount = 0;
-                    }
-                    else if (!direction && scrollAmount < 0) {
-                        scrollAmount = element.scrollWidth / 2;
-                    }
-                    
-                    element.scrollLeft = scrollAmount;
-                    requestAnimationFrame(autoScroll);
-                }
-
-                autoScroll();
-            };
-
-            // Apply scrolling based on screen size
-            if (vertical) {
-                scrollVertical(lastIdeas1, true);
-                scrollVertical(lastIdeas2, false);
-            }
-            else {
-                scrollHorizontal(lastIdeas1, false);
-                scrollHorizontal(lastIdeas2, true);
-            }
-
-            scrollHorizontal(lastIdeas3, false);
-            scrollHorizontal(lastIdeas4, true);
-        }
-
-        // Start after component mount
-        setTimeout(startAutoScroll, 100);
-
-        // Handle window resize
-        function handleResize() {
-            const scrollMode = window.innerWidth>760;
-
-            if (scrollMode != currentScrollMode) {
-                startAutoScroll();
-            }
-        }
-
-        window.addEventListener("resize", handleResize);
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, [ideasLoading]);
+function ColoredSlogan() {
+    return (
+        <h1 className={styles.sloganTitle}>
+            A place where ideas can be free.
+        </h1>
+    )
 }
 
-// Main
-export default function HomePage({ ideasEmpty, pageTitle }) {
-    const { randomIdeaId, bannerMessage, showBanner } = useAppContext();
-    const [images, setImages] = React.useState({});
-    const [ideas, setIdeas] = React.useState(ideasEmpty);
-    const [ideasLoading, setIdeasLoading] = React.useState(true);
+const MANIFESTO_QUOTES = [
+    'Ideas are what move the world forward.',
+    'Ideas deserve freedom. Not judgment. Not silence.',
+    'Creativity grows when it is shared.',
+    'No filters. No gatekeepers. Just ideas.',
+    'You do not need permission to create.',
+    'Every idea is a seed. Sharing is planting.',
+    'Some ideas are quiet. They still deserve to be heard.',
+    'Do not wait for perfect. Publish what is real.',
+    'Originality starts with the courage to share.',
+    'Your imagination deserves a place to breathe.'
+];
 
-    // Fetch ideas once on mount
-    React.useEffect(() => {
+const WHY_FREEIDEAS_SLOGANS = [
+    'A living space for ideas that want to grow.',
+    'Publish freely, discover boldly.',
+    'Where every idea gets an equal stage.',
+    'No gatekeeping. No gatechecked ideas.',
+    'Your rough draft is someone\'s breakthrough.',
+    'Ideas don\'t need permission here.',
+    'Build a community around what you create.',
+    'From spark to spotlight in one place.',
+    'Finish your ideas together, not alone.',
+    'Creativity thrives when it is free.',
+    'A place where unfinished ideas matter.',
+    'Share what you\'re thinking, not what\'s perfect.',
+    'Ideas grow faster when they\'re seen.',
+    'Your next big move starts as a thought here.',
+    'Publish first, perfect later.',
+    'Where ideas find the people who need them.',
+    'Freedom to create, space to share.',
+    'Every voice deserves to be heard.',
+    'Ideas are precious. Make them visible.',
+    'Collaborate on concepts before they\'re finished.',
+    'Build something real from what lives in your head.',
+    'A platform that celebrates your unpolished genius.',
+    'Swap ideas. Fuel each other. Create together.'
+];
+
+export default function HomePage({ ideasEmpty, pageTitle }) {
+    const { randomIdeaId, bannerMessage, showBanner, themeIsLight } = useAppContext();
+    const hasBanner = Boolean(showBanner && bannerMessage);
+    const [selectedSlogan, setSelectedSlogan] = useState('');
+    const [images, setImages] = useState({});
+    const [ideas, setIdeas] = useState(ideasEmpty);
+
+    useEffect(() => {
+        setSelectedSlogan(WHY_FREEIDEAS_SLOGANS[Math.floor(Math.random() * WHY_FREEIDEAS_SLOGANS.length)]);
+    }, []);
+
+    useEffect(() => {
         async function loadIdeas() {
             try {
                 const data = await apiCall(`/api/getLastIdeas`);
 
                 if (data.success) {
-                    const sourceList = data.data;
-                    
-                    // Process ideas
+                    const sourceList = data.data || [];
+
                     let loadedIdeas = sourceList.map(idea => ({
                         id: idea.id,
                         title: idea.title,
                         author: idea.username,
                         image: null
                     }));
-                    
-                    // Ensure at least 22 items for all UI slices
-                    if (loadedIdeas.length < 22) {
+
+                    if (loadedIdeas.length < 12) {
                         const fill = [];
 
-                        for (let i = loadedIdeas.length; i < 22; i++) {
+                        for (let i = loadedIdeas.length; i < 12; i++) {
                             const base = loadedIdeas[i % (loadedIdeas.length || 1)] || { 
                                 id: i + 1, 
                                 title: `Idea ${i + 1}`, 
@@ -256,13 +371,16 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
                     }
                     
                     setIdeas(loadedIdeas);
-                    
-                    // Process images
+
                     const imageMap = {};
 
                     sourceList.forEach(idea => {
                         if (idea.ideaimage) {
-                            imageMap[idea.id] = Buffer.isBuffer(idea.ideaimage)?Buffer.from(idea.ideaimage.data).toString():idea.ideaimage;
+                            const formatted = formatImage(idea.ideaimage);
+
+                            if (formatted) {
+                                imageMap[idea.id] = formatted;
+                            }
                         }
                     });
 
@@ -270,9 +388,8 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
                 }
             } catch (error) {
                 console.error('Failed to fetch ideas:', error);
-                
-                // Fallback data in case of API failure
-                const fallbackIdeas = Array.from({ length: 22 }, (_, i) => ({
+
+                const fallbackIdeas = Array.from({ length: 12 }, (_, i) => ({
                     id: i + 1,
                     title: `Idea ${i + 1}`,
                     author: `Author ${i + 1}`,
@@ -280,198 +397,113 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
                 }));
 
                 setIdeas(fallbackIdeas);
-            } finally {
-                setIdeasLoading(false);
             }
         }
 
         loadIdeas();
     }, []);
 
-    autoScrollIdeas(ideasLoading);
+    const latestIdeas = ideas.slice(0, 8);
 
     return (
         <>
             <Head pageTitle={pageTitle} />
-
             <Nav randomId={randomIdeaId} />
-            
-            <header>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    alignItems: 'center',
-                    padding: '20px 0 20px 0'
-                }}>
-                    <Banner message={bannerMessage} show={showBanner} />
-                    <ColoredTitle />
-                </div>
-            </header>
 
-            <main id="indexMain">
-                <section id="whatisFreeIdeas">
-                    <IdeaList ideas={ideas.slice(0, 6)} id="lastIdeasVertical1" images={images} />
+            <main className={`${styles.home} ${themeIsLight ? styles.light : styles.dark}`}>
+                {hasBanner && <Banner message={bannerMessage} show={showBanner} />}
 
-                    <section id="middleTextSection">
+                <section className={styles.heroSection}>
+                    <div className={styles.heroCopy}>
+                        <p className={styles.heroEyebrow}>An open idea library</p>
                         <h1>
-                            Welcome to{' '}
-                            <span style={{color: '#59ff97'}}>F</span>
-                            <span style={{color: '#47dc55'}}>r</span>
-                            <span style={{color: '#05a814'}}>e</span>
-                            <span style={{color: '#106d19'}}>e</span>
-                            <span style={{color: '#ffcf00'}}>I</span>
-                            <span style={{color: '#f4d54b'}}>d</span>
-                            <span style={{color: '#e4c53d'}}>e</span>
-                            <span style={{color: '#c0a634'}}>a</span>
-                            <span style={{color: '#a28710'}}>s</span>!
+                            Give every idea
+                            <span> room to become real.</span>
                         </h1>
-
-                        <h2>What is FreeIdeas?</h2>
-                        <p className="description">
-                            FreeIdeas is a platform where you can share ideas for any type of project — creative, technical, personal, or collaborative — and find inspiration for your next venture.
-                            <br />
-                            You can search for ideas, publish your own, ask for help with yours, or simply browse other people's ideas.
-                            <br />
-                            The ideas published are free and you can use them as you wish, without any restrictions (except those mentioned in the license section).
-                            <br />
-                            The site is open to everyone, and you can contribute by publishing your own ideas or helping others with theirs.
-                            <br />
-                            The goal of FreeIdeas is to create a community of people who share their ideas and help each other bring them to life.
-                            <br />
-                            Whether you have an idea you want to share with the world or are looking for inspiration for your next project, FreeIdeas is the place for you.
-                            <br />
-                            <strong>Join us and start sharing your ideas today!</strong>
+                        <p className={styles.heroText}>
+                            Publish what you are imagining, discover what others are building, and turn unfinished thoughts into shared possibilities.
                         </p>
-                    </section>
+                        <div className={styles.heroActions}>
+                            <Link href="/publishAnIdea" className={styles.primaryAction} prefetch>
+                                Publish an idea
+                            </Link>
+                            <Link href="/searchAnIdea" className={styles.secondaryAction} prefetch>
+                                Browse the library
+                            </Link>
+                        </div>
+                    </div>
 
-                    <IdeaList ideas={ideas.slice(6, 12)} id="lastIdeasVertical2" images={images} />
+                    <div className={styles.heroStatement}>
+                        <span className={styles.statementIndex}>01</span>
+                        <p>A place where<br />ideas can be free.</p>
+                        <Link href={`/idea/${randomIdeaId || 0}`} prefetch>
+                            Explore a random idea
+                        </Link>
+                    </div>
                 </section>
 
-                <section id="horizzontalBarSeparatorSection">
-                    <IdeaList ideas={ideas.slice(12, 22)} id="lastIdeasHorizontal" images={images} />
+                <section className={styles.ideasSection}>
+                    <div className={styles.sectionHeading}>
+                        <p>Recently published</p>
+                        <h2>Fresh thinking from the community.</h2>
+                        <Link href="/searchAnIdea" prefetch>View all ideas</Link>
+                    </div>
+
+                    <div className={styles.ideaGrid}>
+                        {latestIdeas.map((idea, index) => (
+                            <Link
+                                href={`/idea/${idea.id || 0}`}
+                                className={`${styles.ideaCard} ${index === 0 ? styles.featuredCard : ''}`}
+                                key={`home-idea-${idea.id}-${index}`}
+                            >
+                                <div className={styles.ideaImageWrap}>
+                                    <img
+                                        src={images[idea.id] || '/images/FreeIdeas.svg'}
+                                        alt=""
+                                        className={styles.ideaImage}
+                                    />
+                                    <span>{String(index + 1).padStart(2, '0')}</span>
+                                </div>
+                                <div className={styles.ideaCardCopy}>
+                                    <p>Latest idea</p>
+                                    <h3>{idea.title || 'Untitled idea'}</h3>
+                                    <span>by {idea.author || 'Unknown author'}</span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </section>
 
-                <section id="imagesSectionHome">
-                    <h1>How FreeIdeas Works</h1>
-                    <ul id="imagesUl">
-                        <li className="imageInfoLiHome">
-                            <img src="/images/searchPreview.png" alt="Image of FreeIdeas info" className="imageHome" />
-                            <div>
-                                <h1>Explore Ideas</h1>
-                                <p>Discover hundreds of original ideas for every type of project: creative, technical, personal, or collaborative. Draw inspiration from the most original or find inspiration for your next venture! On FreeIdeas, every idea has its own special place!</p>
-                            </div>
-                        </li>
+                <section className={styles.principlesSection}>
+                    <div className={styles.principlesHeading}>
+                        <p>Why FreeIdeas</p>
+                        <h2>A simpler way to share, discover and develop ideas.</h2>
+                    </div>
 
-                        <li className="imageInfoLiHome">
-                            <img src="/images/publishPreview.png" alt="Image of FreeIdeas info" className="imageHome" />
-                            <div>
-                                <h1>Publish Your Own Ideas</h1>
-                                <p>Share your ideas freely, easily, and without restrictions. No approvals or complicated steps are required. You can post any idea you have without being judged. Even the most diverse ideas can find a place on FreeIdeas.</p>
-                            </div>
-                        </li>
-
-                        <li className="imageInfoLiHome">
-                            <img src="/images/helpPreview.png" alt="Image of FreeIdeas info" className="imageHome" />
-                            <div>
-                                <h1>Collaborate with Other Creatives</h1>
-                                <p>Great ideas don't grow on their own. On FreeIdeas, you can ask for help, find collaborators, or offer your assistance. Because sharing an idea is just the beginning.</p>
-                            </div>
-                        </li>
-
-                        <li className="imageInfoLiHome lastImageInfoLi">
-                            <img src="/images/ideaPreview.png" alt="Image of FreeIdeas info" className="imageHome" />
-                            <div>
-                                <h1>Make it Real</h1>
-                                <p>You don't need permission to be creative. On FreeIdeas, every idea matters: big or small, bold or simple. This is where your imagination finds a home. Every idea deserves a place, and FreeIdeas is the right place for yours.</p>
-                            </div>
-                        </li>
-                    </ul>
+                    <div className={styles.principlesList}>
+                        <article>
+                            <span>01</span>
+                            <h3>Open by default</h3>
+                            <p>Every idea deserves an equal place in the public conversation.</p>
+                        </article>
+                        <article>
+                            <span>02</span>
+                            <h3>Built for feedback</h3>
+                            <p>Comments and discussions help rough concepts become useful ones.</p>
+                        </article>
+                        <article>
+                            <span>03</span>
+                            <h3>Made to be shared</h3>
+                            <p>Choose a license and let the community explore your work.</p>
+                        </article>
+                    </div>
                 </section>
 
-                <section id="inspirationalSection">
-                    <ul id="inspirationalUl">
-                        <li className="ideaBox">
-                            <h2>Ideas are what move the world forward.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Ideas deserve freedom. Not judgment. Not silence.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>We believe that creativity grows when it's shared.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>FreeIdeas exists because imagination deserves to be shared.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Whether your idea is simple or revolutionary, there's room for it here.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>No judgments. No filters. Just ideas.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Your ideas don't need permission to exist.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Originality starts with the courage to share.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Every idea is a seed. Sharing is planting.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>There are no wrong ideas. Just untold ones.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>You don’t need an audience — just a voice.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>FreeIdeas is where thinking out loud becomes a movement.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Ideas aren’t meant to be stored. They’re meant to be set free.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Don't wait for perfect. Share what's real.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>The world doesn't need more content. It needs more ideas.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Sharing an idea is the first step toward changing something.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Some ideas are quiet. But even quiet ideas deserve to be heard.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>Free thinking isn’t just allowed. It’s celebrated.</h2>
-                        </li>
-
-                        <li className="ideaBox">
-                            <h2>This is where your thoughts stop being just yours.</h2>
-                        </li>
-                    </ul>
-                </section>
-
-                <section id="sloganFreeIdeasHome">
-                    <img src="/images/FreeIdeas.svg" alt="FreeIdeas logo" className="logo" />
-                    <ColoredTitle />
+                <section className={styles.closingSection}>
+                    <p>One thought can be the beginning of something shared.</p>
+                    <Link href="/publishAnIdea" className={styles.primaryAction} prefetch>
+                        Start publishing
+                    </Link>
                 </section>
             </main>
 
