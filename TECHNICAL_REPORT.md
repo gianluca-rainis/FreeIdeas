@@ -1,4 +1,5 @@
 # FreeIdeas
+
 ## The project
 The FreeIdeas project was born to give everybody a place where share ideas. Everyone can publish their own ideas, and all the published ideas are at the same level. We give visibility to each idea, for example showing the last ideas on the home page, or ordering by default the ideas from the newest to the oldest in the search page. Our goal is to create an international community where creatives share their ideas and help others realize theirs.
 
@@ -133,6 +134,7 @@ The FreeIdeas project was born to give everybody a place where share ideas. Ever
 - CSS
 - Next.js
 - React
+- lucide-react
 - Vercel
 
 ## Methods used
@@ -244,9 +246,27 @@ FreeIdeas/
 │       │   └── FreeIdeas.svg
 │       └── ...                                 # Omitted because too many files
 ├── styles/
+│   ├── AccountPage.module.css
+│   ├── AuthPages.module.css
+│   ├── ErrorPages.module.css
+│   ├── Footer.module.css
+│   ├── FooterPages.module.css
+│   ├── Home.module.css
+│   ├── HomePage.module.css
+│   ├── IdeaPage.module.css
+│   ├── IdeaPublishModern.module.css
 │   ├── LoginForm.module.css
 │   ├── Modal.module.css
+│   ├── ModernShared.module.css
+│   ├── Nav.module.css
 │   ├── PasswordToggle.module.css
+│   ├── PublishPage.module.css
+│   ├── ReservedAreaModern.module.css
+│   ├── ReservedAreaPage.module.css
+│   ├── ResponsivePages.module.css
+│   ├── SearchPublishModern.module.css
+│   ├── ThemeAndBase.module.css
+│   ├── UnifiedPages.module.css
 │   └── styles.css
 ├── utils/
 │   ├── apiConfig.js
@@ -283,6 +303,9 @@ npm install formidable
 ```
 ```bash
 npm install iron-session
+```
+```bash
+npm install lucide-react
 ```
 
 ## ENV Variables

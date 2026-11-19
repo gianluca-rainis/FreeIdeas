@@ -1,5 +1,10 @@
 <div style="text-align: center;"><img src="public/images/logo/FreeIdeas.svg" style="width: 50%;"></div>
 
+![License](https://img.shields.io/badge/license-FreeIdeas_License-grey?color=%23939393)
+![GitHub Release](https://img.shields.io/github/v/release/gianluca-rainis/FreeIdeas?logo=github&color=orange)
+![GitHub Repo stars](https://img.shields.io/github/stars/gianluca-rainis/FreeIdeas)
+![GitHub watchers](https://img.shields.io/github/watchers/gianluca-rainis/FreeIdeas)
+
 <h1 style="text-align: center;">A place where <strong>your</strong> <a style="color: #ffcf00;">I</a><a style="color: #f4d54b;">d</a><a style="color: #e4c53d;">e</a><a style="color: #c0a634;">a</a><a style="color: #a28710;">s</a> can be <a style="color: #59ff97;">F</a><a style="color: #47dc55;">r</a><a style="color: #05a814;">e</a><a style="color: #106d19;">e</a></h1>
 
 FreeIdeas is a site where you can publish your ideas about any type of projects, and where you can find inspiration for your next project.
@@ -11,6 +16,10 @@ The published ideas are free to use, and you can use them as you wish, without a
 The site is open to everyone, and you can contribute by publishing your own ideas or by helping others with their ideas.
 
 The goal of FreeIdeas is to create an international community of creatives who share their ideas and help each other to bring them to life.
+
+**Current release:** `FreeIdeas v4.0.0`
+
+Version 4.0.0 introduces the responsive authentication redesign, the responsive administrator Reserved Area, page-scoped CSS modules, and a more accessible icon system for interface controls.
 
 If you have an idea that you want to share with the world, or if you are looking for inspiration for your next project, FreeIdeas is the place for you.
 
@@ -37,7 +46,7 @@ If you have an idea that you want to share with the world, or if you are looking
 
 ---
 
-## 📝 Presentation of the project
+## Presentation of the project
 ### Philosophy
 For us, **all ideas are equal**, and as such, **they deserve equal visibility** on the site. We ensure this equality by **highlighting the latest 22 ideas published on our home page** and automatically sorting them in reverse chronological order on the search page.
 
@@ -67,7 +76,7 @@ The slogan we chose for the project aims to summarize the site's purpose:
 '**A place where your Ideas can be Free**', This short and concise phrase **captures the site's purpose: to provide a place where anyone's ideas can be valued**.
 The word 'your' is in bold to emphasize that **the site exists solely for the user**, and that *without creatives publishing their ideas, it would cease to have any purpose*.
 
-## ✨ Main Features
+## Main Features
 - Search for ideas and accounts
 - Publish your own ideas
 - Browse through the ideas of others
@@ -77,11 +86,15 @@ The word 'your' is in bold to emphasize that **the site exists solely for the us
 - Personalized license for your ideas
 - Personalize your account informations
 - Vote and comment your favourites ideas
+- Responsive login and account creation flows for desktop, tablet and mobile
+- Responsive administrator Reserved Area with account, idea, notification and report controls
+- Accessible Lucide icons for administration actions and navigation
+- Page-specific CSS modules for the main page families, with universal styles kept separate
 
-## 🧑‍💻 Author
+## Author
 The author of the project is Gianluca Rainis ( [gianluca-rainis](https://github.com/gianluca-rainis) on GitHub ).
 
-## 📜 License
+## License
 FreeIdeas is under the FreeIdeas License.
 
 ### FreeIdeas License – Quick Summary
@@ -95,7 +108,7 @@ FreeIdeas is under the FreeIdeas License.
 
 - **No warranty**: FreeIdeas is provided “as is”; author not liable for any damages.
 
-### ⚠️ Note on Derived Works
+### Note on Derived Works
 The term "**FreeIdeas License**" can refer to two different licenses:
 
 1. The **FreeIdeas (Project) License** - for the project’s source code.
@@ -104,7 +117,7 @@ The term "**FreeIdeas License**" can refer to two different licenses:
 
 **Any project that includes code from FreeIdeas**, even just a few lines, is considered a derivative work and **must comply with the *FreeIdeas (Project) License***, not the *FreeIdeas (Ideas) License*.
 
-### 📜⚠️ License Update Notice
+### License Update Notice
 - *2025-07-21* - FreeIdeas is no longer distributed under the MIT License. All versions from *v1.4 onward* are governed by the *FreeIdeas License*.
 
 - *2025-08-16* - FreeIdeas is distributed under an updated version of the FreeIdeas License.
@@ -115,7 +128,7 @@ Users and contributors are strongly encouraged to review the full license in [LI
 
 **All previous versions of the FreeIdeas License are considered governed by the latest published version of the FreeIdeas License.**
 
-## ֎ AI Disclaimer
+## AI Disclaimer
 AI WAS USED IN THIS PROJECT IN THE **DEBUG PHASE** AND **AS AN ASSISTANT FOR THE MIGRATION** PROCESS (PHP/JS TO NEXT.JS/REACT).
 
 **NO AI WAS USED IN THE DESIGN OF THE SITE OR ITS CONCEPTION.**
@@ -124,7 +137,7 @@ AI WAS USED IN THIS PROJECT IN THE **DEBUG PHASE** AND **AS AN ASSISTANT FOR THE
 
 **EVERYTHING WAS DEVELOPED BY THE AUTHOR.**
 
-## 🎨 Logos
+## Logos
 FreeIdeas has two official logos:
 
 ### Light logo:
