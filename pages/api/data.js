@@ -1,6 +1,6 @@
 import { getIronSession } from 'iron-session';
 import { sessionOptions } from '@/lib/session';
-import { query } from '@/lib/db_connection';
+import { getIdeaData } from '@/lib/data';
 import formidable from 'formidable';
 
 export const config = {
@@ -11,10 +11,6 @@ export const config = {
 
 function getInput(data) {
     return String(data).trim();
-}
-
-function getImage(data) {
-    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
 }
 
 export default async function handler(req, res) {
@@ -33,52 +29,7 @@ export default async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
         
-        let ret = {};
-
-        ret['idea'] = await query("SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId, accounts.public AS accountPublic FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;", [id]);
-        ret['info'] = await query("SELECT * FROM additionalinfo WHERE ideaid=?;", [id]); // Return the info with image
-        ret['log'] = await query("SELECT * FROM authorupdates WHERE ideaid=?;", [id]); // Logs
-        ret['comment'] = await query("SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments LEFT JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;", [id]); // Comments
-        ret['idealabels'] = await query("SELECT idealabels.* FROM idealabels WHERE idealabels.ideaid=?;", [id]); // Labels
-        ret['accountdata'] = session.account?await query("SELECT accountideadata.* FROM accountideadata WHERE accountideadata.ideaid=? AND accountideadata.accountid=?;", [id, session.account.id]):[]; // Labels
-        ret['followAccountData'] = session.account?await query("SELECT follow.* FROM follow WHERE follow.followedideaid=? AND follow.followaccountid=?;", [id, session.account.id]):[]; // Follow
-
-        ret['comment'].forEach(comment => {
-            const image = getImage(comment.userimage);
-            comment.userimage = image;
-            
-            // Convert date to YYYY-MM-DD
-            if (comment.data instanceof Date) {
-                const year = comment.data.getFullYear();
-                const month = String(comment.data.getMonth() + 1).padStart(2, '0');
-                const day = String(comment.data.getDate()).padStart(2, '0');
-
-                comment.data = `${year}-${month}-${day}`;
-            }
-        });
-
-        ret['log'].forEach(log => {
-            // Convert date to YYYY-MM-DD
-            if (log.data instanceof Date) {
-                const year = log.data.getFullYear();
-                const month = String(log.data.getMonth() + 1).padStart(2, '0');
-                const day = String(log.data.getDate()).padStart(2, '0');
-
-                log.data = `${year}-${month}-${day}`;
-            }
-        });
-
-        if (ret['idea'][0]['ideaimage']) {
-            ret['idea'][0]['ideaimage'] = getImage(ret['idea'][0]['ideaimage']);
-        }
-
-        if (ret['idea'][0]['license']) {
-            ret['idea'][0]['license'] = getImage(ret['idea'][0]['license']);
-        }
-
-        ret['info'].forEach(info => {
-            info.updtimage = getImage(info.updtimage);
-        });
+        const ret = await getIdeaData(id, session);
 
         return res.status(200).json(ret);
     } catch (error) {

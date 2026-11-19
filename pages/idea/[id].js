@@ -12,8 +12,10 @@ import { useAppContext } from '@/contexts/CommonContext'
 import { useThemeImages } from '@/hooks/useThemeImages'
 import { useModals } from '@/hooks/useModals'
 import { AlertModal, ConfirmModal, PromptModal } from '@/components/Modal'
-import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '@/utils/apiConfig'
+import { getIronSession } from 'iron-session'
+import { sessionOptions } from '@/lib/session'
+import { getIdeaData } from '@/lib/data'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -28,37 +30,8 @@ export async function getServerSideProps(context) {
     }
     
     try {
-        const body = new URLSearchParams();
-        body.append("id", id);
-
-        // Send cookies read session in php
-        const cookieHeader = context.req?.headers?.cookie ?? '';
-        const baseUrl = getBaseUrl(context.req);
-
-        const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
-            method: "POST",
-            headers: {
-                ...(cookieHeader ? { cookie: cookieHeader } : {}),
-                'Accept': 'application/json'
-            },
-            body
-        }, 2000);
-
-        const contentType = response.headers.get('content-type');
-        const responseText = await response.text();
-
-        console.log('SSR API DEBUG:', {
-            baseUrl,
-            host: context.req.headers.host,
-            forwardedProto: context.req.headers['x-forwarded-proto'],
-            requestUrl: `${baseUrl}/api/data`,
-            status: response.status,
-            contentType,
-            responseUrl: response.url,
-            responsePreview: responseText.slice(0, 500)
-        });
-
-        const data = JSON.parse(responseText);
+        const session = await getIronSession(context.req, context.res, sessionOptions);
+        const data = await getIdeaData(String(id).trim(), session);
         
         if (data && Array.isArray(data?.idea) && data.idea.length > 0) {
             ideaData = data;
