@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Search, Trash2 } from 'lucide-react';
 import { apiCall } from '@/utils/apiConfig';
 
 export default function ReportsView({ showAlert, showConfirm }) {
@@ -94,6 +95,7 @@ export default function ReportsView({ showAlert, showConfirm }) {
     return (
         <div className="adminDataView">
             <section id="searchSectionInReservedArea">
+                <Search size={18} aria-hidden="true" />
                 <input
                     type="search"
                     placeholder="Search"
@@ -113,7 +115,7 @@ export default function ReportsView({ showAlert, showConfirm }) {
                         <p className="ideaAuthorSrc">Author id: {report.authorid}</p>
                         <p className="ideaAuthorSrc">{report.ideaid !== 0 ? `Idea id: ${report.ideaid}` : `Account id: ${report.accountid}`}</p>
                         <p className="ideaAuthorSrc">{report.feedback}</p>
-                        <img className='deleteReportsAdmin' alt='Delete report' src='/images/delete.svg' onClick={() => deleteReport(report.id)} />
+                        <button type="button" aria-label="Delete report" className="deleteReportsAdmin" onClick={() => deleteReport(report.id)}><Trash2 size={17} aria-hidden="true" /></button>
                     </li>
                 ))}
             </ul>

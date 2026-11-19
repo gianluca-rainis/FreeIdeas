@@ -4,6 +4,7 @@ import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
 import styles from '@/styles/UnifiedPages.module.css'
 import React, { useEffect, useState } from 'react'
+import { Bell, Flag, Lightbulb, LogOut, Menu, LayoutDashboard, Users } from 'lucide-react'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Head from '@/components/Head'
@@ -24,9 +25,9 @@ export async function getServerSideProps(context) {
     const cookieHeader = context.req?.headers?.cookie ?? '';
     const baseUrl = getBaseUrl(context.req);
 
-    // Cache SSR response briefly to improve perceived speed
+    // The response depends on the administrator session and must never be shared.
     if (context.res) {
-        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+        context.res.setHeader('Cache-Control', 'private, no-store, max-age=0');
     }
 
     try {
@@ -158,7 +159,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
     }, []);
 
     return (
-        <>
+        <div className="reservedAreaShell">
             <Head pageTitle={pageTitle} />
 
             <Nav randomId={randomIdeaId} />
@@ -167,9 +168,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                 adminSessionData?
                 <header className="adminWorkspaceHeader">
                     <button type="button" className="adminMenuButton" id="menuReservedArea" aria-label="Open administration menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <Menu size={20} strokeWidth={2} aria-hidden="true" />
                     </button>
 
                     <a href="/reservedArea" className="adminBrand">
@@ -178,16 +177,16 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
                     <div className="adminIdentity">
                         <span>{adminSessionData.username || 'Administrator'}</span>
-                        <button type="button" onClick={handleLogout}>Sign out</button>
+                        <button type="button" onClick={handleLogout}><LogOut size={16} aria-hidden="true" />Sign out</button>
                     </div>
 
                     <div id="mobileNavBarReservedAreaHeader" className="adminMobileMenu">
-                        <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}>Overview</button>
-                        <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}>Accounts</button>
-                        <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}>Ideas</button>
-                        <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}>Notifications</button>
-                        <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}>Reports</button>
-                        <button type="button" onClick={handleLogout}>Sign out</button>
+                                <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}><LayoutDashboard size={17} aria-hidden="true" />Overview</button>
+                        <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}><Users size={17} aria-hidden="true" />Accounts</button>
+                        <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}><Lightbulb size={17} aria-hidden="true" />Ideas</button>
+                        <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}><Bell size={17} aria-hidden="true" />Notifications</button>
+                        <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}><Flag size={17} aria-hidden="true" />Reports</button>
+                        <button type="button" onClick={handleLogout}><LogOut size={17} aria-hidden="true" />Sign out</button>
                     </div>
                 </header>
                 :null
@@ -246,24 +245,29 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                             <p className="adminSidebarLabel">Workspace</p>
                             <nav className="adminSidebarNav" aria-label="Administration navigation">
                                 <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}>
+                                    <LayoutDashboard size={18} aria-hidden="true" />
                                     <span>01</span>
-                                    Overview
+                                    <b>Overview</b>
                                 </button>
                                 <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}>
+                                    <Users size={18} aria-hidden="true" />
                                     <span>02</span>
-                                    Accounts
+                                    <b>Accounts</b>
                                 </button>
                                 <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}>
+                                    <Lightbulb size={18} aria-hidden="true" />
                                     <span>03</span>
-                                    Ideas
+                                    <b>Ideas</b>
                                 </button>
                                 <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}>
+                                    <Bell size={18} aria-hidden="true" />
                                     <span>04</span>
-                                    Notifications
+                                    <b>Notifications</b>
                                 </button>
                                 <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}>
+                                    <Flag size={18} aria-hidden="true" />
                                     <span>05</span>
-                                    Reports
+                                    <b>Reports</b>
                                 </button>
                             </nav>
                         </aside>
@@ -297,6 +301,6 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
             </main>
 
             <Footer />
-        </>
+        </div>
     )
 }

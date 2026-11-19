@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Pencil, Search } from 'lucide-react';
 import IdeaEditModal from '@/components/reserved/IdeaEditModal';
 import { apiCall } from '@/utils/apiConfig';
 
@@ -76,6 +77,7 @@ export default function IdeasView({ showAlert, showConfirm }) {
             ) : (
                 <>
                     <section id="searchSectionInReservedArea">
+                        <Search size={18} aria-hidden="true" />
                         <input
                             type="search"
                             placeholder="Search"
@@ -103,7 +105,7 @@ export default function IdeasView({ showAlert, showConfirm }) {
                                 <p className="ideaAuthorSrc">{idea.description}</p>
                                 <p className="ideaAuthorSrc">{idea.downloadlink}</p>
 
-                                <img src='/images/modify.svg' alt='Edit idea' className='modifyIdeaInfoAdmin' style={{cursor: 'pointer'}} onClick={() => setEditingIdea(idea)} />
+                                <button type="button" aria-label="Edit idea" className="modifyIdeaInfoAdmin" onClick={() => setEditingIdea(idea)}><Pencil size={17} aria-hidden="true" /></button>
                             </li>
                         ))}
                     </ul>

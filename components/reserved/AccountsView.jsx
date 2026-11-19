@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Pencil, Search } from 'lucide-react';
 import AccountEditModal from '@/components/reserved/AccountEditModal';
 import { apiCall } from '@/utils/apiConfig';
 
@@ -76,6 +77,7 @@ export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
             ) : (
                 <>
                     <section id="searchSectionInReservedArea">
+                        <Search size={18} aria-hidden="true" />
                         <input
                             type="search"
                             placeholder="Search"
@@ -103,7 +105,7 @@ export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
                                 <p className="ideaAuthorSrc">{account.email}</p>
                                 <p className="ideaAuthorSrc">{account.description}</p>
 
-                                <img src='/images/modify.svg' alt='Edit account' className='modifyAccountInfoAdmin' onClick={() => setEditingId(account.id)} style={{cursor: 'pointer'}} />
+                                <button type="button" aria-label="Edit account" className="modifyAccountInfoAdmin" onClick={() => setEditingId(account.id)}><Pencil size={17} aria-hidden="true" /></button>
                             </li>
                         ))}
                     </ul>

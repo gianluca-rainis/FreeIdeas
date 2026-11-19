@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Save, ShieldAlert, X } from 'lucide-react';
 import { apiCall } from '@/utils/apiConfig';
 
 export default function AccountEditModal({ accountId, onClose, onSaved, showAlert, showConfirm, showPrompt }) {
@@ -140,13 +141,11 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             });
 
             if (data?.success) {
-                showAlert("Email sent to: " + formData.email);
+                await showAlert("Password reset email sent to: " + formData.email);
             }
             else {
                 throw new Error(data?.error || 'Failed to change password');
             }
-
-            await showAlert('Password changed successfully!');
         } catch (error) {
             console.error(error);
             await showAlert(`Error: ${error.message}`);
@@ -202,8 +201,10 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             />
             <p className="ideaAuthorSrc">ID: {accountData.id}</p>
             
-            <img id="saveAccountInfoAdmin" alt="Save changes" src="/images/save.svg" onClick={handleSave} />
-            <img id="cancelAccountInfoAdmin" alt="Delete changes" src="/images/delete.svg" onClick={onClose} />
+            <div className="adminEditorActions">
+                <button type="button" id="saveAccountInfoAdmin" aria-label="Save account changes" onClick={handleSave}><Save size={18} aria-hidden="true" /><span>Save</span></button>
+                <button type="button" id="cancelAccountInfoAdmin" aria-label="Cancel account changes" onClick={onClose}><X size={18} aria-hidden="true" /><span>Cancel</span></button>
+            </div>
 
             <div id="newDataSetAccount">
                 <label>Image</label>
@@ -225,7 +226,7 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
                 <textarea type="text" rows="8" cols="25" id="newdescriptionAccountAdmin" maxLength={1000} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}></textarea>
             </div>
             <div id="dangerAreaAccountAdmin">
-                <label>Danger Area</label>
+                <label><ShieldAlert size={17} aria-hidden="true" />Danger Area</label>
                 <input type="button" onClick={handleTogglePublic} value={`Make the account ${accountData.public==0?"Public":"Private"}`} data-value="" id="dangerAreaAccountPublicPrivateAccountAdmin" />
                 <input type="button" onClick={handleChangePassword} value="Change Password" id="dangerAreaAccountChangePasswordAdmin" />
                 <input type="button" onClick={handleDeleteAccount} value="Delete Account" id="dangerAreaAccountDeleteAccountAdmin" />

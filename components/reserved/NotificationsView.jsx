@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BellPlus, Check, Plus, Search, Trash2, X } from 'lucide-react';
 import { apiCall } from '@/utils/apiConfig';
 
 export default function NotificationsView({ showAlert, showConfirm }) {
@@ -150,6 +151,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
     return (
         <div className="adminDataView">
             <section id="searchSectionInReservedArea">
+                <Search size={18} aria-hidden="true" />
                 <input
                     type="search"
                     placeholder="Search"
@@ -157,19 +159,18 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                <img
-                    src="/images/add.svg"
-                    alt="Create notification"
+                <button
+                    type="button"
+                    aria-label="Create notification"
                     id="createNotificationReservedArea"
                     onClick={handleCreate}
-                    style={{ cursor: 'pointer' }}
-                />
+                ><Plus size={19} aria-hidden="true" /></button>
             </section>
 
             {creating && (
                 <section className="ideaBox reservedAreaLiBoxInfo" style={{ marginBottom: '20px' }}>
-                    <img id="saveNotificationInfoAdmin" alt="Save changes" src="/images/save.svg" style={{ cursor: 'pointer' }} onClick={handleSaveCreate} />
-                    <img id="cancelNotificaitonInfoAdmin" alt="Delete changes" src="/images/delete.svg" style={{ cursor: 'pointer' }} onClick={handleCancelCreate} />
+                    <button type="button" id="saveNotificationInfoAdmin" aria-label="Save notification" onClick={handleSaveCreate}><Check size={18} aria-hidden="true" /></button>
+                    <button type="button" id="cancelNotificaitonInfoAdmin" aria-label="Cancel notification" onClick={handleCancelCreate}><X size={18} aria-hidden="true" /></button>
                     
                     <div className="ideaTitleSrc newNotificationDivsAdmin">
                         <label htmlFor="newNotificationTitle">Title</label>
@@ -208,7 +209,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
                         <p className="ideaAuthorSrc">{notif.description}</p>
                         <p className="ideaAuthorSrc">Status: {notif.status ? 'Read' : 'Not read'}</p>
 
-                        <img src='/images/delete.svg' alt='Delete notification' className='deleteNotificationAdmin' onClick={() => handleDeleteNotification(notif.id)} />
+                        <button type="button" aria-label="Delete notification" className="deleteNotificationAdmin" onClick={() => handleDeleteNotification(notif.id)}><Trash2 size={17} aria-hidden="true" /></button>
                     </li>
                 ))}
             </ul>
