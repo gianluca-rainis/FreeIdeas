@@ -44,7 +44,21 @@ export async function getServerSideProps(context) {
             body
         }, 2000);
 
-        const data = await response.json();
+        const contentType = response.headers.get('content-type');
+        const responseText = await response.text();
+
+        console.log('SSR API DEBUG:', {
+            baseUrl,
+            host: context.req.headers.host,
+            forwardedProto: context.req.headers['x-forwarded-proto'],
+            requestUrl: `${baseUrl}/api/data`,
+            status: response.status,
+            contentType,
+            responseUrl: response.url,
+            responsePreview: responseText.slice(0, 500)
+        });
+
+        const data = JSON.parse(responseText);
         
         if (data && Array.isArray(data?.idea) && data.idea.length > 0) {
             ideaData = data;
