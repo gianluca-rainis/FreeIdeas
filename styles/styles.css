@@ -3699,3 +3699,761 @@ main {
         color: #cba95c;
     }
 }
+
+:root {
+    color-scheme: light;
+    --page-background: radial-gradient(1200px 600px at 90% -12%, rgba(216, 184, 68, 0.16), transparent 62%), linear-gradient(180deg, #f7faef 0%, #eef4df 100%);
+    --surface: #fffef8;
+    --surface-raised: #f4f8e9;
+    --text: #263522;
+    --muted: #65715c;
+    --border: #d7e1c6;
+    --brand: #4b8e3f;
+    --brand-strong: #34712e;
+    --accent: #c99e25;
+    --danger: #b73732;
+    --shadow: 0 18px 48px rgba(38, 55, 27, 0.1);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page-background: radial-gradient(1200px 600px at 90% -12%, rgba(203, 169, 92, 0.1), transparent 62%), linear-gradient(180deg, #0d100d 0%, #121611 100%);
+    --surface: #171d17;
+    --surface-raised: #202820;
+    --text: #e8e8d8;
+    --muted: #b8bea7;
+    --border: #394536;
+    --brand: #8abf6a;
+    --brand-strong: #a5d084;
+    --accent: #d7b462;
+    --danger: #ed8278;
+    --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    height: auto;
+    background: var(--page-background);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:root[data-theme="dark"] body {
+    background: var(--page-background);
+    color: var(--text);
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button, input[type="button"], input[type="submit"] {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--brand) 66%, transparent);
+    outline-offset: 3px;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="file"]), textarea, select {
+    border-color: var(--border);
+    color: var(--text);
+}
+
+main:has(> #lastIdeasSrc) {
+    width: min(1440px, 100%);
+    margin: 0 auto;
+    padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem;
+}
+
+header:has(#allFilters) {
+    position: relative;
+    top: auto;
+    z-index: 20;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 3vw, 2.5rem);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(22, 38, 14, 0.06);
+    backdrop-filter: blur(16px);
+}
+
+#search {
+    width: min(100%, 360px);
+    min-height: 46px;
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 2px rgba(20, 35, 14, 0.04);
+}
+
+#allFilters {
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.7rem;
+}
+
+.filterBlock {
+    gap: 0.3rem;
+    padding: 0;
+    margin: 0;
+}
+
+.labelInfoSearch {
+    padding: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.filterSearch {
+    min-height: 42px;
+    padding: 0.55rem 0.75rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+#lastIdeasSrc {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    align-items: stretch;
+    gap: 1rem;
+    overflow: visible;
+    white-space: normal;
+}
+
+#lastIdeasSrc > .ideaBox, #mainDivDinamicContent > .ideaBox {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(32, 48, 22, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+#lastIdeasSrc > .ideaBox:hover, #mainDivDinamicContent > .ideaBox:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--brand) 48%, var(--border));
+    box-shadow: var(--shadow);
+}
+
+#lastIdeasSrc .ideaLink, #mainDivDinamicContent .ideaLink {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.8rem;
+    color: var(--text);
+}
+
+#lastIdeasSrc .ideaImageSrc,
+#mainDivDinamicContent .ideaImageSrc {
+    width: 100%;
+    height: clamp(160px, 17vw, 220px);
+    object-fit: contain;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+#lastIdeasSrc .ideaTitleSrc,
+#mainDivDinamicContent .ideaTitleSrc {
+    max-width: none;
+    max-height: none;
+    padding-top: 0.9rem;
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+#lastIdeasSrc .ideaAuthorSrc,
+#mainDivDinamicContent .ideaAuthorSrc {
+    max-width: none;
+    max-height: none;
+    padding-top: 0.35rem;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+#ideaMain {
+    min-height: 60vh;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+#ideaMain #ideaImageAsBackground {
+    position: relative;
+    isolation: isolate;
+    min-height: 380px;
+    padding: clamp(5rem, 12vh, 9rem) 1.25rem;
+    background-color: var(--surface-raised);
+}
+
+#ideaMain #ideaImageAsBackground::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, rgba(10, 18, 8, 0.2), rgba(10, 18, 8, 0.78));
+}
+
+#ideaMain #ideaImageAsBackground > * {
+    position: relative;
+    z-index: 1;
+}
+
+#ideaMain #title {
+    max-width: min(100%, 1000px);
+    padding: 0.75rem 1rem;
+    margin: 0 auto;
+    background: rgba(20, 28, 17, 0.55);
+    color: #fffef0;
+    font-size: clamp(2.2rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    backdrop-filter: blur(8px);
+}
+
+#ideaMain #author {
+    margin: 1rem auto 0;
+    padding: 0.45rem 0.9rem;
+    background: rgba(20, 28, 17, 0.55);
+    color: #fffef0;
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    overflow-wrap: anywhere;
+    backdrop-filter: blur(8px);
+}
+
+#ideaMain #mainAuthorAccount {
+    color: inherit;
+}
+
+#ideaLikeSaveSection {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+}
+
+#ideaLikeSaveSection ul {
+    gap: 0.25rem;
+    margin: 0;
+}
+
+#ideaLikeSaveSection ul li {
+    min-width: 72px;
+    margin: 0;
+    border-radius: 12px;
+    color: var(--text);
+}
+
+#ideaLikeSaveSection ul li:hover {
+    background: var(--surface-raised);
+}
+
+#ideaMain > #description {
+    width: min(960px, calc(100% - 2rem));
+    margin: 2rem auto;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(32, 48, 22, 0.05);
+    color: var(--text);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+#ideaMain #imagesInfo .imageInfoLi {
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+}
+
+#ideaMain #imagesInfo .titleImageInfo,
+#ideaMain #logsName,
+#ideaMain #download,
+#ideaMain #licenseTitle,
+#ideaMain #commentsTitle {
+    color: var(--text);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.2;
+}
+
+#ideaMain #downloadSection,
+#ideaMain #licenseSection,
+#ideaMain #devLogsSection,
+#ideaMain #commentSection {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 1rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    color: var(--text);
+}
+
+#ideaMain #downloadButton,
+#ideaMain #followIdeaButton,
+#ideaMain #reportIdeaButton {
+    min-height: 42px;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+#ideaMain #commentsTitle {
+    padding-top: 0;
+}
+
+#ideaMain .comment {
+    margin: 0.75rem 0;
+    padding: 1rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+#ideaMain .commentText {
+    margin: 0.75rem 0;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+#accountMain {
+    display: grid;
+    grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+#accountAsideInfo {
+    top: 88px;
+    width: auto;
+    max-height: none;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(32, 48, 22, 0.07);
+}
+
+#accountMain #userImageAccount {
+    width: 132px;
+    height: 132px;
+    object-fit: cover;
+    border: 4px solid var(--surface-raised);
+    border-radius: 50%;
+}
+
+#accountMain #userNameAccount,
+#accountMain #userNameSurnameAccount,
+#accountMain #emailAccount {
+    color: var(--text);
+    overflow-wrap: anywhere;
+}
+
+#accountMain #descriptionAccount {
+    height: auto;
+    max-height: 280px;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+#mainAccountSectionInfo {
+    min-width: 0;
+    min-height: 60vh;
+    background: transparent;
+}
+
+#navBarForAccountSaved {
+    top: 72px;
+    z-index: 10;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+}
+
+#navBarForAccountSaved ul {
+    gap: 0.5rem;
+    margin: 0.35rem;
+}
+
+#navBarForAccountSaved ul li {
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+#navBarForAccountSaved ul li:hover,
+#navBarForAccountSaved ul li.activeTab {
+    background: var(--surface-raised);
+    color: var(--brand-strong);
+}
+
+#mainDivDinamicContent {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+#newDataSetAccount {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    margin: 1.5rem 0 0;
+    text-align: left;
+}
+
+#newDataSetAccount label {
+    margin: 0;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+#newDataSetAccount input,
+#newDataSetAccount textarea {
+    min-width: 0;
+    margin: 0 0 0.75rem;
+    padding: 0.65rem 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+}
+
+#newIdeaMain {
+    min-height: 60vh;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+#newIdeaForm {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+#newIdeaMain #ideaImageAsBackground {
+    min-height: 320px;
+    padding: 4rem 1rem;
+    background-color: var(--surface-raised);
+}
+
+#newIdeaMain #title {
+    max-width: min(900px, calc(100% - 2rem));
+    min-height: 64px;
+    padding: 0.75rem 1rem;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: clamp(1.6rem, 4vw, 3rem);
+}
+
+#newIdeaMain #author {
+    padding: 0.5rem 0.9rem;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+#newIdeaMain #mainAuthorAccount {
+    color: inherit;
+}
+
+#newIdeaMain #newinfoForFilters {
+    gap: 0.8rem;
+    padding: 1.5rem clamp(1rem, 4vw, 3rem) 0;
+}
+
+#newIdeaMain .filterSearch {
+    width: 100%;
+    min-width: 0;
+    padding: 0.65rem 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+}
+
+#newIdeaMain #description,
+#newIdeaMain #buttonlink,
+#newIdeaMain #imagesInfo .imageInfoDescription,
+#newIdeaMain .logInfo,
+#newIdeaMain .titleImageInfo,
+#newIdeaMain .logTitle {
+    width: calc(100% - 2rem);
+    min-height: 48px;
+    margin: 0.5rem 1rem;
+    padding: 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font: inherit;
+}
+
+#newIdeaMain #description,
+#newIdeaMain #imagesInfo .imageInfoDescription,
+#newIdeaMain .logInfo {
+    min-height: 130px;
+    line-height: 1.65;
+}
+
+#newIdeaMain #additionalInfo,
+#newIdeaMain #downloadSection,
+#newIdeaMain #licenseSection,
+#newIdeaMain #devLogsSection {
+    margin: 1rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+#newIdeaMain #imagesInfo .imageInfoLi {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+#newIdeaMain #imagesInfo .preview {
+    max-width: min(100%, 32rem);
+    max-height: 18rem;
+    margin: 0.5rem auto;
+}
+
+#newIdeaMain #saveNewIdea {
+    min-height: 46px;
+    padding: 0.7rem 1.5rem;
+    background: var(--brand);
+    border: 1px solid var(--brand-strong);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.errorPageMain {
+    min-height: 60vh;
+    height: auto;
+    padding: 3rem 1rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] #accountAsideInfo,
+:root[data-theme="dark"] #mainAccountSectionInfo,
+:root[data-theme="dark"] #navBarForAccountSaved {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] #ideaLikeSaveSection,
+:root[data-theme="dark"] #commentSection,
+:root[data-theme="dark"] #downloadSection,
+:root[data-theme="dark"] #licenseSection,
+:root[data-theme="dark"] #devLogsSection {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] #newIdeaMain #additionalInfo,
+:root[data-theme="dark"] #newIdeaMain #devLogsSection {
+    background: var(--surface-raised);
+    border-color: var(--border);
+}
+
+@media (max-width: 900px) {
+    #accountMain {
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+        gap: 0.85rem;
+    }
+
+    #accountAsideInfo {
+        padding: 1rem;
+    }
+
+    #newIdeaMain #imagesInfo .imageInfoLi {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    header:has(#allFilters) {
+        gap: 0.75rem;
+    }
+
+    #allFilters {
+        justify-content: flex-start;
+    }
+
+    #lastIdeasSrc {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+    }
+
+    #ideaMain #ideaImageAsBackground {
+        min-height: 300px;
+        padding: 5rem 1rem;
+    }
+
+    #ideaMain #imagesInfo .imageInfoLi {
+        grid-template-columns: 1fr;
+    }
+
+    #accountMain {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 1rem;
+    }
+
+    #accountAsideInfo {
+        position: relative;
+        top: 0;
+        width: 100%;
+        padding-block-end: 1.5rem;
+    }
+
+    #accountMain #descriptionAccount {
+        max-height: 180px;
+    }
+
+    #navBarForAccountSaved {
+        top: 72px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 560px) {
+    header:has(#allFilters) {
+        position: relative;
+    }
+
+    main:has(> #lastIdeasSrc) {
+        padding: 1rem 0.75rem 2.5rem;
+    }
+
+    #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    #lastIdeasSrc .ideaLink,
+    #mainDivDinamicContent .ideaLink {
+        padding: 0.55rem;
+    }
+
+    #lastIdeasSrc .ideaImageSrc,
+    #mainDivDinamicContent .ideaImageSrc {
+        height: 140px;
+    }
+
+    #lastIdeasSrc .ideaTitleSrc,
+    #mainDivDinamicContent .ideaTitleSrc {
+        font-size: 0.92rem;
+    }
+
+    #ideaMain #title {
+        margin: 0 0.25rem;
+        font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    #ideaMain #author {
+        margin-inline: 0.25rem;
+    }
+
+    #ideaLikeSaveSection {
+        gap: 0.25rem;
+        padding: 0.5rem;
+    }
+
+    #ideaLikeSaveSection ul {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    #ideaMain #downloadSection,
+    #ideaMain #licenseSection,
+    #ideaMain #devLogsSection,
+    #ideaMain #commentSection {
+        width: calc(100% - 1rem);
+        padding: 1rem;
+    }
+
+    #newIdeaMain #newinfoForFilters {
+        grid-template-columns: 1fr;
+        padding-top: 1rem;
+    }
+
+    #newIdeaMain #newinfoForFilters .labelInfoSearch:not(:first-child) {
+        margin-top: 0.5rem;
+    }
+
+    #newIdeaMain #additionalInfo,
+    #newIdeaMain #downloadSection,
+    #newIdeaMain #licenseSection,
+    #newIdeaMain #devLogsSection {
+        margin: 0.6rem;
+        padding: 0.85rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    button,
+    input,
+    select,
+    textarea,
+    #lastIdeasSrc > .ideaBox,
+    #mainDivDinamicContent > .ideaBox {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

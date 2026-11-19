@@ -3,29 +3,36 @@
     margin: 0;
     padding: 0;
     height: fit-content;
+    min-height: 72px;
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #f6ffd7;
+    background-color: rgba(246, 255, 215, 0.94);
     position: sticky;
     top: 0;
     z-index: 1000;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    backdrop-filter: saturate(120%) blur(4px);
+    backdrop-filter: saturate(130%) blur(16px);
+    border-bottom: 1px solid rgba(92, 113, 48, 0.16);
 }
 
 .light {
-    background-color: #f6ffd7;
+    background-color: rgba(246, 255, 215, 0.94);
     color: #2c3d27;
 }
 
 .dark {
-    background-color: #0a0a0a;
+    background-color: rgba(10, 10, 10, 0.94);
     color: #cba95c;
+    border-bottom-color: rgba(203, 169, 92, 0.24);
 }
 
 .scrolled {
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 8px 26px rgba(22, 38, 14, 0.12);
+}
+
+.dark.scrolled {
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.38);
 }
 
 .pcNavBarGhost {
@@ -37,6 +44,7 @@
     align-items: center;
     background-color: inherit;
     transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 72px;
 }
 
 .mobileNavBarGhost {
@@ -70,6 +78,7 @@
     font-size: 1.1em;
     transition: background-color 0.2s ease, color 0.2s ease;
     position: relative;
+    white-space: nowrap;
 }
 
 .navText:hover {
@@ -110,7 +119,7 @@
 .navLogoImage {
     display: flex;
     align-items: center;
-    width: 250px;
+    width: 210px;
     background: none;
     background-color: transparent;
     margin: 0;
@@ -122,11 +131,12 @@
     align-items: center;
     justify-content: flex-end;
     flex-grow: 1;
-    gap: 20px;
-    padding-right: 3rem;
+    gap: 12px;
+    padding-right: clamp(1rem, 3vw, 2.5rem);
 }
 
 .navLinks li {
+    display: flex;
     align-items: center;
 }
 
@@ -135,8 +145,8 @@
 }
 
 .navLinks li a {
-    padding: 10px;
-    border-radius: 10px;
+    padding: 0.65rem 0.75rem;
+    border-radius: 999px;
     align-items: center;
 }
 
@@ -654,7 +664,7 @@
     cursor: not-allowed;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
     .pcNavBarGhost {
         display: none;
     }
@@ -662,7 +672,7 @@
     .mobileNavBarGhost {
         display: flex;
         justify-content: space-between;
-        padding: 0rem 1rem;
+        padding: 0.35rem 1rem;
     }
 
     .mobileNavBarGhost .navLogoImage {
@@ -690,9 +700,9 @@
     .mobileMenuHidden {
         left: 0;
         right: 0;
-        top: 64px;
+        top: 72px;
         width: 100%;
-        height: calc(100dvh - 64px);
+        height: calc(100dvh - 72px);
         overflow-y: auto;
         border-top: 1px solid #dde8a8;
     }
