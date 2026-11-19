@@ -1,7 +1,11 @@
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
+import styles from '@/styles/UnifiedPages.module.css'
+import '@/styles/FooterPages.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -22,7 +26,7 @@ export default function TermsOfUsePage({pageTitle}) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main className="footerpage">
+            <main className={`${styles.scope} footerpage`}>
                 <header className="footerPageHeader">
                     <p>Legal / Terms</p>
                     <h1>Terms and Conditions</h1>

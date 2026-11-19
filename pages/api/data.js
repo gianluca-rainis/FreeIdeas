@@ -1,6 +1,6 @@
 import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import { query } from '../../lib/db_connection';
+import { sessionOptions } from '@/lib/session';
+import { query } from '@/lib/db_connection';
 import formidable from 'formidable';
 
 export const config = {

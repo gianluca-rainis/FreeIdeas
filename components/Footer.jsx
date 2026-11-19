@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { useAppContext } from '../contexts/CommonContext'
-import styles from '../styles/Footer.module.css';
+import { useAppContext } from '@/contexts/CommonContext'
+import styles from '@/styles/Footer.module.css';
 
 export default function Footer() {
     const { themeIsLight } = useAppContext();

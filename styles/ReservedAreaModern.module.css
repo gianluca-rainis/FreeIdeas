@@ -1,0 +1,407 @@
+/* Page-specific styles for this route family. */
+@media (max-width: 760px) {
+    :global(#ideaMain #ideaImageAsBackground) {
+        min-height: 300px;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 2rem 1rem;
+    }
+
+    :global(#ideaMain #title) {
+        width: 100%;
+        font-size: clamp(2.5rem, 14vw, 4.25rem);
+    }
+
+    :global(#ideaLikeSaveSection) {
+        width: calc(100% - 1rem);
+        min-height: 68px;
+        margin-top: -34px;
+        flex-wrap: wrap;
+    }
+
+    :global(#ideaLikeSaveSection ul) {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    :global(#ideaLikeSaveSection ul li) {
+        min-width: 72px;
+    }
+
+    :global(#ideaMain #description),
+:global(#ideaMain #imagesInfo),
+:global(#ideaMain #downloadSection),
+:global(#ideaMain #licenseSection),
+:global(#ideaMain #devLogsSection),
+:global(#ideaMain #commentSection),
+:global(#newIdeaMain #description),
+:global(#newIdeaMain #newinfoForFilters),
+:global(#newIdeaMain #additionalInfo),
+:global(#newIdeaMain #downloadSection),
+:global(#newIdeaMain #licenseSection),
+:global(#newIdeaMain #devLogsSection) {
+        width: calc(100% - 1rem);
+    }
+
+    :global(#ideaMain #imagesInfo .imageInfoLi) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#newIdeaMain #title) {
+        min-height: 58px;
+        font-size: clamp(2rem, 12vw, 3.25rem);
+    }
+
+    :global(#newIdeaMain #description) {
+        min-height: 150px;
+        margin-inline: 0.5rem;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters .filterSearch) {
+        width: 100%;
+    }
+}
+
+/* Administrator workspace */
+:global(.adminWorkspaceHeader) {
+    width: 100%;
+    min-height: 72px;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+:global(.adminMenuButton) {
+    display: none;
+}
+
+:global(.adminBrand) {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+}
+
+:global(.adminBrand img) {
+    width: 170px;
+    height: auto;
+}
+
+:global(.adminIdentity) {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.75rem;
+}
+
+:global(.adminIdentity span) {
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+:global(.adminIdentity button),
+:global(.adminMobileMenu button) {
+    min-height: 38px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+:global(.adminMobileMenu) {
+    display: none;
+}
+
+:global(.adminWorkspace) {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 140px);
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    margin: 0;
+    background: var(--fi-paper);
+}
+
+:global(.adminSidebar) {
+    min-height: calc(100vh - 140px);
+    padding: 2rem 1rem;
+    border-right: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+:global(.adminSidebarLabel) {
+    margin: 0 0 1.25rem;
+    padding: 0 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminSidebarNav) {
+    display: grid;
+    gap: 0.35rem;
+}
+
+:global(.adminSidebarNav button) {
+    width: 100%;
+    min-height: 52px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fi-muted);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+:global(.adminSidebarNav button span) {
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+:global(.adminSidebarNav button.active),
+:global(.adminSidebarNav button:hover) {
+    background: rgba(63, 125, 68, 0.10);
+    color: var(--fi-ink);
+}
+
+:global(.adminContent) {
+    min-width: 0;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+:global(.adminContentHeader) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--fi-border);
+}
+
+:global(.adminContentHeader p) {
+    margin: 0 0 0.5rem;
+    grid-column: 1 / -1;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminContentHeader h1) {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 0.92;
+}
+
+:global(.adminViewBody) {
+    padding-top: 1.5rem;
+}
+
+:global(.adminWelcomeView) {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    padding: clamp(2rem, 6vw, 5rem);
+    background: var(--fi-surface);
+}
+
+:global(.adminWelcomeView h2) {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.92;
+}
+
+:global(.adminWelcomeView > p:last-child) {
+    max-width: 520px;
+    margin: 1.5rem 0 0;
+}
+
+:global(.adminWelcomeEyebrow) {
+    margin: 0 0 1.25rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.adminDataView) {
+    width: 100%;
+}
+
+:global(.adminDataView #searchSectionInReservedArea) {
+    width: 100%;
+    min-height: auto;
+    margin: 0 0 1.25rem;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+:global(.adminDataView #searchReservedArea) {
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    background: transparent;
+}
+
+:global(.adminDataView > ul) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+:global(.adminDataView .reservedAreaLiBoxInfo) {
+    width: 100%;
+    min-height: 220px;
+    margin: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+:global(.adminDataView .ideaImageSrc) {
+    height: 160px;
+}
+
+:global(.adminDataView .modifyAccountInfoAdmin),
+:global(.adminDataView .modifyIdeaInfoAdmin),
+:global(.adminDataView .deleteReportsAdmin),
+:global(.adminDataView .deleteNotificationAdmin) {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 1000px) {
+    :global(.adminWorkspace) {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    :global(.adminWorkspaceHeader) {
+        grid-template-columns: 200px minmax(0, 1fr) auto;
+    }
+
+    :global(.adminDataView > ul) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    :global(.adminWorkspaceHeader) {
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        padding-inline: 0.75rem;
+    }
+
+    :global(.adminMenuButton) {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-content: center;
+        gap: 4px;
+        border: 1px solid var(--fi-border);
+        border-radius: 6px;
+        background: var(--fi-surface);
+        cursor: pointer;
+    }
+
+    :global(.adminMenuButton span) {
+        width: 16px;
+        height: 2px;
+        display: block;
+        background: var(--fi-ink);
+    }
+
+    :global(.adminBrand) {
+        justify-self: center;
+    }
+
+    :global(.adminBrand img) {
+        width: 145px;
+    }
+
+    :global(.adminIdentity) {
+        display: none;
+    }
+
+    :global(.adminMobileMenu) {
+        width: 100%;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        z-index: 100;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--fi-border);
+        background: var(--fi-surface);
+        box-shadow: var(--fi-shadow);
+    }
+
+    :global(.adminMobileMenu button) {
+        width: 100%;
+        text-align: left;
+    }
+
+    :global(.adminMobileMenu button.active) {
+        background: rgba(63, 125, 68, 0.10);
+    }
+
+    :global(.adminWorkspace) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(.adminSidebar) {
+        display: none;
+    }
+
+    :global(.adminContent) {
+        padding: 1.25rem 0.75rem 3rem;
+    }
+
+    :global(.adminContentHeader h1) {
+        font-size: clamp(2.6rem, 12vw, 4.5rem);
+    }
+
+    :global(.adminDataView > ul) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :global(.adminDataView > ul) {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :global(body),
+:global(button),
+:global(input),
+:global(select),
+:global(textarea),
+:global(#lastIdeasSrc > .ideaBox),
+:global(#mainDivDinamicContent > .ideaBox) {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+

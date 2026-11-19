@@ -1,15 +1,20 @@
+import styles from '@/styles/UnifiedPages.module.css'
+import '@/styles/ReservedAreaPage.module.css';
+import '@/styles/ReservedAreaModern.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
 import React, { useEffect, useState } from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import WelcomeView from '../components/reserved/WelcomeView'
-import AccountsView from '../components/reserved/AccountsView'
-import IdeasView from '../components/reserved/IdeasView'
-import NotificationsView from '../components/reserved/NotificationsView'
-import ReportsView from '../components/reserved/ReportsView'
-import { fetchWithTimeout } from '../utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '../utils/apiConfig'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import WelcomeView from '@/components/reserved/WelcomeView'
+import AccountsView from '@/components/reserved/AccountsView'
+import IdeasView from '@/components/reserved/IdeasView'
+import NotificationsView from '@/components/reserved/NotificationsView'
+import ReportsView from '@/components/reserved/ReportsView'
+import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
+import { apiCall, getBaseUrl } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -188,7 +193,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                 :null
             }
 
-            <main id="reservedAreaMain" className={adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}>
+            <main id="reservedAreaMain" className={`${styles.scope} ${adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}`}>
                 {
                     !adminSessionData?
                     <div className="reservedLoginPanel">

@@ -1,13 +1,19 @@
+import styles from '@/styles/UnifiedPages.module.css'
+import '@/styles/AccountPage.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import '@/styles/ModernShared.module.css';
+import '@/styles/UnifiedPages.module.css';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Nav from '../../components/Nav'
-import Footer from '../../components/Footer'
-import Head from '../../components/Head'
-import { useAppContext } from '../../contexts/CommonContext'
-import { useThemeImages } from '../../hooks/useThemeImages'
-import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { useThemeImages } from '@/hooks/useThemeImages'
+import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
 import Link from 'next/link'
-import { apiCall, getBaseUrl } from '../../utils/apiConfig'
+import { apiCall, getBaseUrl } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -419,7 +425,7 @@ export default function AccountPage({ accountData, pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main id="accountMain">
+            <main id="accountMain" className={styles.scope}>
                 <aside id="accountAsideInfo">
                     {
                         isOwner && !editing ?

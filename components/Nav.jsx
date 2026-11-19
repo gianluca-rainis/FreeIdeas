@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useAppContext } from '../contexts/CommonContext'
-import { PasswordInput } from './PasswordInput';
-import { useAuth } from '../hooks/useAuth';
-import styles from '../styles/Nav.module.css';
+import { useAppContext } from '@/contexts/CommonContext'
+import { PasswordInput } from '@/components/PasswordInput';
+import { useAuth } from '@/hooks/useAuth';
+import styles from '@/styles/Nav.module.css';
 
 function ThemeIcon({ isLight }) {
     if (!isLight) {
@@ -109,71 +109,33 @@ export default function Nav({ randomId=0 }) {
                             <button type="button" id="notificationImageLi" className={styles.iconButton} onClick={toggleNotifications} aria-label="Notifications">
                                 <BellIcon />
                             </button>
-                            <button type="button" id="userImageLi" className={styles.accountButton} onClick={handleUserImageClick} aria-label="Open account menu">
+                            <button type="button" id="userImageLi" className={styles.accountButton} onClick={user ? redirectToAccount : () => window.location.assign('/login')} aria-label={user ? 'Open account' : 'Sign in'}>
                                 <span id="userImage" className={styles.userIconWrap}><UserIcon /></span>
                                 <span id="userName" className={styles.userName}>{user ? (user.username || '') : 'Sign in'}</span>
                             </button>
                         </div>
                     </div>
-                    <div id="loginArea" className={styles.loginArea}>
-                        <div id="pcLoginSignUpBlock">
-                            <div id="loginHidden">
-                                {user ? (
-                                    <div>
-                                        <h2>Welcome </h2>
-                                        <img alt="User Image" style={{width: "60px", height: "60px", borderRadius: "50%", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
-                                        <h3 style={{marginBottom: "20px"}}></h3>
-                                        <button type="submit" id="sendAccountButton" className={styles.desktopActionButton}>Account</button>
-                                        <button type="submit" id="sendLogoutButton" className={styles.desktopActionButton}>Log Out</button>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <h2>Sign In</h2>
-                                        <p>Don't have an account? <Link className={styles.signUp} href="/createAccount" prefetch>Register!</Link></p>
-                                        <form onSubmit={handleLoginSubmit} id="loginAccountForm">
-                                            <input 
-                                                type="email" 
-                                                id="emailAreaLogin" 
-                                                className={styles.desktopInput}
-                                                autoComplete="email" 
-                                                spellCheck="false" 
-                                                autoCapitalize="off" 
-                                                placeholder="Email" 
-                                                name="email" 
-                                                value={loginData.email}
-                                                onChange={handleLoginChange}
-                                                required 
-                                            />
-                                            
-                                            <PasswordInput 
-                                                id={"passwordAreaLogin"}
-                                                name={"password"} 
-                                                placeholder={"Password"} 
-                                                autoComplete='current-password' 
-                                                value={loginData.password}
-                                                onChange={handleLoginChange}
-                                                required 
-                                            />
 
-                                            <p><a onClick={handleForgotPassword} style={{cursor: 'pointer'}} id="forgotPassword" className={styles.forgotPassword}>Forgot your password?</a></p>
-                                            <button type="submit" id="sendLoginButton" className={styles.desktopActionButton} disabled={isSubmitting}>
-                                                {isSubmitting ? 'Signing In...' : 'Sign In'}
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
+                    <div
+                        id="notificaions"
+                        className={styles.notificationsPanel}
+                        style={{
+                            display: 'none',
+                            position: 'absolute',
+                            top: '100%',
+                            right: 'max(1.25rem, calc((100vw - 1320px) / 2))',
+                            width: '50vw',
+                            zIndex: 20
+                        }}
+                    >
+                        <header className={styles.notificationsHeader}>
+                            <div>
+                                <p className={styles.panelEyebrow}>Inbox</p>
+                                <h2>Notifications</h2>
                             </div>
-                        </div>
-
-                        <div id="notificaions" style={{ display: 'none' }}>
-                            <h2>Notifications</h2>
+                        </header>
                             <ul className={`notificationsUl ${styles.notificationsUl}`}>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
+                                <li className={styles.notificationEmpty}>Loading notifications</li>
                             </ul>
 
                             <div className={`hiddenNotificationData ${styles.hiddenNotificationData}`} style={{ display: 'none' }}>
@@ -181,7 +143,6 @@ export default function Nav({ randomId=0 }) {
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <div id="mobileNavBarGhost" className={styles.mobileNavBarGhost}>
                     <div className={styles.mobileNavInner}>
@@ -195,88 +156,50 @@ export default function Nav({ randomId=0 }) {
                             <button type="button" id="notificationImageLiMobile" className={styles.iconButton} onClick={toggleNotifications} aria-label="Notifications">
                                 <BellIcon />
                             </button>
-                            <button type="button" id="userImageLi" className={styles.iconButton} onClick={handleUserImageClick} aria-label="Open menu">
+                            <button type="button" className={styles.iconButton} onClick={handleUserImageClick} aria-label="Open menu">
                                 <span id="menuMobile" className={styles.menuIconWrap}><MenuIcon /></span>
                             </button>
+                            <button type="button" id="userImageLi" className={styles.iconButton} onClick={user ? redirectToAccount : () => window.location.assign('/login')} aria-label={user ? 'Open account' : 'Sign in'}>
+                                <span className={styles.menuIconWrap}><UserIcon /></span>
+                            </button>
                         </div>
+                    </div>
+
                     <div id="mobileMenuHidden" className={styles.mobileMenuHidden}>
                         <ul id="mobileNavLinks" className={styles.mobileNavLinks}>
                                <li><Link href="/searchAnIdea" className={styles.navText}>Explore ideas</Link></li>
                                <li><Link href="/publishAnIdea" className={styles.navText}>Publish an idea</Link></li>
                                <li><Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaAMobile">Surprise me</Link></li>
                         </ul>
-
-                        <div id="loginAreaMobile" className={styles.loginAreaMobile}>
-                            <div id="mobileLoginSignUpBlock">
-                                <div id="loginHiddenMobile">
-                                    {user ? (
-                                        <div>
-                                            <h2>Welcome </h2>
-                                            <div style={{alignItems: "center"}}>
-                                                <img alt="User Image" style={{width: "100px", height: "100px", borderRadius: "50%", textAlign: 'center', marginBottom: "40px", marginTop: "30px"}} />
-                                            </div>
-                                            <h3 style={{marginBottom: "20px"}}></h3>
-                                            <div style={{alignItems: "center"}}>
-                                                <button type="submit" id="sendAccountButtonMobile" className={styles.mobileActionButton}>Account</button>
-                                                <button type="submit" id="sendLogoutButtonMobile" className={styles.mobileActionButton}>Log Out</button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <h2>Sign In</h2>
-                                            <p>Don't have an account? <Link className={styles.signUpMobile} href="/createAccount" prefetch>Register!</Link></p>
-                                            <form onSubmit={handleLoginSubmit} id="loginAccountFormMobile">
-                                                <input 
-                                                    type="email" 
-                                                    id="emailAreaLoginMobile" 
-                                                    className={styles.mobileInput}
-                                                    autoComplete="email" 
-                                                    spellCheck="false" 
-                                                    autoCapitalize="off" 
-                                                    placeholder="Email" 
-                                                    name="email" 
-                                                    value={loginData.email}
-                                                    onChange={handleLoginChange}
-                                                    required 
-                                                />
-                                                
-                                                <PasswordInput 
-                                                    id={"passwordAreaLoginMobile"} 
-                                                    name={"password"} 
-                                                    placeholder={"Password"} 
-                                                    autoComplete='current-password' 
-                                                    value={loginData.password}
-                                                    onChange={handleLoginChange}
-                                                    required 
-                                                />
-
-                                                <p><a onClick={handleForgotPassword} style={{cursor: 'pointer'}} id="forgotPassword" className={styles.forgotPassword}>Forgot your password?</a></p>
-                                                <button type="submit" id="sendLoginButtonMobile" className={styles.mobileActionButton} disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Signing In...' : 'Sign In'}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div id="notificaionsMobile" className={styles.notificaionsMobile} style={{ display: 'none' }}>
-                                <h2>Notifications</h2>
-                                <ul className={`notificationsUl ${styles.notificationsUl}`}>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                    <li><div style={{ display: 'flex' }}><strong> </strong> &nbsp; &nbsp; <div style={{ color: 'grey' }}> </div></div><div> </div></li>
-                                </ul>
-
-                                <div className={`hiddenNotificationData ${styles.hiddenNotificationData}`} style={{ display: 'none' }}>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
+
+                    <div
+                        id="notificaionsMobile"
+                        className={styles.notificaionsMobile}
+                        style={{
+                            display: 'none',
+                            position: 'absolute',
+                            top: '100%',
+                            left: 0,
+                            right: 0,
+                            width: '100%',
+                            margin: 0,
+                            zIndex: 20
+                        }}
+                    >
+                        <header className={styles.notificationsHeader}>
+                            <div>
+                                <p className={styles.panelEyebrow}>Inbox</p>
+                                <h2>Notifications</h2>
+                            </div>
+                        </header>
+                        <ul className={`notificationsUl ${styles.notificationsUl}`}>
+                            <li className={styles.notificationEmpty}>Loading notifications</li>
+                        </ul>
+
+                        <div className={`hiddenNotificationData ${styles.hiddenNotificationData}`} style={{ display: 'none' }}>
+
+                        </div>
                     </div>
                 </div>
             </nav>

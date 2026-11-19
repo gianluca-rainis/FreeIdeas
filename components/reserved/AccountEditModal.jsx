@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { apiCall } from '../../utils/apiConfig';
+import { apiCall } from '@/utils/apiConfig';
 
 export default function AccountEditModal({ accountId, onClose, onSaved, showAlert, showConfirm, showPrompt }) {
     const [accountData, setAccountData] = useState(null);

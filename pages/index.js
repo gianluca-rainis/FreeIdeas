@@ -1,12 +1,15 @@
+import styles from '@/styles/Home.module.css'
+import '@/styles/HomePage.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
 import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import { apiCall } from '../utils/apiConfig'
-import styles from '../styles/Home.module.css'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering
 export async function getStaticProps() {

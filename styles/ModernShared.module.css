@@ -1,0 +1,246 @@
+/* Page-specific styles for this route family. */
+/* Shared modern visual system */
+#searchPage,
+#ideaMain,
+#accountMain,
+#newIdeaMain,
+.errorPageMain {
+    background:
+        radial-gradient(circle at 92% 4%, rgba(213, 180, 64, 0.12), transparent 22rem),
+        linear-gradient(180deg, var(--fi-paper), var(--fi-surface));
+    color: var(--fi-ink);
+}
+
+#searchPage .searchToolbar {
+    min-height: 88px;
+    padding: 1rem clamp(0.75rem, 3vw, 2rem);
+    background: rgba(247, 248, 239, 0.92);
+    border-bottom: 1px solid var(--fi-border);
+    backdrop-filter: blur(18px) saturate(140%);
+}
+
+:root[data-theme="dark"] #searchPage header {
+    background: rgba(20, 22, 18, 0.92);
+}
+
+#searchPage header,
+#allFilters,
+#searchPage main {
+    width: 100%;
+}
+
+#searchPage .searchResults {
+    min-height: calc(100vh - 88px);
+    margin-top: 88px;
+    padding: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.searchResultsHeader {
+    width: min(1320px, 100%);
+    margin: 0 auto 1.25rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.searchResultsHeader h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4.25rem);
+    line-height: 0.95;
+}
+
+.searchResultsHeader > p {
+    padding-bottom: 0.25rem;
+    color: var(--fi-muted);
+    white-space: nowrap;
+}
+
+.searchEyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--fi-green-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#search {
+    min-height: 44px;
+    width: min(320px, 32vw);
+    margin-right: 1.25rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+#search:focus,
+.filterSearch:focus,
+.footerpage input:focus,
+.footerpage textarea:focus,
+.footerpage select:focus {
+    outline: 3px solid rgba(63, 125, 68, 0.16);
+    border-color: var(--fi-green);
+}
+
+.filterBlock {
+    min-width: 150px;
+}
+
+.filterSearch {
+    min-height: 40px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+#lastIdeasSrc {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    width: min(1320px, 100%);
+    margin-inline: auto;
+    overflow: visible;
+}
+
+#lastIdeasSrc .ideaBox,
+#mainDivDinamicContent .ideaBox {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-surface);
+    box-shadow: 0 8px 26px rgba(42, 63, 35, 0.07);
+}
+
+#lastIdeasSrc .ideaLink,
+#mainDivDinamicContent .ideaLink {
+    width: 100%;
+    height: 100%;
+    padding: 0.7rem;
+}
+
+#lastIdeasSrc .ideaImageSrc,
+#mainDivDinamicContent .ideaImageSrc {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+#lastIdeasSrc .ideaTitleSrc,
+#mainDivDinamicContent .ideaTitleSrc {
+    max-width: none;
+    min-height: 2.8em;
+    margin-top: 0.65rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    line-height: 1.35;
+}
+
+.footerpage {
+    min-height: calc(100vh - 68px);
+    background:
+        radial-gradient(circle at 88% 2%, rgba(213, 180, 64, 0.14), transparent 22rem),
+        linear-gradient(180deg, var(--fi-paper), var(--fi-surface));
+}
+
+.footerpage > * {
+    width: min(1120px, calc(100% - 3rem));
+}
+
+.footerpage h1,
+.footerpage h2,
+.footerpage h3,
+.footerpage h4 {
+    color: var(--fi-ink);
+}
+
+.footerpage p,
+.footerpage ul li {
+    color: var(--fi-muted);
+}
+
+.footerpage section,
+.footerpage #faqUl .question,
+.footerpage #faqUl .answer,
+#feedbackForm {
+    background: var(--fi-surface);
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    box-shadow: var(--fi-shadow);
+}
+
+.footerpage a {
+    color: var(--fi-green-dark);
+}
+
+.footerpage input,
+.footerpage textarea,
+.footerpage select {
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+.footerpage button,
+#feedbackForm input[type="submit"] {
+    min-height: 42px;
+    border: 1px solid var(--fi-green);
+    border-radius: 6px;
+    background: var(--fi-green);
+    color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+    #lastIdeasSrc {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    #searchPage .searchToolbar {
+        min-height: 72px;
+        position: relative;
+        padding: 0.75rem;
+    }
+
+    #searchPage .searchResults {
+        margin-top: 0;
+        padding: 1rem 0.75rem 2.5rem;
+    }
+
+    #search {
+        width: 100%;
+        margin: 0 0 0.5rem;
+    }
+
+    #allFilters {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filterBlock {
+        min-width: 145px;
+        margin-left: 0;
+    }
+
+    #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    #lastIdeasSrc .ideaImageSrc,
+    #mainDivDinamicContent .ideaImageSrc {
+        height: 150px;
+    }
+
+    .footerpage > * {
+        width: calc(100% - 1.5rem);
+    }
+}
+

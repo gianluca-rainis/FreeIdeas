@@ -1,5 +1,5 @@
-import { useAppContext } from '../contexts/CommonContext';
-import { AlertModal, ConfirmModal, PromptModal, LoadingModal } from './Modal';
+import { useAppContext } from '@/contexts/CommonContext';
+import { AlertModal, ConfirmModal, PromptModal, LoadingModal } from '@/components/Modal';
 
 export function ModalProvider() {
     const { currentModal } = useAppContext();

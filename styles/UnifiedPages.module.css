@@ -1,0 +1,594 @@
+.scope {
+    --page-scope: 1;
+}
+/* Page-specific styles for this route family. */
+/* Unified layouts for remaining page families */
+.scope[class~="footerpage"] {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    padding: clamp(3.5rem, 8vw, 7rem) 0;
+}
+
+.scope[class~="footerpage"]::before {
+    display: none;
+}
+
+.scope[class~="footerpage"] > h1:first-of-type {
+    max-width: 1120px;
+    margin: 0 auto 2.5rem;
+    padding: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.scope[class~="footerpage"] section {
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+.scope[class~="footerpage"] [id="faqUl"] {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.scope[class~="footerpage"] [id="faqUl"] li {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+}
+
+.scope[class~="footerpage"] [id="faqUl"] li::before {
+    display: none;
+}
+
+.scope[class~="footerpage"] [id="faqUl"] [class~="question"] {
+    min-height: 64px;
+    align-content: center;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px 6px 0 0;
+}
+
+.scope[class~="footerpage"] [id="faqUl"] [class~="answer"] {
+    border: 1px solid var(--fi-border);
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+}
+
+.scope [id="feedbackForm"] {
+    max-width: 1120px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    padding: clamp(1.25rem, 4vw, 3rem);
+}
+
+.scope [id="feedbackTitle"],
+.scope [id="feedbackDescription"],
+.scope [id="feedbackForm"] input[type="submit"] {
+    grid-column: 1 / -1;
+}
+
+.scope [id="feedbackForm"] input,
+.scope [id="feedbackForm"] textarea {
+    width: 100%;
+    min-height: 48px;
+}
+
+.scope[id="loginMain"] {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
+    justify-content: stretch;
+    align-items: stretch;
+    padding: 0;
+    background:
+        linear-gradient(90deg, rgba(225, 232, 189, 0.86), rgba(255, 255, 255, 0.18) 58%),
+        radial-gradient(circle at 12% 80%, rgba(109, 159, 69, 0.24), transparent 28rem),
+        var(--fi-paper);
+}
+
+.scope :root[data-theme="dark"] [id="loginMain"] {
+    background:
+        linear-gradient(90deg, rgba(55, 64, 46, 0.92), rgba(17, 20, 15, 0.18) 58%),
+        radial-gradient(circle at 12% 80%, rgba(216, 189, 79, 0.10), transparent 28rem),
+        var(--fi-paper);
+}
+
+.scope[id="loginMain"]::before {
+    content: "FreeIdeas\A Ideas worth sharing.";
+    white-space: pre;
+    align-self: center;
+    max-width: 760px;
+    padding: clamp(2rem, 7vw, 7rem);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.scope[id="loginMain"] section {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    margin: 0;
+    padding: clamp(2rem, 5vw, 5rem);
+    border: 0;
+    border-left: 1px solid var(--fi-border);
+    border-radius: 0;
+    background: var(--fi-surface);
+    box-shadow: -24px 0 70px rgba(39, 63, 35, 0.08);
+}
+
+.scope[id="loginMain"] h1 {
+    margin: 0 0 2rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 0.95;
+}
+
+.scope[id="loginMain"] form {
+    width: 100%;
+    max-width: none;
+}
+
+.scope[id="loginMain"] form input {
+    min-height: 52px;
+    border-radius: 6px;
+}
+
+.scope[id="loginMain"] [id="signInLoginPageButton"],
+.scope[id="loginMain"] [id="signInLoginPageCancelButton"] {
+    min-height: 52px;
+    border-radius: 6px;
+}
+
+.scope[id="accountMain"] {
+    max-width: 1320px;
+    min-height: calc(100vh - 68px);
+    margin: 0 auto;
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+    gap: clamp(1rem, 3vw, 3rem);
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.5rem);
+    background: transparent;
+}
+
+.scope [id="accountAsideInfo"] {
+    height: fit-content;
+    position: sticky;
+    top: 88px;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+.scope[id="accountMain"] [id="mainDivDinamicContent"] {
+    min-width: 0;
+}
+
+.scope[id="accountMain"] [id="navBarForAccountSaved"] {
+    width: 100%;
+    position: relative;
+    top: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
+.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.scope[id="reservedAreaMain"] {
+    max-width: 1320px;
+    min-height: calc(100vh - 68px);
+    margin: 0 auto;
+    border-radius: 0;
+    background: transparent;
+}
+
+.scope [id="reservedAreaHeader"] {
+    min-height: 82px;
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid var(--fi-border);
+    border-radius: 0;
+    background: var(--fi-surface);
+}
+
+.scope [id="reservedAreaHeader"] ul li button {
+    border-radius: 6px;
+}
+
+.scope[id="reservedAreaMain"] [id="loginReservedAreaForm"] {
+    max-width: 760px;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+.scope [class~="reservedAreaLiBoxInfo"],
+.scope[id="reservedAreaMain"] ul li {
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.scope[class~="errorPageMain"] {
+    min-height: calc(100vh - 68px);
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(216, 189, 79, 0.18), transparent 24rem),
+        var(--fi-paper);
+}
+
+.scope[class~="errorPageMain"] h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(5rem, 16vw, 12rem);
+    line-height: 0.8;
+}
+
+@media (max-width: 900px) {
+    .scope[id="loginMain"] {
+        grid-template-columns: 1fr;
+    }
+
+    .scope[id="loginMain"]::before {
+        min-height: 260px;
+        min-width: 0;
+        align-content: end;
+        font-size: clamp(3.5rem, 16vw, 6rem);
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+    }
+
+    .scope[id="loginMain"] section {
+        min-height: auto;
+        min-width: 0;
+        border-left: 0;
+        border-top: 1px solid var(--fi-border);
+    }
+
+    .scope[id="accountMain"] {
+        grid-template-columns: 1fr;
+    }
+
+    .scope [id="accountAsideInfo"] {
+        position: relative;
+        top: 0;
+    }
+
+    .scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
+.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .scope[class~="footerpage"] {
+        padding: 2.5rem 0;
+    }
+
+    .scope[class~="footerpage"] > h1:first-of-type {
+        padding: 0 0.75rem;
+        font-size: clamp(3rem, 15vw, 5rem);
+    }
+
+    .scope [id="feedbackForm"] {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .scope [id="feedbackTitle"],
+.scope [id="feedbackDescription"],
+.scope [id="feedbackForm"] input[type="submit"] {
+        grid-column: 1;
+    }
+
+    .scope[id="loginMain"]::before {
+        min-height: 220px;
+        padding: 2.5rem 1.25rem 2rem;
+    }
+
+    .scope[id="loginMain"] section {
+        padding: 2rem 1.25rem 3rem;
+    }
+
+    .scope[id="accountMain"] {
+        padding-inline: 0.75rem;
+    }
+
+    .scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
+.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+}
+
+.scope [class~="navInner"],
+.scope [class~="mobileNavInner"] {
+    width: min(1320px, calc(100% - 2.5rem));
+    min-height: 72px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.scope [class~="navInner"] {
+    justify-content: space-between;
+}
+
+.scope [class~="mobileNavInner"] {
+    justify-content: space-between;
+}
+
+.scope [class~="footerPageHeader"] {
+    max-width: 1120px;
+    margin: 0 auto clamp(2.5rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.scope [class~="footerPageHeader"] p {
+    margin: 0 0 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scope [class~="footerPageHeader"] h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.scope[class~="footerpage"] {
+    background:
+        linear-gradient(180deg, rgba(238, 242, 216, 0.72), transparent 24rem),
+        var(--fi-paper);
+}
+
+.scope[class~="footerpage"] > p,
+.scope[class~="footerpage"] > ul,
+.scope[class~="footerpage"] > h2,
+.scope[class~="footerpage"] > h3,
+.scope[class~="footerpage"] > h4,
+.scope[class~="footerpage"] > section {
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+.scope[class~="errorPageMain"] {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+    place-items: stretch;
+    padding: 0;
+}
+
+.scope [class~="errorCodeColumn"],
+.scope [class~="errorContentColumn"] {
+    min-height: 620px;
+}
+
+.scope [class~="errorCodeColumn"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(2rem, 6vw, 6rem);
+    background: #d8bd4f;
+    color: #1d301b;
+}
+
+.scope [class~="errorCodeColumn"] p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scope [class~="errorCodeColumn"] h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(8rem, 20vw, 18rem);
+    line-height: 0.7;
+}
+
+.scope [class~="errorContentColumn"] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 6rem);
+    background: var(--fi-surface);
+}
+
+.scope [class~="errorEyebrow"] {
+    margin: 0 0 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scope [class~="errorContentColumn"] h2 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.95;
+}
+
+.scope [class~="errorContentColumn"] p:not([class~="errorEyebrow"]) {
+    max-width: 38ch;
+    margin: 1.5rem 0 0;
+}
+
+.scope [class~="errorAction"] {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+    border: 1px solid var(--fi-green);
+    border-radius: 6px;
+    padding: 0.75rem 1.1rem;
+    background: var(--fi-green);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.scope [class~="reservedLoginPanel"] {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(360px, 1.2fr);
+    gap: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+.scope [class~="reservedLoginHeader"] {
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    background: #d8bd4f;
+    color: #1d301b;
+}
+
+.scope [class~="reservedLoginHeader"] p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scope [class~="reservedLoginHeader"] [class~="logo"] {
+    width: 100%;
+    margin: auto 0 0;
+}
+
+.scope [id="loginReservedAreaForm"] {
+    width: 100%;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 2.5rem;
+    border: 0;
+    box-shadow: none;
+}
+
+.scope[id="reservedAreaMain"] [id="loginReservedAreaForm"] ul {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .scope [class~="navInner"],
+.scope [class~="mobileNavInner"] {
+        width: calc(100% - 1.5rem);
+    }
+
+    .scope[class~="errorPageMain"] {
+        grid-template-columns: 1fr;
+    }
+
+    .scope [class~="errorCodeColumn"],
+.scope [class~="errorContentColumn"] {
+        min-height: 280px;
+    }
+
+    .scope [class~="errorCodeColumn"] h1 {
+        font-size: clamp(7rem, 38vw, 12rem);
+    }
+
+    .scope [class~="reservedLoginPanel"] {
+        grid-template-columns: 1fr;
+    }
+
+    .scope [class~="reservedLoginHeader"] {
+        min-height: 260px;
+    }
+}
+
+@media (max-width: 600px) {
+    .scope [class~="footerPageHeader"] {
+        padding-inline: 0.75rem;
+    }
+
+    .scope [class~="footerPageHeader"] h1 {
+        font-size: clamp(3rem, 15vw, 5rem);
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-left: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .scope[class~="footerpage"] > * {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .scope [class~="errorCodeColumn"],
+.scope [class~="errorContentColumn"] {
+        min-height: 230px;
+        padding: 2rem 1.25rem;
+    }
+
+    .scope [class~="errorContentColumn"] h2 {
+        font-size: clamp(2.7rem, 13vw, 4.5rem);
+    }
+
+    .scope [class~="reservedLoginHeader"] {
+        min-height: 220px;
+    }
+
+    .scope [id="loginReservedAreaForm"] {
+        min-height: 0;
+        padding: 1.25rem;
+    }
+}
+
+.scope [class~="accountPageHeader"] {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 3vw, 2.5rem) 1.5rem;
+}
+
+.scope [class~="accountPageHeader"] p {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scope [class~="accountPageHeader"] h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.scope [class~="ideaArticle"] {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+

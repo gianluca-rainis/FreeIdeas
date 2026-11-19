@@ -1,6 +1,6 @@
-import { query } from '../../lib/db_connection';
+import { query } from '@/lib/db_connection';
 import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
+import { sessionOptions } from '@/lib/session';
 import formidable from 'formidable';
 import bcrypt from 'bcrypt';
 

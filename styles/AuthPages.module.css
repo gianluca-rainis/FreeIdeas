@@ -1,0 +1,218 @@
+/* Page-specific styles for this route family. */
+/* LOGIN PAGE */
+:global(#loginMain) {
+    --auth-bg-top: #ecffd8;
+    --auth-bg-bottom: #d0f0ad;
+    --auth-card-bg: rgba(255, 255, 219, 0.98);
+    --auth-card-border: #6f9f4f;
+    --auth-text: #223519;
+    --auth-muted: #466737;
+    --auth-input-bg: #f9ffef;
+    --auth-input-border: #9fca7e;
+    --auth-input-focus: #5e9f3a;
+    --auth-button-bg: linear-gradient(135deg, #93d95d 0%, #d5ef85 100%);
+    --auth-button-text: #223519;
+    --auth-button-cancel: #f5ffd9;
+    --auth-link: #3a8d1e;
+    --auth-link-hover: #2c6d16;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: calc(100vh - 200px);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.74), transparent 34%),
+        radial-gradient(circle at 90% 85%, rgba(132, 203, 92, 0.2), transparent 38%),
+        linear-gradient(160deg, var(--auth-bg-top) 0%, var(--auth-bg-bottom) 100%);
+}
+
+:global(#loginMain form) {
+    display: flex;
+    flex-direction: column;
+    width: min(520px, 100%);
+    max-width: 100%;
+    justify-content: center;
+    justify-self: center;
+    position: relative;
+    gap: 8px;
+}
+
+:global(#loginMain form p) {
+    width: 100%;
+    margin: 2px 0;
+}
+
+:global(#loginMain form input) {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 4px;
+    background-color: var(--auth-input-bg);
+    border: 1px solid var(--auth-input-border);
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding-right: 48px;
+    padding-left: 14px;
+    color: var(--auth-text);
+    font-size: 1rem;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+:global(#loginMain form input::placeholder) {
+    color: #6f8f5e;
+}
+
+:global(#loginMain form input:focus) {
+    outline: none;
+    border-color: var(--auth-input-focus);
+    box-shadow: 0 0 0 3px rgba(110, 181, 75, 0.2);
+    background-color: #ffffff;
+}
+
+:global(#signInLoginPageButton),
+:global(#signInLoginPageCancelButton),
+:global(#changePasswordLoginPageButton) {
+    width: 100%;
+    min-height: 48px;
+    margin: 6px 0 0;
+    background: var(--auth-button-bg);
+    color: var(--auth-button-text);
+    border: 1px solid #6ea64d;
+    border-radius: 12px;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+:global(#signInLoginPageButton:hover),
+:global(#signInLoginPageCancelButton:hover),
+:global(#changePasswordLoginPageButton:hover) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(71, 125, 42, 0.18);
+    filter: brightness(1.05);
+}
+
+:global(#signInLoginPageButton:active),
+:global(#signInLoginPageCancelButton:active),
+:global(#changePasswordLoginPageButton:active) {
+    transform: translateY(0);
+}
+
+:global(#signInLoginPageCancelButton) {
+    background: var(--auth-button-cancel);
+    color: var(--auth-text);
+    border-color: #afcf8f;
+}
+
+:global(#loginMain a) {
+    cursor: pointer;
+    color: var(--auth-link);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+:global(#loginMain a:hover) {
+    color: var(--auth-link-hover);
+    opacity: 0.95;
+}
+
+:global(#loginMain section) {
+    width: min(620px, 100%);
+    justify-self: center;
+    background-color: var(--auth-card-bg);
+    border: 1px solid var(--auth-card-border);
+    border-radius: 22px;
+    padding: clamp(22px, 3vw, 34px);
+    margin: 20px;
+    box-shadow: 0 20px 44px rgba(66, 112, 40, 0.16);
+    backdrop-filter: blur(3px);
+    animation: authPanelEnter 0.55s ease both;
+}
+
+:global(#loginMain .toggle-password-visibility-ext) {
+    position: absolute;
+    right: 10px;
+    z-index: 2;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+:global(#loginMain .toggle-password-visibility-ext:hover) {
+    opacity: 0.8;
+}
+
+:global(#loginMain p) {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    color: var(--auth-muted);
+    line-height: 1.45;
+    font-size: 0.98rem;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+:global(#loginMain h1) {
+    padding-bottom: 16px;
+    margin: 0;
+    color: var(--auth-text);
+    font-size: clamp(1.8rem, 3.3vw, 2.5rem);
+    letter-spacing: 0.01em;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+:global(#loginMain #passwordFormInputLoginPage),
+:global(#loginMain #confirmPasswordFormInputLoginPage) {
+    width: 100%;
+}
+
+:global(#loginMain form > *) {
+    animation: authItemEnter 0.4s ease both;
+}
+
+:global(#loginMain form > *:nth-child(2)) {
+    animation-delay: 0.05s;
+}
+
+:global(#loginMain form > *:nth-child(3)) {
+    animation-delay: 0.1s;
+}
+
+:global(#loginMain form > *:nth-child(4)) {
+    animation-delay: 0.15s;
+}
+
+:global(#loginMain form > *:nth-child(5)) {
+    animation-delay: 0.2s;
+}
+
+@keyframes authPanelEnter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.992);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes authItemEnter {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

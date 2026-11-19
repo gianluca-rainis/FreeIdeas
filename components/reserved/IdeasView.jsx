@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import IdeaEditModal from './IdeaEditModal';
-import { apiCall } from '../../utils/apiConfig';
+import IdeaEditModal from '@/components/reserved/IdeaEditModal';
+import { apiCall } from '@/utils/apiConfig';
 
 export default function IdeasView({ showAlert, showConfirm }) {
     const [search, setSearch] = useState('');

@@ -1,10 +1,15 @@
+import styles from '@/styles/SearchPublishModern.module.css'
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import '@/styles/ModernShared.module.css';
+import '@/styles/UnifiedPages.module.css';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import { apiCall } from '../utils/apiConfig'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -18,15 +23,15 @@ export async function getStaticProps() {
 // Internal functions
 function IdeaCard({ link, imgSrc, title, author, index }) {
     return (
-        <li className="ideaBox">
-            <Link href={link} className="ideaLink">
-                <div className="ideaImageWrap">
-                    <img src={imgSrc!=null?imgSrc:"/images/FreeIdeas.svg"} alt="" className="ideaImageSrc" />
-                    <span className="ideaIndex">{String(index + 1).padStart(2, '0')}</span>
+        <li className={styles.ideaBox}>
+            <Link href={link} className={styles.ideaLink}>
+                <div className={styles.ideaImageWrap}>
+                    <img src={imgSrc!=null?imgSrc:"/images/FreeIdeas.svg"} alt="" className={styles.ideaImageSrc} />
+                    <span className={styles.ideaIndex}>{String(index + 1).padStart(2, '0')}</span>
                 </div>
-                <div className="ideaCardCopy">
-                    <p className="ideaTitleSrc">{title}</p>
-                    <p className="ideaAuthorSrc">by {author}</p>
+                <div className={styles.ideaCardCopy}>
+                    <p className={styles.ideaTitleSrc}>{title}</p>
+                    <p className={styles.ideaAuthorSrc}>by {author}</p>
                 </div>
             </Link>
         </li>
@@ -35,7 +40,7 @@ function IdeaCard({ link, imgSrc, title, author, index }) {
 
 function IdeaList({ ideas }) {
     return (
-        <ul id="lastIdeasSrc">
+        <ul id="lastIdeasSrc" className={styles.lastIdeasSrc}>
             {ideas.map((idea, index) => (
                 <IdeaCard key={`idea-${index}`} link={idea.link} imgSrc={idea.image} title={idea.title} author={idea.author} index={index} />
             ))}
@@ -142,7 +147,7 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
 
     return (
         <>
-            <li className="filterBlock">
+            <li className={styles.filterBlock}>
                 <div 
                     id="compactFilters" 
                     onClick={() => setShowDropdown(!showDropdown)}
@@ -157,11 +162,11 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
             </li>
 
             {windowWidth > 600 && (
-                <li className="filterBlock">
-                    <label className="labelInfoSearch">Order by:</label>
+                <li className={styles.filterBlock}>
+                    <label className={styles.labelInfoSearch}>Order by:</label>
                     <select 
                         id="orderByPeople" 
-                        className="filterSearch" 
+                        className={styles.filterSearch} 
                         value={currentFilters.order}
                         onChange={(e) => handleFilterClick('order', e.target.value)}
                     >
@@ -417,25 +422,26 @@ export default function SearchAnIdeaPage({ pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
             
-            <main className="searchPageMain">
-                <header className="searchToolbar">
+            <main className={styles.searchPageMain}>
+                <header className={styles.searchToolbar}>
                 <input 
                     type="search" 
                     placeholder="Search" 
-                    id="search" 
+                    id="search"
+                    className={styles.search}
                     value={filters.search}
                     onChange={(e) => handleSearchChange(e.target.value)}
                 />
 
-                <ul id="allFilters">
+                <ul id="allFilters" className={styles.allFilters}>
                     {windowWidth >= 1100 ? (
                         // Show all filters
                         <>
-                            <li className="filterBlock">
-                                <label className="labelInfoSearch">Type of project:</label>
+                            <li className={styles.filterBlock}>
+                                <label className={styles.labelInfoSearch}>Type of project:</label>
                                 <select 
                                     id="typeFilter" 
-                                    className="filterSearch" 
+                                    className={styles.filterSearch} 
                                     value={filters.type}
                                     onChange={(e) => handleFilterChange('type', e.target.value)}
                                 >
@@ -452,11 +458,11 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                                 </select>
                             </li>
 
-                            <li className="filterBlock">
-                                <label className="labelInfoSearch">Creativity Type:</label>
+                            <li className={styles.filterBlock}>
+                                <label className={styles.labelInfoSearch}>Creativity Type:</label>
                                 <select 
                                     id="creativityTypeFilter" 
-                                    className="filterSearch" 
+                                    className={styles.filterSearch} 
                                     value={filters.creativity}
                                     onChange={(e) => handleFilterChange('creativity', e.target.value)}
                                 >
@@ -469,11 +475,11 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                                 </select>
                             </li>
 
-                            <li className="filterBlock">
-                                <label className="labelInfoSearch">Project status:</label>
+                            <li className={styles.filterBlock}>
+                                <label className={styles.labelInfoSearch}>Project status:</label>
                                 <select 
                                     id="orderByStatus" 
-                                    className="filterSearch" 
+                                    className={styles.filterSearch} 
                                     value={filters.status}
                                     onChange={(e) => handleFilterChange('status', e.target.value)}
                                 >
@@ -484,11 +490,11 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                                 </select>
                             </li>
 
-                            <li className="filterBlock">
-                                <label className="labelInfoSearch">Order by:</label>
+                            <li className={styles.filterBlock}>
+                                <label className={styles.labelInfoSearch}>Order by:</label>
                                 <select 
                                     id="orderByPeople" 
-                                    className="filterSearch" 
+                                    className={styles.filterSearch} 
                                     value={filters.order}
                                     onChange={(e) => handleFilterChange('order', e.target.value)}
                                 >
@@ -511,10 +517,10 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                 </ul>
                 </header>
 
-                <section className="searchResults">
-                <div className="searchResultsHeader">
+                <section className={styles.searchResults}>
+                <div className={styles.searchResultsHeader}>
                     <div>
-                        <p className="searchEyebrow">Community library</p>
+                        <p className={styles.searchEyebrow}>Community library</p>
                         <h1>Explore ideas</h1>
                     </div>
                     <p>{loading ? 'Searching...' : `${ideas.length} result${ideas.length === 1 ? '' : 's'}`}</p>

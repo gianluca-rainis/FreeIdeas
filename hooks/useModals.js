@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useAppContext } from '../contexts/CommonContext';
+import { useAppContext } from '@/contexts/CommonContext';
 
 export function useModals() {
     const { themeIsLight } = useAppContext();

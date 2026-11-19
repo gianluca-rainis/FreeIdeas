@@ -1,8 +1,11 @@
+import '@/styles/ErrorPages.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
 import React from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
 
 // Server-side rendering for initial data
 GenericError.getInitialProps = ({ res, err }) => {

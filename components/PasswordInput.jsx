@@ -1,5 +1,5 @@
-import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
-import styles from '../styles/PasswordToggle.module.css';
+import { usePasswordVisibility } from '@/hooks/usePasswordVisibility';
+import styles from '@/styles/PasswordToggle.module.css';
 
 export function PasswordInput({ id, name, value, onChange, placeholder, className = '', required = false, autoComplete = 'current-password' }) {
     const { isVisible, toggleVisibility, getInputType, getToggleIcon } = usePasswordVisibility();

@@ -1,7 +1,7 @@
 import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import { query } from '../../lib/db_connection';
-import { withCors } from '../../lib/cors';
+import { sessionOptions } from '@/lib/session';
+import { query } from '@/lib/db_connection';
+import { withCors } from '@/lib/cors';
 
 function getInput(data) {
     return String(data).trim();

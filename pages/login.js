@@ -1,10 +1,14 @@
+import styles from '@/styles/UnifiedPages.module.css'
+import '@/styles/AuthPages.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
 import React, { useEffect, useRef } from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import Head from '../components/Head'
-import { useAppContext } from '../contexts/CommonContext'
-import { apiCall } from '../utils/apiConfig'
-import { positionPasswordToggleButtons } from '../utils/passwordTogglePosition'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { apiCall } from '@/utils/apiConfig'
+import { positionPasswordToggleButtons } from '@/utils/passwordTogglePosition'
 
 // Server-side rendering for initial data
 export async function getStaticProps() {
@@ -182,7 +186,7 @@ export default function LoginPage({pageTitle}) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main id="loginMain">
+            <main id="loginMain" className={styles.scope}>
                 <section className="authCard">
                     <p className="authEyebrow">Welcome back</p>
                     <h1>Sign in to FreeIdeas</h1>

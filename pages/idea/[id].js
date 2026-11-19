@@ -1,13 +1,19 @@
+import '@/styles/IdeaPage.module.css';
+import '@/styles/ResponsivePages.module.css';
+import '@/styles/ThemeAndBase.module.css';
+import '@/styles/ModernShared.module.css';
+import '@/styles/IdeaPublishModern.module.css';
+import '@/styles/UnifiedPages.module.css';
 import React, { useEffect, useState } from 'react'
-import Nav from '../../components/Nav'
-import Footer from '../../components/Footer'
-import Head from '../../components/Head'
-import { useAppContext } from '../../contexts/CommonContext'
-import { useThemeImages } from '../../hooks/useThemeImages'
-import { useModals } from '../../hooks/useModals'
-import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
-import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '../../utils/apiConfig'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import Head from '@/components/Head'
+import { useAppContext } from '@/contexts/CommonContext'
+import { useThemeImages } from '@/hooks/useThemeImages'
+import { useModals } from '@/hooks/useModals'
+import { AlertModal, ConfirmModal, PromptModal } from '@/components/Modal'
+import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
+import { apiCall, getBaseUrl } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {

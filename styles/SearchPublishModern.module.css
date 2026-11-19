@@ -1,0 +1,267 @@
+/* Page-specific styles for this route family. */
+/* Rebuilt search and publishing pages */
+.searchPageMain {
+    min-height: calc(100vh - 68px);
+    background:
+        radial-gradient(circle at 92% 2%, rgba(216, 189, 79, 0.16), transparent 24rem),
+        var(--fi-paper);
+}
+
+.searchToolbar {
+    min-height: 112px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    align-items: end;
+    gap: 1.25rem;
+    position: relative;
+    padding: 1.25rem clamp(1rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+.search {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+.allFilters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    align-items: end;
+    gap: 0.75rem;
+}
+
+.filterBlock {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.labelInfoSearch {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.filterSearch {
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+.searchResults {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 3vw, 2.5rem);
+}
+
+.searchResultsHeader {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.searchResultsHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    line-height: 0.92;
+}
+
+.searchEyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.lastIdeasSrc {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.lastIdeasSrc .ideaBox {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.lastIdeasSrc .ideaLink {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+}
+
+.ideaImageWrap {
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-surface);
+}
+
+.ideaIndex {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #f7f8ef;
+    color: #172217;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.lastIdeasSrc .ideaImageSrc {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ideaCardCopy {
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+}
+
+.lastIdeasSrc .ideaTitleSrc {
+    max-width: none;
+    max-height: none;
+    margin: 0 0 0.4rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.35rem, 2vw, 2.1rem);
+    line-height: 1.05;
+    white-space: normal;
+}
+
+.lastIdeasSrc .ideaAuthorSrc {
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    font-size: 0.82rem;
+    opacity: 0.68;
+    white-space: normal;
+}
+
+.publishPageHeader {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1rem, 3vw, 2rem) 2.5rem;
+}
+
+.publishPageHeader p {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.publishPageHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.publishPageHeader span {
+    max-width: 520px;
+    display: block;
+    margin-top: 1.25rem;
+    font-size: 1.05rem;
+}
+
+.authEyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+    .searchToolbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .allFilters {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .searchToolbar {
+        min-height: 0;
+        padding: 1rem 0.75rem;
+    }
+
+    .allFilters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .searchResults {
+        padding-inline: 0.75rem;
+    }
+
+    .searchResultsHeader {
+        grid-template-columns: 1fr;
+    }
+
+    .searchResultsHeader h1 {
+        font-size: clamp(3rem, 14vw, 5.5rem);
+    }
+
+    .lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    .ideaImageWrap {
+        height: 180px;
+    }
+
+    .ideaCardCopy {
+        min-height: 110px;
+        padding: 0.75rem;
+    }
+
+    .lastIdeasSrc .ideaTitleSrc {
+        font-size: 1.05rem;
+    }
+
+    .publishPageHeader {
+        padding-top: 3rem;
+    }
+
+    .publishPageHeader h1 {
+        font-size: clamp(3.2rem, 15vw, 5.5rem);
+    }
+}

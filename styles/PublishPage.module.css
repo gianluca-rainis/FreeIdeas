@@ -1,0 +1,238 @@
+/* Page-specific styles for this route family. */
+/* NEW IDEAS STYLES */
+:global(#newIdeaMain) {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+:global(#saveNewIdea),
+:global(#cancelNewIdea),
+:global(#deleteOldIdea) {
+    cursor: pointer;
+    margin-bottom: 30px;
+    margin: 10px;
+}
+
+:global(#saveNewIdea),
+:global(#deleteOldIdea) {
+    left: 90%;
+    height: 40px;
+    padding: 5px;
+    font-size: larger;
+}
+
+:global(#cancelNewIdea) {
+    width: 40px;
+    height: 40px;
+    left: 95%;
+}
+
+/* main block */
+:global(#newIdeaMain #ideaImageAsBackground) {
+    background-image: url("/images/FreeIdeas.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+:global(#newIdeaMain #title) {
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+    background-color: #ebffa4;
+    font-size: 100px;
+    opacity: 80%;
+    border-radius: 10px;
+}
+
+:global(#newIdeaMain #author) {
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+    background-color: #b6ffa4;
+    opacity: 70%;
+    font-size: 50px;
+    border-radius: 10px;
+}
+
+:global(#newIdeaMain #mainAuthorAccount) {
+    text-decoration: underline;
+    color: rgb(255, 130, 130);
+}
+
+:global(#newIdeaMain #description) {
+    margin-top: 40px;
+    font-size: large;
+    text-align: justify;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 90%;
+    resize: vertical;
+    height: 80px;
+    border-radius: 10px;
+    padding: 5px;
+    border: 0;
+}
+
+:global(#newinfoForFilters) {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    text-align: center;
+}
+
+:global(#newIdeaMain .filterSearch) {
+    width: 60%;
+    justify-self: center;
+    font-size: 15px;
+}
+
+/* image info */
+:global(#newIdeaMain #imagesInfo) {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+:global(#newIdeaMain #additionalInfo) {
+    align-items: center;
+    justify-content: center;
+    background-color: #f3ffc9;
+    margin-top: 10px;
+    padding-top: 20px;
+    margin-bottom: 10px;
+}
+
+:global(#newIdeaMain #addAdditionalInfo),
+:global(#newIdeaMain #addLog) {
+    width: 30px;
+    cursor: pointer;
+}
+
+:global(#newIdeaMain .deleteAdditionalInfo),
+:global(#newIdeaMain .deleteLog) {
+    width: 30px;
+    cursor: pointer;
+    margin-left: 90%;
+}
+
+:global(#newIdeaMain #imagesInfo .imageInfoLi) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3ffc9;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+:global(#newIdeaMain #imagesInfo .preview) {
+    max-width: 40rem;
+    max-height: 15rem;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+:global(#newIdeaMain #imagesInfo .imageInfo) {
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+:global(#newIdeaMain #imagesInfo .titleImageInfo),
+:global(#newIdeaMain .logTitle) {
+    font-size: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 30%;
+    resize: none;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
+    text-align: center;
+}
+
+:global(#newIdeaMain #imagesInfo .imageInfoDescription),
+:global(#newIdeaMain .logInfo) {
+    margin-top: 40px;
+    font-size: large;
+    text-align: justify;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 90%;
+    resize: vertical;
+    height: 80px;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
+}
+
+/* download */
+:global(#newIdeaMain .subtitles) {
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+:global(#newIdeaMain #buttonlink) {
+    margin-bottom: 20px;
+    width: 80%;
+    height: 40px;
+    border-radius: 10px;
+    border: 0;
+    padding: 5px;
+}
+
+/* license */
+:global(#licensePdfFile) {
+    padding: 20px;
+}
+
+/* dev logs */
+:global(#newIdeaMain #devLogsSection) {
+    background-color: #f8f095;
+}
+
+:global(#newIdeaMain #logsList) {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 30px;
+}
+
+:global(#newIdeaMain .log) {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+:global(#newIdeaMain .logTitleAndData) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+:global(#newIdeaMain .logTitle) {
+    font-size: 20px;
+}
+
+:global(#newIdeaMain .data) {
+    margin-left: 30px;
+    color: grey;
+}
+
+:global(#newIdeaMain .logInfo) {
+    margin-bottom: 20px;
+    text-align: justify;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+

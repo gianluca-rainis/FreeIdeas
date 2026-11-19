@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useAppContext } from '../contexts/CommonContext';
+import { useAppContext } from '@/contexts/CommonContext';
 import { useRouter } from 'next/router';
-import { apiCall } from '../utils/apiConfig';
-import { handleError, ValidationError } from '../utils/errorHandling';
+import { apiCall } from '@/utils/apiConfig';
+import { handleError, ValidationError } from '@/utils/errorHandling';
 
 export function useAuth() {
     const { 

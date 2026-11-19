@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import AccountEditModal from './AccountEditModal';
-import { apiCall } from '../../utils/apiConfig';
+import AccountEditModal from '@/components/reserved/AccountEditModal';
+import { apiCall } from '@/utils/apiConfig';
 
 // Simple accounts list with search
 export default function AccountsView({ showAlert, showConfirm, showPrompt }) {

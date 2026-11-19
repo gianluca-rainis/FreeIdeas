@@ -1,5 +1,5 @@
-import { query } from '../../lib/db_connection';
-import { withCors } from '../../lib/cors';
+import { query } from '@/lib/db_connection';
+import { withCors } from '@/lib/cors';
 
 function getInput(data) {
     return String(data).trim();

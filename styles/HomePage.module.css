@@ -1,0 +1,172 @@
+/* Page-specific styles for the home route. */
+/* WHAT IS FREEIDEAS SECTION */
+:global(#whatisFreeIdeas) {
+    align-items: center;
+    background-color: rgb(214, 233, 144);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 600px;
+}
+
+:global(#whatisFreeIdeas h2) {
+    text-align: center;
+    padding: 20px 0 20px 0;
+}
+
+:global(#whatisFreeIdeas #lastIdeasVertical1),
+:global(#whatisFreeIdeas #lastIdeasVertical2) {
+    text-align: center;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+    max-width: fit-content;
+}
+
+:global(#middleTextSection) {
+    flex-grow: 1;
+    padding: 1rem;
+    text-align: center;
+    overflow: auto;
+    align-content: center;
+    height: 100%;
+}
+
+:global(#horizzontalBarSeparatorSection) {
+    align-items: center;
+    background-color: rgb(173, 212, 32);
+    width: 100%;
+    height: 100%;
+}
+
+:global(#horizzontalBarSeparatorSection #lastIdeasHorizontal),
+:global(#inspirationalSection #inspirationalUl) {
+    text-align: center;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+    max-width: fit-content;
+}
+
+:global(.ideaBox) {
+    width: fit-content;
+    height: fit-content;
+    margin: 10px;
+    background-color: #f8f095;
+    border-radius: 10px;
+    flex: 0 0 auto;
+}
+
+:global(.ideaBox .ideaImage) {
+    height: 170px;
+    width: 140px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+}
+
+:global(.ideaBox .ideaTitle) {
+    font-size: 25px;
+    padding-top: 30px;
+    word-break: break-all;
+    max-width: 140px;
+    max-height: 28.67px;
+    overflow: hidden;
+}
+
+:global(.ideaBox .ideaAuthor) {
+    font-size: 15px;
+    padding-top: 10px;
+    word-break: break-all;
+    max-width: 140px;
+    max-height: 28.67px;
+    overflow: hidden;
+}
+
+:global(#whatisFreeIdeas .description) {
+    text-align: justify;
+    align-items: center;
+    padding: 20px 20px 20px 20px;
+    font-size: 1.2em;
+    line-height: 30px;
+}
+
+/* IMAGES HOME SECTION */
+:global(#imagesSectionHome) {
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+    background-color: rgb(173, 212, 32);
+}
+
+:global(#imagesSectionHome h1) {
+    text-align: center;
+    padding: 20px 0 20px 0;
+}
+
+:global(.ideaLink) {
+    text-decoration: none;
+    display: block;
+    color: #2c3d27;
+    padding: 20px;
+    width: fit-content;
+    height: fit-content;
+}
+
+:global(#imagesSectionHome p) {
+    text-align: justify;
+    align-items: center;
+    padding: 20px 20px 20px 30px;
+    font-size: 1.2em;
+}
+
+:global(#imagesSectionHome .imageInfoLiHome) {
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    padding: 15px;
+    border-bottom: 3px solid #f8f095;
+}
+
+:global(.lastImageInfoLi) {
+    border: 0 !important;
+}
+
+:global(#imagesSectionHome .imageInfoLiHome .imageHome) {
+    width: 50%;
+}
+
+:global(#inspirationalSection) {
+    background-color: #e4c53d;
+}
+
+:global(#inspirationalSection #inspirationalUl li) {
+    height: 180px;
+    width: 296px;
+    text-align: center;
+    align-content: center;
+    padding: 0;
+}
+
+:global(#inspirationalSection #inspirationalUl li h2) {
+    padding: 20px;
+}
+
+:global(#sloganFreeIdeasHome) {
+    text-align: center;
+    background-color: #f6ffd7;
+    padding: 10px;
+}
+

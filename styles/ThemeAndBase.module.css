@@ -1,0 +1,1288 @@
+/* Page-specific styles for this route family. */
+/* COLOR THEME (LIGHT - DARK) */
+:global(:root[data-theme="dark"]) {
+    :global(body) {
+        background-color: #000000;
+        color: #cba95c;
+    }
+
+    :global(#loginMain) {
+        --auth-bg-top: #131a14;
+        --auth-bg-bottom: #071109;
+        --auth-card-bg: rgba(14, 20, 15, 0.94);
+            --auth-card-border: #7f6840;
+            --auth-text: #f3e2b7;
+            --auth-muted: #d5c28d;
+            --auth-input-bg: #18130d;
+            --auth-input-border: #806643;
+            --auth-input-focus: #cba95c;
+            --auth-button-bg: linear-gradient(135deg, #9a7a39 0%, #cba95c 100%);
+            --auth-button-text: #20160a;
+            --auth-button-cancel: #1b1610;
+            --auth-link: #d7bc6a;
+            --auth-link-hover: #f0d890;
+        background:
+                radial-gradient(circle at 12% 18%, rgba(203, 169, 92, 0.12), transparent 32%),
+                radial-gradient(circle at 88% 82%, rgba(203, 169, 92, 0.1), transparent 34%),
+            linear-gradient(160deg, var(--auth-bg-top) 0%, var(--auth-bg-bottom) 100%);
+    }
+
+    :global(#loginMain section) {
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    :global(#loginMain form input) {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    :global(#loginMain form input::placeholder) {
+        color: #9d8b64;
+    }
+
+    :global(#loginMain form input:focus) {
+        background-color: #211a11;
+        box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.16);
+    }
+
+    :global(#signInLoginPageButton),
+:global(#signInLoginPageCancelButton),
+:global(#changePasswordLoginPageButton) {
+        border-color: #a88948;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    :global(#signInLoginPageButton:hover),
+:global(#signInLoginPageCancelButton:hover),
+:global(#changePasswordLoginPageButton:hover) {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    :global(#signInLoginPageCancelButton) {
+        background: #15110c;
+        color: var(--auth-text);
+        border-color: #66563a;
+    }
+
+    :global(#loginMain .toggle-password-visibility-ext) {
+        background: none;
+    }
+
+    :global(#loginMain .toggle-password-visibility-ext:hover) {
+        opacity: 0.86;
+    }
+
+    :global(#loginMain .toggle-password-visibility-ext svg path) {
+        fill: #f1e7c9;
+    }
+
+    :global(nav) {
+        background-color: #000000;
+    }
+
+    :global(nav #pcNavBarGhost) {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    :global(nav #mobileNavBarGhost) {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    :global(.navText) {
+        color: #cba95c;
+    }
+    
+    :global(.navText:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#userName) {
+        color: #cba95c;
+    }
+
+    :global(#mobileMenuHidden) {
+        background-color: #000000;
+    }
+
+    :global(#mobileNavLinks li) {
+        border-bottom: 1px solid #cba95c;
+    }
+
+    :global(#mobileNavLinks .navText) {
+        color: #cba95c;
+    }
+
+    :global(#mobileNavLinks .navText:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#mobileMenuHidden #loginAreaMobile h2) {
+        color: #cba95c;
+    }
+
+    :global(.signUpMobile) {
+        cursor: pointer;
+        color: #ffdd8d;
+    }
+
+    :global(.signUpMobile:hover) {
+        color: #5c4e2e;
+    }
+
+    :global(#emailAreaLoginMobile),
+:global(#emailAreaSignUpMobile),
+:global(#passwordAreaLoginMobile),
+:global(#passwordAreaSignUpMobile),
+:global(#firstNameMobile),
+:global(#lastNameMobile),
+:global(#userNameSignInMobile) {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
+    }
+
+    :global(#sendLoginButtonMobile),
+:global(#sendCreateAccountButtonMobile),
+:global(#sendLogoutButtonMobile),
+:global(#sendAccountButtonMobile) {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    :global(#emailAreaLoginMobile::placeholder),
+:global(#emailAreaSignUpMobile::placeholder),
+:global(#passwordAreaLoginMobile::placeholder),
+:global(#passwordAreaSignUpMobile::placeholder),
+:global(#firstNameMobile::placeholder),
+:global(#lastNameMobile::placeholder),
+:global(#userNameSignInMobile::placeholder) {
+        color: #cba95c;
+    }
+
+    :global(header) {
+        background-color: #272727;
+    }
+
+    :global(#whatisFreeIdeas) {
+        background-color: #000000;
+        border-bottom: 1px solid #cba95c;
+    }
+
+    :global(.ideaBox) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#horizzontalBarSeparatorSection) {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    :global(#imagesSectionHome) {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    :global(#imagesSectionHome .imageInfoLiHome) {
+        border-color: #cba95c;
+    }
+
+    :global(#inspirationalSection) {
+        background-color: #000000;
+    }
+
+    :global(#sloganFreeIdeasHome) {
+        background-color: #000000;
+    }
+
+    :global(.ideaLink) {
+        color: #cba95c;
+    }
+
+    :global(footer) {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    :global(.footerTextSection) {
+        border-color: #cba95c;
+    }
+
+    :global(footer ul li a) {
+        color: #cba95c;
+    }
+
+    :global(#footer hr) {
+        height: 1px;
+        color: #5c4e2e;
+        background-color: #5c4e2e;
+        border: none;
+    }
+
+    :global(.footerpage) {
+        --fp-text: #dfc99a;
+        --fp-muted: #cfba8e;
+        --fp-title: #f2ddaf;
+        --fp-link: #ffe09f;
+        --fp-link-hover: #ffeec4;
+        --fp-surface: rgba(41, 34, 23, 0.84);
+        --fp-surface-strong: rgba(53, 42, 28, 0.94);
+        --fp-border: rgba(222, 185, 107, 0.34);
+        --fp-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        background:
+            radial-gradient(120% 90% at 100% 0%, rgba(221, 185, 104, 0.18) 0%, rgba(221, 185, 104, 0) 62%),
+            radial-gradient(90% 78% at 0% 100%, rgba(126, 91, 38, 0.24) 0%, rgba(126, 91, 38, 0) 66%),
+            linear-gradient(180deg, #080808 0%, #12100b 100%);
+        background-color: #000000;
+    }
+
+    :global(.footerpage #faqUl .question) {
+        background: linear-gradient(100deg, rgba(95, 74, 35, 0.95), rgba(64, 48, 26, 0.94));
+    }
+
+    :global(.footerpage #feedbackForm textarea) {
+        background-color: rgba(79, 59, 32, 0.95);
+    }
+
+    :global(.footerpage #feedbackForm input) {
+        background-color: rgba(204, 169, 93, 0.9);
+        color: #342710;
+    }
+
+    :global(.footerpage .logo) {
+        filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+    }
+
+    :global(#loginArea) {
+        background-color: #272727;
+        border: 1px solid #cba95c;
+    }
+
+    :global(#loginArea h2) {
+        color: #cba95c;
+    }
+
+    :global(.signUp) {
+        color: #ffdd8d;
+    }
+
+    :global(.signUp:hover) {
+        color: #5c4e2e;
+    }
+
+    :global(#emailAreaLogin),
+:global(#passwordAreaLogin),
+:global(#firstName),
+:global(#lastName),
+:global(#userNameSignIn),
+:global(#emailAreaSignIn),
+:global(#passwordAreaSignIn) {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
+    }
+
+    :global(#emailAreaLogin::placeholder),
+:global(#passwordAreaLogin::placeholder),
+:global(#firstName::placeholder),
+:global(#lastName::placeholder),
+:global(#userNameSignIn::placeholder),
+:global(#emailAreaSignIn::placeholder),
+:global(#passwordAreaSignIn::placeholder) {
+        color: #cba95c;
+    }
+
+    :global(#sendLoginButton),
+:global(#sendCreateAccountButton) {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    :global(#forgotPassword) {
+        color: #ffdd8d;
+    }
+
+    :global(#forgotPassword:hover) {
+        color: #5c4e2e;
+    }
+
+    :global(#sendAccountButton),
+:global(#sendLogoutButton) {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    :global(#searchPage) {
+        background-color: #000000;
+    }
+
+    :global(#search) {
+        border: 1px solid #5c4e2e;
+    }
+
+    :global(.ideaLinkSrc) {
+        color: #cba95c;
+    }
+
+    :global(.ideaImageSrc) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#compactFilters) {
+        color: #cba95c;
+    }
+
+    :global(#compactFilters:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#compactFiltersHidden) {
+        background-color: #272727;
+        border: 1px solid #5c4e2e;
+    }
+
+    :global(.hiddenTypeFilterText:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(.typeHiddenLi[data-selected="true"]),
+:global(.creativityHiddenLi[data-selected="true"]),
+:global(.statusHiddenLi[data-selected="true"]),
+:global(.orderHiddenLi[data-selected="true"]) {
+        background-color: #5c4e2e !important;
+    }
+
+    :global(.typeHiddenLi:hover),
+:global(.creativityHiddenLi:hover),
+:global(.statusHiddenLi:hover),
+:global(.orderHiddenLi:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#ideaMain #title) {
+        background-color: #272727;
+    }
+
+    :global(#ideaMain #author) {
+        background-color: #36352c;
+    }
+
+    :global(#ideaMain #mainAuthorAccount) {
+        color: #cba95c;
+    }
+
+    :global(#ideaLikeSaveSection) {
+        background-color: #272727;
+    }
+
+    :global(#ideaLikeSaveSection ul li:hover) {
+        background-color: #36352c;
+    }
+
+    :global(#imagesInfo .imageInfoLi) {
+        background-color: #000000;
+        border-top: 1px solid #cba95c;
+    }
+
+    :global(#downloadSection) {
+        background-color: #272727;
+    }
+
+    :global(#downloadButton) {
+        background-color: #ffdd8d;
+    }
+
+    :global(#downloadButton:active) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#devLogsSection) {
+        background-color: #000000;
+    }
+
+    :global(#licenseSection) {
+        background-color: #272727;
+    }
+
+    :global(.log) {
+        border-top: 1px solid #cba95c;
+    }
+
+    :global(#commentSection) {
+        background-color: #272727;
+    }
+
+    :global(.writerPage) {
+        color: #cba95c;
+    }
+
+    :global(.writerUserName) {
+        color: #cba95c;
+    }
+
+    :global(.underComments) {
+        border-left: 1px solid #5c4e2e;
+    }
+
+    :global(#accountAsideInfo) {
+        background-color: #272727;
+        border-right: 1px solid #cba95c;
+    }
+
+    :global(#mainAccountSectionInfo) {
+        background-color: #000000;
+    }
+
+    :global(#navBarForAccountSaved) {
+        background-color: #272727;
+    }
+
+    :global(#navBarForAccountSaved ul li:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#newIdeaMain #title),
+:global(#newIdeaMain #title::placeholder) {
+        background-color: #272727;
+        color: #cba95c;
+    }
+
+    :global(#newIdeaMain #author) {
+        background-color: #272727;
+    }
+
+    :global(#newIdeaMain #mainAuthorAccount) {
+        color: #cba95c;
+    }
+
+    :global(#newIdeaMain #additionalInfo) {
+        background-color: #000000;
+    }
+
+    :global(#newIdeaMain #imagesInfo .imageInfoLi) {
+        background-color: #000000;
+    }
+
+    :global(#newIdeaMain #devLogsSection) {
+        background-color: #000000;
+    }
+
+    :global(#commentsList) {
+        list-style-image: url("/images/commentTag_Pro.svg");
+    }
+
+    :global(.underComments) {
+        list-style-image: url("/images/commentTag_Pro.svg");
+    }
+
+    :global(.notificationsUl li) {
+        background-color: #000000;
+    }
+
+    :global(.notificationsUl li:hover) {
+        background-color: #35290c !important;
+    }
+
+    :global(.unReadNotification) {
+        background-color: #5c4e2e !important;
+    }
+
+    :global(.hiddenNotificationData div input) {
+        background-color: #cba95c;
+    }
+
+    :global(.hiddenNotificationData div input:hover) {
+        background-color: #5c4e2e;
+    }
+
+    :global(#loginMain) {
+        background-color: #000000;
+    }
+
+    :global(#loginMain section) {
+        background-color: #272727;
+    }
+
+    :global(#loginMain a) {
+        color: #ffdd8d;
+    }
+
+    :global(#loginMain a:hover) {
+        color: #5c4e2e;
+    }
+
+    :global(#loginMain #signInLoginPageButton),
+:global(#loginMain #signInLoginPageCancelButton) {
+        background-color: #cba95c;
+        border: 1px solid #5c4e2e;
+        color: #5c4e2e;
+    }
+
+    :global(#loginMain form input) {
+        background-color: #5c4e2e;
+        border: 1px solid #cba95c;
+        color: #cba95c;
+    }
+}
+
+:global(:root) {
+    color-scheme: light;
+    --page-background: radial-gradient(1200px 600px at 90% -12%, rgba(216, 184, 68, 0.16), transparent 62%), linear-gradient(180deg, #f7faef 0%, #eef4df 100%);
+    --surface: #fffef8;
+    --surface-raised: #f4f8e9;
+    --text: #263522;
+    --muted: #65715c;
+    --border: #d7e1c6;
+    --brand: #4b8e3f;
+    --brand-strong: #34712e;
+    --accent: #c99e25;
+    --danger: #b73732;
+    --shadow: 0 18px 48px rgba(38, 55, 27, 0.1);
+}
+
+:global(:root[data-theme="dark"]) {
+    color-scheme: dark;
+    --page-background: radial-gradient(1200px 600px at 90% -12%, rgba(203, 169, 92, 0.1), transparent 62%), linear-gradient(180deg, #0d100d 0%, #121611 100%);
+    --surface: #171d17;
+    --surface-raised: #202820;
+    --text: #e8e8d8;
+    --muted: #b8bea7;
+    --border: #394536;
+    --brand: #8abf6a;
+    --brand-strong: #a5d084;
+    --accent: #d7b462;
+    --danger: #ed8278;
+    --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+}
+
+:global(*),
+:global(*::before),
+:global(*::after) {
+    box-sizing: border-box;
+}
+
+:global(body) {
+    min-width: 320px;
+    min-height: 100vh;
+    height: auto;
+    background: var(--page-background);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:global(:root[data-theme="dark"] body) {
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:global(button),
+:global(input),
+:global(select),
+:global(textarea) {
+    font: inherit;
+}
+
+:global(button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+:global(button:focus-visible),
+:global(a:focus-visible),
+:global(input:focus-visible),
+:global(select:focus-visible),
+:global(textarea:focus-visible) {
+    outline: 3px solid color-mix(in srgb, var(--brand) 66%, transparent);
+    outline-offset: 3px;
+}
+
+:global(input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="file"])),
+:global(textarea),
+:global(select) {
+    border-color: var(--border);
+    color: var(--text);
+}
+
+:global(main:has(> #lastIdeasSrc)) {
+    width: min(1440px, 100%);
+    margin: 0 auto;
+    padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem;
+}
+
+:global(header:has(#allFilters)) {
+    position: relative;
+    top: auto;
+    z-index: 20;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 3vw, 2.5rem);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(22, 38, 14, 0.06);
+    backdrop-filter: blur(16px);
+}
+
+:global(#search) {
+    width: min(100%, 360px);
+    min-height: 46px;
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 2px rgba(20, 35, 14, 0.04);
+}
+
+:global(#allFilters) {
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.7rem;
+}
+
+:global(.filterBlock) {
+    gap: 0.3rem;
+    padding: 0;
+    margin: 0;
+}
+
+:global(.labelInfoSearch) {
+    padding: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+:global(.filterSearch) {
+    min-height: 42px;
+    padding: 0.55rem 0.75rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+:global(#lastIdeasSrc) {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    align-items: stretch;
+    gap: 1rem;
+    overflow: visible;
+    white-space: normal;
+}
+
+:global(#lastIdeasSrc > .ideaBox),
+:global(#mainDivDinamicContent > .ideaBox) {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(32, 48, 22, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+:global(#lastIdeasSrc > .ideaBox:hover),
+:global(#mainDivDinamicContent > .ideaBox:hover) {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--brand) 48%, var(--border));
+    box-shadow: var(--shadow);
+}
+
+:global(#lastIdeasSrc .ideaLink),
+:global(#mainDivDinamicContent .ideaLink) {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.8rem;
+    color: var(--text);
+}
+
+:global(#lastIdeasSrc .ideaImageSrc),
+:global(#mainDivDinamicContent .ideaImageSrc) {
+    width: 100%;
+    height: clamp(160px, 17vw, 220px);
+    object-fit: contain;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+:global(#lastIdeasSrc .ideaTitleSrc),
+:global(#mainDivDinamicContent .ideaTitleSrc) {
+    max-width: none;
+    max-height: none;
+    padding-top: 0.9rem;
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+:global(#lastIdeasSrc .ideaAuthorSrc),
+:global(#mainDivDinamicContent .ideaAuthorSrc) {
+    max-width: none;
+    max-height: none;
+    padding-top: 0.35rem;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+:global(#ideaMain) {
+    min-height: 60vh;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:global(#ideaMain #ideaImageAsBackground) {
+    position: relative;
+    isolation: isolate;
+    min-height: 380px;
+    padding: clamp(5rem, 12vh, 9rem) 1.25rem;
+    background-color: var(--surface-raised);
+}
+
+:global(#ideaMain #ideaImageAsBackground::before) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, rgba(10, 18, 8, 0.2), rgba(10, 18, 8, 0.78));
+}
+
+:global(#ideaMain #ideaImageAsBackground > *) {
+    position: relative;
+    z-index: 1;
+}
+
+:global(#ideaMain #title) {
+    max-width: min(100%, 1000px);
+    padding: 0.75rem 1rem;
+    margin: 0 auto;
+    background: rgba(20, 28, 17, 0.55);
+    color: #fffef0;
+    font-size: clamp(2.2rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    backdrop-filter: blur(8px);
+}
+
+:global(#ideaMain #author) {
+    margin: 1rem auto 0;
+    padding: 0.45rem 0.9rem;
+    background: rgba(20, 28, 17, 0.55);
+    color: #fffef0;
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    overflow-wrap: anywhere;
+    backdrop-filter: blur(8px);
+}
+
+:global(#ideaMain #mainAuthorAccount) {
+    color: inherit;
+}
+
+:global(#ideaLikeSaveSection) {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+}
+
+:global(#ideaLikeSaveSection ul) {
+    gap: 0.25rem;
+    margin: 0;
+}
+
+:global(#ideaLikeSaveSection ul li) {
+    min-width: 72px;
+    margin: 0;
+    border-radius: 12px;
+    color: var(--text);
+}
+
+:global(#ideaLikeSaveSection ul li:hover) {
+    background: var(--surface-raised);
+}
+
+:global(#ideaMain > #description) {
+    width: min(960px, calc(100% - 2rem));
+    margin: 2rem auto;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(32, 48, 22, 0.05);
+    color: var(--text);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+:global(#ideaMain #imagesInfo .imageInfoLi) {
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+}
+
+:global(#ideaMain #imagesInfo .titleImageInfo),
+:global(#ideaMain #logsName),
+:global(#ideaMain #download),
+:global(#ideaMain #licenseTitle),
+:global(#ideaMain #commentsTitle) {
+    color: var(--text);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.2;
+}
+
+:global(#ideaMain #downloadSection),
+:global(#ideaMain #licenseSection),
+:global(#ideaMain #devLogsSection),
+:global(#ideaMain #commentSection) {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 1rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    color: var(--text);
+}
+
+:global(#ideaMain #downloadButton),
+:global(#ideaMain #followIdeaButton),
+:global(#ideaMain #reportIdeaButton) {
+    min-height: 42px;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+:global(#ideaMain #commentsTitle) {
+    padding-top: 0;
+}
+
+:global(#ideaMain .comment) {
+    margin: 0.75rem 0;
+    padding: 1rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+:global(#ideaMain .commentText) {
+    margin: 0.75rem 0;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+:global(#accountMain) {
+    display: grid;
+    grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:global(#accountAsideInfo) {
+    top: 88px;
+    width: auto;
+    max-height: none;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(32, 48, 22, 0.07);
+}
+
+:global(#accountMain #userImageAccount) {
+    width: 132px;
+    height: 132px;
+    object-fit: cover;
+    border: 4px solid var(--surface-raised);
+    border-radius: 50%;
+}
+
+:global(#accountMain #userNameAccount),
+:global(#accountMain #userNameSurnameAccount),
+:global(#accountMain #emailAccount) {
+    color: var(--text);
+    overflow-wrap: anywhere;
+}
+
+:global(#accountMain #descriptionAccount) {
+    height: auto;
+    max-height: 280px;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+:global(#mainAccountSectionInfo) {
+    min-width: 0;
+    min-height: 60vh;
+    background: transparent;
+}
+
+:global(#navBarForAccountSaved) {
+    top: 72px;
+    z-index: 10;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+}
+
+:global(#navBarForAccountSaved ul) {
+    gap: 0.5rem;
+    margin: 0.35rem;
+}
+
+:global(#navBarForAccountSaved ul li) {
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+:global(#navBarForAccountSaved ul li:hover),
+:global(#navBarForAccountSaved ul li.activeTab) {
+    background: var(--surface-raised);
+    color: var(--brand-strong);
+}
+
+:global(#mainDivDinamicContent) {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+:global(#newDataSetAccount) {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    margin: 1.5rem 0 0;
+    text-align: left;
+}
+
+:global(#newDataSetAccount label) {
+    margin: 0;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+:global(#newDataSetAccount input),
+:global(#newDataSetAccount textarea) {
+    min-width: 0;
+    margin: 0 0 0.75rem;
+    padding: 0.65rem 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+}
+
+:global(#newIdeaMain) {
+    min-height: 60vh;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:global(#newIdeaForm) {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+:global(#newIdeaMain #ideaImageAsBackground) {
+    min-height: 320px;
+    padding: 4rem 1rem;
+    background-color: var(--surface-raised);
+}
+
+:global(#newIdeaMain #title) {
+    max-width: min(900px, calc(100% - 2rem));
+    min-height: 64px;
+    padding: 0.75rem 1rem;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: clamp(1.6rem, 4vw, 3rem);
+}
+
+:global(#newIdeaMain #author) {
+    padding: 0.5rem 0.9rem;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+:global(#newIdeaMain #mainAuthorAccount) {
+    color: inherit;
+}
+
+:global(#newIdeaMain #newinfoForFilters) {
+    gap: 0.8rem;
+    padding: 1.5rem clamp(1rem, 4vw, 3rem) 0;
+}
+
+:global(#newIdeaMain .filterSearch) {
+    width: 100%;
+    min-width: 0;
+    padding: 0.65rem 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+}
+
+:global(#newIdeaMain #description),
+:global(#newIdeaMain #buttonlink),
+:global(#newIdeaMain #imagesInfo .imageInfoDescription),
+:global(#newIdeaMain .logInfo),
+:global(#newIdeaMain .titleImageInfo),
+:global(#newIdeaMain .logTitle) {
+    width: calc(100% - 2rem);
+    min-height: 48px;
+    margin: 0.5rem 1rem;
+    padding: 0.75rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font: inherit;
+}
+
+:global(#newIdeaMain #description),
+:global(#newIdeaMain #imagesInfo .imageInfoDescription),
+:global(#newIdeaMain .logInfo) {
+    min-height: 130px;
+    line-height: 1.65;
+}
+
+:global(#newIdeaMain #additionalInfo),
+:global(#newIdeaMain #downloadSection),
+:global(#newIdeaMain #licenseSection),
+:global(#newIdeaMain #devLogsSection) {
+    margin: 1rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+:global(#newIdeaMain #imagesInfo .imageInfoLi) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+:global(#newIdeaMain #imagesInfo .preview) {
+    max-width: min(100%, 32rem);
+    max-height: 18rem;
+    margin: 0.5rem auto;
+}
+
+:global(#newIdeaMain #saveNewIdea) {
+    min-height: 46px;
+    padding: 0.7rem 1.5rem;
+    background: var(--brand);
+    border: 1px solid var(--brand-strong);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+}
+
+:global(.errorPageMain) {
+    min-height: 60vh;
+    height: auto;
+    padding: 3rem 1rem;
+    background: var(--page-background);
+    color: var(--text);
+}
+
+:global(:root[data-theme="dark"] #accountAsideInfo),
+:global(:root[data-theme="dark"] #mainAccountSectionInfo),
+:global(:root[data-theme="dark"] #navBarForAccountSaved) {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+:global(:root[data-theme="dark"] #ideaLikeSaveSection),
+:global(:root[data-theme="dark"] #commentSection),
+:global(:root[data-theme="dark"] #downloadSection),
+:global(:root[data-theme="dark"] #licenseSection),
+:global(:root[data-theme="dark"] #devLogsSection) {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+:global(:root[data-theme="dark"] #newIdeaMain #additionalInfo),
+:global(:root[data-theme="dark"] #newIdeaMain #devLogsSection) {
+    background: var(--surface-raised);
+    border-color: var(--border);
+}
+
+@media (max-width: 900px) {
+    :global(#accountMain) {
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+        gap: 0.85rem;
+    }
+
+    :global(#accountAsideInfo) {
+        padding: 1rem;
+    }
+
+    :global(#newIdeaMain #imagesInfo .imageInfoLi) {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    :global(header:has(#allFilters)) {
+        gap: 0.75rem;
+    }
+
+    :global(#allFilters) {
+        justify-content: flex-start;
+    }
+
+    :global(#lastIdeasSrc) {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+    }
+
+    :global(#ideaMain #ideaImageAsBackground) {
+        min-height: 300px;
+        padding: 5rem 1rem;
+    }
+
+    :global(#ideaMain #imagesInfo .imageInfoLi) {
+        grid-template-columns: 1fr;
+    }
+
+    :global(#accountMain) {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 1rem;
+    }
+
+    :global(#accountAsideInfo) {
+        position: relative;
+        top: 0;
+        width: 100%;
+        padding-block-end: 1.5rem;
+    }
+
+    :global(#accountMain #descriptionAccount) {
+        max-height: 180px;
+    }
+
+    :global(#navBarForAccountSaved) {
+        top: 72px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 560px) {
+    :global(header:has(#allFilters)) {
+        position: relative;
+    }
+
+    :global(main:has(> #lastIdeasSrc)) {
+        padding: 1rem 0.75rem 2.5rem;
+    }
+
+    :global(#lastIdeasSrc) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    :global(#lastIdeasSrc .ideaLink),
+:global(#mainDivDinamicContent .ideaLink) {
+        padding: 0.55rem;
+    }
+
+    :global(#lastIdeasSrc .ideaImageSrc),
+:global(#mainDivDinamicContent .ideaImageSrc) {
+        height: 140px;
+    }
+
+    :global(#lastIdeasSrc .ideaTitleSrc),
+:global(#mainDivDinamicContent .ideaTitleSrc) {
+        font-size: 0.92rem;
+    }
+
+    :global(#ideaMain #title) {
+        margin: 0 0.25rem;
+        font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    :global(#ideaMain #author) {
+        margin-inline: 0.25rem;
+    }
+
+    :global(#ideaLikeSaveSection) {
+        gap: 0.25rem;
+        padding: 0.5rem;
+    }
+
+    :global(#ideaLikeSaveSection ul) {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    :global(#ideaMain #downloadSection),
+:global(#ideaMain #licenseSection),
+:global(#ideaMain #devLogsSection),
+:global(#ideaMain #commentSection) {
+        width: calc(100% - 1rem);
+        padding: 1rem;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters) {
+        grid-template-columns: 1fr;
+        padding-top: 1rem;
+    }
+
+    :global(#newIdeaMain #newinfoForFilters .labelInfoSearch:not(:first-child)) {
+        margin-top: 0.5rem;
+    }
+
+    :global(#newIdeaMain #additionalInfo),
+:global(#newIdeaMain #downloadSection),
+:global(#newIdeaMain #licenseSection),
+:global(#newIdeaMain #devLogsSection) {
+        margin: 0.6rem;
+        padding: 0.85rem;
+    }
+}
+

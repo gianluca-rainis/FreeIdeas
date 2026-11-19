@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { apiCall } from '../utils/apiConfig';
-import { handleError } from '../utils/errorHandling';
-import { useThemeImages } from '../hooks/useThemeImages';
+import { apiCall } from '@/utils/apiConfig';
+import { handleError } from '@/utils/errorHandling';
+import { useThemeImages } from '@/hooks/useThemeImages';
 
 const AppContext = createContext();
 
@@ -98,15 +98,44 @@ export function AppProvider({ children }) {
         };
     }, [router, loadRandomIdea]);
 
+    const ldAccountData = useCallback(async () => {
+        try {
+            const accountData = await apiCall('/api/getSessionData?data=account');
+
+            if (accountData) {
+                setUser({ ...accountData, isAdmin: false });
+                setNotifications(accountData.notifications || []);
+                return;
+            }
+
+            const administratorData = await apiCall('/api/getSessionData?data=administrator');
+
+            if (administratorData) {
+                setUser({ ...administratorData, isAdmin: true });
+                setNotifications([]);
+                return;
+            }
+
+            setUser(null);
+            setNotifications([]);
+        } catch (error) {
+            handleError(error, 'loadAccountData');
+            setUser(null);
+            setNotifications([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     // User management
     useEffect(() => {
         ldAccountData();
-    }, []);
+    }, [ldAccountData]);
 
     // Reload account data when navigating between pages
     const reloadAccountData = useCallback(() => {
         ldAccountData();
-    }, []);
+    }, [ldAccountData]);
     
     useEffect(() => {
         router.events.on('routeChangeComplete', reloadAccountData);

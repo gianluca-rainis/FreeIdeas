@@ -868,6 +868,477 @@
     background: #11140f;
 }
 
+/* Notification panels */
+.notificationsPanel {
+    width: 380px;
+    max-height: calc(100dvh - 88px);
+    right: max(1.25rem, calc((100vw - 1320px) / 2));
+    top: 72px;
+    overflow-y: auto;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fafbf6;
+    box-shadow: 0 24px 70px rgba(23, 34, 23, 0.16);
+}
+
+.dark .notificationsPanel {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #171a15;
+}
+
+.notificationsHeader {
+    min-height: 88px;
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.dark .notificationsHeader {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+}
+
+.notificationsHeader h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.notificationsUl {
+    width: 100%;
+    max-height: 440px;
+    display: block;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.notificationsUl li.notificationItem {
+    min-height: 84px;
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.10);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+}
+
+.dark .notificationsUl li.notificationItem {
+    border-bottom-color: rgba(237, 234, 221, 0.10);
+}
+
+.notificationsUl li.notificationItem:hover {
+    background: rgba(63, 125, 68, 0.08) !important;
+}
+
+.notificationStatusDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.unReadNotification .notificationStatusDot {
+    background: #5c9a47;
+}
+
+.notificationCopy {
+    min-width: 0;
+}
+
+.notificationCopy strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.86rem;
+}
+
+.notificationCopy p {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    opacity: 0.68;
+}
+
+.notificationsUl time {
+    align-self: start;
+    font-size: 0.68rem;
+    opacity: 0.62;
+}
+
+.notificationEmpty {
+    min-height: 220px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    text-align: center;
+}
+
+.notificationEmpty div {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.notificationEmpty span {
+    font-size: 0.78rem;
+    opacity: 0.65;
+}
+
+.hiddenNotificationData {
+    padding: 0;
+}
+
+:global(.notificationDetail) {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+
+:global(.notificationDetailMeta) p {
+    margin: 0 0 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+:global(.notificationDetailMeta) h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+}
+
+:global(.notificationDetailDescription) {
+    margin: 1.25rem 0;
+    line-height: 1.55;
+}
+
+:global(.notificationDetailActions) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
+    margin-top: auto;
+}
+
+:global(.notificationBackImage),
+:global(.notificationDeleteButton) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(37, 54, 33, 0.16);
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+:global(.notificationBackImage) svg {
+    width: 18px;
+    height: 18px;
+}
+
+:global(.notificationDeleteButton) {
+    border-color: #9a3f32;
+    color: #9a3f32;
+}
+
+.notificaionsMobile {
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 72px);
+    margin: 0;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .notificaionsMobile {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
+/* Login and notification panels */
+.loginArea {
+    width: 360px;
+    max-height: calc(100dvh - 88px);
+    right: max(1.25rem, calc((100vw - 1320px) / 2));
+    top: 72px;
+    overflow-y: auto;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fafbf6;
+    box-shadow: 0 24px 70px rgba(23, 34, 23, 0.16);
+}
+
+.dark .loginArea {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #171a15;
+}
+
+.accountPanel,
+.notificationsPanel {
+    width: 100%;
+}
+
+.signInPanel,
+.signedInPanel {
+    padding: 1.25rem;
+}
+
+.panelEyebrow {
+    margin-bottom: 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.signInPanel h2,
+.signedInPanel h2,
+.notificationsHeader h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.panelSubtitle {
+    margin: 0.7rem 0 1.25rem;
+    color: inherit;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    opacity: 0.72;
+}
+
+.loginForm {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.desktopInput,
+:global(#passwordAreaLogin) {
+    width: 100%;
+    height: 46px;
+    margin: 0;
+    border: 1px solid rgba(37, 54, 33, 0.18);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #172217;
+}
+
+.dark .desktopInput,
+.dark :global(#passwordAreaLogin) {
+    border-color: rgba(237, 234, 221, 0.16);
+    background: #20251c;
+    color: #edeadd;
+}
+
+.forgotPassword {
+    width: fit-content;
+    border: 0;
+    background: transparent;
+    color: var(--fi-green-dark, #2d6534);
+    padding: 0.15rem 0;
+    text-align: left;
+}
+
+.dark .forgotPassword {
+    color: #d0b85f;
+}
+
+.desktopActionButton,
+.desktopActionButtonSecondary {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    background: #263f23;
+    color: #ffffff;
+}
+
+.desktopActionButtonSecondary {
+    margin-top: 0.5rem;
+    border-color: rgba(37, 54, 33, 0.18);
+    background: transparent;
+    color: inherit;
+}
+
+.dark .desktopActionButton {
+    border-color: #d0b85f;
+    background: #d0b85f;
+    color: #17180f;
+}
+
+.dark .desktopActionButtonSecondary {
+    border-color: rgba(237, 234, 221, 0.18);
+}
+
+.registerLine {
+    margin: 1rem 0 0;
+    text-align: center;
+}
+
+.accountIdentity {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem 0 1.25rem;
+}
+
+.accountIdentity h2 {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.accountIdentity p {
+    margin: 0.25rem 0 0;
+    font-size: 0.78rem;
+    opacity: 0.68;
+}
+
+.accountAvatar {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 50%;
+}
+
+.accountAvatar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.notificationsHeader {
+    min-height: 84px;
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.dark .notificationsHeader {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+}
+
+.notificationsUl {
+    max-height: 420px;
+    padding: 0.35rem 0;
+}
+
+.notificationsUl li {
+    min-height: 66px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.10);
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.notificationsUl li:hover {
+    background: rgba(63, 125, 68, 0.07) !important;
+}
+
+.hiddenNotificationData {
+    padding: 0.75rem;
+}
+
+.mobileMenuHidden {
+    width: 100%;
+    max-width: none;
+    height: calc(100dvh - 72px);
+    top: 72px;
+    align-items: stretch;
+    overflow-y: auto;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .mobileMenuHidden {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
+.mobileNavLinks {
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.mobileNavLinks li {
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.mobileNavLinks .navText {
+    width: 100%;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    font-size: 1.15rem;
+}
+
+.loginAreaMobile {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.mobileAccountPanel,
+.notificaionsMobile {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+}
+
+.mobileAccountPanel .signInPanel,
+.mobileAccountPanel .signedInPanel,
+.notificaionsMobile {
+    padding: 1.25rem;
+}
+
+.mobileInput,
+:global(#passwordAreaLoginMobile) {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    border: 1px solid rgba(37, 54, 33, 0.18);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #172217;
+}
+
+.mobileActionButton,
+.mobileActionButtonSecondary {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    background: #263f23;
+    color: #ffffff;
+}
+
+.mobileActionButtonSecondary {
+    margin-top: 0.5rem;
+    border-color: rgba(37, 54, 33, 0.18);
+    background: transparent;
+    color: inherit;
+}
+
 @media (max-width: 900px) {
     .pcNavBarGhost {
         display: none;
