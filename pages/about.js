@@ -2,7 +2,7 @@ import styles from '@/styles/UnifiedPages.module.css'
 import '@/styles/FooterPages.module.css';
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
-import React, { useEffect } from 'react'
+import React from 'react'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Head from '@/components/Head'
