@@ -5,6 +5,50 @@ import { PasswordInput } from './PasswordInput';
 import { useAuth } from '../hooks/useAuth';
 import styles from '../styles/Nav.module.css';
 
+function ThemeIcon({ isLight }) {
+    if (!isLight) {
+        return (
+            <svg className={styles.themeToggle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+        );
+    }
+
+    return (
+        <svg className={styles.themeToggle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20.985 12.486A9 9 0 1 1 11.514 3.015A7 7 0 0 0 20.985 12.486Z" />
+        </svg>
+    );
+}
+
+function BellIcon() {
+    return (
+        <svg className={styles.notificationsImg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.674C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+        </svg>
+    );
+}
+
+function UserIcon() {
+    return (
+        <svg className={styles.userImage} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="10" r="3" />
+            <path d="M7 20.662V19a5 5 0 0 1 10 0v1.662" />
+        </svg>
+    );
+}
+
+function MenuIcon() {
+    return (
+        <svg className={styles.menuMobile} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    );
+}
+
 export default function Nav({ randomId=0 }) {
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -38,34 +82,39 @@ export default function Nav({ randomId=0 }) {
         handleLoginChange,
         handleLoginSubmit,
         handleForgotPassword,
-        handleUserImageClick
+        handleUserImageClick,
+        handleLogout,
+        redirectToAccount
     } = useAuth();
 
     return (
         <>
             <nav className={`${styles.nav} ${themeIsLight ? styles.light : styles.dark} ${isScrolled ? styles.scrolled : ''}`}>
                 <div id="pcNavBarGhost" className={styles.pcNavBarGhost}>
-                    <ul className={`${styles.navList} ${styles.navLogo}`}>
-                        <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" className={styles.navLogoImage} /></Link></li>
-                    </ul>
-                    <ul className={`${styles.navList} ${styles.navLinks}`}>
-                        <li><Link href="/searchAnIdea" className={styles.navText} prefetch>Search an Idea</Link></li>
-                        <li><Link href="/publishAnIdea" className={styles.navText} prefetch>Publish an Idea</Link></li>
-                        <li><Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaA" prefetch>Random Idea</Link></li>
-                        <li id="themeImageLi" className={styles.themeImageLi}><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className={styles.themeToggle} onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLi"><img src={themeIsLight ? "/images/notifications.svg" : "/images/notifications_Pro.svg"} alt="Notifications" className={`notificationsImg ${styles.notificationsImg}`} onClick={toggleNotifications} /></li>
-                        <li id="userImageLi">
-                            <img 
-                                src={user ? (user.userimage || "/images/user.svg") : "/images/user.svg"} 
-                                alt="User image" 
-                                id="userImage" 
-                                className={styles.userImage}
-                                onClick={handleUserImageClick} 
-                                style={{cursor: 'pointer'}} 
-                            />
-                            <p id="userName" className={styles.userName}>{user ? (user.username?user.username:"") : "Login"}</p>
-                        </li>
-                    </ul>
+                    <div className={styles.navInner}>
+                        <Link href="/" prefetch className={styles.brandLink}>
+                            <img src="/images/FreeIdeas.svg" alt="FreeIdeas" id="navLogo" className={styles.navLogoImage} />
+                        </Link>
+
+                        <nav className={styles.primaryNav} aria-label="Primary navigation">
+                            <Link href="/searchAnIdea" className={styles.navText} prefetch>Explore</Link>
+                            <Link href="/publishAnIdea" className={styles.publishLink} prefetch>Publish idea</Link>
+                            <Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaA" prefetch>Random idea</Link>
+                        </nav>
+
+                        <div className={styles.navUtilities}>
+                            <button type="button" id="themeImageLi" className={styles.iconButton} onClick={toggleTheme} aria-label="Toggle theme">
+                                <ThemeIcon isLight={themeIsLight} />
+                            </button>
+                            <button type="button" id="notificationImageLi" className={styles.iconButton} onClick={toggleNotifications} aria-label="Notifications">
+                                <BellIcon />
+                            </button>
+                            <button type="button" id="userImageLi" className={styles.accountButton} onClick={handleUserImageClick} aria-label="Open account menu">
+                                <span id="userImage" className={styles.userIconWrap}><UserIcon /></span>
+                                <span id="userName" className={styles.userName}>{user ? (user.username || '') : 'Sign in'}</span>
+                            </button>
+                        </div>
+                    </div>
                     <div id="loginArea" className={styles.loginArea}>
                         <div id="pcLoginSignUpBlock">
                             <div id="loginHidden">
@@ -135,19 +184,26 @@ export default function Nav({ randomId=0 }) {
                 </div>
 
                 <div id="mobileNavBarGhost" className={styles.mobileNavBarGhost}>
-                    <ul className={`${styles.navList} ${styles.navLogo}`}>
-                        <li><Link href="/" prefetch><img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" id="navLogo" className={styles.navLogoImage} /></Link></li>
-                    </ul>
-                    <ul className={`${styles.navList} ${styles.navLinks}`}>
-                        <li id="themeImageLiMobile" className={styles.themeImageLiMobile}><img src={themeIsLight ? "/images/sun-dark.svg" : "/images/sun-light.svg"} alt="Toggle Theme" className={styles.themeToggle} onClick={toggleTheme} style={{cursor: 'pointer'}} /></li>
-                        <li id="notificationImageLiMobile"><img src={themeIsLight ? "/images/notifications.svg" : "/images/notifications_Pro.svg"} alt="Notifications" className={`notificationsImg ${styles.notificationsImg}`} style={{cursor: 'pointer'}} onClick={toggleNotifications} /></li>
-                        <li id="userImageLi"><img src="/images/menu.svg" alt="Menu" id="menuMobile" className={styles.menuMobile} onClick={handleUserImageClick} style={{cursor: 'pointer'}} /></li>
-                    </ul>
+                    <div className={styles.mobileNavInner}>
+                        <Link href="/" prefetch className={styles.brandLink}>
+                            <img src="/images/FreeIdeas.svg" alt="FreeIdeas" id="navLogo" className={styles.navLogoImage} />
+                        </Link>
+                        <div className={styles.mobileUtilities}>
+                            <button type="button" id="themeImageLiMobile" className={styles.iconButton} onClick={toggleTheme} aria-label="Toggle theme">
+                                <ThemeIcon isLight={themeIsLight} />
+                            </button>
+                            <button type="button" id="notificationImageLiMobile" className={styles.iconButton} onClick={toggleNotifications} aria-label="Notifications">
+                                <BellIcon />
+                            </button>
+                            <button type="button" id="userImageLi" className={styles.iconButton} onClick={handleUserImageClick} aria-label="Open menu">
+                                <span id="menuMobile" className={styles.menuIconWrap}><MenuIcon /></span>
+                            </button>
+                        </div>
                     <div id="mobileMenuHidden" className={styles.mobileMenuHidden}>
                         <ul id="mobileNavLinks" className={styles.mobileNavLinks}>
-                               <li><Link href="/searchAnIdea" className={styles.navText}>Search an Idea</Link></li>
-                               <li><Link href="/publishAnIdea" className={styles.navText}>Publish an Idea</Link></li>
-                               <li><Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaAMobile">Random Idea</Link></li>
+                               <li><Link href="/searchAnIdea" className={styles.navText}>Explore ideas</Link></li>
+                               <li><Link href="/publishAnIdea" className={styles.navText}>Publish an idea</Link></li>
+                               <li><Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaAMobile">Surprise me</Link></li>
                         </ul>
 
                         <div id="loginAreaMobile" className={styles.loginAreaMobile}>
@@ -220,6 +276,7 @@ export default function Nav({ randomId=0 }) {
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </nav>

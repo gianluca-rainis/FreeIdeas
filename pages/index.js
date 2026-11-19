@@ -280,10 +280,7 @@ function Banner({ message = '', show = false }) {
 function ColoredSlogan() {
     return (
         <h1 className={styles.sloganTitle}>
-            A place where your{' '}
-            <span className={styles.sloganWarm}>Ideas</span>
-            {' '}can be{' '}
-            <span className={styles.sloganFresh}>Free</span>
+            A place where ideas can be free.
         </h1>
     )
 }
@@ -403,7 +400,7 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
         loadIdeas();
     }, []);
 
-    const latestIdeas = ideas.slice(0, 6);
+    const latestIdeas = ideas.slice(0, 8);
 
     return (
         <>
@@ -435,7 +432,7 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
 
                     <div className={styles.heroStatement}>
                         <span className={styles.statementIndex}>01</span>
-                        <p>Ideas stay free<br />when people see them.</p>
+                        <p>A place where<br />ideas can be free.</p>
                         <Link href={`/idea/${randomIdeaId || 0}`} prefetch>
                             Explore a random idea
                         </Link>

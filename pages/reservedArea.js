@@ -160,38 +160,42 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
 
             {
                 adminSessionData?
-                <header id="reservedAreaHeader">
-                    <a href="/reservedArea">
-                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                <header className="adminWorkspaceHeader">
+                    <button type="button" className="adminMenuButton" id="menuReservedArea" aria-label="Open administration menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <a href="/reservedArea" className="adminBrand">
+                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Reserved Area" />
                     </a>
 
-                    <ul id="ulReservedAreaHeader">
-                        <li className="liReservedAreaHeaderExt"><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
-                        <li className="liReservedAreaHeaderExt"><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
-                        <li className="liReservedAreaHeaderRed"><img src="/images/menuReservedArea.svg" id="menuReservedArea" /></li>
-                    </ul>
+                    <div className="adminIdentity">
+                        <span>{adminSessionData.username || 'Administrator'}</span>
+                        <button type="button" onClick={handleLogout}>Sign out</button>
+                    </div>
 
-                    <div id="mobileNavBarReservedAreaHeader">
-                        <ul>
-                            <li><button className="accountsReservedAreaHeader" onClick={() => handleViewChange('accounts')}>Accounts</button></li>
-                            <li><button className="ideasReservedAreaHeader" onClick={() => handleViewChange('ideas')}>Ideas</button></li>
-                            <li><button className="notificationsReservedAreaHeader" onClick={() => handleViewChange('notifications')}>Notifications</button></li>
-                            <li><button className="reportsReservedAreaHeader" onClick={() => handleViewChange('reports')}>Reports</button></li>
-                            <li><button className="logoutReservedAreaHeader" onClick={handleLogout}>Logout</button></li>
-                        </ul>
+                    <div id="mobileNavBarReservedAreaHeader" className="adminMobileMenu">
+                        <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}>Overview</button>
+                        <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}>Accounts</button>
+                        <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}>Ideas</button>
+                        <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}>Notifications</button>
+                        <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}>Reports</button>
+                        <button type="button" onClick={handleLogout}>Sign out</button>
                     </div>
                 </header>
                 :null
             }
 
-            <main id="reservedAreaMain">
+            <main id="reservedAreaMain" className={adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}>
                 {
                     !adminSessionData?
-                    <div>
-                        <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                    <div className="reservedLoginPanel">
+                        <header className="reservedLoginHeader">
+                            <p>Administration / Secure access</p>
+                            <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
+                        </header>
 
                         <div id="bannerDiv">
                             <hr />
@@ -233,6 +237,39 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                     </div>
                     :
                     <>
+                        <aside className="adminSidebar">
+                            <p className="adminSidebarLabel">Workspace</p>
+                            <nav className="adminSidebarNav" aria-label="Administration navigation">
+                                <button type="button" className={activeView === 'welcome' ? 'active' : ''} onClick={() => handleViewChange('welcome')}>
+                                    <span>01</span>
+                                    Overview
+                                </button>
+                                <button type="button" className={activeView === 'accounts' ? 'active' : ''} onClick={() => handleViewChange('accounts')}>
+                                    <span>02</span>
+                                    Accounts
+                                </button>
+                                <button type="button" className={activeView === 'ideas' ? 'active' : ''} onClick={() => handleViewChange('ideas')}>
+                                    <span>03</span>
+                                    Ideas
+                                </button>
+                                <button type="button" className={activeView === 'notifications' ? 'active' : ''} onClick={() => handleViewChange('notifications')}>
+                                    <span>04</span>
+                                    Notifications
+                                </button>
+                                <button type="button" className={activeView === 'reports' ? 'active' : ''} onClick={() => handleViewChange('reports')}>
+                                    <span>05</span>
+                                    Reports
+                                </button>
+                            </nav>
+                        </aside>
+
+                        <section className="adminContent">
+                            <header className="adminContentHeader">
+                                <p>Administration</p>
+                                <h1>{activeView === 'welcome' ? 'Overview' : activeView.charAt(0).toUpperCase() + activeView.slice(1)}</h1>
+                            </header>
+
+                            <div className="adminViewBody">
                         {activeView === 'welcome' && (
                             <WelcomeView username={adminSessionData.username} />
                         )}
@@ -248,6 +285,8 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                         {activeView === 'reports' && (
                             <ReportsView showAlert={showAlert} showConfirm={showConfirm} />
                         )}
+                            </div>
+                        </section>
                     </>
                 }
             </main>

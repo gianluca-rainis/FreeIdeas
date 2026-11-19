@@ -5073,6 +5073,331 @@ header:has(#allFilters) {
     }
 }
 
+/* Administrator workspace */
+.adminWorkspaceHeader {
+    width: 100%;
+    min-height: 72px;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+.adminMenuButton {
+    display: none;
+}
+
+.adminBrand {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+}
+
+.adminBrand img {
+    width: 170px;
+    height: auto;
+}
+
+.adminIdentity {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.75rem;
+}
+
+.adminIdentity span {
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.adminIdentity button,
+.adminMobileMenu button {
+    min-height: 38px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.adminMobileMenu {
+    display: none;
+}
+
+.adminWorkspace {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 140px);
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    margin: 0;
+    background: var(--fi-paper);
+}
+
+.adminSidebar {
+    min-height: calc(100vh - 140px);
+    padding: 2rem 1rem;
+    border-right: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+.adminSidebarLabel {
+    margin: 0 0 1.25rem;
+    padding: 0 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.adminSidebarNav {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.adminSidebarNav button {
+    width: 100%;
+    min-height: 52px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fi-muted);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.adminSidebarNav button span {
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.adminSidebarNav button.active,
+.adminSidebarNav button:hover {
+    background: rgba(63, 125, 68, 0.10);
+    color: var(--fi-ink);
+}
+
+.adminContent {
+    min-width: 0;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.adminContentHeader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--fi-border);
+}
+
+.adminContentHeader p {
+    margin: 0 0 0.5rem;
+    grid-column: 1 / -1;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.adminContentHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 0.92;
+}
+
+.adminViewBody {
+    padding-top: 1.5rem;
+}
+
+.adminWelcomeView {
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    padding: clamp(2rem, 6vw, 5rem);
+    background: var(--fi-surface);
+}
+
+.adminWelcomeView h2 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.92;
+}
+
+.adminWelcomeView > p:last-child {
+    max-width: 520px;
+    margin: 1.5rem 0 0;
+}
+
+.adminWelcomeEyebrow {
+    margin: 0 0 1.25rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.adminDataView {
+    width: 100%;
+}
+
+.adminDataView #searchSectionInReservedArea {
+    width: 100%;
+    min-height: auto;
+    margin: 0 0 1.25rem;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.adminDataView #searchReservedArea {
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    background: transparent;
+}
+
+.adminDataView > ul {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.adminDataView .reservedAreaLiBoxInfo {
+    width: 100%;
+    min-height: 220px;
+    margin: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.adminDataView .ideaImageSrc {
+    height: 160px;
+}
+
+.adminDataView .modifyAccountInfoAdmin,
+.adminDataView .modifyIdeaInfoAdmin,
+.adminDataView .deleteReportsAdmin,
+.adminDataView .deleteNotificationAdmin {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 1000px) {
+    .adminWorkspace {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .adminWorkspaceHeader {
+        grid-template-columns: 200px minmax(0, 1fr) auto;
+    }
+
+    .adminDataView > ul {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .adminWorkspaceHeader {
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        padding-inline: 0.75rem;
+    }
+
+    .adminMenuButton {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-content: center;
+        gap: 4px;
+        border: 1px solid var(--fi-border);
+        border-radius: 6px;
+        background: var(--fi-surface);
+        cursor: pointer;
+    }
+
+    .adminMenuButton span {
+        width: 16px;
+        height: 2px;
+        display: block;
+        background: var(--fi-ink);
+    }
+
+    .adminBrand {
+        justify-self: center;
+    }
+
+    .adminBrand img {
+        width: 145px;
+    }
+
+    .adminIdentity {
+        display: none;
+    }
+
+    .adminMobileMenu {
+        width: 100%;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        z-index: 100;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--fi-border);
+        background: var(--fi-surface);
+        box-shadow: var(--fi-shadow);
+    }
+
+    .adminMobileMenu button {
+        width: 100%;
+        text-align: left;
+    }
+
+    .adminMobileMenu button.active {
+        background: rgba(63, 125, 68, 0.10);
+    }
+
+    .adminWorkspace {
+        grid-template-columns: 1fr;
+    }
+
+    .adminSidebar {
+        display: none;
+    }
+
+    .adminContent {
+        padding: 1.25rem 0.75rem 3rem;
+    }
+
+    .adminContentHeader h1 {
+        font-size: clamp(2.6rem, 12vw, 4.5rem);
+    }
+
+    .adminDataView > ul {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .adminDataView > ul {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     body,
     button,
@@ -5084,5 +5409,844 @@ header:has(#allFilters) {
         scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* Unified layouts for remaining page families */
+.footerpage {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    padding: clamp(3.5rem, 8vw, 7rem) 0;
+}
+
+.footerpage::before {
+    display: none;
+}
+
+.footerpage > h1:first-of-type {
+    max-width: 1120px;
+    margin: 0 auto 2.5rem;
+    padding: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.footerpage section {
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+.footerpage #faqUl {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.footerpage #faqUl li {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+}
+
+.footerpage #faqUl li::before {
+    display: none;
+}
+
+.footerpage #faqUl .question {
+    min-height: 64px;
+    align-content: center;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px 6px 0 0;
+}
+
+.footerpage #faqUl .answer {
+    border: 1px solid var(--fi-border);
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+}
+
+#feedbackForm {
+    max-width: 1120px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    padding: clamp(1.25rem, 4vw, 3rem);
+}
+
+#feedbackTitle,
+#feedbackDescription,
+#feedbackForm input[type="submit"] {
+    grid-column: 1 / -1;
+}
+
+#feedbackForm input,
+#feedbackForm textarea {
+    width: 100%;
+    min-height: 48px;
+}
+
+#loginMain {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
+    justify-content: stretch;
+    align-items: stretch;
+    padding: 0;
+    background:
+        linear-gradient(90deg, rgba(225, 232, 189, 0.86), rgba(255, 255, 255, 0.18) 58%),
+        radial-gradient(circle at 12% 80%, rgba(109, 159, 69, 0.24), transparent 28rem),
+        var(--fi-paper);
+}
+
+:root[data-theme="dark"] #loginMain {
+    background:
+        linear-gradient(90deg, rgba(55, 64, 46, 0.92), rgba(17, 20, 15, 0.18) 58%),
+        radial-gradient(circle at 12% 80%, rgba(216, 189, 79, 0.10), transparent 28rem),
+        var(--fi-paper);
+}
+
+#loginMain::before {
+    content: "FreeIdeas\A Ideas worth sharing.";
+    white-space: pre;
+    align-self: center;
+    max-width: 760px;
+    padding: clamp(2rem, 7vw, 7rem);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+#loginMain section {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    margin: 0;
+    padding: clamp(2rem, 5vw, 5rem);
+    border: 0;
+    border-left: 1px solid var(--fi-border);
+    border-radius: 0;
+    background: var(--fi-surface);
+    box-shadow: -24px 0 70px rgba(39, 63, 35, 0.08);
+}
+
+#loginMain h1 {
+    margin: 0 0 2rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 0.95;
+}
+
+#loginMain form {
+    width: 100%;
+    max-width: none;
+}
+
+#loginMain form input {
+    min-height: 52px;
+    border-radius: 6px;
+}
+
+#loginMain #signInLoginPageButton,
+#loginMain #signInLoginPageCancelButton {
+    min-height: 52px;
+    border-radius: 6px;
+}
+
+#accountMain {
+    max-width: 1320px;
+    min-height: calc(100vh - 68px);
+    margin: 0 auto;
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+    gap: clamp(1rem, 3vw, 3rem);
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.5rem);
+    background: transparent;
+}
+
+#accountAsideInfo {
+    height: fit-content;
+    position: sticky;
+    top: 88px;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+#accountMain #mainDivDinamicContent {
+    min-width: 0;
+}
+
+#accountMain #navBarForAccountSaved {
+    width: 100%;
+    position: relative;
+    top: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+#mainDivDinamicContent #lastIdeasSrc,
+#accountMain #mainDivDinamicContent #lastIdeasSrc {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#reservedAreaMain {
+    max-width: 1320px;
+    min-height: calc(100vh - 68px);
+    margin: 0 auto;
+    border-radius: 0;
+    background: transparent;
+}
+
+#reservedAreaHeader {
+    min-height: 82px;
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid var(--fi-border);
+    border-radius: 0;
+    background: var(--fi-surface);
+}
+
+#reservedAreaHeader ul li button {
+    border-radius: 6px;
+}
+
+#reservedAreaMain #loginReservedAreaForm {
+    max-width: 760px;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+.reservedAreaLiBoxInfo,
+#reservedAreaMain ul li {
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+.errorPageMain {
+    min-height: calc(100vh - 68px);
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(216, 189, 79, 0.18), transparent 24rem),
+        var(--fi-paper);
+}
+
+.errorPageMain h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(5rem, 16vw, 12rem);
+    line-height: 0.8;
+}
+
+@media (max-width: 900px) {
+    #loginMain {
+        grid-template-columns: 1fr;
+    }
+
+    #loginMain::before {
+        min-height: 260px;
+        align-content: end;
+        font-size: clamp(3.5rem, 16vw, 6rem);
+    }
+
+    #loginMain section {
+        min-height: auto;
+        border-left: 0;
+        border-top: 1px solid var(--fi-border);
+    }
+
+    #accountMain {
+        grid-template-columns: 1fr;
+    }
+
+    #accountAsideInfo {
+        position: relative;
+        top: 0;
+    }
+
+    #mainDivDinamicContent #lastIdeasSrc,
+    #accountMain #mainDivDinamicContent #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .footerpage {
+        padding: 2.5rem 0;
+    }
+
+    .footerpage > h1:first-of-type {
+        padding: 0 0.75rem;
+        font-size: clamp(3rem, 15vw, 5rem);
+    }
+
+    #feedbackForm {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    #feedbackTitle,
+    #feedbackDescription,
+    #feedbackForm input[type="submit"] {
+        grid-column: 1;
+    }
+
+    #loginMain::before {
+        min-height: 220px;
+        padding: 2.5rem 1.25rem 2rem;
+    }
+
+    #loginMain section {
+        padding: 2rem 1.25rem 3rem;
+    }
+
+    #accountMain {
+        padding-inline: 0.75rem;
+    }
+
+    #mainDivDinamicContent #lastIdeasSrc,
+    #accountMain #mainDivDinamicContent #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+}
+
+.navInner,
+.mobileNavInner {
+    width: min(1320px, calc(100% - 2.5rem));
+    min-height: 72px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.navInner {
+    justify-content: space-between;
+}
+
+.mobileNavInner {
+    justify-content: space-between;
+}
+
+.footerPageHeader {
+    max-width: 1120px;
+    margin: 0 auto clamp(2.5rem, 6vw, 5rem);
+}
+
+.footerPageHeader p {
+    margin: 0 0 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.footerPageHeader h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.footerpage {
+    background:
+        linear-gradient(180deg, rgba(238, 242, 216, 0.72), transparent 24rem),
+        var(--fi-paper);
+}
+
+.footerpage > p,
+.footerpage > ul,
+.footerpage > h2,
+.footerpage > h3,
+.footerpage > h4,
+.footerpage > section {
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+.errorPageMain {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+    place-items: stretch;
+    padding: 0;
+}
+
+.errorCodeColumn,
+.errorContentColumn {
+    min-height: 620px;
+}
+
+.errorCodeColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(2rem, 6vw, 6rem);
+    background: #d8bd4f;
+    color: #1d301b;
+}
+
+.errorCodeColumn p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.errorCodeColumn h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(8rem, 20vw, 18rem);
+    line-height: 0.7;
+}
+
+.errorContentColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 6rem);
+    background: var(--fi-surface);
+}
+
+.errorEyebrow {
+    margin: 0 0 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.errorContentColumn h2 {
+    max-width: 12ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.95;
+}
+
+.errorContentColumn p:not(.errorEyebrow) {
+    max-width: 38ch;
+    margin: 1.5rem 0 0;
+}
+
+.errorAction {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+    border: 1px solid var(--fi-green);
+    border-radius: 6px;
+    padding: 0.75rem 1.1rem;
+    background: var(--fi-green);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.reservedLoginPanel {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(360px, 1.2fr);
+    gap: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--fi-surface);
+    box-shadow: var(--fi-shadow);
+}
+
+.reservedLoginHeader {
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    background: #d8bd4f;
+    color: #1d301b;
+}
+
+.reservedLoginHeader p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.reservedLoginHeader .logo {
+    width: 100%;
+    margin: auto 0 0;
+}
+
+#loginReservedAreaForm {
+    width: 100%;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 2.5rem;
+    border: 0;
+    box-shadow: none;
+}
+
+#reservedAreaMain #loginReservedAreaForm ul {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .navInner,
+    .mobileNavInner {
+        width: calc(100% - 1.5rem);
+    }
+
+    .errorPageMain {
+        grid-template-columns: 1fr;
+    }
+
+    .errorCodeColumn,
+    .errorContentColumn {
+        min-height: 280px;
+    }
+
+    .errorCodeColumn h1 {
+        font-size: clamp(7rem, 38vw, 12rem);
+    }
+
+    .reservedLoginPanel {
+        grid-template-columns: 1fr;
+    }
+
+    .reservedLoginHeader {
+        min-height: 260px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footerPageHeader {
+        padding-inline: 0.75rem;
+    }
+
+    .footerPageHeader h1 {
+        font-size: clamp(3rem, 15vw, 5rem);
+    }
+
+    .errorCodeColumn,
+    .errorContentColumn {
+        min-height: 230px;
+        padding: 2rem 1.25rem;
+    }
+
+    .errorContentColumn h2 {
+        font-size: clamp(2.7rem, 13vw, 4.5rem);
+    }
+
+    .reservedLoginHeader {
+        min-height: 220px;
+    }
+
+    #loginReservedAreaForm {
+        min-height: 0;
+        padding: 1.25rem;
+    }
+}
+
+.accountPageHeader {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 3vw, 2.5rem) 1.5rem;
+}
+
+.accountPageHeader p {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.accountPageHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.ideaArticle {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+/* Rebuilt search and publishing pages */
+.searchPageMain {
+    min-height: calc(100vh - 68px);
+    background:
+        radial-gradient(circle at 92% 2%, rgba(216, 189, 79, 0.16), transparent 24rem),
+        var(--fi-paper);
+}
+
+.searchToolbar {
+    min-height: 112px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    align-items: end;
+    gap: 1.25rem;
+    position: relative;
+    padding: 1.25rem clamp(1rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--fi-border);
+    background: var(--fi-surface);
+}
+
+#search {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+#allFilters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    align-items: end;
+    gap: 0.75rem;
+}
+
+.filterBlock {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.labelInfoSearch {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.filterSearch {
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+    color: var(--fi-ink);
+}
+
+.searchResults {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 3vw, 2.5rem);
+}
+
+.searchResultsHeader {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.searchResultsHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    line-height: 0.92;
+}
+
+.searchEyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#lastIdeasSrc {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+#lastIdeasSrc .ideaBox {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--fi-border);
+    border-radius: 6px;
+    background: var(--fi-surface);
+}
+
+#lastIdeasSrc .ideaLink {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+}
+
+.ideaImageWrap {
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-surface);
+}
+
+.ideaIndex {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #f7f8ef;
+    color: #172217;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+#lastIdeasSrc .ideaImageSrc {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ideaCardCopy {
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+}
+
+#lastIdeasSrc .ideaTitleSrc {
+    max-width: none;
+    max-height: none;
+    margin: 0 0 0.4rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.35rem, 2vw, 2.1rem);
+    line-height: 1.05;
+    white-space: normal;
+}
+
+#lastIdeasSrc .ideaAuthorSrc {
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    font-size: 0.82rem;
+    opacity: 0.68;
+    white-space: normal;
+}
+
+.publishPageHeader {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1rem, 3vw, 2rem) 2.5rem;
+}
+
+.publishPageHeader p {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.publishPageHeader h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+}
+
+.publishPageHeader span {
+    max-width: 520px;
+    display: block;
+    margin-top: 1.25rem;
+    font-size: 1.05rem;
+}
+
+.authEyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+    .searchToolbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    #allFilters {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .searchToolbar {
+        min-height: 0;
+        padding: 1rem 0.75rem;
+    }
+
+    #allFilters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .searchResults {
+        padding-inline: 0.75rem;
+    }
+
+    .searchResultsHeader {
+        grid-template-columns: 1fr;
+    }
+
+    .searchResultsHeader h1 {
+        font-size: clamp(3rem, 14vw, 5.5rem);
+    }
+
+    #lastIdeasSrc {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    .ideaImageWrap {
+        height: 180px;
+    }
+
+    .ideaCardCopy {
+        min-height: 110px;
+        padding: 0.75rem;
+    }
+
+    #lastIdeasSrc .ideaTitleSrc {
+        font-size: 1.05rem;
+    }
+
+    .publishPageHeader {
+        padding-top: 3rem;
+    }
+
+    .publishPageHeader h1 {
+        font-size: clamp(3.2rem, 15vw, 5.5rem);
     }
 }

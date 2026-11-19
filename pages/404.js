@@ -24,11 +24,16 @@ export default function Page404({ pageTitle }) {
             <Nav randomId={randomIdeaId} />
             
             <main className="errorPageMain">
-                <h1>Error 404</h1>
-                <h2>Page not found</h2>
-                <p>
-                    We're sorry, but the page you're looking for doesn't exist or has moved.
-                </p>
+                <section className="errorCodeColumn">
+                    <p>FreeIdeas / Error</p>
+                    <h1>404</h1>
+                </section>
+                <section className="errorContentColumn">
+                    <p className="errorEyebrow">Nothing found here</p>
+                    <h2>Page not found.</h2>
+                    <p>This address may have moved or never existed.</p>
+                    <a href="/" className="errorAction">Return home</a>
+                </section>
             </main>
             
             <Footer />

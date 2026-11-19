@@ -183,8 +183,9 @@ export default function LoginPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main id="loginMain">
-                <section>
-                    <h1>Sign In</h1>
+                <section className="authCard">
+                    <p className="authEyebrow">Welcome back</p>
+                    <h1>Sign in to FreeIdeas</h1>
                     
                     <form action="/api/login" method="POST" ref={formRef} noValidate>
                         <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength={255} id="emailLoginPage" required />

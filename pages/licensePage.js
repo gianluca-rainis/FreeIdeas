@@ -24,7 +24,10 @@ export default function LicensePage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>FreeIdeas License</h1>
+                <header className="footerPageHeader">
+                    <p>Legal / License</p>
+                    <h1>FreeIdeas License</h1>
+                </header>
 
                 <h1>Copyright (c) 2025, FreeIdeas by Gianluca Rainis</h1>
 

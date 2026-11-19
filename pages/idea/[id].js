@@ -722,11 +722,13 @@ export default function IdeaPage({ ideaData, pageTitle }) {
                     />
                 </section>
 
-                <p id="description">
-                    {ideaData['idea'][0]['description']}
-                </p>
+                <article className="ideaArticle">
+                    <p id="description">
+                        {ideaData['idea'][0]['description']}
+                    </p>
 
-                <PrintAdditionalInfo ideaData={ideaData} />
+                    <PrintAdditionalInfo ideaData={ideaData} />
+                </article>
 
                 <PrintDownloadLink ideaData={ideaData} />
 

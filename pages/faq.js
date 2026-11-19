@@ -23,7 +23,10 @@ export default function FaqPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>FAQ</h1>
+                <header className="footerPageHeader">
+                    <p>Community / Support</p>
+                    <h1>Questions, answered.</h1>
+                </header>
 
                 <ul id="faqUl">
                     <li>

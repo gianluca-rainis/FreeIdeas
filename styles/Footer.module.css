@@ -180,6 +180,131 @@
     }
 }
 
+/* Rebuilt footer */
+.footer {
+    margin-top: 0;
+    padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 3rem) 1.25rem;
+    border-top: 1px solid;
+}
+
+.footerContainer {
+    max-width: 1320px;
+    display: grid;
+    grid-template-columns: minmax(240px, 0.8fr) 2.2fr;
+}
+
+.brandColumn {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footerEyebrow {
+    margin: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.footerLogo {
+    height: clamp(3rem, 6vw, 5.5rem);
+}
+
+.tagline {
+    max-width: 18ch;
+    margin: 1.5rem 0 0.5rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 3vw, 3.2rem);
+    line-height: 1;
+}
+
+.contact {
+    text-decoration: none;
+}
+
+.linkGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-left: 1px solid currentColor;
+}
+
+.linkColumn {
+    min-height: 300px;
+    padding: 0.25rem clamp(1rem, 2vw, 2rem);
+    border-right: 1px solid currentColor;
+}
+
+.linkColumn h2 {
+    margin: 0 0 2rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+.linkColumn a {
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.bottomBar {
+    max-width: 1320px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+}
+
+.bottomNote {
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .footerContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .brandColumn {
+        min-height: 220px;
+    }
+
+    .linkGrid {
+        border-left: 0;
+        border-top: 1px solid currentColor;
+    }
+
+    .linkColumn {
+        min-height: 220px;
+        padding-top: 1.25rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        padding-inline: 1rem;
+    }
+
+    .brandColumn {
+        min-height: 200px;
+    }
+
+    .linkGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .linkColumn {
+        min-height: 190px;
+        border-right: 0;
+        border-bottom: 1px solid currentColor;
+        padding-inline: 0.75rem;
+    }
+
+    .bottomBar {
+        display: grid;
+        gap: 0.5rem;
+    }
+}
+
 @media (max-width: 480px) {
     .footerContainer {
         gap: 1.5rem;

@@ -64,7 +64,7 @@ export default function IdeasView({ showAlert, showConfirm }) {
     }, [search, refreshToken]);
 
     return (
-        <div style={{width: "100%"}}>
+        <div className="adminDataView">
             {editingIdea ? (
                 <IdeaEditModal 
                     idea={editingIdea}

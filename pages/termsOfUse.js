@@ -23,7 +23,10 @@ export default function TermsOfUsePage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>Terms and Conditions</h1>
+                <header className="footerPageHeader">
+                    <p>Legal / Terms</p>
+                    <h1>Terms and Conditions</h1>
+                </header>
                 <p>Last updated: October 27, 2025</p>
                 <p>Please read these Terms and Conditions carefully before using Our Service.</p>
 

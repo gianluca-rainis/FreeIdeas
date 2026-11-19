@@ -192,7 +192,8 @@ export default function CreateAccountPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main id="loginMain">
-                <section>
+                <section className="authCard">
+                    <p className="authEyebrow">Join the community</p>
                     <h1>Create your account</h1>
                     
                     <form action="/api/signUp" method="POST" ref={formRef} noValidate>

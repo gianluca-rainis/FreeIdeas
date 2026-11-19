@@ -426,6 +426,11 @@ export default function PublishAnIdeaPage({ pageTitle }) {
             <Nav randomId={randomIdeaId} />
 
             <main id="newIdeaMain">
+                <header className="publishPageHeader">
+                    <p>Share a concept</p>
+                    <h1>Publish an idea</h1>
+                    <span>Give the community enough context to understand, discuss and develop it.</span>
+                </header>
                 <form id="newIdeaForm" onSubmit={handleSubmit} noValidate>
                     <div 
                         id="ideaImageAsBackground"

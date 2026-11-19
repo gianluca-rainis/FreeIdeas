@@ -9,62 +9,51 @@ export default function Footer() {
     return (
         <footer className={`${styles.footer} ${themeIsLight ? styles.light : styles.dark}`}>
             <div className={styles.footerContainer}>
-                {/* Info Section */}
-                <div className={styles.infoSection}>
+                <section className={styles.brandColumn}>
+                    <p className={styles.footerEyebrow}>FreeIdeas / Community</p>
                     <Link href="/" prefetch className={styles.logoLink}>
                         <img src="/images/FreeIdeas.svg" alt="FreeIdeas Logo" className={styles.footerLogo} />
                     </Link>
-                    <div className={styles.info}>
-                        <p className={styles.tagline}>A place where your Ideas can be Free.</p>
-                        <p className={styles.contact}>freeideas@freeideas.pro</p>
-                    </div>
-                </div>
+                    <p className={styles.tagline}>A place where Ideas can be Free.</p>
+                    <a className={styles.contact} href="mailto:freeideas@freeideas.pro">freeideas@freeideas.pro</a>
+                </section>
 
-                {/* Links Grid */}
-                <div className={styles.linksGrid}>
+                <nav className={styles.linkGrid} aria-label="Footer navigation">
                     <div className={styles.linkColumn}>
-                        <h5>Explore</h5>
-                        <ul>
-                            <li><Link href="/searchAnIdea" prefetch>Browse Ideas</Link></li>
-                            <li><Link href="/publishAnIdea" prefetch>Publish Idea</Link></li>
-                            <li><Link href="/about" prefetch>About Us</Link></li>
-                        </ul>
+                        <h2>Discover</h2>
+                        <Link href="/searchAnIdea" prefetch>Browse ideas</Link>
+                        <Link href="/publishAnIdea" prefetch>Publish an idea</Link>
+                        <Link href="/about" prefetch>About FreeIdeas</Link>
                     </div>
 
                     <div className={styles.linkColumn}>
-                        <h5>Legal</h5>
-                        <ul>
-                            <li><Link href="/privacyPolicy" prefetch>Privacy Policy</Link></li>
-                            <li><Link href="/termsOfUse" prefetch>Terms of Use</Link></li>
-                            <li><Link href="/licensePage" prefetch>License</Link></li>
-                        </ul>
+                        <h2>Legal</h2>
+                        <Link href="/privacyPolicy" prefetch>Privacy policy</Link>
+                        <Link href="/termsOfUse" prefetch>Terms of use</Link>
+                        <Link href="/licensePage" prefetch>License</Link>
                     </div>
 
                     <div className={styles.linkColumn}>
-                        <h5>Support</h5>
-                        <ul>
-                            <li><Link href="/faq" prefetch>FAQ</Link></li>
-                            <li><Link href="/feedback" prefetch>Feedback</Link></li>
-                            <li><Link href="/contacts" prefetch>Contact</Link></li>
-                        </ul>
+                        <h2>Community</h2>
+                        <Link href="/faq" prefetch>FAQ</Link>
+                        <Link href="/feedback" prefetch>Feedback</Link>
+                        <Link href="/contacts" prefetch>Contact</Link>
                     </div>
 
                     <div className={styles.linkColumn}>
-                        <h5>Community</h5>
-                        <ul>
-                            <li><Link href="/reservedArea" prefetch>Reserved Area</Link></li>
-                            <li><a href="/images/logo/FreeIdeas_official_logos.zip" download>Logos</a></li>
-                            <li><a href="https://github.com/gianluca-rainis/FreeIdeas.git" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                        </ul>
+                        <h2>Platform</h2>
+                        <Link href="/reservedArea" prefetch>Reserved area</Link>
+                        <a href="/images/logo/FreeIdeas_official_logos.zip" download>Brand assets</a>
+                        <a href="https://github.com/gianluca-rainis/FreeIdeas.git" target="_blank" rel="noopener noreferrer">GitHub</a>
                     </div>
-                </div>
+                </nav>
             </div>
 
-            {/* Bottom Bar */}
             <div className={styles.bottomBar}>
                 <p className={styles.copyright}>
-                    &copy; 2025-{new Date().getFullYear()} Gianluca Rainis. All rights reserved.
+                    &copy; 2025-{new Date().getFullYear()} Gianluca Rainis
                 </p>
+                <p className={styles.bottomNote}>Ideas belong to the people who share them.</p>
             </div>
         </footer>
     )

@@ -2,9 +2,10 @@ import React from 'react';
 
 export default function WelcomeView({ username }) {
     return (
-        <div style={{width: "100%"}}>
-            <img src="/images/FreeIdeas_ReservedArea.svg" alt="FreeIdeas Logo" className="logo" />
-            <h1 style={{ paddingBottom: '5%' }}>Welcome {username}</h1>
+        <div className="adminWelcomeView">
+            <p className="adminWelcomeEyebrow">Signed in as administrator</p>
+            <h2>Welcome back, {username}.</h2>
+            <p>Choose a workspace section from the sidebar to review platform data and moderation activity.</p>
         </div>
     )
 }

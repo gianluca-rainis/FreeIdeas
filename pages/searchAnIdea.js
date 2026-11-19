@@ -16,13 +16,18 @@ export async function getStaticProps() {
 }
 
 // Internal functions
-function IdeaCard({ link, imgSrc, title, author }) {
+function IdeaCard({ link, imgSrc, title, author, index }) {
     return (
         <li className="ideaBox">
             <Link href={link} className="ideaLink">
-                <img src={imgSrc!=null?imgSrc:"/images/FreeIdeas.svg"} alt="Idea Image" className="ideaImageSrc" />
-                <p className="ideaTitleSrc">{title}</p>
-                <p className="ideaAuthorSrc">{author}</p>
+                <div className="ideaImageWrap">
+                    <img src={imgSrc!=null?imgSrc:"/images/FreeIdeas.svg"} alt="" className="ideaImageSrc" />
+                    <span className="ideaIndex">{String(index + 1).padStart(2, '0')}</span>
+                </div>
+                <div className="ideaCardCopy">
+                    <p className="ideaTitleSrc">{title}</p>
+                    <p className="ideaAuthorSrc">by {author}</p>
+                </div>
             </Link>
         </li>
     )
@@ -32,7 +37,7 @@ function IdeaList({ ideas }) {
     return (
         <ul id="lastIdeasSrc">
             {ideas.map((idea, index) => (
-                <IdeaCard key={`idea-${index}`} link={idea.link} imgSrc={idea.image} title={idea.title} author={idea.author} />
+                <IdeaCard key={`idea-${index}`} link={idea.link} imgSrc={idea.image} title={idea.title} author={idea.author} index={index} />
             ))}
         </ul>
     )
@@ -412,7 +417,8 @@ export default function SearchAnIdeaPage({ pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
             
-            <header className="searchToolbar">
+            <main className="searchPageMain">
+                <header className="searchToolbar">
                 <input 
                     type="search" 
                     placeholder="Search" 
@@ -503,9 +509,9 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                         />
                     )}
                 </ul>
-            </header>
+                </header>
 
-            <main className="searchResults">
+                <section className="searchResults">
                 <div className="searchResultsHeader">
                     <div>
                         <p className="searchEyebrow">Community library</p>
@@ -513,7 +519,8 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                     </div>
                     <p>{loading ? 'Searching...' : `${ideas.length} result${ideas.length === 1 ? '' : 's'}`}</p>
                 </div>
-                <IdeaList ideas={ideas} />
+                    <IdeaList ideas={ideas} />
+                </section>
             </main>
 
             <Footer />

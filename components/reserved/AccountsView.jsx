@@ -60,7 +60,7 @@ export default function AccountsView({ showAlert, showConfirm, showPrompt }) {
     }, [search])
 
     return (
-        <div style={{width: "100%"}}>
+        <div className="adminDataView">
             {editingId ? (
                 <AccountEditModal 
                     accountId={editingId} 

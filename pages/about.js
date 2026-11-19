@@ -24,7 +24,10 @@ export default function AboutPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>About FreeIdeas</h1>
+                <header className="footerPageHeader">
+                    <p>FreeIdeas / Identity</p>
+                    <h1>About FreeIdeas</h1>
+                </header>
                 <p>
                     FreeIdeas is a platform built to give everyone a free and open space to publish, share, and showcase their ideas -
                     no matter what they are. Whether an idea is ready to be built tomorrow or simply a spark of imagination,

@@ -23,7 +23,10 @@ export default function PrivacyPolicyPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>Privacy Policy</h1>
+                <header className="footerPageHeader">
+                    <p>Legal / Privacy</p>
+                    <h1>Privacy Policy</h1>
+                </header>
                 <p>Last updated: October 27, 2025</p>
                 <p>Please read this Privacy Policy carefully before using Our Service.</p>
 

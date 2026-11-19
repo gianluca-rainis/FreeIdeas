@@ -23,7 +23,10 @@ export default function ContactsPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>Contacts</h1>
+                <header className="footerPageHeader">
+                    <p>Community / Support</p>
+                    <h1>Contacts</h1>
+                </header>
                 <p>
                     If you have any questions, suggestions, or just want to say hello, feel free to reach out!
                 </p>

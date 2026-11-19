@@ -148,7 +148,7 @@ export default function NotificationsView({ showAlert, showConfirm }) {
     }
 
     return (
-        <div style={{width: "100%"}}>
+        <div className="adminDataView">
             <section id="searchSectionInReservedArea">
                 <input
                     type="search"

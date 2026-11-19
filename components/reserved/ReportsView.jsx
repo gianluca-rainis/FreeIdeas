@@ -92,7 +92,7 @@ export default function ReportsView({ showAlert, showConfirm }) {
     }, [search])
 
     return (
-        <div style={{width: "100%"}}>
+        <div className="adminDataView">
             <section id="searchSectionInReservedArea">
                 <input
                     type="search"

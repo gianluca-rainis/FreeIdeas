@@ -46,7 +46,10 @@ export default function FeedbackPage({pageTitle}) {
             <Nav randomId={randomIdeaId} />
 
             <main className="footerpage">
-                <h1>Feedback</h1>
+                <header className="footerPageHeader">
+                    <p>Community / Support</p>
+                    <h1>Feedback</h1>
+                </header>
                 <section>
                     <form action="" method="post" id="feedbackForm">
                         <label htmlFor="feedbackTitle">Title:</label>

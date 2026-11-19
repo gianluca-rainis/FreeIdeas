@@ -162,7 +162,7 @@ export function useThemeImages() {
 
             const userImage = document.getElementById('userImage');
 
-            if (userImage && userImage.src.includes('/images/user')) {
+            if (userImage instanceof HTMLImageElement && userImage.src.includes('/images/user')) {
                 userImage.src = `/images/user${isLight ? '' : '_Pro'}.svg`;
             }
 

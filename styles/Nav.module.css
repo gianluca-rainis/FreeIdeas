@@ -664,6 +664,210 @@
     cursor: not-allowed;
 }
 
+/* Rebuilt navigation */
+.nav {
+    min-height: 72px;
+    background: rgba(247, 248, 239, 0.94);
+}
+
+.dark.nav {
+    background: rgba(17, 20, 15, 0.94);
+}
+
+.pcNavBarGhost,
+.mobileNavBarGhost {
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.brandLink {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.navLogoImage {
+    width: 174px;
+}
+
+.navLinks {
+    gap: 0.15rem;
+}
+
+.navLinks li a {
+    border-radius: 6px;
+}
+
+/* Modern navigation system */
+.nav {
+    min-height: 72px;
+    border-bottom: 1px solid rgba(37, 54, 33, 0.12);
+    background: rgba(249, 250, 244, 0.92);
+    backdrop-filter: blur(18px) saturate(150%);
+}
+
+.dark.nav {
+    border-bottom-color: rgba(237, 234, 221, 0.12);
+    background: rgba(17, 20, 15, 0.92);
+}
+
+.scrolled {
+    box-shadow: 0 12px 32px rgba(23, 34, 23, 0.10);
+}
+
+.pcNavBarGhost {
+    min-height: 72px;
+}
+
+.navInner {
+    width: min(1320px, calc(100% - 2.5rem));
+    min-height: 72px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    align-items: center;
+}
+
+.brandLink {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+
+.navLogoImage {
+    width: 168px;
+    height: auto;
+}
+
+.primaryNav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.navText {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: 0.55rem 0.82rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.navText::after {
+    display: none;
+}
+
+.navText:hover {
+    background: rgba(82, 132, 66, 0.10);
+}
+
+.publishLink {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    margin-inline: 0.25rem;
+    border: 1px solid #263f23;
+    border-radius: 6px;
+    padding: 0.55rem 0.9rem;
+    background: #263f23;
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.dark .publishLink {
+    border-color: #d0b85f;
+    background: #d0b85f;
+    color: #17180f;
+}
+
+.navUtilities,
+.mobileUtilities {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.iconButton,
+.accountButton {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+}
+
+.iconButton:hover {
+    border-color: rgba(37, 54, 33, 0.14);
+    background: rgba(82, 132, 66, 0.08);
+}
+
+.themeToggle,
+.notificationsImg,
+.menuMobile {
+    width: 22px;
+    height: 22px;
+}
+
+.accountButton {
+    width: auto;
+    min-width: 112px;
+    gap: 0.55rem;
+    border-color: rgba(37, 54, 33, 0.14);
+    padding: 0.25rem 0.45rem 0.25rem 0.25rem;
+}
+
+.userImage {
+    width: 32px;
+    height: 32px;
+}
+
+.userName {
+    max-width: 72px;
+    overflow: hidden;
+    padding: 0;
+    color: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.loginArea {
+    top: 72px;
+    right: max(20px, calc((100vw - 1320px) / 2));
+    width: 340px;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 8px;
+    background: #fdfdf8;
+    box-shadow: 0 24px 60px rgba(23, 34, 23, 0.16);
+}
+
+.dark .loginArea {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #1a1e17;
+}
+
+.mobileMenuHidden {
+    top: 72px;
+    border-top: 1px solid rgba(37, 54, 33, 0.12);
+    background: #f9faf4;
+}
+
+.dark .mobileMenuHidden {
+    border-top-color: rgba(237, 234, 221, 0.12);
+    background: #11140f;
+}
+
 @media (max-width: 900px) {
     .pcNavBarGhost {
         display: none;
@@ -671,8 +875,25 @@
 
     .mobileNavBarGhost {
         display: flex;
+        min-height: 72px;
+    }
+
+    .mobileNavInner {
+        width: calc(100% - 1.5rem);
+        min-height: 72px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
         justify-content: space-between;
-        padding: 0.35rem 1rem;
+    }
+
+    .mobileUtilities {
+        gap: 0.15rem;
+    }
+
+    .mobileUtilities .iconButton {
+        width: 38px;
+        height: 38px;
     }
 
     .mobileNavBarGhost .navLogoImage {
@@ -763,6 +984,39 @@
     .mobileMenuHidden {
         display: none !important;
     }
+}
+
+/* Lucide-style utility icons */
+.iconButton svg,
+.userIconWrap svg,
+.menuIconWrap svg {
+    display: block;
+}
+
+.userIconWrap,
+.menuIconWrap {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userIconWrap svg,
+.menuIconWrap svg {
+    width: 20px;
+    height: 20px;
+}
+
+.accountButton .userIconWrap {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 50%;
+}
+
+.dark .accountButton .userIconWrap {
+    border-color: rgba(237, 234, 221, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {

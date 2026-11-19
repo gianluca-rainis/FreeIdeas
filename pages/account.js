@@ -335,6 +335,11 @@ export default function AccountPage({ accountData, pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
 
+            <header className="accountPageHeader">
+                <p>Community profile</p>
+                <h1>{accountData.username}</h1>
+            </header>
+
             <main id="accountMain">
                 <aside id="accountAsideInfo">
                     {

@@ -25,11 +25,16 @@ export default function GenericError({ pageTitle, statusCode }) {
             <Nav randomId={randomIdeaId} />
             
             <main className="errorPageMain">
-                <h1>Error {statusCode}</h1>
-                <h2>Generic Error</h2>
-                <p>
-                    We're sorry, but we've encountered an unexpected error. Please try again later. If the problem persists, please contact technical support.
-                </p>
+                <section className="errorCodeColumn">
+                    <p>FreeIdeas / Error</p>
+                    <h1>{statusCode}</h1>
+                </section>
+                <section className="errorContentColumn">
+                    <p className="errorEyebrow">Unexpected interruption</p>
+                    <h2>Something went wrong.</h2>
+                    <p>Please try again later or contact technical support if the issue continues.</p>
+                    <a href="/" className="errorAction">Return home</a>
+                </section>
             </main>
             
             <Footer />
