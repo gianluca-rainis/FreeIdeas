@@ -150,7 +150,6 @@ export function AppProvider({ children }) {
             return;
         }
 
-        const mobileMenuHidden = document.getElementById("mobileMenuHidden");
         const notificationsMobile = document.getElementById("notificaionsMobile");
         const notificationsDesktop = document.getElementById("notificaions");
 
@@ -162,9 +161,6 @@ export function AppProvider({ children }) {
             notificationsDesktop.style.display = showNotifications ? "block" : "none";
         }
 
-        if (mobileMenuHidden && !showNotifications) {
-            mobileMenuHidden.style.display = "none";
-        }
     }, [showNotifications]);
 
     function loadNotifications(SQLdata) {

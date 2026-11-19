@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 export function useThemeImages() {
     const router = useRouter();
     const [themeIsLight, setThemeIsLight] = useState(true);
+    const [themeResolved, setThemeResolved] = useState(false);
 
     // Read preferred theme and subscribe to system changes
     useEffect(() => {
@@ -13,14 +14,22 @@ export function useThemeImages() {
         }
 
         const savedTheme = localStorage.getItem('themeIsLight');
+        const currentDataTheme = document.documentElement.getAttribute('data-theme');
+        let nextTheme;
 
         if (savedTheme !== null) {
-            setThemeIsLight(savedTheme === 'true');
+            nextTheme = savedTheme === 'true';
+        }
+        else if (currentDataTheme !== null) {
+            nextTheme = currentDataTheme !== 'dark';
         }
         else {
             const mq = window.matchMedia('(prefers-color-scheme: light)');
-            setThemeIsLight(mq.matches);
+            nextTheme = mq.matches;
         }
+
+        setThemeIsLight(nextTheme);
+        setThemeResolved(true);
 
         function handleChange(e) {
             setThemeIsLight(e.matches);
@@ -35,7 +44,7 @@ export function useThemeImages() {
 
     // Apply theme to document and swap UI assets
     useEffect(() => {
-        if (typeof document === 'undefined') {
+        if (typeof document === 'undefined' || !themeResolved) {
             return;
         }
 
@@ -47,12 +56,16 @@ export function useThemeImages() {
             document.documentElement.setAttribute('data-theme', targetDataTheme);
             updateThemeElements(themeIsLight);
         }
-    }, [themeIsLight]);
+    }, [themeResolved, themeIsLight]);
 
     // Re-apply theme-dependent assets after client-side navigation
     useEffect(() => {
+        if (!themeResolved) {
+            return;
+        }
+
         updateThemeElements(themeIsLight);
-    }, [router.pathname, themeIsLight]);
+    }, [router.pathname, themeIsLight, themeResolved]);
 
     // Listen to external theme changes (e.g., from toggle buttons)
     useEffect(() => {

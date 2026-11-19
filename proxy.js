@@ -13,7 +13,7 @@ export function proxy(request) {
     const response = NextResponse.next();
     
     // Add CORS if origin is allowed
-    if (origin) {
+    if (origin && allowedOrigins.includes(origin)) {
         response.headers.set('Access-Control-Allow-Origin', origin);
         response.headers.set('Access-Control-Allow-Credentials', 'true');
         response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');

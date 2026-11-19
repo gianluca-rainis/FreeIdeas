@@ -1,10 +1,11 @@
-import styles from '@/styles/SearchPublishModern.module.css'
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
 import '@/styles/ModernShared.module.css';
 import '@/styles/UnifiedPages.module.css';
+import styles from '@/styles/SearchPublishModern.module.css'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Head from '@/components/Head'
@@ -49,7 +50,7 @@ function IdeaList({ ideas }) {
 }
 
 // Compact filters component
-function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilters }) {
+function CompactFilters({ onFilterChange, windowWidth, currentFilters }) {
     const [showDropdown, setShowDropdown] = useState(false);
     const [openSection, setOpenSection] = useState(null);
 
@@ -86,54 +87,27 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
     };
 
     const renderFilterSection = (key, label) => (
-        <li key={key}>
-            <div className="hiddenTypeFilterText" onClick={() => toggleSection(key)} style={{ 
-                cursor: 'pointer', 
-                padding: '10px', 
-                borderBottom: `1px solid ${themeIsLight ? '#ccc' : '#555'}`
-            }}>
-                {label} 
-                <img 
-                    className="hiddenTypeFilterTextImg" 
-                    alt="Filters section" 
-                    src="/images/menuFilters.svg"
-                    style={{ 
-                        transform: openSection === key ? 'rotate(180deg)' : '',
-                        transition: 'transform 0.3s',
-                        float: 'right'
-                    }}
-                />
-            </div>
+        <li key={key} className={styles.compactFilterSection}>
+            <button
+                type="button"
+                className={styles.compactFilterSectionButton}
+                onClick={() => toggleSection(key)}
+                aria-expanded={openSection === key}
+            >
+                <span>{label}</span>
+                <ChevronDown className={`${styles.compactFilterChevron} ${openSection === key ? styles.compactFilterChevronOpen : ''}`} aria-hidden="true" />
+            </button>
             {openSection === key && (
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <ul className={styles.compactFilterOptions}>
                     {filterOptions[key].map(option => (
-                        <li 
-                            key={option}
-                            className={`${key}HiddenLi`}
-                            onClick={() => handleFilterClick(key, option)}
-                            onMouseEnter={(e) => {
-                                if (currentFilters[key] !== option) {
-                                    e.target.style.backgroundColor = '#8fb800';
-                                    e.target.style.color = '#fff';
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (currentFilters[key] !== option) {
-                                    e.target.style.backgroundColor = 'transparent';
-                                    e.target.style.color = themeIsLight ? '#000' : '#fff';
-                                }
-                            }}
-                            style={{
-                                padding: '8px 15px',
-                                margin: '2px 0px',
-                                cursor: 'pointer',
-                                backgroundColor: currentFilters[key] === option ? (themeIsLight?'#b3e403':'#5c4e2e') : 'transparent',
-                                borderBottom: `1px solid ${themeIsLight ? '#eee' : '#444'}`,
-                                fontWeight: currentFilters[key] === option ? 'bold' : 'normal',
-                                transition: 'background-color 0.2s ease'
-                            }}
-                        >
-                            {option}
+                        <li key={option}>
+                            <button
+                                type="button"
+                                className={`${styles.compactFilterOption} ${currentFilters[key] === option ? styles.compactFilterOptionActive : ''}`}
+                                onClick={() => handleFilterClick(key, option)}
+                            >
+                                {option}
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -147,18 +121,39 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
 
     return (
         <>
-            <li className={styles.filterBlock}>
-                <div 
+            <li className={`${styles.filterBlock} ${styles.compactFilterItem}`}>
+                <button
+                    type="button"
                     id="compactFilters" 
-                    onClick={() => setShowDropdown(!showDropdown)}
-                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                    className={styles.compactFilterTrigger}
+                    onClick={() => setShowDropdown((isOpen) => !isOpen)}
+                    aria-expanded={showDropdown}
+                    aria-controls="compactFiltersHidden"
                 >
-                    <img 
-                        alt="Filters Block" 
-                        src={`/images/filters${themeIsLight ? "" : "_Pro"}.svg`}
-                    />
+                    <SlidersHorizontal aria-hidden="true" />
                     <span>Filters</span>
-                </div>
+                    <ChevronDown className={`${styles.compactFilterChevron} ${showDropdown ? styles.compactFilterChevronOpen : ''}`} aria-hidden="true" />
+                </button>
+
+                {showDropdown && (
+                    <div id="compactFiltersHidden" className={styles.compactFiltersHidden}>
+                        <div className={styles.compactFiltersHeader}>
+                            <div>
+                                <span className={styles.compactFiltersEyebrow}>Refine results</span>
+                                <strong>Filter ideas</strong>
+                            </div>
+                            <button type="button" className={styles.compactFiltersClose} onClick={() => setShowDropdown(false)} aria-label="Close filters">
+                                <X aria-hidden="true" />
+                            </button>
+                        </div>
+                        <ul className={styles.compactFilterSections}>
+                            {renderFilterSection('type', 'Type of project')}
+                            {renderFilterSection('creativity', 'Creativity type')}
+                            {renderFilterSection('status', 'Project status')}
+                            {windowWidth <= 600 && renderFilterSection('order', 'Order by')}
+                        </ul>
+                    </div>
+                )}
             </li>
 
             {windowWidth > 600 && (
@@ -177,38 +172,13 @@ function CompactFilters({ themeIsLight, onFilterChange, windowWidth, currentFilt
                 </li>
             )}
 
-            {showDropdown && (
-                <div 
-                    id="compactFiltersHidden"
-                    style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: 0,
-                        right: 0,
-                        backgroundColor: themeIsLight ? '#ebffa4' : '#2d2d2d',
-                        border: `1px solid ${themeIsLight ? '#ccc' : '#555'}`,
-                        borderRadius: '4px',
-                        zIndex: 1000,
-                        maxHeight: '400px',
-                        overflowY: 'auto',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                    }}
-                >
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {renderFilterSection('type', 'Type of project')}
-                        {renderFilterSection('creativity', 'Creativity Type')}
-                        {renderFilterSection('status', 'Project status')}
-                        {windowWidth <= 600 && renderFilterSection('order', 'Order By')}
-                    </ul>
-                </div>
-            )}
         </>
     );
 }
 
 // Main
 export default function SearchAnIdeaPage({ pageTitle }) {
-    const { themeIsLight, user, randomIdeaId, bannerMessage, showBanner } = useAppContext();
+    const { randomIdeaId } = useAppContext();
     const [ideas, setIdeas] = useState([]);
     const [loading, setLoading] = useState(false);
     const [windowWidth, setWindowWidth] = useState(1200); // Default desktop size
@@ -508,7 +478,6 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                     ) : (
                         // Show compact filters
                         <CompactFilters 
-                            themeIsLight={themeIsLight}
                             onFilterChange={handleFilterChange}
                             windowWidth={windowWidth}
                             currentFilters={filters}
