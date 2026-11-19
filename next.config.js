@@ -2,11 +2,7 @@
 const nextConfig = {
     basePath: '', // No prefixs
     trailingSlash: false,
-    
-    // Asset optimization
-    images: {
-        unoptimized: true, // Temp
-    }
+    poweredByHeader: false,
 }
 
 module.exports = nextConfig

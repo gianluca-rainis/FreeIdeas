@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /include/
+
+Sitemap: https://www.freeideas.pro/sitemap.xml
