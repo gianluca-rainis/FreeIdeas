@@ -76,7 +76,7 @@ export function AppProvider({ children }) {
                 setRandomIdeaId(data.data.id);
             }
             else {
-                throw new Error(data?data.error:"Error in getRandomIdeaId");
+                setRandomIdeaId(0);
             }
         } catch (error) {
             handleError(error, 'loadRandomIdea');

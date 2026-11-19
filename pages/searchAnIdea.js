@@ -412,7 +412,7 @@ export default function SearchAnIdeaPage({ pageTitle }) {
 
             <Nav randomId={randomIdeaId} />
             
-            <header style={{padding: "20px 0 20px 0", position: 'relative'}}>
+            <header className="searchToolbar">
                 <input 
                     type="search" 
                     placeholder="Search" 
@@ -505,7 +505,14 @@ export default function SearchAnIdeaPage({ pageTitle }) {
                 </ul>
             </header>
 
-            <main>
+            <main className="searchResults">
+                <div className="searchResultsHeader">
+                    <div>
+                        <p className="searchEyebrow">Community library</p>
+                        <h1>Explore ideas</h1>
+                    </div>
+                    <p>{loading ? 'Searching...' : `${ideas.length} result${ideas.length === 1 ? '' : 's'}`}</p>
+                </div>
                 <IdeaList ideas={ideas} />
             </main>
 

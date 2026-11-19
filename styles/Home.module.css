@@ -144,8 +144,8 @@
 
 .heroArt {
     position: relative;
-    border-radius: 28px;
-    padding: 1.5rem;
+    border-radius: 8px;
+    padding: 0;
     overflow: hidden;
 }
 
@@ -263,8 +263,8 @@
 }
 
 .latestSection {
-    border-radius: 26px;
-    padding: 1.1rem;
+    border-radius: 8px;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
 }
 
 .home.light .latestSection {
@@ -599,8 +599,8 @@
 }
 
 .whyPublishSection {
-    border-radius: 20px;
-    padding: 1.1rem;
+    border-radius: 8px;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
 }
 
 .home.light .whyPublishSection {
@@ -757,6 +757,88 @@
     overflow-wrap: anywhere;
 }
 
+@media (min-width: 761px) {
+    .heroArt {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+        align-items: stretch;
+    }
+
+    .heroCopy {
+        min-height: 420px;
+        padding: clamp(2rem, 5vw, 4.5rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .heroVisual {
+        margin: clamp(0.75rem, 2vw, 1.25rem);
+        border-radius: 6px;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .heroLogo {
+        width: min(280px, 90%);
+        margin: auto;
+    }
+}
+
+.heroCopy {
+    position: relative;
+    z-index: 1;
+}
+
+.heroVisual {
+    position: relative;
+    z-index: 1;
+}
+
+.home.light .heroVisual {
+    background: rgba(255, 255, 255, 0.68);
+    border: 1px solid #d4de8d;
+}
+
+.home.dark .heroVisual {
+    background: rgba(18, 18, 18, 0.68);
+    border: 1px solid #554625;
+}
+
+.heroVisualGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.heroVisualGrid div {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.75rem;
+    border-top: 1px solid currentColor;
+}
+
+.heroVisualGrid strong,
+.heroVisualGrid span {
+    line-height: 1.25;
+}
+
+.heroVisualGrid span {
+    opacity: 0.72;
+    font-size: 0.78rem;
+}
+
+.heroRandomLink {
+    margin-top: 0.75rem;
+    color: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
 @media (max-width: 1024px) {
     .latestLayout {
         grid-template-columns: 1fr;
@@ -810,6 +892,10 @@
 
     .heroActions {
         width: 100%;
+    }
+
+    .heroVisual {
+        display: none;
     }
 
     .heroActions a {
@@ -877,5 +963,514 @@
 @media (prefers-reduced-motion: reduce) {
     .manifestoTickerInner {
         animation: none;
+    }
+}
+
+/* Rebuilt homepage */
+.home {
+    min-height: 100vh;
+    width: 100%;
+    padding: 0;
+    overflow: clip;
+    background: #f4f5ef;
+    color: #172217;
+}
+
+.home.dark {
+    background: #11140f;
+    color: #edeadd;
+}
+
+.home * {
+    box-sizing: border-box;
+}
+
+.banner {
+    width: min(1320px, calc(100% - 2rem));
+    margin: 1rem auto 0;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+}
+
+.heroSection {
+    width: 100%;
+    min-height: min(720px, calc(100vh - 68px));
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.45fr);
+    border-bottom: 1px solid rgba(30, 51, 28, 0.16);
+}
+
+.heroCopy {
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(3rem, 8vw, 8rem);
+    background:
+        linear-gradient(135deg, rgba(248, 250, 238, 0.96), rgba(231, 240, 178, 0.82));
+}
+
+.dark .heroCopy {
+    background:
+        linear-gradient(135deg, rgba(28, 33, 24, 0.98), rgba(50, 58, 39, 0.92));
+}
+
+.heroEyebrow {
+    margin: 0 0 1.5rem;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.heroCopy h1 {
+    max-width: 10ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(4rem, 8vw, 8.5rem);
+    font-weight: 500;
+    line-height: 0.88;
+    letter-spacing: 0;
+}
+
+.heroCopy h1 span {
+    color: #6d9f45;
+    font-style: italic;
+}
+
+.dark .heroCopy h1 span {
+    color: #c8b15f;
+}
+
+.heroText {
+    max-width: 590px;
+    margin: 2rem 0 0;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    line-height: 1.65;
+}
+
+.heroActions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 2rem;
+}
+
+.primaryAction,
+.secondaryAction {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 0.75rem 1.1rem;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.primaryAction {
+    border-color: #263f23;
+    background: #263f23;
+    color: #ffffff;
+}
+
+.secondaryAction {
+    border-color: rgba(38, 63, 35, 0.35);
+    background: transparent;
+    color: inherit;
+}
+
+.dark .primaryAction {
+    border-color: #d0b85f;
+    background: #d0b85f;
+    color: #17180f;
+}
+
+.dark .secondaryAction {
+    border-color: rgba(237, 234, 221, 0.28);
+}
+
+.heroStatement {
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 3vw, 3rem);
+    background: #d8bd4f;
+    color: #26331f;
+}
+
+.dark .heroStatement {
+    background: #71632e;
+    color: #fff8df;
+}
+
+.statementIndex {
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.heroStatement p {
+    margin: auto 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.2rem, 4vw, 4.5rem);
+    line-height: 1;
+}
+
+.heroStatement a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid currentColor;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.ideasSection {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 3vw, 2.5rem);
+}
+
+.sectionHeading {
+    display: grid;
+    grid-template-columns: 0.35fr 1fr auto;
+    align-items: end;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sectionHeading p {
+    margin: 0;
+    align-self: start;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.sectionHeading h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 5vw, 5.25rem);
+    line-height: 0.95;
+    font-weight: 500;
+}
+
+.sectionHeading a {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.ideaGrid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.ideaCard {
+    grid-column: span 4;
+    min-width: 0;
+    display: grid;
+    border: 1px solid rgba(30, 51, 28, 0.16);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+    color: #172217;
+    text-decoration: none;
+}
+
+.dark .ideaCard {
+    border-color: rgba(237, 234, 221, 0.14);
+    background: #1a1e17;
+    color: #edeadd;
+}
+
+.featuredCard {
+    grid-column: span 8;
+    grid-template-columns: 1.25fr 0.75fr;
+}
+
+.ideaImageWrap {
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
+    background: #e9eddb;
+}
+
+.featuredCard .ideaImageWrap {
+    min-height: 420px;
+}
+
+.ideaImage {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.ideaImageWrap > span {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    min-width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #f8f8ef;
+    color: #172217;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.ideaCardCopy {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+}
+
+.featuredCard .ideaCardCopy {
+    min-height: 420px;
+}
+
+.ideaCardCopy p {
+    margin: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.ideaCardCopy h3 {
+    margin: 0 0 0.35rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
+    line-height: 1.05;
+}
+
+.ideaCardCopy > span {
+    font-size: 0.82rem;
+    opacity: 0.68;
+}
+
+.principlesSection {
+    border-top: 1px solid rgba(30, 51, 28, 0.16);
+    border-bottom: 1px solid rgba(30, 51, 28, 0.16);
+}
+
+.principlesHeading {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 7rem) clamp(1rem, 3vw, 2.5rem) 2rem;
+}
+
+.principlesHeading p {
+    margin: 0 0 1rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.principlesHeading h2 {
+    max-width: 14ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    font-weight: 500;
+    line-height: 0.95;
+}
+
+.principlesList {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(30, 51, 28, 0.16);
+}
+
+.principlesList article {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem);
+    border-right: 1px solid rgba(30, 51, 28, 0.16);
+}
+
+.principlesList article:last-child {
+    border-right: 0;
+}
+
+.principlesList article > span {
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.principlesList h3 {
+    margin: auto 0 0.5rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+
+.principlesList p {
+    max-width: 34ch;
+    margin: 0;
+    line-height: 1.55;
+}
+
+.closingSection {
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem 1.25rem;
+    text-align: center;
+    background: #e3e8bd;
+    color: #1d301b;
+}
+
+.dark .closingSection {
+    background: #252d20;
+    color: #edeadd;
+}
+
+.closingSection p {
+    max-width: 18ch;
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    line-height: 0.95;
+}
+
+@media (max-width: 900px) {
+    .heroSection {
+        grid-template-columns: 1fr;
+    }
+
+    .heroCopy {
+        min-height: 520px;
+    }
+
+    .heroStatement {
+        min-height: 320px;
+    }
+
+    .sectionHeading {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .featuredCard {
+        grid-column: span 12;
+    }
+
+    .ideaCard {
+        grid-column: span 6;
+    }
+}
+
+@media (max-width: 600px) {
+    .heroCopy {
+        min-height: 480px;
+        padding: 3.5rem 1.25rem 3rem;
+    }
+
+    .heroCopy h1 {
+        max-width: 9ch;
+        font-size: clamp(3.2rem, 16vw, 5rem);
+    }
+
+    .heroText {
+        margin-top: 1.25rem;
+    }
+
+    .heroActions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .primaryAction,
+    .secondaryAction {
+        width: 100%;
+    }
+
+    .heroStatement {
+        min-height: 280px;
+        padding: 1.25rem;
+    }
+
+    .heroStatement p {
+        font-size: clamp(2.4rem, 13vw, 3.5rem);
+    }
+
+    .ideasSection {
+        padding-inline: 0.75rem;
+    }
+
+    .sectionHeading h2 {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+    }
+
+    .ideaGrid {
+        display: block;
+    }
+
+    .ideaCard,
+    .featuredCard {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        margin-bottom: 0.75rem;
+    }
+
+    .ideaImageWrap,
+    .featuredCard .ideaImageWrap {
+        min-height: 240px;
+    }
+
+    .featuredCard .ideaCardCopy,
+    .ideaCardCopy {
+        min-height: 130px;
+    }
+
+    .principlesHeading {
+        padding-inline: 1.25rem;
+    }
+
+    .principlesHeading h2 {
+        font-size: clamp(2.8rem, 13vw, 4.5rem);
+    }
+
+    .principlesList {
+        grid-template-columns: 1fr;
+    }
+
+    .principlesList article {
+        min-height: 210px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(30, 51, 28, 0.16);
+    }
+
+    .principlesList article:last-child {
+        border-bottom: 0;
+    }
+
+    .closingSection {
+        min-height: 320px;
+    }
+
+    .closingSection p {
+        font-size: clamp(2.8rem, 13vw, 4.5rem);
     }
 }

@@ -403,120 +403,109 @@ export default function HomePage({ ideasEmpty, pageTitle }) {
         loadIdeas();
     }, []);
 
-    const featuredIdea = ideas[0] || null;
-    const featuredImage = featuredIdea ? (images[featuredIdea.id] || '/images/FreeIdeas.svg') : '/images/FreeIdeas.svg';
-    const latestIdeas = ideas.slice(1, 8);
+    const latestIdeas = ideas.slice(0, 6);
 
     return (
         <>
             <Head pageTitle={pageTitle} />
-
             <Nav randomId={randomIdeaId} />
 
-            <div className={`${styles.home} ${themeIsLight ? styles.light : styles.dark}`}>
-                <header className={styles.pageHeader}>
-                    <Banner message={bannerMessage} show={showBanner} />
-                    <section className={`${styles.sloganHeader} ${hasBanner ? styles.sloganWithBanner : ''}`}>
-                        <img src="/images/FreeIdeas.svg" alt="FreeIdeas logo" className={styles.sloganLogo} />
-                        <ColoredSlogan />
-                    </section>
-                </header>
+            <main className={`${styles.home} ${themeIsLight ? styles.light : styles.dark}`}>
+                {hasBanner && <Banner message={bannerMessage} show={showBanner} />}
 
-                <main className={styles.main}>
-                    <section className={styles.heroArt}>
-                        <p className={styles.heroEyebrow}>Why FreeIdeas</p>
-                        <h1 className={styles.heroTitle}>
-                            {selectedSlogan}
+                <section className={styles.heroSection}>
+                    <div className={styles.heroCopy}>
+                        <p className={styles.heroEyebrow}>An open idea library</p>
+                        <h1>
+                            Give every idea
+                            <span> room to become real.</span>
                         </h1>
                         <p className={styles.heroText}>
-                            Publish quickly, discover bold concepts, and let the community push each idea further with feedback, curiosity, and momentum.
+                            Publish what you are imagining, discover what others are building, and turn unfinished thoughts into shared possibilities.
                         </p>
-
                         <div className={styles.heroActions}>
-                            <Link href="/publishAnIdea" className={styles.ctaPrimary} prefetch>Publish your idea</Link>
-                            <Link href="/searchAnIdea" className={styles.ctaSecondary} prefetch>Browse ideas</Link>
-                            <Link href={`/idea/${randomIdeaId || 0}`} className={styles.ctaGhost} prefetch>Open random idea</Link>
+                            <Link href="/publishAnIdea" className={styles.primaryAction} prefetch>
+                                Publish an idea
+                            </Link>
+                            <Link href="/searchAnIdea" className={styles.secondaryAction} prefetch>
+                                Browse the library
+                            </Link>
                         </div>
-                    </section>
+                    </div>
 
-                    <section className={styles.latestSection}>
-                        <div className={styles.latestHead}>
-                            <h2 className={styles.latestTitle}>Latest ideas published</h2>
-                            <p className={styles.latestSubtitle}>Fresh concepts from the community, highlighted in real time and ready to explore.</p>
-                        </div>
+                    <div className={styles.heroStatement}>
+                        <span className={styles.statementIndex}>01</span>
+                        <p>Ideas stay free<br />when people see them.</p>
+                        <Link href={`/idea/${randomIdeaId || 0}`} prefetch>
+                            Explore a random idea
+                        </Link>
+                    </div>
+                </section>
 
-                        <div className={styles.latestLayout}>
-                            <FeaturedIdeasCarousel allIdeas={ideas} images={images} />
-                        </div>
-                    </section>
+                <section className={styles.ideasSection}>
+                    <div className={styles.sectionHeading}>
+                        <p>Recently published</p>
+                        <h2>Fresh thinking from the community.</h2>
+                        <Link href="/searchAnIdea" prefetch>View all ideas</Link>
+                    </div>
 
-                    <section className={styles.whyPublishSection}>
-                        <div className={styles.whyPublishHead}>
-                            <h2 className={styles.whyPublishTitle}>Why Publish on FreeIdeas</h2>
-                            <p className={styles.whyPublishSubtitle}>Everything you need to share ideas and grow them with a community that cares.</p>
-                        </div>
+                    <div className={styles.ideaGrid}>
+                        {latestIdeas.map((idea, index) => (
+                            <Link
+                                href={`/idea/${idea.id || 0}`}
+                                className={`${styles.ideaCard} ${index === 0 ? styles.featuredCard : ''}`}
+                                key={`home-idea-${idea.id}-${index}`}
+                            >
+                                <div className={styles.ideaImageWrap}>
+                                    <img
+                                        src={images[idea.id] || '/images/FreeIdeas.svg'}
+                                        alt=""
+                                        className={styles.ideaImage}
+                                    />
+                                    <span>{String(index + 1).padStart(2, '0')}</span>
+                                </div>
+                                <div className={styles.ideaCardCopy}>
+                                    <p>Latest idea</p>
+                                    <h3>{idea.title || 'Untitled idea'}</h3>
+                                    <span>by {idea.author || 'Unknown author'}</span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
 
-                        <div className={styles.featureGrid}>
-                            <div className={styles.featureCard}>
-                                <div className={styles.featureIcon}>🚀</div>
-                                <h3 className={styles.featureTitle}>Instant Visibility</h3>
-                                <p className={styles.featureText}>Every idea gets the same stage. Newest published. Most viewed. Always fair.</p>
-                            </div>
+                <section className={styles.principlesSection}>
+                    <div className={styles.principlesHeading}>
+                        <p>Why FreeIdeas</p>
+                        <h2>A simpler way to share, discover and develop ideas.</h2>
+                    </div>
 
-                            <div className={styles.featureCard}>
-                                <div className={styles.featureIcon}>💬</div>
-                                <h3 className={styles.featureTitle}>Constructive Feedback</h3>
-                                <p className={styles.featureText}>Community comments help you refine. Nested replies keep discussions organized and deep.</p>
-                            </div>
+                    <div className={styles.principlesList}>
+                        <article>
+                            <span>01</span>
+                            <h3>Open by default</h3>
+                            <p>Every idea deserves an equal place in the public conversation.</p>
+                        </article>
+                        <article>
+                            <span>02</span>
+                            <h3>Built for feedback</h3>
+                            <p>Comments and discussions help rough concepts become useful ones.</p>
+                        </article>
+                        <article>
+                            <span>03</span>
+                            <h3>Made to be shared</h3>
+                            <p>Choose a license and let the community explore your work.</p>
+                        </article>
+                    </div>
+                </section>
 
-                            <div className={styles.featureCard}>
-                                <div className={styles.featureIcon}>🔓</div>
-                                <h3 className={styles.featureTitle}>Complete Freedom</h3>
-                                <p className={styles.featureText}>No gatekeeping. No filters. Publish your rough draft and watch it evolve in real time.</p>
-                            </div>
-
-                            <div className={styles.featureCard}>
-                                <div className={styles.featureIcon}>🛡️</div>
-                                <h3 className={styles.featureTitle}>You Control Everything</h3>
-                                <p className={styles.featureText}>Choose your license. Decide if your profile is public or private. Own your content.</p>
-                            </div>
-
-                            <div className={styles.featureCard}>
-                                <div className={styles.featureIcon}>⚡</div>
-                                <h3 className={styles.featureTitle}>Build a Community</h3>
-                                <p className={styles.featureText}>Follow creators. Get notified of new ideas. Collaborate on concepts that matter.</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className={styles.manifestoSection}>
-                        <h2 className={styles.manifestoTitle}>Manifesto</h2>
-                        <div className={styles.manifestoTicker}>
-                            <div className={styles.manifestoTickerInner}>
-                                <ul className={styles.manifestoTrack}>
-                                    {MANIFESTO_QUOTES.map((quote, index) => (
-                                        <li key={`manifesto-quote-${index}`} className={styles.quoteCard}>{quote}</li>
-                                    ))}
-                                </ul>
-
-                                <ul className={styles.manifestoTrack} aria-hidden="true">
-                                    {MANIFESTO_QUOTES.map((quote, index) => (
-                                        <li key={`manifesto-quote-clone-${index}`} className={styles.quoteCard}>{quote}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className={styles.finalCta}>
-                        <p className={styles.finalText}>One clear idea can start a movement.</p>
-                        <div className={styles.heroActions}>
-                            <Link href="/publishAnIdea" className={styles.ctaPrimary} prefetch>Start publishing</Link>
-                            <Link href="/about" className={styles.ctaGhost} prefetch>About FreeIdeas</Link>
-                        </div>
-                    </section>
-                </main>
-            </div>
+                <section className={styles.closingSection}>
+                    <p>One thought can be the beginning of something shared.</p>
+                    <Link href="/publishAnIdea" className={styles.primaryAction} prefetch>
+                        Start publishing
+                    </Link>
+                </section>
+            </main>
 
             <Footer />
         </>
