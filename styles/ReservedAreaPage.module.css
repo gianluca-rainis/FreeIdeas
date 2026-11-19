@@ -302,6 +302,41 @@
     justify-self: center;
 }
 
+:global(#reservedAreaMain) {
+    background-color: #111111 !important;
+    color: #f2f2f2 !important;
+}
+
+:global(.reservedLoginPanel) {
+    display: block !important;
+    grid-template-columns: none !important;
+    background-color: #1a1a1a !important;
+    color: #f2f2f2 !important;
+}
+
+:global(.reservedLoginHeader) {
+    min-height: 0 !important;
+    background-color: #1a1a1a !important;
+    color: #f2f2f2 !important;
+    border-bottom: 1px solid #3c3c3c;
+}
+
+:global(#loginReservedAreaForm) {
+    min-height: 0 !important;
+    background-color: #1a1a1a !important;
+    color: #f2f2f2 !important;
+}
+
+:global(.reservedLoginPanel ul),
+:global(.reservedLoginPanel ul li) {
+    background-color: #1a1a1a !important;
+    color: #f2f2f2 !important;
+}
+
+:global(.reservedLoginPanel ul li) {
+    border: 1px solid #3c3c3c !important;
+}
+
 :global(#saveAccountInfoAdmin),
 :global(#cancelAccountInfoAdmin),
 :global(#saveNotificationInfoAdmin),

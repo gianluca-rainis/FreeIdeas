@@ -1,5 +1,5 @@
 import styles from '@/styles/UnifiedPages.module.css'
-import '@/styles/AuthPages.module.css';
+import authStyles from '@/styles/AuthPages.module.css';
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
 import React, { useEffect, useRef } from 'react'
@@ -186,28 +186,48 @@ export default function LoginPage({pageTitle}) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main id="loginMain" className={styles.scope}>
-                <section className="authCard">
-                    <p className="authEyebrow">Welcome back</p>
-                    <h1>Sign in to FreeIdeas</h1>
+            <main id="loginMain" className={`${styles.scope} ${authStyles.authPage}`}>
+                <section className={authStyles.authCard}>
+                    <div className={authStyles.authIntro}>
+                        <span className={authStyles.authKicker}>FreeIdeas / Community</span>
+                        <h1>Ideas worth sharing.</h1>
+                        <p>Welcome back. Sign in to keep exploring, saving and sharing ideas with the community.</p>
+                        <div className={authStyles.authAccent} aria-hidden="true">+</div>
+                    </div>
+
+                    <div className={authStyles.authFormPanel}>
+                        <p className={authStyles.authEyebrow}>Welcome back</p>
+                        <h2>Sign in to FreeIdeas</h2>
                     
-                    <form action="/api/login" method="POST" ref={formRef} noValidate>
-                        <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength={255} id="emailLoginPage" required />
-                        <input type="password" autoComplete="current-password" placeholder="Password" name="password" id="passwordFormInputLoginPage" required />
+                        <form className={authStyles.authForm} action="/api/login" method="POST" ref={formRef} noValidate>
+                            <div className={authStyles.authFields}>
+                                <label className={authStyles.authField}>
+                                    <span>Email address</span>
+                                    <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="you@example.com" name="email" maxLength={255} id="emailLoginPage" required />
+                                </label>
+
+                                <label className={authStyles.authField}>
+                                    <span>Password</span>
+                                    <input type="password" autoComplete="current-password" placeholder="Enter your password" name="password" id="passwordFormInputLoginPage" required />
+                                </label>
+                            </div>
                     
-                        <button type="button" className="toggle-password-visibility-ext">
+                            <button type="button" className={`${authStyles.passwordToggle} toggle-password-visibility-ext`} aria-label="Show password">
                             <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
                                 <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
                             </svg>
-                        </button>
+                            </button>
 
-                        <p><a id="forgotPasswordLoginPage">Forgot your password?</a></p>
+                            <div className={authStyles.authMeta}>
+                                <a id="forgotPasswordLoginPage">Forgot your password?</a>
+                            </div>
 
-                        <button type="submit" id="signInLoginPageButton">Sign In</button>
-                    </form>
+                            <button type="submit" id="signInLoginPageButton" className={authStyles.authPrimaryButton}>Sign In</button>
+                        </form>
 
-                    <p>Don't have an account? <a href="./createAccount">Register!</a></p>
+                        <p className={authStyles.authFooter}>Don't have an account? <a href="/createAccount">Create one</a></p>
+                    </div>
                 </section>
             </main>
 

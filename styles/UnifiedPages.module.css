@@ -1,6 +1,11 @@
 .scope {
     --page-scope: 1;
 }
+
+.reservedAreaScope {
+    background: #111111;
+    color: #f2f2f2;
+}
 /* Page-specific styles for this route family. */
 /* Unified layouts for remaining page families */
 .scope[class~="footerpage"] {
@@ -453,24 +458,25 @@
 .scope [class~="reservedLoginPanel"] {
     max-width: 900px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(260px, 0.8fr) minmax(360px, 1.2fr);
+    display: block;
     gap: 0;
     border: 1px solid var(--fi-border);
     border-radius: 8px;
     overflow: hidden;
-    background: var(--fi-surface);
+    background: #1a1a1a;
+    color: #f2f2f2;
     box-shadow: var(--fi-shadow);
 }
 
-.scope [class~="reservedLoginHeader"] {
-    min-height: 460px;
+.reservedAreaScope [class~="reservedLoginHeader"] {
+    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 2rem;
-    background: #d8bd4f;
-    color: #1d301b;
+    background: #1a1a1a;
+    color: #f2f2f2;
+    border-bottom: 1px solid #3c3c3c;
 }
 
 .scope [class~="reservedLoginHeader"] p {
@@ -485,18 +491,20 @@
     margin: auto 0 0;
 }
 
-.scope [id="loginReservedAreaForm"] {
+.reservedAreaScope [id="loginReservedAreaForm"] {
     width: 100%;
-    min-height: 460px;
+    min-height: 0;
     display: flex;
     align-items: center;
     margin: 0;
     padding: 2.5rem;
     border: 0;
+    background: #1a1a1a;
+    color: #f2f2f2;
     box-shadow: none;
 }
 
-.scope[id="reservedAreaMain"] [id="loginReservedAreaForm"] ul {
+.reservedAreaScope [id="loginReservedAreaForm"] ul {
     width: 100%;
 }
 
@@ -520,7 +528,7 @@
     }
 
     .scope [class~="reservedLoginPanel"] {
-        grid-template-columns: 1fr;
+        display: block;
     }
 
     .scope [class~="reservedLoginHeader"] {

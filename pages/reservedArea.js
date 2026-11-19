@@ -1,8 +1,8 @@
-import styles from '@/styles/UnifiedPages.module.css'
 import '@/styles/ReservedAreaPage.module.css';
 import '@/styles/ReservedAreaModern.module.css';
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
+import styles from '@/styles/UnifiedPages.module.css'
 import React, { useEffect, useState } from 'react'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
@@ -193,7 +193,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                 :null
             }
 
-            <main id="reservedAreaMain" className={`${styles.scope} ${adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}`}>
+            <main id="reservedAreaMain" className={`${styles.scope} ${styles.reservedAreaScope} ${adminSessionData ? 'adminWorkspace' : 'reservedLoginWorkspace'}`}>
                 {
                     !adminSessionData?
                     <div className="reservedLoginPanel">
@@ -209,7 +209,7 @@ export default function ReservedAreaPage({ adminSessionData, pageTitle }) {
                         </div>
 
                         <form action="/api/reservedAreaLogin" method="POST" id="loginReservedAreaForm">
-                            <ul style={{width: "auto"}}>
+                            <ul style={{width: "100%"}}>
                                 <li>
                                     <label htmlFor="usernameReservedArea">Username:</label>
                                     <input type="text" name="username" id="usernameReservedArea" autoComplete="username" required />

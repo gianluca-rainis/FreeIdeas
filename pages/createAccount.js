@@ -1,5 +1,5 @@
 import styles from '@/styles/UnifiedPages.module.css'
-import '@/styles/AuthPages.module.css';
+import authStyles from '@/styles/AuthPages.module.css';
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
 import React, { useEffect, useRef, useState } from 'react'
@@ -195,21 +195,46 @@ export default function CreateAccountPage({pageTitle}) {
 
             <Nav randomId={randomIdeaId} />
 
-            <main id="loginMain" className={styles.scope}>
-                <section className="authCard">
-                    <p className="authEyebrow">Join the community</p>
-                    <h1>Create your account</h1>
+            <main id="loginMain" className={`${styles.scope} ${authStyles.authPage}`}>
+                <section className={authStyles.authCard}>
+                    <div className={authStyles.authIntro}>
+                        <span className={authStyles.authKicker}>FreeIdeas / Community</span>
+                        <h1>Make room for new ideas.</h1>
+                        <p>Create an account to publish your ideas, follow the conversation and build something meaningful with others.</p>
+                        <div className={authStyles.authAccent} aria-hidden="true">+</div>
+                    </div>
+
+                    <div className={authStyles.authFormPanel}>
+                        <p className={authStyles.authEyebrow}>Join the community</p>
+                        <h2>Create your account</h2>
                     
-                    <form action="/api/signUp" method="POST" ref={formRef} noValidate>
+                    <form className={`${authStyles.authForm} ${authStyles.signupForm}`} action="/api/signUp" method="POST" ref={formRef} noValidate>
                         {!showOtpStep ? (
                             <React.Fragment key="signup-step">
-                                <input type="text" spellCheck="false" autoComplete="given-name" placeholder="First Name" name="firstName" maxLength={255} defaultValue={newAccountData.firstname} required />
-                                <input type="text" spellCheck="false" autoComplete="family-name" placeholder="Last Name" name="lastName" maxLength={255} defaultValue={newAccountData.lastname} required />
-                                <input type="text" spellCheck="false" autoComplete="username" placeholder="Username" name="userName" maxLength={255} defaultValue={newAccountData.username} required />
-                                <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="Email" name="email" maxLength={255} defaultValue={newAccountData.email} required />
-                                <input type="password" autoComplete="current-password" placeholder="Password" name="password" id="passwordFormInputLoginPage" defaultValue={newAccountData.password} required />
+                                <div className={authStyles.authFields}>
+                                    <label className={authStyles.authField}>
+                                        <span>First name</span>
+                                        <input type="text" spellCheck="false" autoComplete="given-name" placeholder="Your first name" name="firstName" maxLength={255} defaultValue={newAccountData.firstname} required />
+                                    </label>
+                                    <label className={authStyles.authField}>
+                                        <span>Last name</span>
+                                        <input type="text" spellCheck="false" autoComplete="family-name" placeholder="Your last name" name="lastName" maxLength={255} defaultValue={newAccountData.lastname} required />
+                                    </label>
+                                    <label className={authStyles.authField}>
+                                        <span>Username</span>
+                                        <input type="text" spellCheck="false" autoComplete="username" placeholder="Choose a username" name="userName" maxLength={255} defaultValue={newAccountData.username} required />
+                                    </label>
+                                    <label className={authStyles.authField}>
+                                        <span>Email address</span>
+                                        <input type="email" autoComplete="email" spellCheck="false" autoCapitalize="off" placeholder="you@example.com" name="email" maxLength={255} defaultValue={newAccountData.email} required />
+                                    </label>
+                                    <label className={`${authStyles.authField} ${authStyles.authFieldFull}`}>
+                                        <span>Password</span>
+                                        <input type="password" autoComplete="new-password" placeholder="Create a secure password" name="password" id="passwordFormInputLoginPage" defaultValue={newAccountData.password} required />
+                                    </label>
+                                </div>
                             
-                                <button type="button" className="toggle-password-visibility-ext">
+                                <button type="button" className={`${authStyles.passwordToggle} toggle-password-visibility-ext`} aria-label="Show password">
                                     <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10.5 6C10.5 7.38071 9.38071 8.5 8 8.5C6.61929 8.5 5.5 7.38071 5.5 6C5.5 4.61929 6.61929 3.5 8 3.5C9.38071 3.5 10.5 4.61929 10.5 6Z" fill="black"></path>
                                         <path d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C9.933 9.5 11.5 7.933 11.5 6C11.5 4.067 9.933 2.5 8 2.5C6.067 2.5 4.5 4.067 4.5 6C4.5 7.933 6.067 9.5 8 9.5Z" fill="black"></path>
@@ -218,21 +243,25 @@ export default function CreateAccountPage({pageTitle}) {
                             </React.Fragment>
                         ) : (
                             <React.Fragment key="otp-step">
-                                <p>We've sent a 6-digit OTP to the email address you provided. If you don't see the email, check your spam folder.</p>
+                                <p className={authStyles.authStepNote}>We've sent a 6-digit OTP to the email address you provided. If you don't see the email, check your spam folder.</p>
 
-                                <input type="password" spellCheck="false" autoComplete="one-time-code" placeholder="Email OTP" name="emailOTP" maxLength={6} minLength={6} required />
+                                <label className={authStyles.authField}>
+                                    <span>Email verification code</span>
+                                    <input type="password" spellCheck="false" autoComplete="one-time-code" placeholder="Enter your 6-digit code" name="emailOTP" maxLength={6} minLength={6} required />
+                                </label>
                             </React.Fragment>
                         )}
 
-                        <p>By singing up you agree to our <a href="./termsOfUse">Terms of Use</a> and <a href="./privacyPolicy">Privacy Policy</a></p>
+                        <p className={authStyles.authLegal}>By signing up you agree to our <a href="/termsOfUse">Terms of Use</a> and <a href="/privacyPolicy">Privacy Policy</a>.</p>
 
-                        <button type="submit" id="signInLoginPageButton">Create Account</button>
+                        <button type="submit" id="signInLoginPageButton" className={authStyles.authPrimaryButton}>Create Account</button>
                         {showOtpStep && (
-                            <button type="button" id="signInLoginPageCancelButton" onClick={() => setShowOtpStep(false)}>Cancel</button>
+                            <button type="button" id="signInLoginPageCancelButton" className={authStyles.authSecondaryButton} onClick={() => setShowOtpStep(false)}>Cancel</button>
                         )}
                     </form>
 
-                    <p>Already have an account? <a href="./login">Sign In!</a></p>
+                    <p className={authStyles.authFooter}>Already have an account? <a href="/login">Sign in</a></p>
+                    </div>
                 </section>
             </main>
 
