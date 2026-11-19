@@ -17,6 +17,10 @@ async function handler(req, res) {
             []
         );
 
+        if (randomId.length === 0) {
+            return res.status(404).json({ success: false, error: 'No ideas found' });
+        }
+
         const data = {};
         data['id'] = randomId[0].id;
 

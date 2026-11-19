@@ -8,6 +8,7 @@ import { useModals } from '../../hooks/useModals'
 import { AlertModal, ConfirmModal, PromptModal } from '../../components/Modal'
 import { fetchWithTimeout } from '../../utils/fetchWithTimeout'
 import { apiCall, getBaseUrl } from '../../utils/apiConfig'
+import { isValidHttpUrl } from '../../lib/security'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -33,7 +34,8 @@ export async function getServerSideProps(context) {
             method: "POST",
             headers: {
                 ...(cookieHeader ? { cookie: cookieHeader } : {}),
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                origin: baseUrl
             },
             body
         }, 2000);
@@ -86,13 +88,13 @@ function PrintAdditionalInfo({ ideaData }) {
 }
 
 function PrintDownloadLink({ ideaData }) {
-    if (ideaData?.['idea']?.[0]?.downloadlink) {
+    if (ideaData?.['idea']?.[0]?.downloadlink && isValidHttpUrl(ideaData['idea'][0].downloadlink)) {
         const link = ideaData['idea'][0].downloadlink;
 
         return (
             <section id='downloadSection'>
                 <h3 id='download'>External Link</h3>
-                <a id='buttonlink' href={link}><button id='downloadButton'>{link}</button></a>
+                <a id='buttonlink' href={link} rel="noopener noreferrer nofollow ugc"><button id='downloadButton'>{link}</button></a>
             </section>
         );
     }

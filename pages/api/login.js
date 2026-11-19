@@ -1,17 +1,16 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import bcrypt from 'bcrypt';
+import { allowRequest, getClientIp, validateEmail } from '../../lib/security';
+
+const dummyPasswordHash = bcrypt.hash('FreeIdeas timing padding only', 12);
 
 export const config = {
     api: {
         bodyParser: false, // Disable parsing
     },
 };
-
-function getInput(data) {
-    return String(data).trim();
-}
 
 function getImage(data) {
     return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
@@ -23,34 +22,41 @@ export default async function handler(req, res) {
     }
 
     try {
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
-        const email = getInput(fields.email?.[0] || '');
-        const password = getInput(fields.password?.[0] || '');
+        const email = fields.email?.[0] || '';
+        const password = fields.password?.[0] || '';
 
         if (!email || !password) {
             return res.status(400).json({ success: false, error: 'Email and password required' });
         }
 
-        const sanitizedEmail = getInput(email);
+        if (!validateEmail(email)) {
+            return res.status(401).json({ success: false, error: 'Invalid email or password' });
+        }
+
+        const clientIp = getClientIp(req);
+
+        if (!allowRequest(`login-ip:${clientIp}`, 10, 15 * 60 * 1000)
+            || !allowRequest(`login-email:${email.toLowerCase()}`, 8, 15 * 60 * 1000)) {
+            return res.status(429).json({ success: false, error: 'Too many requests' });
+        }
 
         // Check if the account exists
         const accounts = await query(
             'SELECT * FROM accounts WHERE email=?;',
-            [sanitizedEmail]
+            [email]
         );
 
         if (accounts.length === 0) {
-            return res.status(400).json({ success: false, error: 'Account not found' });
+            await bcrypt.compare(password, await dummyPasswordHash);
+            return res.status(401).json({ success: false, error: 'Invalid email or password' });
         }
 
         const account = accounts[0];
         
         // Check the password
         let passwordMatch = false;
-        
-        const bcrypt = require('bcrypt');
 
         // Convert $2y$ (PHP) to $2b$ (Node.js bcrypt)
         const hashToCompare = account.password.replace(/^\$2y\$/, '$2b$');
@@ -58,7 +64,7 @@ export default async function handler(req, res) {
         passwordMatch = await bcrypt.compare(password, hashToCompare);
 
         if (!passwordMatch) {
-            return res.status(401).json({ success: false, error: 'Wrong password' });
+            return res.status(401).json({ success: false, error: 'Invalid email or password' });
         }
 
         // Load notifications
@@ -83,11 +89,16 @@ export default async function handler(req, res) {
         };
 
         // Save session
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
+
+        for (const key of Object.keys(session)) {
+            delete session[key];
+        }
 
         session.account = {
             id: accountData.id,
-            username: accountData.username
+            username: accountData.username,
+            sessionVersion: Number(account.sessionVersion || 0)
         };
 
         await session.save();

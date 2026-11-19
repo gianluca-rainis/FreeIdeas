@@ -29,7 +29,10 @@ export async function getServerSideProps(context) {
 
         const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
             method: "POST",
-            headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+            headers: {
+                ...(cookieHeader ? { cookie: cookieHeader } : {}),
+                origin: baseUrl
+            },
             body: formData
         }, 2000);
 

@@ -1,8 +1,9 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
-import fs from 'fs/promises';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import { cleanupUploadFiles, convertImageUpload } from '../../lib/uploadValidation';
+import bcrypt from 'bcrypt';
+import { isPositiveIntegerId, validateEmail, validateUsername } from '../../lib/security';
 
 export const config = {
     api: {
@@ -22,61 +23,95 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-async function getConvertedImage(file) {
-    try {
-        const mimeType = file.mimetype;
-
-        if (!mimeType) {
-            return null;
-        }
-
-        const buffer = await fs.readFile(file.filepath);
-
-        return `data:${mimeType};base64,${buffer.toString('base64')}`;
-    } catch (error) {
-        console.error('Error converting image:', error);
-        return null;
-    }
-}
-
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
+    let uploadedFiles = [];
+
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
         if (!session || (!session.account && !session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
-        const form = formidable();
-        const [fields, files] = await form.parse(req);
+        const [fields, files] = await parseForm(req, { allowFiles: true });
+        uploadedFiles = Object.values(files);
 
-        const id = getInput(fields.id?.[0] || session.account?.id || '');
+        const requestedId = getInput(fields.id?.[0] || '');
+        const id = session.administrator ? requestedId : String(session.account.id);
         const firstName = getInput(fields.name?.[0] || '');
         const lastName = getInput(fields.surname?.[0] || '');
         const description = getInput(fields.description?.[0] || '');
         const username = getInput(fields.username?.[0] || '');
         const email = getInput(fields.email?.[0] || '');
-        const isPublic = Number(getInput(fields.public?.[0] || 0));
+        const currentPassword = fields.currentPassword?.[0] || '';
+        const publicValue = getInput(fields.public?.[0] || '');
+        const isPublic = Number(publicValue);
         let image = null;
 
+        if (!isPositiveIntegerId(id)
+            || !validateUsername(username)
+            || !validateEmail(email)
+            || firstName.length > 50
+            || lastName.length > 50
+            || description.length > 1000
+            || !['0', '1'].includes(publicValue)) {
+            return res.status(400).json({ success: false, error: 'Invalid account data' });
+        }
+
+        const currentAccount = await query(
+            'SELECT id, password, email FROM accounts WHERE id=?;',
+            [id]
+        );
+
+        if (currentAccount.length === 0) {
+            return res.status(404).json({ success: false, error: 'Account not found' });
+        }
+
+        const emailChanged = email !== currentAccount[0].email;
+
+        if (!session.administrator && emailChanged) {
+            if (!currentPassword || !(await bcrypt.compare(currentPassword, currentAccount[0].password))) {
+                return res.status(401).json({ success: false, error: 'Current password is required to change email' });
+            }
+        }
+
+        const duplicateUsername = await query(
+            'SELECT id FROM accounts WHERE username=? AND id<>?;',
+            [username, id]
+        );
+        const duplicateEmail = await query(
+            'SELECT id FROM accounts WHERE email=? AND id<>?;',
+            [email, id]
+        );
+
+        if (duplicateUsername.length > 0 || duplicateEmail.length > 0) {
+            return res.status(409).json({ success: false, error: 'Username or email is already in use' });
+        }
+
         if (files.image?.[0]) {
-            image = await getConvertedImage(files.image[0]);
+            image = await convertImageUpload(files.image[0]);
+
+            if (!image) {
+                return res.status(400).json({ success: false, error: 'Invalid profile image' });
+            }
         }
 
         // Update the data (update image only if given)
+        const sessionVersionUpdate = emailChanged ? ', sessionVersion=sessionVersion+1' : '';
+
         if (image) {
             await query(
-                "UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=?, email=?, public=? WHERE id=?;",
+                `UPDATE accounts SET name=?, surname=?, username=?, userimage=?, description=?, email=?, public=?${sessionVersionUpdate} WHERE id=?;`,
                 [firstName, lastName, username, image, description, email, isPublic, id]
             );
         }
         else {
             await query(
-                "UPDATE accounts SET name=?, surname=?, username=?, description=?, email=?, public=? WHERE id=?;",
+                `UPDATE accounts SET name=?, surname=?, username=?, description=?, email=?, public=?${sessionVersionUpdate} WHERE id=?;`,
                 [firstName, lastName, username, description, email, isPublic, id]
             );
         }
@@ -161,14 +196,15 @@ export default async function handler(req, res) {
 
         if (session.account) {
             const updatedAccount = await query(
-                "SELECT * FROM accounts WHERE id=?;",
+                "SELECT id, username, sessionVersion FROM accounts WHERE id=?;",
                 [id]
             );
 
             if (updatedAccount && updatedAccount[0]) {
                 session.account = {
                     id: updatedAccount[0].id,
-                    username: updatedAccount[0].username
+                    username: updatedAccount[0].username,
+                    sessionVersion: Number(updatedAccount[0].sessionVersion || 0)
                 };
 
                 await session.save();
@@ -179,5 +215,9 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
+    } finally {
+        await cleanupUploadFiles(uploadedFiles).catch(error => {
+            console.error('Failed to clean up uploaded files:', error);
+        });
     }
 }

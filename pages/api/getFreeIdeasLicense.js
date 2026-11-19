@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import formidable from 'formidable';
+import { parseForm } from '../../lib/formParser';
 
 export const config = {
     api: {
@@ -18,14 +18,17 @@ export default async function handler(req, res) {
     }
 
     try {
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const title = getInput(fields.title?.[0]) || '';
         const author = getInput(fields.author?.[0]) || '';
 
         if (!title || !author) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
+        }
+
+        if (title.length > 200 || author.length > 50) {
+            return res.status(400).json({ success: false, error: 'Invalid license data' });
         }
 
         const replacements = {
@@ -40,7 +43,7 @@ export default async function handler(req, res) {
 
         // Replace
         Object.keys(replacements).forEach(key => {
-            licenseContent = licenseContent.replace(new RegExp(key, 'g'), replacements[key]);
+            licenseContent = licenseContent.replaceAll(key, () => replacements[key]);
         });
 
         // Convert in base 64

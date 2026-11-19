@@ -1,5 +1,6 @@
 import { query } from '../../lib/db_connection';
-import formidable from 'formidable';
+import { parseForm } from '../../lib/formParser';
+import { escapeLikeValue } from '../../lib/security';
 
 export const config = {
     api: {
@@ -21,8 +22,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const search = getInput(fields.search?.[0] || '');
         const type = getInput(fields.type?.[0] || '');
@@ -39,9 +39,9 @@ export default async function handler(req, res) {
         let output = {};
 
         if (search != "" && type == "" && creativity == "" && status == "" && order == "") {
-            sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ?) AND accounts.public=1;";
+            sql = "SELECT accounts.id, accounts.name, accounts.surname, accounts.username, accounts.userimage FROM accounts WHERE (accounts.username LIKE ? ESCAPE '\\' OR accounts.name LIKE ? ESCAPE '\\' OR accounts.surname LIKE ? ESCAPE '\\') AND accounts.public=1;";
             typeOfQuery = "account";
-            searchParam = "%" + search + "%";
+            searchParam = "%" + escapeLikeValue(search) + "%";
 
             result = await query(
                 sql,
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
             else {
                 if (order == "Most voted") {
                     sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username, idealabels.likes FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
-                    sqlEnd = " ORDER BY idealabels.likes;";
+                    sqlEnd = " ORDER BY idealabels.likes DESC;";
                 }
                 else if (order == "Newest") {
                     sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid LEFT JOIN idealabels ON idealabels.ideaid=ideas.id";
@@ -119,10 +119,10 @@ export default async function handler(req, res) {
                     sql += " AND ";
                 }
 
-                sql += "(accounts.username LIKE ? OR ideas.title LIKE ?)";
+                sql += "(accounts.username LIKE ? ESCAPE '\\' OR ideas.title LIKE ? ESCAPE '\\')";
                 
-                params.push("%" + search + "%");
-                params.push("%" + search + "%");
+                params.push("%" + escapeLikeValue(search) + "%");
+                params.push("%" + escapeLikeValue(search) + "%");
             }
 
             sql += sqlEnd;
@@ -140,7 +140,7 @@ export default async function handler(req, res) {
             }
             else {
                 if (order == "Most voted") {
-                    sql = "SELECT accounts.username, recentIdeas.*, idealabels.likes FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id JOIN idealabels ON idealabels.ideaid=recentIdeas.id ORDER BY idealabels.likes;";
+                    sql = "SELECT accounts.username, recentIdeas.*, idealabels.likes FROM (SELECT id, authorid, title, ideaimage FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id JOIN idealabels ON idealabels.ideaid=recentIdeas.id ORDER BY idealabels.likes DESC;";
                 }
                 else if (order == "Newest") {
                     sql = "SELECT accounts.username, recentIdeas.* FROM (SELECT id, authorid, title, ideaimage, data FROM ideas ORDER BY id DESC LIMIT 20) AS recentIdeas INNER JOIN accounts ON recentIdeas.authorid=accounts.id ORDER BY recentIdeas.data DESC;";
@@ -170,10 +170,10 @@ export default async function handler(req, res) {
             });
 
             if (search != "" && type == "" && creativity == "" && status == "" && order == "") {
-                sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.title LIKE ?;";
+                sql = "SELECT ideas.id, ideas.title, ideas.ideaimage, ideas.data, accounts.username FROM ideas JOIN accounts ON accounts.id=ideas.authorid WHERE ideas.title LIKE ? ESCAPE '\\';";
                 typeOfQuery = "ideas";
 
-                searchParam = "%" + search + "%";
+                searchParam = "%" + escapeLikeValue(search) + "%";
 
                 result = await query(
                     sql,

@@ -1,7 +1,8 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import { timingSafeEqual } from 'node:crypto';
+import { validateEmail, validatePassword, validateUsername } from '../../lib/security';
 
 export const config = {
     api: {
@@ -31,22 +32,26 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
 
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const firstName = getInput(fields.firstName?.[0] || '');
         const lastName = getInput(fields.lastName?.[0] || '');
         const username = getInput(fields.userName?.[0] || '');
         const email = getInput(fields.email?.[0] || '');
-        const password = getInput(fields.password?.[0] || '');
+        const password = fields.password?.[0] || '';
         const otp = getInput(fields.otp?.[0] || '');
 
         if (!firstName || !lastName || !email || !password || !username || !otp) {
             return res.status(400).json({ success: false, error: 'Not all the required fields are filled.' });
         }
         
+        if (!validateEmail(email) || !validateUsername(username) || !validatePassword(password)
+            || firstName.length > 50 || lastName.length > 50) {
+            return res.status(400).json({ success: false, error: 'Invalid account data' });
+        }
+
         const bcrypt = require('bcrypt');
 
         // Check if the account exists
@@ -59,15 +64,31 @@ export default async function handler(req, res) {
             return res.status(401).json({ success: false, error: 'Already exist an account with the same email or the same username.' });
         }
         
-        if (!(session.otp && session.otp.email == email && session.otp.code == otp)) {
+        const otpData = session.otp;
+        const otpMatches = otpData
+            && otpData.email === email
+            && otpData.expiresAt > Date.now()
+            && otpData.attempts < 5
+            && /^\d{6}$/.test(otp)
+            && /^\d{6}$/.test(otpData.code)
+            && timingSafeEqual(Buffer.from(otp), Buffer.from(otpData.code));
+
+        if (!otpMatches) {
+            if (otpData?.email === email) {
+                otpData.attempts++;
+
+                if (otpData.attempts >= 5 || otpData.expiresAt <= Date.now()) {
+                    session.otp = null;
+                }
+
+                await session.save();
+            }
+
             return res.status(401).json({ success: false, error: 'The otp code is wrong. Please retry the create account process.' });
-        }
-        else {
-            session.otp = null;
         }
 
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 12);
 
         // Create the account
         const newAccount = await query(
@@ -136,9 +157,14 @@ export default async function handler(req, res) {
         };
 
         // Save session
+        for (const key of Object.keys(session)) {
+            delete session[key];
+        }
+
         session.account = {
             id: accountData.id,
-            username: accountData.username
+            username: accountData.username,
+            sessionVersion: Number(account.sessionVersion || 0)
         };
 
         await session.save();

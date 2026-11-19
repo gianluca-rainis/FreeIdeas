@@ -1,7 +1,6 @@
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
+import { getSession } from '../../lib/session';
 import { query } from '../../lib/db_connection';
-import formidable from 'formidable';
+import { parseForm } from '../../lib/formParser';
 
 export const config = {
     api: {
@@ -23,9 +22,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const session = await getSession(req, res);
+        const [fields] = await parseForm(req);
 
         const id = getInput(fields.id?.[0] || '');
 
@@ -36,6 +34,11 @@ export default async function handler(req, res) {
         let ret = {};
 
         ret['idea'] = await query("SELECT ideas.*, accounts.username AS accountName, accounts.id AS accountId, accounts.public AS accountPublic FROM ideas JOIN accounts ON ideas.authorid=accounts.id WHERE ideas.id=?;", [id]);
+
+        if (ret['idea'].length === 0) {
+            return res.status(404).json({ success: false, error: 'Idea not found' });
+        }
+
         ret['info'] = await query("SELECT * FROM additionalinfo WHERE ideaid=?;", [id]); // Return the info with image
         ret['log'] = await query("SELECT * FROM authorupdates WHERE ideaid=?;", [id]); // Logs
         ret['comment'] = await query("SELECT comments.*, accounts.username, accounts.userimage, accounts.public FROM comments LEFT JOIN accounts ON accounts.id=comments.authorid WHERE comments.ideaid=?;", [id]); // Comments

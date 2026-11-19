@@ -1,7 +1,7 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import { isPositiveIntegerId } from '../../lib/security';
 
 export const config = {
     api: {
@@ -19,71 +19,61 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const ideaid = fields.ideaid?.[0];
         const saved = fields.saved?.[0];
         const dislike = fields.dislike?.[0];
         const liked = fields.liked?.[0];
-        const existRowYet = fields.existRowYet?.[0];
-
-        if (!ideaid || !saved || !dislike || !liked || !existRowYet) {
+        if (!isPositiveIntegerId(ideaid) || !['0', '1'].includes(saved)
+            || !['0', '1'].includes(dislike) || !['0', '1'].includes(liked)) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
         }
 
+        if (liked === '1' && dislike === '1') {
+            return res.status(400).json({ success: false, error: 'An idea cannot be liked and disliked at the same time' });
+        }
+
         if (!session || !session.account) {
-            return res.status(400).json({ success: false, error: 'User not logged in' });
+            return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
-        let oldSaved = 0;
-        let oldDislike = 0;
-        let oldLiked = 0;
-
-        let sql = "";
-
-        if (existRowYet == "1") {
-            const oldAccountIdeaData = await query(
-                'SELECT saved, liked, dislike FROM accountideadata WHERE accountid=? AND ideaid=?;',
-                [session.account.id, ideaid]
-            );
-
-            oldSaved = parseInt(oldAccountIdeaData[0].saved, 10) || 0;
-            oldDislike = parseInt(oldAccountIdeaData[0].dislike, 10) || 0;
-            oldLiked = parseInt(oldAccountIdeaData[0].liked, 10) || 0;
-
-            sql = "UPDATE accountideadata SET saved=?, dislike=?, liked=? WHERE accountid=? AND ideaid=?;";
-        }
-        else {
-            sql = "INSERT INTO accountideadata (saved, dislike, liked, accountid, ideaid) VALUES (?, ?, ?, ?, ?);";
-        }
-
-        await query(
-            sql,
-            [saved, dislike, liked, session.account.id, ideaid]
-        );
-
-        const getIdeaLabels = await query(
-            'SELECT saves, likes, dislike FROM idealabels WHERE ideaid=?;',
+        const idea = await query(
+            'SELECT id FROM ideas WHERE id=?;',
             [ideaid]
         );
-        
-        const currentSaves = parseInt(getIdeaLabels[0].saves, 10) || 0;
-        const currentLikes = parseInt(getIdeaLabels[0].likes, 10) || 0;
-        const currentDislikes = parseInt(getIdeaLabels[0].dislike, 10) || 0;
-        const nextSaved = parseInt(saved, 10) || 0;
-        const nextLiked = parseInt(liked, 10) || 0;
-        const nextDisliked = parseInt(dislike, 10) || 0;
 
-        let secondSaved = Math.max(0, currentSaves + nextSaved - oldSaved);
-        let secondLiked = Math.max(0, currentLikes + nextLiked - oldLiked);
-        let secondDislike = Math.max(0, currentDislikes + nextDisliked - oldDislike);
+        if (idea.length === 0) {
+            return res.status(404).json({ success: false, error: 'Idea not found' });
+        }
+
+        const existingRows = await query(
+            'SELECT accountid FROM accountideadata WHERE accountid=? AND ideaid=? LIMIT 1;',
+            [session.account.id, ideaid]
+        );
+
+        if (existingRows.length > 0) {
+            await query(
+                'UPDATE accountideadata SET saved=?, dislike=?, liked=? WHERE accountid=? AND ideaid=?;',
+                [saved, dislike, liked, session.account.id, ideaid]
+            );
+        }
+        else {
+            await query(
+                'INSERT INTO accountideadata (saved, dislike, liked, accountid, ideaid) VALUES (?, ?, ?, ?, ?);',
+                [saved, dislike, liked, session.account.id, ideaid]
+            );
+        }
 
         await query(
-            "UPDATE idealabels SET saves=?, likes=?, dislike=? WHERE ideaid=?;",
-            [secondSaved, secondLiked, secondDislike, ideaid]
+            `UPDATE idealabels
+            SET saves=(SELECT COUNT(DISTINCT accountid) FROM accountideadata WHERE ideaid=? AND saved=1),
+                likes=(SELECT COUNT(DISTINCT accountid) FROM accountideadata WHERE ideaid=? AND liked=1),
+                dislike=(SELECT COUNT(DISTINCT accountid) FROM accountideadata WHERE ideaid=? AND dislike=1)
+            WHERE ideaid=?;`,
+            [ideaid, ideaid, ideaid, ideaid]
         );
 
         return res.status(200).json({ success: true });

@@ -47,7 +47,10 @@ export async function getServerSideProps(context) {
 
             const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
                 method: "POST",
-                headers: cookieHeader ? { cookie: cookieHeader } : {},
+                headers: {
+                    ...(cookieHeader ? { cookie: cookieHeader } : {}),
+                    origin: baseUrl
+                },
                 body: formData
             }, 1000);
 
@@ -90,6 +93,7 @@ export default function AccountPage({ accountData, pageTitle }) {
         email: accountData?.email || '',
         description: accountData?.description || '',
         public: accountData?.public ?? 1,
+        currentPassword: '',
         imageFile: null
     });
 
@@ -122,7 +126,8 @@ export default function AccountPage({ accountData, pageTitle }) {
                 surname: accountData.surname || '',
                 email: accountData?.email || '',
                 description: accountData.description || '',
-                public: accountData.public ?? 1
+                public: accountData.public ?? 1,
+                currentPassword: ''
             }));
         }
     }, [accountData]);
@@ -183,6 +188,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             email: accountData?.email || '',
             description: accountData.description || '',
             public: accountData.public ?? 1,
+            currentPassword: '',
             imageFile: null
         });
 
@@ -191,7 +197,7 @@ export default function AccountPage({ accountData, pageTitle }) {
 
     function cancelEdit() {
         setEditing(false);
-        setFormValues((prev) => ({ ...prev, imageFile: null }));
+        setFormValues((prev) => ({ ...prev, currentPassword: '', imageFile: null }));
     }
 
     async function saveAccount() {
@@ -205,6 +211,7 @@ export default function AccountPage({ accountData, pageTitle }) {
             data.append('email', formValues.email);
             data.append('description', formValues.description || '');
             data.append('public', formValues.public);
+            data.append('currentPassword', formValues.currentPassword);
 
             if (formValues.imageFile) {
                 data.append('image', formValues.imageFile);
@@ -309,6 +316,7 @@ export default function AccountPage({ accountData, pageTitle }) {
         try {
             const data = new FormData();
             data.append('id', sessionData.id);
+            data.append('currentPassword', formValues.currentPassword);
 
             const resp = await apiCall(`/api/deleteAccount`, {
                 method: 'POST',
@@ -358,6 +366,8 @@ export default function AccountPage({ accountData, pageTitle }) {
                                 <input type="text" id="newuserSurnameAccount" maxLength={255} required value={formValues.surname} onChange={(e) => setFormValues({ ...formValues, surname: e.target.value })} />
                                 <label>Description</label>
                                 <textarea rows="8" cols="25" id="newdescriptionAccount" maxLength={1000} value={formValues.description} onChange={(e) => setFormValues({ ...formValues, description: e.target.value })} />
+                                <label>Current password (required to change email or delete your account)</label>
+                                <input type="password" id="currentPasswordAccount" autoComplete="current-password" value={formValues.currentPassword} onChange={(e) => setFormValues({ ...formValues, currentPassword: e.target.value })} />
                             </div>
                             <div id="dangerAreaAccount">
                                 <label>Danger Area</label>

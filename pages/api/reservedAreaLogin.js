@@ -1,7 +1,10 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession, sessionOptions } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import bcrypt from 'bcrypt';
+import { allowRequest, getClientIp } from '../../lib/security';
+
+const dummyPasswordHash = bcrypt.hash('FreeIdeas admin timing padding only', 12);
 
 export const config = {
     api: {
@@ -19,8 +22,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const username = getInput(fields.username?.[0]) || '';
         const password1 = fields.password1?.[0] || '';
@@ -33,6 +35,14 @@ export default async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Username and 5 passwords required' });
         }
 
+        const clientIp = getClientIp(req);
+
+        if (username.length > 255
+            || !allowRequest(`admin-login-ip:${clientIp}`, 5, 15 * 60 * 1000)
+            || !allowRequest(`admin-login-name:${username.toLowerCase()}`, 5, 15 * 60 * 1000)) {
+            return res.status(429).json({ success: false, error: 'Too many requests' });
+        }
+
         // Check if the account exists
         const accounts = await query(
             'SELECT * FROM reservedareaaccounts WHERE username=?;',
@@ -40,10 +50,18 @@ export default async function handler(req, res) {
         );
 
         if (accounts.length === 0) {
-            return res.status(400).json({ success: false, error: 'Account not found in database' });
+            const unknownHash = await dummyPasswordHash;
+            await Promise.all([
+                bcrypt.compare(password1, unknownHash),
+                bcrypt.compare(password2, unknownHash),
+                bcrypt.compare(password3, unknownHash),
+                bcrypt.compare(password4, unknownHash),
+                bcrypt.compare(password5, unknownHash),
+            ]);
+
+            return res.status(401).json({ success: false, error: 'Invalid username or passwords' });
         }
 
-        const bcrypt = require('bcrypt');
         let foundAccount = false;
         let adminData = null;
 
@@ -58,7 +76,8 @@ export default async function handler(req, res) {
             if (passwordMatch1 && passwordMatch2 && passwordMatch3 && passwordMatch4 && passwordMatch5) {
                 adminData = {
                     id: account.id,
-                    username: account.username
+                    username: account.username,
+                    sessionVersion: Number(account.sessionVersion || 0)
                 };
 
                 foundAccount = true;
@@ -66,10 +85,17 @@ export default async function handler(req, res) {
         }));
 
         if (!foundAccount) {
-            return res.status(401).json({ success: false, error: 'Wrong passwords' });
+            return res.status(401).json({ success: false, error: 'Invalid username or passwords' });
         }
 
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res, {
+            ...sessionOptions,
+            ttl: 60 * 60,
+        });
+
+        for (const key of Object.keys(session)) {
+            delete session[key];
+        }
         
         session.administrator = adminData;
 

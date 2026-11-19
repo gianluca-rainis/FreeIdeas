@@ -7,7 +7,7 @@ function decodeHtmlEntities(text) {
     }
 
     const textarea = document.createElement('textarea');
-    textarea.innerHTML = text;
+    textarea.textContent = text;
     return textarea.value;
 }
 
@@ -204,7 +204,7 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             fd.append('logs', JSON.stringify({
                 titles: titles,
                 descriptions: descriptions,
-                date: dates
+                dates: dates
             }));
 
             const json = await apiCall('/api/modifyIdeaInfoAdmin', {

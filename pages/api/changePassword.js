@@ -1,9 +1,10 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
+import { allowRequest, escapeHtml, getClientIp, validateEmail, validatePassword } from '../../lib/security';
 
 export const config = {
     api: {
@@ -33,38 +34,48 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
-        const email = getInput(fields.email?.[0]);
+        const email = fields.email?.[0] || '';
         const token = getInput(fields.token?.[0]);
-        const password = getInput(fields.password?.[0]);
-        const confirmPassword = getInput(fields.confirmPassword?.[0]);
+        const password = fields.password?.[0] || '';
+        const confirmPassword = fields.confirmPassword?.[0] || '';
 
         if (!email) {
             return res.status(400).json({ success: false, error: 'Email is required' });
         }
 
+        const clientIp = getClientIp(req);
+
+        if (!allowRequest(`password-reset-ip:${clientIp}`, 10, 15 * 60 * 1000)) {
+            return res.status(429).json({ success: false, error: 'Too many requests' });
+        }
+
         if (!token) {
+            if (!validateEmail(email)) {
+                return res.status(200).json({ success: true });
+            }
+
+            if (!allowRequest(`password-reset-email:${email.toLowerCase()}`, 3, 60 * 60 * 1000)) {
+                return res.status(429).json({ success: false, error: 'Too many requests' });
+            }
+
             const accountInfo = await query(
                 'SELECT username, id FROM accounts WHERE email=?;',
                 [email]
             );
 
-            let username = accountInfo[0].username;
-            let idIfNoSession = accountInfo[0].id;
-            let tempid;
-
-            let randomToken = Math.random().toString(36).substring(2, 21) + Math.random().toString(36).substring(2, 21);
-
-            if (!session || !session.account) {
-                tempid = idIfNoSession;
+            if (accountInfo.length === 0) {
+                return res.status(200).json({ success: true });
             }
-            else {
-                tempid = session.account.id;
-            }
+
+            const username = accountInfo[0].username;
+            const tempid = accountInfo[0].id;
+
+            const randomToken = randomBytes(32).toString('hex');
+            const tokenHash = createHash('sha256').update(randomToken).digest('hex');
 
             {
                 const today = formatDate(new Date());
@@ -79,9 +90,11 @@ export default async function handler(req, res) {
             }
 
             // EMAIL
-            let to = email;
-            let subject = "FreeIdeas - Change the password of your account";
-            let message = `
+            const to = email;
+            const subject = "FreeIdeas - Change the password of your account";
+            const safeUsername = escapeHtml(username);
+            const encodedEmail = encodeURIComponent(email);
+            const message = `
             <!DOCTYPE html>
             <html lang="en-US">
                 <head>
@@ -109,7 +122,7 @@ export default async function handler(req, res) {
                                     </tr>
                                     <tr>
                                         <td style="padding:8px 0;">
-                                            <h2 style="margin:0; font-size:18px;">Hello ${username}</h2>
+                                            <h2 style="margin:0; font-size:18px;">Hello ${safeUsername}</h2>
                                         </td>
                                     </tr>
                                     <tr>
@@ -129,7 +142,7 @@ export default async function handler(req, res) {
                                     </tr>
                                     <tr>
                                         <td style="padding:4px 0 14px 0;">
-                                            <a href="https://www.freeideas.pro/changePassword?email=${email}&token=${randomToken}" style="
+                                            <a href="https://www.freeideas.pro/changePassword?email=${encodedEmail}&token=${randomToken}" style="
                                                 display:inline-block;
                                                 text-decoration:none;
                                                 background-color:#a2f16e;
@@ -230,8 +243,9 @@ export default async function handler(req, res) {
 
             session.resetPassword = {
                 email: email,
-                token: randomToken,
-                expires: Date.now() + 3600000 // 1 hour
+                tokenHash,
+                attempts: 0,
+                expires: Date.now() + 10 * 60 * 1000
             }
 
             await session.save();
@@ -239,6 +253,10 @@ export default async function handler(req, res) {
         else {
             if (!password || !confirmPassword) {
                 return res.status(400).json({ success: false, error: 'Password and confirm password are required' });
+            }
+
+            if (!validateEmail(email) || !validatePassword(password)) {
+                return res.status(400).json({ success: false, error: 'Invalid email or password' });
             }
 
             if (password !== confirmPassword) {
@@ -255,7 +273,23 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: 'Invalid email for reset token' });
             }
 
-            if (resetData.token !== token) {
+            const tokenMatches = resetData.tokenHash
+                && /^[a-f0-9]{64}$/i.test(token)
+                && /^[a-f0-9]{64}$/i.test(resetData.tokenHash)
+                && timingSafeEqual(
+                    Buffer.from(createHash('sha256').update(token).digest('hex'), 'hex'),
+                    Buffer.from(resetData.tokenHash, 'hex')
+                );
+
+            if (!tokenMatches || resetData.attempts >= 5) {
+                resetData.attempts = (resetData.attempts || 0) + 1;
+
+                if (resetData.attempts >= 5) {
+                    session.resetPassword = null;
+                }
+
+                await session.save();
+
                 return res.status(400).json({ success: false, error: 'Invalid reset token' });
             }
 
@@ -267,16 +301,14 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: 'Reset token has expired' });
             }
 
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await bcrypt.hash(password, 12);
 
             await query(
-                'UPDATE accounts SET password=? WHERE email=?;',
+                'UPDATE accounts SET password=?, sessionVersion=sessionVersion+1 WHERE email=?;',
                 [hashedPassword, email]
             );
 
-            session.resetPassword = null;
-
-            await session.save();
+            session.destroy();
         }
 
         return res.status(200).json({ success: true });

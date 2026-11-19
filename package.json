@@ -6,27 +6,22 @@
         "dev": "next dev -p 3000",
         "build": "next build",
         "start": "next start -p 3000",
-        "lint": "next lint",
-        "dev-vite": "vite",
-        "build-vite": "vite build"
+        "lint": "next lint"
     },
     "dependencies": {
         "@libsql/client": "^0.17.0",
         "bcrypt": "^6.0.0",
         "formidable": "^3.5.4",
         "iron-session": "^8.0.4",
-        "mysql2": "^3.16.0",
         "next": "^16.0.3",
         "nodemailer": "^10.6.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0"
     },
     "devDependencies": {
-        "@types/react": "^18.2.43",
-        "@types/react-dom": "^18.2.17",
-        "@vitejs/plugin-react": "^5.2.0",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
         "eslint": "^9",
-        "eslint-config-next": "^16.0.3",
-        "vite": "^7.3.8"
+        "eslint-config-next": "^16.0.3"
     }
 }

@@ -1,7 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
 
 export const config = {
     api: {
@@ -23,10 +22,9 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const search = fields.search?.[0] || '';
         let data = [];
@@ -39,7 +37,7 @@ export default async function handler(req, res) {
 
         if (search == "") {
             const accounts = await query(
-                'SELECT * FROM accounts ORDER BY id DESC;',
+                'SELECT id, email, name, surname, userimage, description, username, public FROM accounts ORDER BY id DESC;',
                 []
             );
 
@@ -51,7 +49,7 @@ export default async function handler(req, res) {
         }
         else {
             const accounts = await query(
-                'SELECT * FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ? OR accounts.id LIKE ? OR accounts.email LIKE ?) ORDER BY id DESC;',
+                'SELECT id, email, name, surname, userimage, description, username, public FROM accounts WHERE (accounts.username LIKE ? OR accounts.name LIKE ? OR accounts.surname LIKE ? OR accounts.id LIKE ? OR accounts.email LIKE ?) ORDER BY id DESC;',
                 [searchParam, searchParam, searchParam, searchParam, searchParam]
             );
 
@@ -69,6 +67,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error: ', error);
-        return res.status(500).json({ success: false, error: String(error) });
+        return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }

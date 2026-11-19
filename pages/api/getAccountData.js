@@ -1,7 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
 
 export const config = {
     api: {
@@ -23,10 +22,9 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const id = getInput(fields.id?.[0]) || '';
         let data = {};
@@ -36,7 +34,7 @@ export default async function handler(req, res) {
         }
 
         const account = await query(
-            'SELECT * FROM accounts WHERE id=?;',
+            'SELECT id, email, name, surname, userimage, description, username, public FROM accounts WHERE id=?;',
             [id]
         );
 
@@ -47,7 +45,6 @@ export default async function handler(req, res) {
         const userImage = getImage(account[0]['userimage']);
         
         data['id'] = account[0]['id'];
-        data['email'] = account[0]['email'];
         data['name'] = account[0]['name'];
         data['surname'] = account[0]['surname'];
         data['userimage'] = userImage;
@@ -55,8 +52,15 @@ export default async function handler(req, res) {
         data['username'] = account[0]['username'];
         data['public'] = account[0]['public'];
 
-        if (data['public'] == 0 && (!session.account || session.account.id != data.id) && !session.administrator) {
+        const isOwner = session.account && String(session.account.id) === String(data.id);
+        const isAdministrator = Boolean(session.administrator);
+
+        if (data['public'] == 0 && !isOwner && !isAdministrator) {
             return res.status(401).json({ success: false, error: 'User or administrator not logged in and the account is private' });
+        }
+
+        if (isOwner || isAdministrator) {
+            data['email'] = account[0]['email'];
         }
 
         // Get saved ideas
@@ -118,6 +122,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error: ', error);
-        return res.status(500).json({ success: false, error: String(error) });
+        return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }

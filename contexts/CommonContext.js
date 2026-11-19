@@ -6,6 +6,21 @@ import { useThemeImages } from '../hooks/useThemeImages';
 
 const AppContext = createContext();
 
+function createEmptyNotificationRow() {
+    const li = document.createElement('li');
+    const titleAndDate = document.createElement('div');
+    const title = document.createElement('strong');
+    const date = document.createElement('div');
+    const content = document.createElement('div');
+
+    titleAndDate.style.display = 'flex';
+    date.style.color = 'grey';
+    titleAndDate.append(title, document.createTextNode(' - '), date);
+    li.append(titleAndDate, content);
+
+    return li;
+}
+
 export function AppProvider({ children }) {
     // Save global variables and set the functions to update their values
     const [bannerMessage, setBannerMessage] = useState("");
@@ -215,33 +230,63 @@ export function AppProvider({ children }) {
             const userNameElement = document.getElementById("userName");
 
             if (userNameElement) {
-                userNameElement.innerHTML = SQLdata.username;
+                userNameElement.textContent = SQLdata.username;
             }
 
             // Update PC login block
             const pcLoginSignUpBlock = document.getElementById("pcLoginSignUpBlock");
 
             if (pcLoginSignUpBlock) {
-                pcLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
-                    <img src="${userImageDisplayed}" alt="User Image" style="width: 60px; height: 60px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
-                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
-                    <button type="submit" id="sendAccountButton">Account</button>
-                    <button type="submit" id="sendLogoutButton">Log Out</button>`;
+                const heading = document.createElement('h2');
+                const image = document.createElement('img');
+                const name = document.createElement('h3');
+                const accountButton = document.createElement('button');
+                const logoutButton = document.createElement('button');
+
+                heading.textContent = `Welcome ${SQLdata.username}`;
+                image.src = userImageDisplayed;
+                image.alt = 'User Image';
+                image.style.cssText = 'width: 60px; height: 60px; text-align: center; margin-bottom: 40px; margin-top: 30px;';
+                name.textContent = `${SQLdata.name || ''} ${SQLdata.surname || ''}`;
+                name.style.marginBottom = '20px';
+                accountButton.type = 'submit';
+                accountButton.id = 'sendAccountButton';
+                accountButton.textContent = 'Account';
+                logoutButton.type = 'submit';
+                logoutButton.id = 'sendLogoutButton';
+                logoutButton.textContent = 'Log Out';
+                pcLoginSignUpBlock.replaceChildren(heading, image, name, accountButton, logoutButton);
             }
 
             // Update mobile login block
             const mobileLoginSignUpBlock = document.getElementById("mobileLoginSignUpBlock");
 
             if (mobileLoginSignUpBlock) {
-                mobileLoginSignUpBlock.innerHTML = `<h2>Welcome ${SQLdata.username}</h2>
-                    <div style="align-items: center;">
-                        <img src="${userImageDisplayed}" alt="User Image" style="width: 100px; height: 100px; text-align: 'center'; margin-bottom: 40px; margin-top: 30px;">
-                    </div>
-                    <h3 style="margin-bottom: 20px">${SQLdata.name ? SQLdata.name : ""} ${SQLdata.surname ? SQLdata.surname : ""}</h3>
-                    <div style="align-items: center;">
-                        <button type="submit" id="sendAccountButtonMobile">Account</button>
-                        <button type="submit" id="sendLogoutButtonMobile">Log Out</button>
-                    </div>`;
+                const heading = document.createElement('h2');
+                const imageContainer = document.createElement('div');
+                const image = document.createElement('img');
+                const name = document.createElement('h3');
+                const buttonContainer = document.createElement('div');
+                const accountButton = document.createElement('button');
+                const logoutButton = document.createElement('button');
+
+                heading.textContent = `Welcome ${SQLdata.username}`;
+                image.src = userImageDisplayed;
+                image.alt = 'User Image';
+                image.style.cssText = 'width: 100px; height: 100px; text-align: center; margin-bottom: 40px; margin-top: 30px;';
+                imageContainer.style.alignItems = 'center';
+                imageContainer.appendChild(image);
+                name.textContent = `${SQLdata.name || ''} ${SQLdata.surname || ''}`;
+                name.style.marginBottom = '20px';
+                accountButton.type = 'submit';
+                accountButton.id = 'sendAccountButtonMobile';
+                accountButton.textContent = 'Account';
+                logoutButton.type = 'submit';
+                logoutButton.id = 'sendLogoutButtonMobile';
+                logoutButton.textContent = 'Log Out';
+                buttonContainer.style.alignItems = 'center';
+                buttonContainer.append(accountButton, logoutButton);
+                mobileLoginSignUpBlock.replaceChildren(heading, imageContainer, name, buttonContainer);
             }
 
             // Add event listeners for buttons
@@ -431,17 +476,21 @@ export function AppProvider({ children }) {
             const notificationsUl = document.querySelectorAll(".notificationsUl");
 
             notificationsUl.forEach(ul => {
-                ul.innerHTML = ""; // Clear existing notifications
+                ul.replaceChildren();
                 
                 notificationsShowOrder.forEach(notification => {
                     const li = document.createElement("li");
-                    let dataETitle = document.createElement("div");
-                    let content = document.createElement("div");
+                    const dataETitle = document.createElement("div");
+                    const title = document.createElement("strong");
+                    const date = document.createElement("div");
+                    const content = document.createElement("div");
 
-                    dataETitle.innerHTML = `<strong>${notification.title}</strong> &nbsp; - &nbsp; <div style="color: grey;">${notification.data}</div>`;
+                    title.textContent = notification.title;
+                    date.textContent = notification.data;
+                    date.style.color = 'grey';
                     dataETitle.style.display = "flex";
-                    content.innerHTML = `${notification.description.substring(0, 30)}...`;
-                    content.dataset.fullDescription = notification.description;
+                    dataETitle.append(title, document.createTextNode(' - '), date);
+                    content.textContent = `${String(notification.description || '').substring(0, 30)}...`;
 
                     li.appendChild(dataETitle);
                     li.appendChild(content);
@@ -451,31 +500,50 @@ export function AppProvider({ children }) {
                     }
 
                     li.dataset.notificationId = notification.id;
+                    li.dataset.notificationTitle = notification.title || '';
+                    li.dataset.notificationDate = notification.data || '';
+                    li.dataset.fullDescription = notification.description || '';
 
                     ul.appendChild(li);
                 });
 
                 // Add event listeners for notification buttons
-                ul.querySelectorAll("li").forEach(li => li.addEventListener("click", () => {
+                ul.querySelectorAll("li[data-notification-id]").forEach(li => li.addEventListener("click", () => {
                     ul.style.display = "none";
                     document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "block");
 
-                    document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = `
-                        <h3 style="display: flex; justify-content: center;">${li.querySelectorAll("div")[0].querySelector("strong").innerText} &nbsp; - &nbsp; <div style="color: grey;">${li.querySelectorAll("div")[0].querySelector("div").innerText}</div></h3>
-                        <br>
-                        <p>${li.querySelectorAll("div")[2].dataset.fullDescription}</p>
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <img id="notificationBackImage" src="/images/back${themeIsLight?"":"_Pro"}.svg">
-                            <input type="button" id="notificationDeleteButton" value="Delete">
-                        </div>
-                    `);
+                    document.querySelectorAll(".hiddenNotificationData").forEach(element => {
+                        const heading = document.createElement('h3');
+                        const title = document.createElement('strong');
+                        const date = document.createElement('div');
+                        const description = document.createElement('p');
+                        const actions = document.createElement('div');
+                        const backImage = document.createElement('img');
+                        const deleteButton = document.createElement('input');
+
+                        heading.style.cssText = 'display: flex; justify-content: center;';
+                        heading.append(title, document.createTextNode(' - '), date);
+                        title.textContent = li.dataset.notificationTitle;
+                        date.textContent = li.dataset.notificationDate;
+                        date.style.color = 'grey';
+                        description.textContent = li.dataset.fullDescription;
+                        actions.style.cssText = 'display: flex; justify-content: center; align-items: center;';
+                        backImage.id = 'notificationBackImage';
+                        backImage.src = `/images/back${themeIsLight ? '' : '_Pro'}.svg`;
+                        backImage.alt = 'Back';
+                        deleteButton.id = 'notificationDeleteButton';
+                        deleteButton.type = 'button';
+                        deleteButton.value = 'Delete';
+                        element.replaceChildren(heading, document.createElement('br'), description, actions);
+                        actions.append(backImage, deleteButton);
+                    });
 
                     /* Back button */
                     document.getElementById("notificationBackImage").addEventListener("click", async () => {
                         ul.style.display = "block";
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
 
-                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.replaceChildren());
 
                         const idToSetStatus = li.dataset.notificationId;
 
@@ -500,7 +568,7 @@ export function AppProvider({ children }) {
                                 }
                             }
                             else {
-                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                                console.error(`ERROR 421: UNABLE TO DELETE NOTIFICATION ${idToDelete}.`);
                             }
                         } catch (error) {
                             console.error(error);
@@ -515,7 +583,7 @@ export function AppProvider({ children }) {
                         ul.style.display = "block";
                         document.querySelectorAll(".hiddenNotificationData").forEach(element => element.style.display = "none");
                         
-                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.innerHTML = "");
+                        document.querySelectorAll(".hiddenNotificationData").forEach(element => element.replaceChildren());
 
                         const idToDelete = li.dataset.notificationId;
 
@@ -527,18 +595,7 @@ export function AppProvider({ children }) {
 
                         if (notificationsShowOrder.length < 6) {
                             for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
-                                let linew = document.createElement("li");
-                                let dataETitle = document.createElement("div");
-                                let content = document.createElement("div");
-
-                                dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
-                                dataETitle.style.display = "flex";
-                                content.innerHTML = ` `;
-
-                                linew.appendChild(dataETitle);
-                                linew.appendChild(content);
-
-                                ul.appendChild(linew);
+                                ul.appendChild(createEmptyNotificationRow());
                             }
                         }
 
@@ -557,7 +614,7 @@ export function AppProvider({ children }) {
                                 }
                             }
                             else {
-                                console.error(`ERROR 421: UNABLE TO SET NOTIFICATION ${idToSetStatus} AS READ.`);
+                                console.error(`ERROR 421: UNABLE TO DELETE NOTIFICATION ${idToDelete}.`);
                             }
                         } catch (error) {
                             console.error(error);
@@ -571,18 +628,7 @@ export function AppProvider({ children }) {
                 // Padding for the notifications
                 if (notificationsShowOrder.length < 6) {
                     for (let index = 0; index < (6 - notificationsShowOrder.length); index++) {
-                        let li = document.createElement("li");
-                        let dataETitle = document.createElement("div");
-                        let content = document.createElement("div");
-
-                        dataETitle.innerHTML = `<strong> </strong> &nbsp; &nbsp; <div style="color: grey;"> </div>`;
-                        dataETitle.style.display = "flex";
-                        content.innerHTML = ` `;
-
-                        li.appendChild(dataETitle);
-                        li.appendChild(content);
-
-                        ul.appendChild(li);
+                        ul.appendChild(createEmptyNotificationRow());
                     }
                 }
             });

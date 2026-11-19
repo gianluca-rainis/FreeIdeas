@@ -1,7 +1,6 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
 
 export const config = {
     api: {
@@ -19,10 +18,9 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const search = fields.search?.[0] || '';
         let data = [];
@@ -61,6 +59,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, data: data });
     } catch (error) {
         console.error('Error: ', error);
-        return res.status(500).json({ success: false, error: String(error) });
+        return res.status(500).json({ success: false, error: 'Internal server error' });
     }
 }

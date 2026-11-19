@@ -1,7 +1,8 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import bcrypt from 'bcrypt';
+import { isPositiveIntegerId } from '../../lib/security';
 
 export const config = {
     api: {
@@ -23,28 +24,19 @@ function formatDate(date) {
 
 // Delete all the comments from the deeper
 async function deleteAllIdsSubComments(id) {
-    try {
-        const comments = await query(
-            "SELECT id FROM comments WHERE superCommentid=?;",
-            [id]
-        );
+    const comments = await query(
+        "SELECT id FROM comments WHERE superCommentid=?;",
+        [id]
+    );
 
-        // Delete all the subcomments
-        comments.forEach(comment => {
-            deleteAllIdsSubComments(comment.id);
-        });
-
-        // This is the deeper comment
-        // Delete the subcomment
-        await query(
-            "DELETE FROM comments WHERE id=?;",
-            [id]
-        );
-    } catch (error) {
-        console.error(error);
+    for (const comment of comments) {
+        await deleteAllIdsSubComments(comment.id);
     }
 
-    return;
+    await query(
+        "DELETE FROM comments WHERE id=?;",
+        [id]
+    );
 }
 
 export default async function handler(req, res) {
@@ -53,14 +45,19 @@ export default async function handler(req, res) {
     }
 
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
-        const id = getInput(fields.id?.[0]) || '';
+        if (!session.account && !session.administrator) {
+            return res.status(401).json({ success: false, error: 'User not authorized' });
+        }
 
-        if (!id) {
+        const requestedId = getInput(fields.id?.[0]) || '';
+        const id = session.administrator ? requestedId : String(session.account?.id || '');
+        const currentPassword = fields.currentPassword?.[0] || '';
+
+        if (!isPositiveIntegerId(id)) {
             return res.status(400).json({ success: false, error: 'Id required' });
         }
 
@@ -68,11 +65,22 @@ export default async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'User not authorized' });
         }
 
-        // Get the username
-        const accountUsername = await query(
-            "SELECT username FROM accounts WHERE id=?;",
+        const account = await query(
+            "SELECT id, username, password FROM accounts WHERE id=?;",
             [id]
         );
+
+        if (account.length === 0) {
+            return res.status(404).json({ success: false, error: 'Account not found' });
+        }
+
+        if (!session.administrator
+            && (!currentPassword || !(await bcrypt.compare(currentPassword, account[0].password)))) {
+            return res.status(401).json({ success: false, error: 'Current password is required' });
+        }
+
+        // Get the username
+        const accountUsername = account[0].username;
 
         // Get the followers
         const followers = await query(
@@ -80,7 +88,7 @@ export default async function handler(req, res) {
             [id]
         );
 
-        followers.forEach(async follower => {
+        for (const follower of followers) {
             const today = formatDate(new Date());
             let titleNot = "";
             let description = "";
@@ -98,7 +106,7 @@ export default async function handler(req, res) {
                 "INSERT INTO notifications (accountid, title, description, data, status) VALUES (?, ?, ?, ?, ?);",
                 [follower.followaccountid, titleNot, description, today, 0]
             );
-        });
+        }
 
         // Delete followers
         await query(
@@ -130,7 +138,7 @@ export default async function handler(req, res) {
             [id]
         );
 
-        ideasId.forEach(async idea => {
+        for (const idea of ideasId) {
             const ideaId = idea.id;
 
             // Idea labels clear
@@ -157,9 +165,9 @@ export default async function handler(req, res) {
                 [ideaId]
             );
 
-            rootComments.forEach(rootComment => {
-                deleteAllIdsSubComments(rootComment.id);
-            });
+            for (const rootComment of rootComments) {
+                await deleteAllIdsSubComments(rootComment.id);
+            }
 
             // Author updates clear
             await query(
@@ -178,7 +186,7 @@ export default async function handler(req, res) {
                 "DELETE FROM ideas WHERE id=?;",
                 [ideaId]
             );
-        });
+        }
 
         // Comments clear
         const comments = await query(
@@ -186,11 +194,11 @@ export default async function handler(req, res) {
             [id]
         );
 
-        comments.forEach(async comment => {
+        for (const comment of comments) {
             const commentId = comment.id;
 
-            deleteAllIdsSubComments(commentId);
-        });
+            await deleteAllIdsSubComments(commentId);
+        }
 
         // Account clear
         await query(
@@ -199,11 +207,7 @@ export default async function handler(req, res) {
         );
 
         if (session && session.account) {
-            session.destroy((err) => {
-                if (err) {
-                    console.error('Error destroying session: ', err);
-                }
-            });
+            session.destroy();
         }
 
         return res.status(200).json({ success: true });

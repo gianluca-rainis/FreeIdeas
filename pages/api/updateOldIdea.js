@@ -1,8 +1,8 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
-import fs from 'fs/promises';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import { cleanupUploadFiles, convertImageUpload, convertPdfUpload, isValidImageDataUrl } from '../../lib/uploadValidation';
+import { isPositiveIntegerId, isValidHttpUrl, validateTextList } from '../../lib/security';
 
 export const config = {
     api: {
@@ -14,10 +14,6 @@ function getInput(data) {
     return String(data).trim();
 }
 
-function getImage(data) {
-    return data?(Buffer.isBuffer(data)?Buffer.from(data).toString():data):null;
-}
-
 function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -26,81 +22,95 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-async function getConvertedImage(file) {
-    try {
-        const mimeType = file.mimetype;
-
-        if (!mimeType) {
-            return null;
-        }
-
-        const buffer = await fs.readFile(file.filepath);
-
-        return `data:${mimeType};base64,${buffer.toString('base64')}`;
-    } catch (error) {
-        return null;
-    }
-}
-
-async function getConvertedPdf(file) {
-    try {
-        if (file.mimetype !== 'application/pdf') {
-            return null;
-        }
-
-        const buffer = await fs.readFile(file.filepath);
-        
-        return `data:application/pdf;base64,${buffer.toString('base64')}`;
-    } catch (error) {
-        return null;
-    }
-}
-
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
+    let uploadedFiles = [];
+
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
         if (!session || (!session.account && !session.administrator)) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         // Parse form data to handle the files
-        const form = formidable();
-        const [fields, files] = await form.parse(req);
+        const [fields, files] = await parseForm(req, { allowFiles: true });
+        uploadedFiles = Object.values(files);
 
         const title = getInput(fields.title?.[0] || '');
         const ideaid = getInput(fields.ideaid?.[0] || '');
-        const author = getInput(fields.author?.[0] || '');
-        const date = getInput(fields.date?.[0] || '');
+        const date = formatDate(new Date());
         const description = getInput(fields.description?.[0] || '');
         const link = getInput(fields.link?.[0] || '');
         const type = getInput(fields.type?.[0] || '');
         const creativity = getInput(fields.creativity?.[0] || '');
         const status = getInput(fields.status?.[0] || '');
-        const additionalInfo = fields.additionalInfo?.[0]?JSON.parse(fields.additionalInfo[0]):{ titles: [], descriptions: [], types: [] };
-        const additionalInfoImagesData = fields['additionalInfoImagesData[]'] || {};
-        const logs = fields.logs?.[0]?JSON.parse(fields.logs[0]):{ dates: [], titles: [], descriptions: [] };
+        let additionalInfo;
+        const additionalInfoImagesData = fields['additionalInfoImagesData[]'] || [];
+        let logs;
 
-        if (!title || !ideaid || !author || !date || !description || !type || !creativity || !status) {
+        try {
+            additionalInfo = fields.additionalInfo?.[0]
+                ? JSON.parse(fields.additionalInfo[0])
+                : { titles: [], descriptions: [], types: [] };
+            logs = fields.logs?.[0] ? JSON.parse(fields.logs[0]) : { dates: [], titles: [], descriptions: [] };
+        } catch {
+            return res.status(400).json({ success: false, error: 'Invalid additional idea data' });
+        }
+
+        if (!title || !isPositiveIntegerId(ideaid) || !date || !description || !type || !creativity || !status) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
+        }
+
+        if (title.length > 200 || description.length > 10000 || (link && !isValidHttpUrl(link))
+            || !validateTextList(additionalInfo.titles, 20, 200)
+            || !validateTextList(additionalInfo.descriptions, 20, 5000)
+            || !validateTextList(additionalInfo.types, 20, 4)
+            || additionalInfo.titles.length !== additionalInfo.descriptions.length
+            || additionalInfo.titles.length !== additionalInfo.types.length
+            || !additionalInfo.types.every(type => type === 'file' || type === 'data')
+            || !validateTextList(logs.titles, 100, 200)
+            || !validateTextList(logs.descriptions, 100, 5000)
+            || !validateTextList(logs.dates, 100, 30)
+            || logs.titles.length !== logs.descriptions.length
+            || logs.titles.length !== logs.dates.length) {
+            return res.status(400).json({ success: false, error: 'Invalid idea data' });
+        }
+
+        const existingIdea = await query(
+            'SELECT authorid FROM ideas WHERE id=?;',
+            [ideaid]
+        );
+
+        if (existingIdea.length === 0) {
+            return res.status(404).json({ success: false, error: 'Idea not found' });
+        }
+
+        const authorId = existingIdea[0].authorid;
+
+        if (!session.administrator && String(session.account.id) !== String(authorId)) {
+            return res.status(403).json({ success: false, error: 'Not authorized to edit this idea' });
         }
 
         // Handle MainImage
         let mainImageConverted = null;
 
         if (files.mainImageFile?.[0]) {
-            mainImageConverted = await getConvertedImage(files.mainImageFile[0]);
+            mainImageConverted = await convertImageUpload(files.mainImageFile[0]);
 
             if (!mainImageConverted) {
                 return res.status(400).json({ success: false, error: 'MAIN_IMAGE_NULL' });
             }
         }
         else if (fields.mainImageData?.[0]) {
-            mainImageConverted = getImage(fields.mainImageData?.[0]);
+            mainImageConverted = fields.mainImageData[0];
+
+            if (!isValidImageDataUrl(mainImageConverted)) {
+                return res.status(400).json({ success: false, error: 'Invalid main image' });
+            }
         }
         else {
             return res.status(400).json({ success: false, error: 'Main image is required' });
@@ -115,7 +125,7 @@ export default async function handler(req, res) {
 
             for (let i = 0; i < additionalInfo.types.length; i++) {
                 if (additionalInfo.types[i] == "file") {
-                    const converted = await getConvertedImage(files['additionalInfoImagesFile[]'][iFile]);
+                    const converted = await convertImageUpload(files['additionalInfoImagesFile[]']?.[iFile]);
 
                     if (!converted) {
                         return res.status(400).json({ success: false, error: 'ADDITIONAL_INFO_IMAGE_NULL' });
@@ -127,7 +137,13 @@ export default async function handler(req, res) {
                 }
                 else {
                     if (additionalInfoImagesData) {
-                        additionalInfoImagesConverted.push(additionalInfoImagesData[iData]);
+                        const imageData = additionalInfoImagesData[iData];
+
+                        if (!isValidImageDataUrl(imageData)) {
+                            return res.status(400).json({ success: false, error: 'Invalid additional image' });
+                        }
+
+                        additionalInfoImagesConverted.push(imageData);
                     }
 
                     iData++;
@@ -139,7 +155,7 @@ export default async function handler(req, res) {
         let licenseConverted = null;
 
         if (files.license?.[0]) {
-            licenseConverted = await getConvertedPdf(files.license[0]);
+            licenseConverted = await convertPdfUpload(files.license[0]);
 
             if (!licenseConverted) {
                 return res.status(400).json({ success: false, error: 'Invalid license PDF' });
@@ -176,7 +192,7 @@ export default async function handler(req, res) {
         for (let i = 0; i < logs.titles.length; i++) {
             await query(
                 'INSERT INTO authorupdates (title, description, data, ideaid) VALUES (?, ?, ?, ?);',
-                [logs.titles[i], logs.descriptions[i], logs.dates[i], ideaid]
+                [logs.titles[i], logs.descriptions[i], date, ideaid]
             );
         }
 
@@ -189,7 +205,7 @@ export default async function handler(req, res) {
         // Send notification to followers
         const followers = await query(
             'SELECT followaccountid FROM follow WHERE followedaccountid=? OR followedideaid=?;',
-            [author, ideaid]
+            [authorId, ideaid]
         );
 
         if (followers) {
@@ -218,5 +234,9 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
+    } finally {
+        await cleanupUploadFiles(uploadedFiles).catch(error => {
+            console.error('Failed to clean up uploaded files:', error);
+        });
     }
 }

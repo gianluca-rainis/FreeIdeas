@@ -1,8 +1,9 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
 import nodemailer from 'nodemailer';
+import { randomInt } from 'node:crypto';
+import { allowRequest, escapeHtml, getClientIp, validateEmail, validatePassword, validateUsername } from '../../lib/security';
 
 export const config = {
     api: {
@@ -28,17 +29,28 @@ export default async function handler(req, res) {
     }
 
     try {
-        const form = formidable();
-        const [fields] = await form.parse(req);
+        const [fields] = await parseForm(req);
 
         const firstName = getInput(fields.firstName?.[0] || '');
         const lastName = getInput(fields.lastName?.[0] || '');
         const username = getInput(fields.userName?.[0] || '');
         const email = getInput(fields.email?.[0] || '');
-        const password = getInput(fields.password?.[0] || '');
+        const password = fields.password?.[0] || '';
 
         if (!firstName || !lastName || !email || !password || !username) {
             return res.status(400).json({ success: false, error: 'Not all the required fields are filled.' });
+        }
+
+        if (!validateEmail(email) || !validateUsername(username) || !validatePassword(password)
+            || firstName.length > 50 || lastName.length > 50) {
+            return res.status(400).json({ success: false, error: 'Invalid account data' });
+        }
+
+        const clientIp = getClientIp(req);
+
+        if (!allowRequest(`signup-ip:${clientIp}`, 5, 60 * 60 * 1000)
+            || !allowRequest(`signup-email:${email.toLowerCase()}`, 3, 60 * 60 * 1000)) {
+            return res.status(429).json({ success: false, error: 'Too many requests' });
         }
 
         // Check if the email exists
@@ -62,7 +74,8 @@ export default async function handler(req, res) {
         }
 
         // The 6 numbers verification code
-        let emailVerificationCode = String(Math.floor(Math.random() * 10))+String(Math.floor(Math.random() * 10))+String(Math.floor(Math.random() * 10))+String(Math.floor(Math.random() * 10))+String(Math.floor(Math.random() * 10))+String(Math.floor(Math.random() * 10));
+        const emailVerificationCode = String(randomInt(0, 1000000)).padStart(6, '0');
+        const safeUsername = escapeHtml(username);
         
         // EMAIL
         let to = email;
@@ -95,7 +108,7 @@ export default async function handler(req, res) {
                                 </tr>
                                 <tr>
                                     <td style="padding:8px 0;">
-                                        <h2 style="margin:0; font-size:18px;">Hello ${username}</h2>
+                                        <h2 style="margin:0; font-size:18px;">Hello ${safeUsername}</h2>
                                     </td>
                                 </tr>
                                 <tr>
@@ -214,11 +227,13 @@ export default async function handler(req, res) {
         }
 
         // Save session
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
 
         session.otp = {
             email: email,
-            code: emailVerificationCode
+            code: emailVerificationCode,
+            expiresAt: Date.now() + 10 * 60 * 1000,
+            attempts: 0,
         };
 
         await session.save();

@@ -1,5 +1,4 @@
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
+import { getSession } from '../../lib/session';
 import { query } from '../../lib/db_connection';
 import { withCors } from '../../lib/cors';
 
@@ -25,12 +24,12 @@ async function handler(req, res) {
         }
 
         const sanitizedData = getInput(data);
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
 
         if (sanitizedData == "account") {
             if (session.account) {
                 const accounts = await query(
-                    'SELECT * FROM accounts WHERE id=?;',
+                    'SELECT id, email, name, surname, userimage, description, username, public FROM accounts WHERE id=?;',
                     [session.account.id]
                 );
 

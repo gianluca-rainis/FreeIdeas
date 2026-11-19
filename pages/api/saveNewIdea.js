@@ -1,8 +1,8 @@
 import { query } from '../../lib/db_connection';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '../../lib/session';
-import formidable from 'formidable';
-import fs from 'fs/promises';
+import { getSession } from '../../lib/session';
+import { parseForm } from '../../lib/formParser';
+import { cleanupUploadFiles, convertImageUpload, convertPdfUpload } from '../../lib/uploadValidation';
+import { isValidHttpUrl, validateTextList } from '../../lib/security';
 
 export const config = {
     api: {
@@ -22,53 +22,23 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-async function getConvertedImage(file) {
-    try {
-        const mimeType = file.mimetype;
-
-        if (!mimeType) {
-            return null;
-        }
-
-        const buffer = await fs.readFile(file.filepath);
-
-        return `data:${mimeType};base64,${buffer.toString('base64')}`;
-    } catch (error) {
-        console.error('Error converting image: ', error);
-        return null;
-    }
-}
-
-async function getConvertedPdf(file) {
-    try {
-        if (file.mimetype !== 'application/pdf') {
-            return null;
-        }
-
-        const buffer = await fs.readFile(file.filepath);
-        
-        return `data:application/pdf;base64,${buffer.toString('base64')}`;
-    } catch (error) {
-        console.error('Error converting PDF: ', error);
-        return null;
-    }
-}
-
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
+    let uploadedFiles = [];
+
     try {
-        const session = await getIronSession(req, res, sessionOptions);
+        const session = await getSession(req, res);
         
         if (!session || !session.account) {
             return res.status(401).json({ success: false, error: 'User not logged in' });
         }
 
         // Parse form data to handle the files
-        const form = formidable();
-        const [fields, files] = await form.parse(req);
+        const [fields, files] = await parseForm(req, { allowFiles: true });
+        uploadedFiles = Object.values(files);
 
         // Always get data as array
         function normalizeFileArray(file) {
@@ -85,24 +55,43 @@ export default async function handler(req, res) {
 
         const title = getInput(fields.title?.[0] || '');
         const author = getInput(fields.author?.[0] || '');
-        const date = getInput(fields.date?.[0] || '');
+        const date = formatDate(new Date());
         const description = getInput(fields.description?.[0] || '');
         const link = getInput(fields.link?.[0] || '');
         const type = getInput(fields.type?.[0] || '');
         const creativity = getInput(fields.creativity?.[0] || '');
         const status = getInput(fields.status?.[0] || '');
-        const additionalInfo = fields.additionalInfo?.[0]?JSON.parse(fields.additionalInfo[0]):{ titles: [], descriptions: [] };
-        const logs = fields.logs?.[0]?JSON.parse(fields.logs[0]):{ dates: [], titles: [], descriptions: [] };
+        let additionalInfo;
+        let logs;
+
+        try {
+            additionalInfo = fields.additionalInfo?.[0] ? JSON.parse(fields.additionalInfo[0]) : { titles: [], descriptions: [] };
+            logs = fields.logs?.[0] ? JSON.parse(fields.logs[0]) : { dates: [], titles: [], descriptions: [] };
+        } catch {
+            return res.status(400).json({ success: false, error: 'Invalid additional idea data' });
+        }
 
         if (!title || !author || !date || !description || !type || !creativity || !status) {
             return res.status(400).json({ success: false, error: 'Not filled all the required fields' });
+        }
+
+        if (title.length > 200 || description.length > 10000 || (link && !isValidHttpUrl(link))
+            || !validateTextList(additionalInfo.titles, 20, 200)
+            || !validateTextList(additionalInfo.descriptions, 20, 5000)
+            || additionalInfo.titles.length !== additionalInfo.descriptions.length
+            || !validateTextList(logs.titles, 100, 200)
+            || !validateTextList(logs.descriptions, 100, 5000)
+            || !validateTextList(logs.dates, 100, 30)
+            || logs.titles.length !== logs.descriptions.length
+            || logs.titles.length !== logs.dates.length) {
+            return res.status(400).json({ success: false, error: 'Invalid idea data' });
         }
 
         // Handle MainImage
         let mainImageConverted = null;
 
         if (mainImages.length > 0) {
-            mainImageConverted = await getConvertedImage(mainImages[0]);
+            mainImageConverted = await convertImageUpload(mainImages[0]);
 
             if (!mainImageConverted) {
                 return res.status(400).json({ success: false, error: 'MAIN_IMAGE_NULL' });
@@ -117,7 +106,7 @@ export default async function handler(req, res) {
 
         if (additionalImages.length > 0) {
             for (let i = 0; i < additionalImages.length; i++) {
-                const converted = await getConvertedImage(additionalImages[i]);
+                const converted = await convertImageUpload(additionalImages[i]);
 
                 if (!converted) {
                     return res.status(400).json({ success: false, error: 'ADDITIONAL_INFO_IMAGE_NULL' });
@@ -134,7 +123,7 @@ export default async function handler(req, res) {
         let licenseConverted = null;
 
         if (licenses.length > 0) {
-            licenseConverted = await getConvertedPdf(licenses[0]);
+            licenseConverted = await convertPdfUpload(licenses[0]);
 
             if (!licenseConverted) {
                 return res.status(400).json({ success: false, error: 'Invalid license PDF' });
@@ -164,7 +153,7 @@ export default async function handler(req, res) {
             for (let i = 0; i < logs.dates.length; i++) {
                 await query(
                     'INSERT INTO authorupdates (title, description, ideaid, data) VALUES (?, ?, ?, ?)',
-                    [logs.titles[i], logs.descriptions[i], ideaId, logs.dates[i]]
+                    [logs.titles[i], logs.descriptions[i], ideaId, date]
                 );
             }
         }
@@ -210,5 +199,9 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Error: ', error);
         return res.status(500).json({ success: false, error: 'Internal server error' });
+    } finally {
+        await cleanupUploadFiles(uploadedFiles).catch(error => {
+            console.error('Failed to clean up uploaded files:', error);
+        });
     }
 }

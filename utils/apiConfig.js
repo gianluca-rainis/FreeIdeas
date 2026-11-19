@@ -19,10 +19,13 @@ const API_CONFIG = {
 
 export function getBaseUrl(req = null) {
     if (req) {
-        if (req?.headers?.host) {
-            const proto = req.headers['x-forwarded-proto'] || 'http';
-            return `${proto}://${req.headers.host}`;
+        if (process.env.SITE_URL) {
+            return process.env.SITE_URL.replace(/\/$/, '');
         }
+
+        return process.env.NODE_ENV === 'production'
+            ? 'https://www.freeideas.pro'
+            : 'http://localhost:3000';
     }
     
     if (typeof window !== 'undefined') {
