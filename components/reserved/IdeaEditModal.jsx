@@ -128,9 +128,10 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
             setSaving(true);
 
             const fd = new FormData();
-            fd.append('id', idea.id);
+            fd.append('ideaid', idea.id);
             fd.append('title', formData.title);
             fd.append('authorid', fullIdea?.accountId || '');
+            fd.append('date', fullIdea?.data || idea?.data || '');
             fd.append('description', formData.description);
             fd.append('link', formData.downloadlink);
             fd.append('type', formData.type);
@@ -342,8 +343,8 @@ export default function IdeaEditModal({ idea, onClose, onSaved, showAlert, showC
                     {fullIdea?.accountName && <p className="ideaAuthorSrc">Author Name: {fullIdea?.accountName}</p>}
 
                     <div className="adminEditorActions">
-                        <button type="button" id="saveIdeaInfoAdmin" aria-label="Save idea changes" onClick={handleSave} disabled={saving}><Save size={18} aria-hidden="true" /><span>{saving ? 'Saving…' : 'Save'}</span></button>
-                        <button type="button" id="cancelIdeaInfoAdmin" aria-label="Cancel idea changes" onClick={onClose}><X size={18} aria-hidden="true" /><span>Cancel</span></button>
+                        <button type="button" id="saveIdeaInfoAdmin" aria-label="Save idea changes" onClick={handleSave} disabled={saving}><Save size={18} aria-hidden="true" /></button>
+                        <button type="button" id="cancelIdeaInfoAdmin" aria-label="Cancel idea changes" onClick={onClose}><X size={18} aria-hidden="true" /></button>
                     </div>
 
                     <div id="newDataSetAccount">

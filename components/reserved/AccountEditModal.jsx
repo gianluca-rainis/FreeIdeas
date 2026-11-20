@@ -202,8 +202,8 @@ export default function AccountEditModal({ accountId, onClose, onSaved, showAler
             <p className="ideaAuthorSrc">ID: {accountData.id}</p>
             
             <div className="adminEditorActions">
-                <button type="button" id="saveAccountInfoAdmin" aria-label="Save account changes" onClick={handleSave}><Save size={18} aria-hidden="true" /><span>Save</span></button>
-                <button type="button" id="cancelAccountInfoAdmin" aria-label="Cancel account changes" onClick={onClose}><X size={18} aria-hidden="true" /><span>Cancel</span></button>
+                <button type="button" id="saveAccountInfoAdmin" aria-label="Save account changes" onClick={handleSave}><Save size={18} aria-hidden="true" /></button>
+                <button type="button" id="cancelAccountInfoAdmin" aria-label="Cancel account changes" onClick={onClose}><X size={18} aria-hidden="true" /></button>
             </div>
 
             <div id="newDataSetAccount">

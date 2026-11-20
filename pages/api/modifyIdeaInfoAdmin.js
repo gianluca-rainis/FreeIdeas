@@ -156,7 +156,7 @@ export default async function handler(req, res) {
 
         // Update the idea
         await query(
-            'UPDATE ideas SET title=?, ideaimage=?, description=?, downloadlink=?, license=?, authorid=? WHERE id=?;',
+            'UPDATE ideas SET title=?, data=?, ideaimage=?, description=?, downloadlink=?, license=?, authorid=? WHERE id=?;',
             [title, date, mainImageConverted, description, link || null, licenseConverted, authorid, ideaid]
         );
 

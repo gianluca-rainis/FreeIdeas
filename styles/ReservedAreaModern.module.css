@@ -337,6 +337,7 @@
     flex: 0 0 auto;
     color: currentColor;
     stroke-width: 2.2;
+    position: absolute;
 }
 
 :global(#reservedAreaMain.adminWorkspace .editDataSectionAdmin .adminEditorActions button:first-child) {
