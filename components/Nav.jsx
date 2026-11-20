@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Bell, Menu, Moon, Sun, UserRound, X } from 'lucide-react';
+import { Bell, LogOut, Menu, Moon, Sun, UserRound, X } from 'lucide-react';
 import { useAppContext } from '@/contexts/CommonContext'
 import { useAuth } from '@/hooks/useAuth';
 import styles from '@/styles/Nav.module.css';
@@ -36,7 +36,8 @@ export default function Nav({ randomId=0 }) {
         themeIsLight,
         toggleTheme,
         showNotifications,
-        toggleNotifications
+        toggleNotifications,
+        handleLogout
     } = useAppContext();
     
     const {
@@ -107,6 +108,7 @@ export default function Nav({ randomId=0 }) {
                                 <span id="userImage" className={styles.userIconWrap}><UserRound className={styles.userImage} aria-hidden="true" strokeWidth={1.8} /></span>
                                 <span id="userName" className={styles.userName}>{user ? (user.username || '') : 'Sign in'}</span>
                             </button>
+                            {user && <button type="button" className={styles.logoutButton} onClick={handleLogout}><LogOut aria-hidden="true" strokeWidth={1.8} />Sign out</button>}
                         </div>
                     </div>
 
@@ -164,6 +166,7 @@ export default function Nav({ randomId=0 }) {
                                <li><Link href="/searchAnIdea" className={styles.navText} onClick={closeMobileMenu}>Explore ideas</Link></li>
                                <li><Link href="/publishAnIdea" className={styles.navText} onClick={closeMobileMenu}>Publish an idea</Link></li>
                                <li><Link href={`/idea/${randomId}`} className={styles.navText} id="randomIdeaAMobile" onClick={closeMobileMenu}>Surprise me</Link></li>
+                               {user && <li><button type="button" className={styles.logoutButton} onClick={() => { closeMobileMenu(); handleLogout(); }}><LogOut aria-hidden="true" strokeWidth={1.8} />Sign out</button></li>}
                         </ul>
                     </div>
 

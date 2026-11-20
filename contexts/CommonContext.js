@@ -643,6 +643,7 @@ export function AppProvider({ children }) {
         user,
         isLoading,
         refreshUserData: ldAccountData,
+        handleLogout,
         
         // Notifications
         notifications,

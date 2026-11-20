@@ -827,6 +827,42 @@
     padding: 0.25rem 0.45rem 0.25rem 0.25rem;
 }
 
+.logoutButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border: 1px solid rgba(37, 54, 33, 0.14);
+    border-radius: 6px;
+    padding: 0.55rem 0.7rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.logoutButton svg {
+    width: 17px;
+    height: 17px;
+}
+
+.logoutButton:hover {
+    border-color: rgba(37, 54, 33, 0.24);
+    background: rgba(82, 132, 66, 0.08);
+}
+
+.mobileNavLinks .logoutButton {
+    width: 100%;
+    justify-content: flex-start;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
 .userImage {
     width: 32px;
     height: 32px;
