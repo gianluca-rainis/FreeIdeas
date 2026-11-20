@@ -14,16 +14,14 @@ import AccountsView from '@/components/reserved/AccountsView'
 import IdeasView from '@/components/reserved/IdeasView'
 import NotificationsView from '@/components/reserved/NotificationsView'
 import ReportsView from '@/components/reserved/ReportsView'
-import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '@/utils/apiConfig'
+import { getIronSession } from 'iron-session'
+import { sessionOptions } from '@/lib/session'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
     let adminSessionData = false;
     let pageTitle = 'Reserved Area';
-    
-    const cookieHeader = context.req?.headers?.cookie ?? '';
-    const baseUrl = getBaseUrl(context.req);
 
     // The response depends on the administrator session and must never be shared.
     if (context.res) {
@@ -31,19 +29,8 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=administrator`, {
-            credentials: "include",
-            headers: cookieHeader ? { cookie: cookieHeader } : undefined
-        }, 2000);
-
-        const data = await res.json();
-
-        if (!data) {
-            throw new Error("Unable to get admin session data.");
-        }
-        else {
-            adminSessionData = data;
-        }
+        const session = await getIronSession(context.req, context.res, sessionOptions);
+        adminSessionData = session.administrator || false;
     } catch (error) {
         console.error('Failed to load session data: '+error);
     }
