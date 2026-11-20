@@ -13,7 +13,7 @@ import Footer from '@/components/Footer'
 import Head from '@/components/Head'
 import { useAppContext } from '@/contexts/CommonContext'
 import { fetchWithTimeout } from '@/utils/fetchWithTimeout'
-import { apiCall, getBaseUrl } from '@/utils/apiConfig'
+import { apiCall } from '@/utils/apiConfig'
 
 // Server-side rendering for initial data
 export async function getServerSideProps(context) {
@@ -32,9 +32,8 @@ export async function getServerSideProps(context) {
 
         // Send cookies read session in php
         const cookieHeader = context.req?.headers?.cookie ?? '';
-        const baseUrl = getBaseUrl(context.req);
 
-        const response = await fetchWithTimeout(`${baseUrl}/api/data`, {
+        const response = await fetchWithTimeout(`/api/data`, {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined,
             body: formData

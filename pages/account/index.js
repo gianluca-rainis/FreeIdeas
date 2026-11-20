@@ -20,50 +20,45 @@ export async function getServerSideProps(context) {
     let id = null;
     let accountData = null;
     let pageTitle = 'Account';
+    const baseUrl = getBaseUrl(context.req);
     const cookieHeader = context.req?.headers?.cookie ?? '';
 
-    // Cache SSR response briefly to improve perceived speed
+    // Account data is private and must not be shared through a CDN cache.
     if (context.res) {
-        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+        context.res.setHeader('Cache-Control', 'private, no-store');
     }
 
     try {
-        const baseUrl = getBaseUrl(context.req);
-
-        const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
+        const sessionResponse = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
             method: 'GET',
             headers: cookieHeader ? { cookie: cookieHeader } : {}
         }, 2000);
+        const sessionData = await sessionResponse.json();
 
-        const data = await res.json();
-
-        if (data && data.id) {
-            id = data.id;
+        if (sessionData?.id) {
+            id = sessionData.id;
         }
     } catch (error) {
         console.error('Failed to load session data: '+error);
     }
-    
+
     if (id) {
         try {
-            const baseUrl = getBaseUrl(context.req);
-
             const formData = new FormData();
-            formData.append("id", id);
+            formData.append('id', id);
 
-            const response = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
-                method: "POST",
+            const accountResponse = await fetchWithTimeout(`${baseUrl}/api/getAccountData`, {
+                method: 'POST',
                 headers: cookieHeader ? { cookie: cookieHeader } : {},
                 body: formData
-            }, 1000);
+            }, 2000);
+            const data = await accountResponse.json();
 
-            const data = await response.json();
-            
-            if (data && data.success) {
+            if (data?.success) {
                 accountData = data.data;
             }
             else {
-                throw new Error(data.error);
+                throw new Error(data?.error || 'Failed to load account data');
             }
         } catch (error) {
             console.error('Failed to fetch account info: '+error);

@@ -39,9 +39,7 @@ export function getApiUrl(endpoint) {
         return endpoint;
     }
     
-    const baseURL = getBaseUrl();
-    
-    return `${baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
+    return `${API_CONFIG.endpoints[endpoint] || endpoint}`;
 }
 
 // Helper function for fetch with default configurations

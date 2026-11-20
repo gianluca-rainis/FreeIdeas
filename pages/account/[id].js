@@ -20,17 +20,16 @@ export async function getServerSideProps(context) {
     let { id } = context.query;
     let accountData = null;
     let pageTitle = 'Account';
+    const baseUrl = getBaseUrl(context.req);
     const cookieHeader = context.req?.headers?.cookie ?? '';
 
-    // Cache SSR response briefly to improve perceived speed
+    // Account data is private and must not be shared through a CDN cache.
     if (context.res) {
-        context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+        context.res.setHeader('Cache-Control', 'private, no-store');
     }
 
     if (!id) {
         try {
-            const baseUrl = getBaseUrl(context.req);
-
             const res = await fetchWithTimeout(`${baseUrl}/api/getSessionData?data=account`, {
                 method: 'GET',
                 headers: cookieHeader ? { cookie: cookieHeader } : {}
@@ -47,8 +46,6 @@ export async function getServerSideProps(context) {
     }
     
     try {
-        const baseUrl = getBaseUrl(context.req);
-
         const formData = new FormData();
         formData.append("id", id);
 
@@ -56,7 +53,7 @@ export async function getServerSideProps(context) {
             method: "POST",
             headers: cookieHeader ? { cookie: cookieHeader } : {},
             body: formData
-        }, 1000);
+        }, 2000);
 
         const data = await response.json();
         
