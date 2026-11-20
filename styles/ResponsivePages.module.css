@@ -2,11 +2,6 @@
 /* MEDIA QUERIES */
 /* WIDTH */
 @media screen and (min-width: 1201px) and (max-width: 1500px) {
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto auto auto auto;
-    }
-
     /* publish an idea */
     :global(#newIdeaMain #title) {
         width: 80%;
@@ -25,15 +20,6 @@
 @media screen and (min-width: 1101px) and (max-width: 1200px) {
     :global(.navLinks) {
         font-size: small;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto auto auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
     }
 
     /* publish an idea */
@@ -80,19 +66,6 @@
 
     :global(.navLinks) {
         font-size: small;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto auto auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
-    }
-
-    :global(#searchPage #search) {
-        width: 30%;
     }
 
     /* publish an idea */
@@ -176,19 +149,6 @@
     /* index */
     :global(#whatisFreeIdeas .description) {
         padding: 20px 20px 20px 20px;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
-    }
-
-    :global(#searchPage #search) {
-        width: 30%;
     }
 
     /* publish an idea */
@@ -345,15 +305,6 @@
 
     :global(.logo) {
         width: 400px;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
     }
 
     /* publish an idea */
@@ -584,19 +535,6 @@
 
     :global(.logo) {
         width: 400px;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
-    }
-
-    :global(#compactFiltersHidden) {
-        top: 190px;
     }
 
     /* publish an idea */
@@ -904,24 +842,6 @@
 
     :global(.logo) {
         width: 300px;
-    }
-
-    /* search an idea */
-    :global(#lastIdeasSrc) {
-        grid-template-columns: auto;
-    }
-
-    :global(#searchPage header) {
-        position: absolute;
-    }
-
-    :global(#searchPage #search) {
-        width: 30%;
-        margin: 0;
-    }
-
-    :global(#compactFiltersHidden) {
-        top: 150px;
     }
 
     /* publish an idea */

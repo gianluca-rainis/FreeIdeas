@@ -95,7 +95,7 @@
         var(--fi-paper);
 }
 
-.scope :root[data-theme="dark"] [id="loginMain"] {
+:global(:root[data-theme="dark"]) .scope[id="loginMain"] {
     background:
         linear-gradient(90deg, rgba(55, 64, 46, 0.92), rgba(17, 20, 15, 0.18) 58%),
         radial-gradient(circle at 12% 80%, rgba(216, 189, 79, 0.10), transparent 28rem),
@@ -185,11 +185,6 @@
     background: var(--fi-surface);
 }
 
-.scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
-.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .scope[id="reservedAreaMain"] {
     max-width: 1320px;
     min-height: calc(100vh - 68px);
@@ -271,10 +266,6 @@
         top: 0;
     }
 
-    .scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
-.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 }
 
 @media (max-width: 600px) {
@@ -311,11 +302,6 @@
         padding-inline: 0.75rem;
     }
 
-    .scope [id="mainDivDinamicContent"] [id="lastIdeasSrc"],
-.scope[id="accountMain"] [id="mainDivDinamicContent"] [id="lastIdeasSrc"] {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.65rem;
-    }
 }
 
 .scope [class~="navInner"],

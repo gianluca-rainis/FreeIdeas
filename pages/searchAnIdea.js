@@ -1,7 +1,5 @@
 import '@/styles/ResponsivePages.module.css';
 import '@/styles/ThemeAndBase.module.css';
-import '@/styles/ModernShared.module.css';
-import '@/styles/UnifiedPages.module.css';
 import styles from '@/styles/SearchPublishModern.module.css'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
