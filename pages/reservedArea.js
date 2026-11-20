@@ -34,7 +34,7 @@ export async function getServerSideProps(context) {
         const res = await fetchWithTimeout(`/api/getSessionData?data=administrator`, {
             credentials: "include",
             headers: cookieHeader ? { cookie: cookieHeader } : undefined
-        }, 800);
+        }, 2000);
 
         const data = await res.json();
 
