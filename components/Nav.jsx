@@ -105,7 +105,7 @@ export default function Nav({ randomId=0 }) {
                                 <Bell className={styles.notificationsImg} aria-hidden="true" strokeWidth={1.8} />
                             </button>
                             <button type="button" id="userImageLi" className={styles.accountButton} onClick={user ? redirectToAccount : () => window.location.assign('/login')} aria-label={user ? 'Open account' : 'Sign in'}>
-                                <span id="userImage" className={styles.userIconWrap}><UserRound className={styles.userImage} aria-hidden="true" strokeWidth={1.8} /></span>
+                                <span id="userImage" className={styles.userIconWrap}><UserRound aria-hidden="true" strokeWidth={1.8} /></span>
                                 <span id="userName" className={styles.userName}>{user ? (user.username || '') : 'Sign in'}</span>
                             </button>
                             {user && <button type="button" className={styles.logoutButton} onClick={handleLogout}><LogOut aria-hidden="true" strokeWidth={1.8} />Sign out</button>}
@@ -156,7 +156,7 @@ export default function Nav({ randomId=0 }) {
                                 <span id="menuMobile" className={styles.menuIconWrap}>{isMobileMenuOpen ? <X className={styles.menuMobile} aria-hidden="true" strokeWidth={1.8} /> : <Menu className={styles.menuMobile} aria-hidden="true" strokeWidth={1.8} />}</span>
                             </button>
                             <button type="button" id="userImageLiMobile" className={styles.iconButton} onClick={user ? redirectToAccount : () => window.location.assign('/login')} aria-label={user ? 'Open account' : 'Sign in'}>
-                                <span className={styles.menuIconWrap}><UserRound className={styles.userImage} aria-hidden="true" strokeWidth={1.8} /></span>
+                                <span className={styles.menuIconWrap}><UserRound aria-hidden="true" strokeWidth={1.8} /></span>
                             </button>
                         </div>
                     </div>
